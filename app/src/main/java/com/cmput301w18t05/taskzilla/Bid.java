@@ -13,10 +13,10 @@ public class Bid implements Comparable<Bid> {
     private int providerID;
 
 
-    public Bid(User user, Task task, float bidAmount) {
+    public Bid(User user, float bidAmount) {
         this.bidAmount = bidAmount;
-        this.requesterID = user.getID();
-        this.taskID = task.getID();
+        //this.requesterID = user.getID();
+        //this.taskID = task.getID();
     }
 
     public float getBidAmount() {
