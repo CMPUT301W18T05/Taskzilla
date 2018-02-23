@@ -3,15 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Taskzilla.iml" filepath="$PROJECT_DIR$/Taskzilla.iml" />
-<<<<<<< HEAD
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-=======
-      <module fileurl="file://C:\Users\Colin\Desktop\Taskzilla301\Taskzilla\Taskzilla.iml" filepath="C:\Users\Colin\Desktop\Taskzilla301\Taskzilla\Taskzilla.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://C:\Users\Colin\Desktop\Taskzilla301\Taskzilla\app\app.iml" filepath="C:\Users\Colin\Desktop\Taskzilla301\Taskzilla\app\app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://C:\Users\JN\Desktop\CMPUT301\Projects\Taskzilla\app\app.iml" filepath="C:\Users\JN\Desktop\CMPUT301\Projects\Taskzilla\app\app.iml" />
->>>>>>> 3e2e6b8318560497cc58f28dd4aa6fbf64cdfc0a
     </modules>
   </component>
 </project>
