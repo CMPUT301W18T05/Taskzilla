@@ -1,4 +1,4 @@
-/*Subscription
+/*PhotoTest
  *
  * Version 1.0
  *
