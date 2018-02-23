@@ -19,7 +19,7 @@ public class Photo {
         this.image = image;
     }
 
-    public void deleteImage(){
-
+    public void deleteImage(int index){
+        image = null;
     }
 }
