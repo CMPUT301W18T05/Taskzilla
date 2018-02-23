@@ -7,7 +7,7 @@ package com.cmput301w18t05.taskzilla;
 public class Bid implements Comparable<Bid> {
 
     private float quote;
-    private int requesterId;
+    private int providerID;
 
     public Bid(User user, float quote) {
         this.quote = quote;
