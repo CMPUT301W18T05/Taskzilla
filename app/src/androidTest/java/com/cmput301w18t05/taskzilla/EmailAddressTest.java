@@ -30,8 +30,19 @@ public class EmailAddressTest extends ActivityInstrumentationTestCase2{
     }
 
     public void testSetEmail() {
+        String email = "Taskzilla@ualberta.ca";
         String invalidEmail = "Task@zilla@ualberta.ca";
+        String newEmail = "Taskzilla2@hotmail.ca";
 
-        EmailAddress mail = new EmailAddress(invalidEmail);
+        String username = "Taskzilla2";
+        String domain = "hotmail.ca";
+
+        EmailAddress mail = new EmailAddress(email);
+        mail.setEmail(newEmail);
+
+        assertEquals(mail.getEmailUsername(), username);
+        assertEquals(mail.getEmailDomain(), domain);
+
+        mail.setEmail(invalidEmail);
     }
 }
