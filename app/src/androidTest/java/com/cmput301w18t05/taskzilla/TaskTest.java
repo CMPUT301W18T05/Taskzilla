@@ -119,6 +119,6 @@ public class TaskTest extends ActivityInstrumentationTestCase2 {
         Task testTask = new Task();
         assertEquals(null, testTask.getTaskProvider());
         testTask.setTaskRequester(user);
-        assertEquals(user, testTask.getTaskProvider());
+        assertEquals(user, testTask.getTaskRequester());
     }
 }
