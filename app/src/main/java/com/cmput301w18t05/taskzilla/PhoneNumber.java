@@ -6,8 +6,27 @@ package com.cmput301w18t05.taskzilla;
 
 public class PhoneNumber {
 
-    public String toString() {
-        return "";
+    private long phone;
+    public PhoneNumber(long phone) {
+        this.phone = phone;
+
+    }
+    public void setPhoneNumber(long phone){
+        this.phone = phone;
     }
 
+    public long getPhoneNumber(){
+        return phone;
+    }
+
+
+    public String toString() {
+        return Long.toString(phone);
+    }
+
+
 }
+
+
+
+
