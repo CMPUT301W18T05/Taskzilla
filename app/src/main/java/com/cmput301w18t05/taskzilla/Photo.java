@@ -5,4 +5,21 @@ package com.cmput301w18t05.taskzilla;
  */
 
 public class Photo {
+
+    private byte image[];
+
+    public Photo(byte image[]){
+        this.image = image;
+    }
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
+
+    public void deleteImage(){
+
+    }
 }
