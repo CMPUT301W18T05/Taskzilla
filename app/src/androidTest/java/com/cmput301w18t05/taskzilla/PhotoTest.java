@@ -11,6 +11,10 @@ public class PhotoTest extends ActivityInstrumentationTestCase2 {
         super(MainActivity.class);
     }
 
-
+    public void testGetPhoto(){
+        byte picture[] = {1,2,3,2,1,};
+        Photo photo = new Photo(picture);
+        assertTrue(photo.getImage().equals(picture));
+    }
 
 }

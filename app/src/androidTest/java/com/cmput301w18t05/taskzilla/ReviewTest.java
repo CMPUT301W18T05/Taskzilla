@@ -11,7 +11,9 @@ public class ReviewTest extends ActivityInstrumentationTestCase2 {
         super(MainActivity.class);
     }
 
-
+    /**
+     * Test Getting the review title
+     */
     public void testGetTitle(){
         String title = "Best Review Ever";
         int rating = 5;
@@ -22,6 +24,9 @@ public class ReviewTest extends ActivityInstrumentationTestCase2 {
         assertTrue(review.getTitle().equals(title));
     }
 
+    /**
+     * Test setting a new review title
+     */
     public void testSetTitle(){
         String title = "Best Review Ever";
         int rating = 5;
@@ -34,6 +39,9 @@ public class ReviewTest extends ActivityInstrumentationTestCase2 {
         assertTrue(review.getTitle().equals(title2));
     }
 
+    /**
+     * Test getting the review rating
+     */
     public void testGetRating(){
         String title = "Best Review Ever";
         int rating = 5;
@@ -44,6 +52,9 @@ public class ReviewTest extends ActivityInstrumentationTestCase2 {
         assertTrue(review.getRating()==rating);
     }
 
+    /**
+     * Test setting a new review rating
+     */
     public void testSetRating(){
         String title = "Best Review Ever";
         int rating = 5;
@@ -56,6 +67,9 @@ public class ReviewTest extends ActivityInstrumentationTestCase2 {
         assertTrue(review.getRating()==rating2);
     }
 
+    /**
+     * Test getting the review description
+     */
     public void testGetDescription(){
         String title = "Best Review Ever";
         int rating = 5;
@@ -66,6 +80,9 @@ public class ReviewTest extends ActivityInstrumentationTestCase2 {
         assertTrue(review.getDescription().equals(description));
     }
 
+    /**
+     * Test setting a new review description
+     */
     public void testSetDescription(){
         String title = "Best Review Ever";
         int rating = 5;
@@ -78,7 +95,9 @@ public class ReviewTest extends ActivityInstrumentationTestCase2 {
         assertTrue(review.getDescription().equals(description2));
     }
 
-
+    /**
+     * Test getting the target's ID
+     */
     public void testGetTID(){
         String title = "Best Review Ever";
         int rating = 5;
@@ -89,6 +108,9 @@ public class ReviewTest extends ActivityInstrumentationTestCase2 {
         assertTrue(review.getTargetUserID()==tID);
     }
 
+    /**
+     * Test setting a new target's ID
+     */
     public void testSetTID(){
         String title = "Best Review Ever";
         int rating = 5;
@@ -101,7 +123,9 @@ public class ReviewTest extends ActivityInstrumentationTestCase2 {
         assertTrue(review.getTargetUserID()==tID2);
     }
 
-
+    /**
+     * Test getting the Reviewer's ID
+     */
     public void testGetRID(){
         String title = "Best Review Ever";
         int rating = 5;
@@ -112,6 +136,9 @@ public class ReviewTest extends ActivityInstrumentationTestCase2 {
         assertTrue(review.getReviewerID()==rID);
     }
 
+    /**
+     * Test setting a new Reviewer's ID
+     */
     public void testSetRID(){
         String title = "Best Review Ever";
         int rating = 5;

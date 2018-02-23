@@ -11,6 +11,10 @@ public class EmailAddressTest extends ActivityInstrumentationTestCase2{
         super(MainActivity.class);
     }
 
+    /**
+     *  Test to check if username matches
+     */
+
     public void testGetEmailUsername() {
         String email = "Taskzilla@ualberta.ca";
         String username = "Taskzilla";
@@ -20,6 +24,10 @@ public class EmailAddressTest extends ActivityInstrumentationTestCase2{
         assertEquals(mail.getEmailUsername(),username);
     }
 
+    /**
+     * Test to check if domain matches
+     */
+
     public void testGetEmailDomain() {
         String email = "Taskzilla@ualberta.ca";
         String domain = "ualberta.ca";
@@ -28,6 +36,10 @@ public class EmailAddressTest extends ActivityInstrumentationTestCase2{
 
         assertEquals(mail.getEmailDomain(),domain);
     }
+
+    /**
+     * Test to check if set new email works and if it does, check if exception is thrown when invalid email is inserted
+     */
 
     public void testSetEmail() {
         String email = "Taskzilla@ualberta.ca";
