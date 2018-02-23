@@ -1,3 +1,12 @@
+/*Subscription
+ *
+ * Version 1.0
+ *
+ * Feb 23, 2018
+ *
+ * Copyright 2018 Team05, CMPUT301, University of Alberta - All Rights Reserved
+ *
+ */
 package com.cmput301w18t05.taskzilla;
 
 import android.test.ActivityInstrumentationTestCase2;
