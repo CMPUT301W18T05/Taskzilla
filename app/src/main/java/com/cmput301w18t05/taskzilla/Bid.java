@@ -6,22 +6,27 @@ package com.cmput301w18t05.taskzilla;
 
 public class Bid implements Comparable<Bid> {
 
+    private float bidAmount;
+    private int requesterID;
+    private int taskID;
     private float quote;
     private int providerID;
 
-    public Bid(User user, float quote) {
-        this.quote = quote;
-        this.requesterId = user.getID();
+
+    public Bid(User user, Task task, float bidAmount) {
+        this.bidAmount = bidAmount;
+        this.requesterID = user.getID();
+        this.taskID = task.getID();
     }
 
-    public float getQuote() {
-        return this.quote;
+    public float getBidAmount() {
+        return this.bidAmount;
     }
 
     public int compareTo(Bid bid) {
-        if (this.quote > bid.getQuote())
+        if (this.bidAmount > bid.getBidAmount())
             return 1;
-        else if (this.quote == bid.getQuote())
+        else if (this.bidAmount == bid.getBidAmount())
             return 0;
         else
             return -1;
