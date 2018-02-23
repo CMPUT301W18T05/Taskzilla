@@ -5,12 +5,27 @@ import java.util.regex.Pattern;
 
 /**
  * Created by wyatt on 22/02/18.
+ *
+ * initial stub
+ */
+
+/**
+ * @author andy li
+ * @version 1
  */
 
 public class EmailAddress {
 
     private String emailUsername;
     private String emailDomain;
+
+    /**
+     * Constructor that takes in a string email address and first checks if its valid.
+     * If it is valid, set username and domain accordingly.
+     *
+     * @param email a email address inserted by the user
+     * @see   User
+     */
 
     public EmailAddress(String email) {                         // Constructor used when a string is sent in as a parameter
         if(isValid(email)) {
@@ -23,13 +38,25 @@ public class EmailAddress {
         }
     }
 
+    /**
+     * @return  username of the email
+     */
+
     public String getEmailUsername() {                          // Returns email username
          return this.emailUsername;
     }
 
+    /**
+     * @return  domain of the email
+     */
+
     public String getEmailDomain() {                            // Returns email domain
         return this.emailDomain;
     }
+
+    /**
+     * @param email new email address specified by the user
+     */
 
     public void setEmail(String email) {                        // Method used to change the email address of the current user
         if(isValid(email)) {
@@ -41,6 +68,13 @@ public class EmailAddress {
             throw new IllegalArgumentException();
         }
     }
+
+    /**
+     * This checks if the email is valid by checking if it contains exactly one period and one @.
+     *
+     * @param email email address specified by the user
+     * @return      True if valid, else False
+     */
 
     public Boolean isValid(String email) {
         int periodCount = 0;
@@ -61,8 +95,11 @@ public class EmailAddress {
         return false;
     }
 
+    /**
+     * @return  Full email address
+     */
+
     public String toString() {
         return emailUsername + "@" + emailDomain;
     }
-
 }
