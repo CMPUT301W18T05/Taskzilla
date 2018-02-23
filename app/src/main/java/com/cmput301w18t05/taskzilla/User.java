@@ -4,13 +4,14 @@ import java.util.ArrayList;
 
 /**
  * Created by wyatt on 22/02/18.
+ *
  */
 
 public class User {
 
     private String name;
     private String username;
-    private Integer ID;
+    private Integer id;
     private PhoneNumber phone;
     private EmailAddress email;
     private Float providerRating;
@@ -21,34 +22,45 @@ public class User {
 
     public User() {
 
+
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public boolean setName(String name) {
+        // if name contains illegal characters, or is longer than 25 characters return false
+        // otherwise set the user's name
+        if (name.matches("[a-zA-Z_0-9][a-zA-Z0-9 ]") || (name.length() <= 25)) {
+            this.name = name;
+            return true;
+        }
+        return false;
     }
 
     public String getUsername() {
-        return username;
+        return this.username;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public boolean setUsername(String username) {
+        if (username.matches("[a-zA-Z_0-9][a-zA-Z_0-9 ]") || (username.length() <= 25)) {
+            this.username = username;
+            return true;
+        }
+        return false;
     }
 
-    public Integer getID() {
-        return ID;
+    public Integer getId() {
+        return this.id;
     }
 
-    public void setID(Integer ID) {
-        this.ID = ID;
+    public void setId(Integer id) {
+        //dont need. generate random id for user at init
     }
 
     public PhoneNumber getPhone() {
-        return phone;
+        return this.phone;
     }
 
     public void setPhone(PhoneNumber phone) {
@@ -56,7 +68,7 @@ public class User {
     }
 
     public EmailAddress getEmail() {
-        return email;
+        return this.email;
     }
 
     public void setEmail(EmailAddress email) {
@@ -64,23 +76,31 @@ public class User {
     }
 
     public Float getProviderRating() {
-        return providerRating;
+        return this.providerRating;
     }
 
-    public void setProviderRating(Float providerRating) {
-        this.providerRating = providerRating;
+    public boolean setProviderRating(Float providerRating) {
+        if (providerRating < 5.0f || providerRating > 0.0f) {
+            this.providerRating = providerRating;
+            return true;
+        }
+        return false;
     }
 
     public Float getRequesterRating() {
-        return requesterRating;
+        return this.requesterRating;
     }
 
-    public void setRequesterRating(Float requesterRating) {
-        this.requesterRating = requesterRating;
+    public boolean setRequesterRating(Float requesterRating) {
+        if (requesterRating < 5.0f || requesterRating > 0.0f) {
+            this.requesterRating = requesterRating;
+            return true;
+        }
+        return false;
     }
 
     public Integer getNumRequests() {
-        return numRequests;
+        return this.numRequests;
     }
 
     public void setNumRequests(Integer numRequests) {
@@ -88,10 +108,18 @@ public class User {
     }
 
     public Integer getNumCompleteTasks() {
-        return numCompleteTasks;
+        return this.numCompleteTasks;
     }
 
     public void setNumCompleteTasks(Integer numCompleteTasks) {
         this.numCompleteTasks = numCompleteTasks;
+    }
+
+    public ArrayList<Photo> getPhotos() {
+        return this.photos;
+    }
+
+    public void setPhotos(ArrayList<Photo> photos) {
+        this.photos = photos;
     }
 }
