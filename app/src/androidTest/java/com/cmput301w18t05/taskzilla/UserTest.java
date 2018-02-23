@@ -13,7 +13,9 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
         super(MainActivity.class);
     }
 
-
+    /**
+     * Test for setting the name of user
+     */
     public void testSetName() {
         User user = new User();
 
@@ -39,6 +41,37 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
         assertFalse(user.setName(name));
     }
 
+    /**
+     * Test for setting the name of username
+     */
+    public void testSetUsername() {
+        User user = new User();
+
+        String username = "James Sun";
+        assertTrue(user.setUsername(username));
+
+        username = "C0lin Ch0i";
+        assertTrue(user.setUsername(username));
+
+        username = "4ndy_l1";
+        assertTrue(user.setUsername(username));
+
+        username = "~Jeremy Ng~";
+        assertFalse(user.setUsername(username));
+
+        username = "";
+        assertFalse(user.setUsername(username));
+
+        username = "    Wyatt Praharen";
+        assertFalse(user.setUsername(username));
+
+        username = "Michael Nguyen Michael Nguyen Michael Nguyen Michael Nguyen ";
+        assertFalse(user.setUsername(username));
+    }
+
+    /**
+     * Test for getting everything
+     */
     public void testGetEverything() {
         User user = new User();
 
@@ -49,7 +82,7 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
         user.setUsername(name);
         assertEquals(user.getUsername(), name);
 
-        PhoneNumber phone = new PhoneNumber();
+        PhoneNumber phone = new PhoneNumber(1234567890);
         user.setPhone(phone);
         assertEquals(user.getPhone(), phone);
 

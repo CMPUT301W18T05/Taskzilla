@@ -26,10 +26,10 @@ public class TaskTest extends ActivityInstrumentationTestCase2 {
     public void testAddBid() {
         Task testTask = new Task();
         assertEquals(0, testTask.numBids());
-        Bid newBid = new Bid(user, new Float(100));
+        Bid newBid = new Bid(user, testTask, 100.0f);
         testTask.addBid(newBid);
         assertEquals(1, testTask.numBids());
-        Bid newBid2 = new Bid(user, new Float(200));
+        Bid newBid2 = new Bid(user, testTask, 100.0f);
         testTask.addBid(newBid2);
         assertEquals(2, testTask.numBids());
         assertTrue(testTask.getBid(0).compareTo(testTask.getBid(1)) < 0);

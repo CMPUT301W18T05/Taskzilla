@@ -6,11 +6,13 @@ import java.util.ArrayList;
 
 /**
  * Created by wyatt on 22/02/18.
+ *
  */
 
 public class Task {
 
     private String name;
+    private Integer Id;
     private User TaskRequester;
     private User TaskProvider;
     private TaskStatus status;
@@ -89,5 +91,13 @@ public class Task {
 
     public void setLocation(Location location) {
         this.location = location;
+    }
+
+    public Integer getId() {
+        return Id;
+    }
+
+    public void setId(Integer id) {
+        Id = id;
     }
 }
