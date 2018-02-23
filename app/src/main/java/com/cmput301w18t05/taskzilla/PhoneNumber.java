@@ -9,8 +9,12 @@ public class PhoneNumber {
     private long phone;
     public PhoneNumber(long phone) {
         this.phone = phone;
+    }
+
+    public PhoneNumber(){
 
     }
+
     public void setPhoneNumber(long phone){
         this.phone = phone;
     }
