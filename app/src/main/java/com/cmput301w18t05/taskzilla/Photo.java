@@ -47,9 +47,8 @@ public class Photo {
 
     /**
      * Deletes the current image of the photo
-     * @param index
      */
-    public void deleteImage(int index){
+    public void deleteImage(){
         image = null;
     }
 }

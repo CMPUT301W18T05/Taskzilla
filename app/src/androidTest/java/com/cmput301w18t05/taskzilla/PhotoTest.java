@@ -33,5 +33,10 @@ public class PhotoTest extends ActivityInstrumentationTestCase2 {
         assertTrue(photo.getImage().equals(picture2));
     }
 
-
+    public void testDeletePhoto(){
+        byte picture[] = {1,0,0,1,1,0};
+        Photo photo = new Photo(picture);
+        photo.deleteImage();
+        assertTrue(photo.getImage()==null);
+    }
 }
