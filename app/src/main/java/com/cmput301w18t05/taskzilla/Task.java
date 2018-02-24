@@ -7,6 +7,7 @@ import java.util.ArrayList;
 /**
  * Created by wyatt on 22/02/18.
  *
+ * @// TODO: 23/02/18 AddPhoto implementation
  */
 
 public class Task {
@@ -15,13 +16,16 @@ public class Task {
     private Integer Id;
     private User TaskRequester;
     private User TaskProvider;
-    private TaskStatus status;
+    private String status;
     private String description;
     private Location location;
+    private Bid bestBid;
     private ArrayList<Bid> bids;
+    private ArrayList<Photo> photos;
 
     public Task() {
         bids = new ArrayList<Bid>();
+        photos = new ArrayList<Photo>();
     }
 
     /**
@@ -35,6 +39,35 @@ public class Task {
         int i;
         for (i = 0; i < bids.size() && bid.compareTo(bids.get(i)) > 0; i++);
         bids.add(i, bid);
+    }
+
+    /**
+     * addPhoto
+     * Add photo to photo list
+     *
+     * @param photo
+     */
+    public void addPhoto(Photo photo) {
+
+    }
+
+    /**
+     * getPhoto
+     * get photo at index i
+     *
+     * @param i
+     * @return Photo
+     */
+    public Photo getPhoto(int i) {
+        return this.photos.get(i);
+    }
+
+    public void removePhoto(int i) {
+        this.photos.remove(i);
+    }
+
+    public int numPhotos() {
+        return this.photos.size();
     }
 
     public int numBids() {
@@ -69,11 +102,11 @@ public class Task {
         TaskProvider = taskProvider;
     }
 
-    public TaskStatus getStatus() {
-        return status;
+    public String getStatus() {
+        return this.status;
     }
 
-    public void setStatus(TaskStatus status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
@@ -100,4 +133,9 @@ public class Task {
     public void setId(Integer id) {
         Id = id;
     }
+
+    public Bid getBestBid() {
+        return bestBid;
+    }
+
 }

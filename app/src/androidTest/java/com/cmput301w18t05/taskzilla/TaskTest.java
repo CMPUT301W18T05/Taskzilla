@@ -4,9 +4,13 @@ import android.location.Location;
 import android.test.ActivityInstrumentationTestCase2;
 
 /**
+ * TaskTest
+ * unit test for Task class
+ *
  * Created by wyatt on 23/02/18.
+ *
+ * @author praharen
  */
-
 public class TaskTest extends ActivityInstrumentationTestCase2 {
 
     private User user;
@@ -62,19 +66,16 @@ public class TaskTest extends ActivityInstrumentationTestCase2 {
      * get/set status test
      *
      * @author praharen
-     * @// TODO: 23/02/18 figure out TaskStatus design
      */
-    /*
     public void testGetSetStatus() {
         Task testTask = new Task();
-        TaskStatus testStatus = new TaskStatus();
+        String testStatus = "Done";
 
         assertEquals(null,testTask.getStatus());
 
         testTask.setStatus(testStatus);
         assertEquals(testStatus, testTask.getStatus());
     }
-    */
 
     /**
      * get/set task name test
@@ -120,5 +121,30 @@ public class TaskTest extends ActivityInstrumentationTestCase2 {
         assertEquals(null, testTask.getTaskProvider());
         testTask.setTaskRequester(user);
         assertEquals(user, testTask.getTaskRequester());
+    }
+
+    /**
+     * add photo test
+     *
+     * @author prahare
+     */
+    public void testAddPhoto() {
+        Task testTask = new Task();
+        byte test[] = {1};
+        Photo testPhoto = new Photo(test);
+        testTask.addPhoto(testPhoto);
+        assertEquals(test, testTask.getPhoto(0));
+    }
+
+    /**
+     * getBestBid test
+     */
+    public void testGetBestBid() {
+        Task testTask = new Task();
+        Bid bid1 = new Bid(user, new Float(100));
+        assertEquals(new Float(100), testTask.getBestBid());
+
+        Bid bid2 = new Bid(user, new Float(200));
+        assertEquals(new Float(200), testTask.getBestBid());
     }
 }
