@@ -1,10 +1,10 @@
-/*Subscription
+/*Review
  *
  * Version 1.0
  *
- * Feb 05, 2018
+ * Feb 23, 2018
  *
- * Copyright 2018 CMPUT301Team05, CMPUT301, University of Alberta - All Rights Reserved
+ * Copyright 2018 Team05, CMPUT301, University of Alberta - All Rights Reserved
  *
  */
 
