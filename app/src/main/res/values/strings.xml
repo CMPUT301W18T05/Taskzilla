@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Taskzilla</string>
+    <string name="username_string">Username</string>
 </resources>
