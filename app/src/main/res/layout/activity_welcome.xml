@@ -26,37 +26,41 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1">
 
-                <LinearLayout
+                <android.support.constraint.ConstraintLayout
                     android:id="@+id/Tasks"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:layout_height="match_parent">
 
-                </LinearLayout>
+                    <ListView
+                        android:id="@+id/tasks_list"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </android.support.constraint.ConstraintLayout>
 
-                <LinearLayout
+                <android.support.constraint.ConstraintLayout
                     android:id="@+id/MyBids"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:layout_height="match_parent">
 
-                </LinearLayout>
+                </android.support.constraint.ConstraintLayout>
 
-                <LinearLayout
+                <android.support.constraint.ConstraintLayout
                     android:id="@+id/Search"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:layout_height="match_parent">
 
-                </LinearLayout>
+                </android.support.constraint.ConstraintLayout>
 
-                <LinearLayout
+                <android.support.constraint.ConstraintLayout
                     android:id="@+id/Profile"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:layout_height="match_parent">
 
-                </LinearLayout>
+                </android.support.constraint.ConstraintLayout>
 
             </FrameLayout>
 
@@ -66,7 +70,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="-4dp"
                 android:layout_weight="0"
-                android:background="@color/tabSelectorColor" />
+                android:background="@color/tabSelectorColor"
+                android:elevation="40dp"/>
         </LinearLayout>
     </TabHost>
 </android.support.constraint.ConstraintLayout>
