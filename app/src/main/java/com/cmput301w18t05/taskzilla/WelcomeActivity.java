@@ -1,5 +1,13 @@
 package com.cmput301w18t05.taskzilla;
 
+import android.app.ActivityGroup;
+import android.support.v4.app.FragmentManager;
+import android.content.Intent;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,7 +23,9 @@ import java.util.List;
 
 public class WelcomeActivity extends AppCompatActivity {
 
-    private TabHost tabs;
+    TabLayout tabs;
+    ViewPager tabsContent;
+    FragmentPagerAdapter tabsAdapter;
 
     private ListView test;
 
@@ -24,42 +34,56 @@ public class WelcomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
-        /* setup view */
-        tabs = findViewById(R.id.nav_tabs);
-        test = findViewById(R.id.tasks_list);
+        tabsAdapter = new TabsManager(this.getSupportFragmentManager());
+        tabsContent = findViewById(R.id.welcome_tabs_content);
+        tabsContent.setAdapter(tabsAdapter);
 
-        /* setup tabs */
-        tabs.setup();
+        tabs = findViewById(R.id.tabs_bar);
+        tabs.setupWithViewPager(tabsContent);
 
-        TabHost.TabSpec tasksTab = tabs.newTabSpec("Tasks");
-        tasksTab.setContent(R.id.Tasks);
-        tasksTab.setIndicator("Tasks");
-        tabs.addTab(tasksTab);
+    }
 
-        TabHost.TabSpec mybidsTab = tabs.newTabSpec("My Bids");
-        mybidsTab.setContent(R.id.MyBids);
-        mybidsTab.setIndicator("My Bids");
-        tabs.addTab(mybidsTab);
-
-        TabHost.TabSpec searchTab = tabs.newTabSpec("Search");
-        searchTab.setContent(R.id.Search);
-        searchTab.setIndicator("Search");
-        tabs.addTab(searchTab);
-
-        TabHost.TabSpec profileTab = tabs.newTabSpec("Profile");
-        profileTab.setContent(R.id.Profile);
-        profileTab.setIndicator("Profile");
-        tabs.addTab(profileTab);
-
-        /* setup tasks list view */
-        ArrayList<Integer> test = new ArrayList();
-
-        for (int i = 0; i < 100; i++) {
-            test.add(i);
+    public class TabsManager extends FragmentPagerAdapter {
+        TabsManager(FragmentManager fm) {
+            super(fm);
         }
 
-        ArrayAdapter<Integer> arrayAdapter = new ArrayAdapter<Integer>(this, R.layout.tasks_list_view,R.id.textView, test);
-        ListView test2 = findViewById(R.id.tasks_list);
-        test2.setAdapter(arrayAdapter);
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                    return new BlankFragment();
+                case 1:
+                    return new BlankFragment();
+                case 2:
+                    return new BlankFragment();
+                case 3:
+                    return new BlankFragment();
+                default:
+                    return null;
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return 4;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+                case 0:
+                    return "Tasks";
+                case 1:
+                    return "My Bids";
+                case 2:
+                    return "Search";
+                case 3:
+                    return "Profile";
+                default:
+                    return null;
+            }
+        }
     }
+
 }
