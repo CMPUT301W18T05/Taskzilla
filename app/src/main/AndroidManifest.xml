@@ -24,7 +24,8 @@
             android:name=".WelcomeActivity"
             android:theme="@style/AppTheme" />
         <activity android:name=".EditProfileActivity" />
-        <activity android:name=".SignUpActivity"></activity>
+        <activity android:name=".SignUpActivity" />
+        <activity android:name=".ViewTaskActivity"></activity>
     </application>
 
 </manifest>
