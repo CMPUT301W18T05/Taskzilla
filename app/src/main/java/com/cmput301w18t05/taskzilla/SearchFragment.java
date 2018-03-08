@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.SearchView;
 
 
 /**
@@ -17,6 +18,7 @@ import android.widget.RelativeLayout;
  */
 public class SearchFragment extends Fragment {
 
+    private SearchView searchField;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -39,6 +41,13 @@ public class SearchFragment extends Fragment {
         });
 
         return mConstraintLayout;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        // expand search bar by default
+        searchField = view.findViewById(R.id.searchView);
+        searchField.setIconified(false);
     }
 
     public void viewMap(){
