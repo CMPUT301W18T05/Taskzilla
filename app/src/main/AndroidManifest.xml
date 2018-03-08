@@ -18,8 +18,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".WelcomeActivity"
-            android:theme="@style/AppTheme"/>
+        <activity
+            android:name=".WelcomeActivity"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".EditProfileActivity"></activity>
     </application>
 
 </manifest>

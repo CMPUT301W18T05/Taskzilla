@@ -1,0 +1,155 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.cmput301w18t05.taskzilla.ProfileFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="33dp"
+        android:layout_marginTop="37dp"
+        android:src="@mipmap/ic_launcher_round" />
+
+    <TextView
+        android:id="@+id/Name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textView15"
+        android:layout_alignTop="@+id/imageView"
+        android:text="Android"
+        android:textSize="28sp" />
+
+    <ImageButton
+        android:id="@+id/EditButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/imageView"
+        android:layout_marginEnd="29dp"
+        android:background="@android:color/transparent"
+        android:src="@android:drawable/ic_menu_edit" />
+
+    <TextView
+        android:id="@+id/ProviderRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/imageView"
+        android:layout_below="@+id/imageView"
+        android:layout_marginTop="21dp"
+        android:text="Provider Rating:"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/RequesterRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/ProviderRating"
+        android:layout_below="@+id/ProviderRating"
+        android:layout_marginTop="25dp"
+        android:text="Requester Rating:"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/NumRequests"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/RequesterRating"
+        android:layout_below="@+id/RequesterRatingField"
+        android:layout_marginTop="18dp"
+        android:text="Number of Requests: "
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/NumTasksDone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/RequesterRating"
+        android:layout_below="@+id/NumRequests"
+        android:layout_marginTop="27dp"
+        android:text="Number of Tasks Done: "
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/Email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/NumTasksDone"
+        android:layout_below="@+id/NumTasksDoneField"
+        android:layout_marginTop="46dp"
+        android:text="Email:"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/Phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/Email"
+        android:layout_below="@+id/Email"
+        android:layout_marginTop="19dp"
+        android:text="Phone:"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/ProviderRatingField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/ProviderRating"
+        android:layout_alignBottom="@+id/ProviderRating"
+        android:layout_alignEnd="@+id/EditButton"
+        android:text="9.8"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/RequesterRatingField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/ProviderRatingField"
+        android:layout_alignTop="@+id/RequesterRating"
+        android:text="0.7"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/NumRequestsField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/NumTasksDone"
+        android:layout_alignStart="@+id/EditButton"
+        android:text="2"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/NumTasksDoneField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/RequesterRatingField"
+        android:layout_alignTop="@+id/NumTasksDone"
+        android:text="998"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/EmailField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/Email"
+        android:layout_alignBottom="@+id/Email"
+        android:layout_toStartOf="@+id/NumTasksDoneField"
+        android:text="android1@gmail.com"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/Phone"
+        android:layout_alignBottom="@+id/Phone"
+        android:layout_alignEnd="@+id/NumRequests"
+        android:text="780 123 4567"
+        android:textSize="20sp" />
+</RelativeLayout>

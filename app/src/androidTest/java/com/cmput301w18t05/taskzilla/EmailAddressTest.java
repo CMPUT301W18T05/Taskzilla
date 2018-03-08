@@ -67,4 +67,5 @@ public class EmailAddressTest extends ActivityInstrumentationTestCase2{
 
         mail.setEmail(invalidEmail);
     }
+
 }
