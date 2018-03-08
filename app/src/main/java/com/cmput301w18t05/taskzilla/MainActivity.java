@@ -10,6 +10,20 @@ import android.widget.TextView;
 
 /**
  * main activity includes the login screen
+ *
+ * todo:
+ * 1. user needs to be connected the first time to login
+ *  1.1 user credentials get saved
+ *  1.2 user can login offline if they have logged in before
+ *
+ * 2. user needs connectivity to register
+ *
+ * 3. save previously logged in user credentials to local file
+ *  3.1 check if credentials have been seen before on this device
+ *      on login.
+ * 4. save 'loggedIn' state to file.
+ *  4.1 if loggedIn state is true then go straight to welcome
+ *      screen
  */
 
 public class MainActivity extends AppCompatActivity {
