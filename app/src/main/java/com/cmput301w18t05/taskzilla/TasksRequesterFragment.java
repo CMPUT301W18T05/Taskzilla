@@ -3,6 +3,7 @@ package com.cmput301w18t05.taskzilla;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +34,14 @@ public class TasksRequesterFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_tasks_requester, container, false);
+        FloatingActionButton fab = v.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                newTask();
+            }
+        });
+
         taskList = new ArrayList<Task>();
         taskListView = (ListView)v.findViewById(R.id.RequesterTasksListView);
         adapter = new ArrayAdapter<Task>(getActivity(), android.R.layout.simple_list_item_1, taskList);
@@ -53,6 +62,10 @@ public class TasksRequesterFragment extends Fragment {
 
     public void viewTask(){
         Intent intent = new Intent(getActivity(), ViewTaskActivity.class);
+        startActivity(intent);
+    }
+    public void newTask(){
+        Intent intent = new Intent(getActivity(), NewTaskActivity.class);
         startActivity(intent);
     }
 
