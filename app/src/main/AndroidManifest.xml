@@ -20,8 +20,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".WelcomeActivity"
-            android:theme="@style/AppTheme"/>
+        <activity
+            android:name=".WelcomeActivity"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".EditProfileActivity" />
+        <activity android:name=".SignUpActivity" />
+        <activity android:name=".ViewTaskActivity" />
+        <activity android:name=".NewTaskActivity"></activity>
     </application>
 
 </manifest>

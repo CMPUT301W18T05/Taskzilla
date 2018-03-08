@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView usernameView;
     private Button loginButton;
-
+    private TextView signupButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,5 +50,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+    public void signUp(android.view.View view){
+        Intent signupIntent = new Intent(this, SignUpActivity.class);
+        startActivity(signupIntent);
     }
 }

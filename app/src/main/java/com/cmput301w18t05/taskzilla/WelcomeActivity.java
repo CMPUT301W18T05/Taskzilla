@@ -52,13 +52,13 @@ public class WelcomeActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return new BlankFragment();
+                    return new TasksFragment();
                 case 1:
-                    return new BlankFragment();
+                    return new MyBidsFragment();
                 case 2:
-                    return new BlankFragment();
+                    return new SearchFragment();
                 case 3:
-                    return new BlankFragment();
+                    return new ProfileFragment();
                 default:
                     return null;
             }
@@ -85,5 +85,7 @@ public class WelcomeActivity extends AppCompatActivity {
             }
         }
     }
+
+
 
 }
