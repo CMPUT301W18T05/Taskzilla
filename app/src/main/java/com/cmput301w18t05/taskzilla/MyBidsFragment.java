@@ -6,6 +6,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import java.util.ArrayList;
 
 
 /**
@@ -13,6 +17,9 @@ import android.view.ViewGroup;
  */
 public class MyBidsFragment extends Fragment {
 
+    private ArrayList<Task> taskList;
+    private ListView taskListView;
+    private ArrayAdapter<Task> adapter;
 
     public MyBidsFragment() {
         // Required empty public constructor
@@ -23,7 +30,29 @@ public class MyBidsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_my_bids, container, false);
+        View v = inflater.inflate(R.layout.fragment_my_bids, container, false);
+        taskList = new ArrayList<Task>();
+        taskListView = (ListView)v.findViewById(R.id.MyBidsListView);
+        adapter = new ArrayAdapter<Task>(getActivity(), android.R.layout.simple_list_item_1, taskList);
+        taskListView.setAdapter(adapter);
+        taskList.add(new Task());
+        taskList.add(new Task());
+        taskList.add(new Task());
+        taskList.add(new Task());
+        taskList.add(new Task());
+        taskList.add(new Task());
+        taskList.add(new Task());
+        taskList.add(new Task());
+        taskList.add(new Task());
+        taskList.add(new Task());
+        taskList.add(new Task());
+        taskList.add(new Task());
+        taskList.add(new Task());
+        taskList.add(new Task());
+        taskList.add(new Task());
+
+
+        return v;
     }
 
 }

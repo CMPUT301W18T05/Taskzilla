@@ -138,4 +138,7 @@ public class Task {
         return bestBid;
     }
 
+    public String toString(){
+        return"Test Task";
+    }
 }
