@@ -34,12 +34,13 @@ public class MyBidsFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_my_bids, container, false);
 
-
-
+        //Set up listview and adapater
         taskList = new ArrayList<Task>();
         taskListView = (ListView)v.findViewById(R.id.MyBidsListView);
         adapter = new ArrayAdapter<Task>(getActivity(), android.R.layout.simple_list_item_1, taskList);
         taskListView.setAdapter(adapter);
+
+        //Dummy Tasks for testing. Remove these and get the tasks from elastic search
         taskList.add(new Task());
         taskList.add(new Task());
         taskList.add(new Task());
@@ -66,7 +67,9 @@ public class MyBidsFragment extends Fragment {
         return v;
     }
 
-
+    /**
+     * Swtich activity to ViewTaskActivity when a task is clicked
+     */
     public void viewTask(){
         Intent intent = new Intent(getActivity(), ViewTaskActivity.class);
         startActivity(intent);

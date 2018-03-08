@@ -42,10 +42,13 @@ public class TasksRequesterFragment extends Fragment {
             }
         });
 
+        //Set up listview and adapter
         taskList = new ArrayList<Task>();
         taskListView = (ListView)v.findViewById(R.id.RequesterTasksListView);
         adapter = new ArrayAdapter<Task>(getActivity(), android.R.layout.simple_list_item_1, taskList);
         taskListView.setAdapter(adapter);
+
+        //Dummy Tasks for testing. Remove these and get the tasks from elastic search
         taskList.add(new Task());
         taskList.add(new Task());
         taskList.add(new Task());

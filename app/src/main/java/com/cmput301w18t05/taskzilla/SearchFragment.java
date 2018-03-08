@@ -41,6 +41,9 @@ public class SearchFragment extends Fragment {
         return mConstraintLayout;
     }
 
+    /**
+     * Switch to Map Activity when map button is clicked
+     */
     public void viewMap(){
         Intent intent = new Intent(getActivity(), MapActivity.class);
         startActivity(intent);

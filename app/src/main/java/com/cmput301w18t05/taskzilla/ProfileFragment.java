@@ -41,6 +41,10 @@ public class ProfileFragment extends Fragment {
         return mRelativeLayout;
     }
 
+    /**
+     * Switch to EditProfile Activity
+     * Send users information to the activity
+     */
     public void editProfile(){
 
         Intent intent = new Intent(getActivity(), EditProfileActivity.class);

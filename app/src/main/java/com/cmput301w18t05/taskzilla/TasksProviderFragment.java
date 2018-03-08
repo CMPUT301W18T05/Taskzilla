@@ -19,6 +19,7 @@ import java.util.ArrayList;
  */
 public class TasksProviderFragment extends Fragment {
 
+    // List of Tasks
     private ArrayList<Task> taskList;
     private ListView taskListView;
     private ArrayAdapter<Task> adapter;
@@ -32,11 +33,15 @@ public class TasksProviderFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
+        //Set up listview and adapter
         View v = inflater.inflate(R.layout.fragment_tasks_provider, container, false);
         taskList = new ArrayList<Task>();
         taskListView = (ListView)v.findViewById(R.id.ProviderTasksListView);
         adapter = new ArrayAdapter<Task>(getActivity(), android.R.layout.simple_list_item_1, taskList);
         taskListView.setAdapter(adapter);
+
+        //Dummy Tasks for testing. Remove these and get the tasks from elastic search
         taskList.add(new Task());
         taskList.add(new Task());
         taskList.add(new Task());
