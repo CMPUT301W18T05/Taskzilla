@@ -4,6 +4,9 @@ import com.searchly.jestdroid.DroidClientConfig;
 import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Jeremy
  */
@@ -24,8 +27,14 @@ public class ElasticSearchController {
 
     }
 
-    public Task searchTask(Task task) {
+    public Task searchTask(String taskName, String userName) {
+        Task task = new Task();
         return task;
+    }
+
+    public List<Task> searchTaskDescriptions(List<String> keywords) {
+        List<Task> tasks = new ArrayList<Task>();
+        return tasks;
     }
 
     public void addUser(User user) {
@@ -40,7 +49,8 @@ public class ElasticSearchController {
 
     }
 
-    public User searchUser(User user) {
+    public User searchUser(String userName) {
+        User user = new User();
         return user;
     }
 
@@ -48,16 +58,13 @@ public class ElasticSearchController {
 
     }
 
-    public void updateBid(Bid bid) {
-
-    }
-
     public void removeBid(Bid bid) {
 
     }
 
-    public Bid searchBid(Bid bid) {
-        return bid;
+    public List<Task> getTasksFromBid(String userName) {
+        List<Task> tasks = new ArrayList<Task>();
+        return tasks;
     }
 
 
