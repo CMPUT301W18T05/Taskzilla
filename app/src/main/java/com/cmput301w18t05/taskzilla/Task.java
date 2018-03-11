@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class Task {
 
     private String name;
-    private Integer Id;
+    private String Id;
     private User TaskRequester;
     private User TaskProvider;
     private String status;
@@ -62,6 +62,10 @@ public class Task {
         return this.photos.get(i);
     }
 
+    public ArrayList<Photo> getPhotos() {
+        return photos;
+    }
+
     public void removePhoto(int i) {
         this.photos.remove(i);
     }
@@ -76,6 +80,10 @@ public class Task {
 
     public Bid getBid(int i) {
         return bids.get(i);
+    }
+
+    public ArrayList<Bid> getBids() {
+        return bids;
     }
 
     public String getName() {
@@ -126,11 +134,11 @@ public class Task {
         this.location = location;
     }
 
-    public Integer getId() {
+    public String getId() {
         return Id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         Id = id;
     }
 
