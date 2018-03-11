@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 
 public class ViewTaskActivity extends AppCompatActivity {
@@ -15,25 +16,36 @@ public class ViewTaskActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_task);
-        Button EditButton = (Button) findViewById(R.id.EditButton);
+        ImageButton EditButton = (ImageButton) findViewById(R.id.EditButton);
+        ImageButton DeleteButton = (ImageButton) findViewById(R.id.DeleteButton);
         int currentUserId = 5;                              //Dummy for Testing
         int taskUserId = 5;                                 //Dummy for Testing
-        if(currentUserId == taskUserId){
+        String taskStatus = "requested";
+        if(currentUserId == taskUserId && taskStatus == "requested" ){
             EditButton.setVisibility(View.VISIBLE);
         } else {
             EditButton.setVisibility(View.INVISIBLE);
+        }
+        if(currentUserId == taskUserId){
+            DeleteButton.setVisibility(View.VISIBLE);
+        } else{
+            DeleteButton.setVisibility(View.INVISIBLE);
         }
 
 
     }
 
-    public void viewProfile(android.view.View view){
+    public void viewProfile(View view){
         Intent intent = new Intent(this, ProfileActivity.class);
         startActivity(intent);
     }
 
-    public void editTask(){
+    public void editTask(View view){
         Intent intent = new Intent(this, EditTaskActivity.class);
         startActivity(intent);
+    }
+
+    public void DeleteTask(View view){
+
     }
 }
