@@ -28,7 +28,7 @@ public class ElasticSearchController {
 
     private static JestDroidClient client;
 
-    public static class addTask extends AsyncTask<Task, Void, Void> {
+    public static class AddTask extends AsyncTask<Task, Void, Void> {
         @Override
         protected Void doInBackground(Task... tasks) {
             verifySettings();
@@ -47,7 +47,7 @@ public class ElasticSearchController {
         }
     }
 
-    public static class updateTask extends AsyncTask<Task, Void, Void> {
+    public static class UpdateTask extends AsyncTask<Task, Void, Void> {
         @Override
         protected Void doInBackground(Task... tasks) {
             verifySettings();
@@ -63,7 +63,7 @@ public class ElasticSearchController {
         }
     }
 
-    public static class removeTask extends AsyncTask<Task, Void, Void> {
+    public static class RemoveTask extends AsyncTask<Task, Void, Void> {
         @Override
         protected Void doInBackground(Task... tasks) {
             verifySettings();
@@ -78,7 +78,7 @@ public class ElasticSearchController {
         }
     }
 
-    public static class getTask extends AsyncTask<String, Void, Task> {
+    public static class GetTask extends AsyncTask<String, Void, Task> {
         @Override
         protected Task doInBackground(String... taskId) {
             verifySettings();
@@ -97,7 +97,7 @@ public class ElasticSearchController {
         }
     }
 
-    public static class searchForTasks extends AsyncTask<String, Void, List<SearchResult.Hit<Task, Void>>> {
+    public static class SearchForTasks extends AsyncTask<String, Void, List<SearchResult.Hit<Task, Void>>> {
         @Override
         protected List<SearchResult.Hit<Task, Void>> doInBackground(String... keywords) {
             verifySettings();
@@ -140,7 +140,7 @@ public class ElasticSearchController {
         }
     }
 
-    public static class addUser extends AsyncTask<User, Void, Void> {
+    public static class AddUser extends AsyncTask<User, Void, Void> {
         @Override
         protected Void doInBackground(User... users) {
             verifySettings();
@@ -159,7 +159,7 @@ public class ElasticSearchController {
         }
     }
 
-    public static class updateUser extends AsyncTask<User, Void, Void> {
+    public static class UpdateUser extends AsyncTask<User, Void, Void> {
         @Override
         protected Void doInBackground(User... users) {
             verifySettings();
@@ -175,7 +175,7 @@ public class ElasticSearchController {
         }
     }
 
-    public static class removeUser extends AsyncTask<User, Void, Void> {
+    public static class RemoveUser extends AsyncTask<User, Void, Void> {
         @Override
         protected Void doInBackground(User... users) {
             verifySettings();
@@ -190,7 +190,7 @@ public class ElasticSearchController {
         }
     }
 
-    public static class getUser extends AsyncTask<String, Void, User> {
+    public static class GetUser extends AsyncTask<String, Void, User> {
         @Override
         protected User doInBackground(String... userId) {
             verifySettings();
@@ -208,7 +208,7 @@ public class ElasticSearchController {
         }
     }
 
-    public static class addBid extends AsyncTask<Bid, Void, Void> {
+    public static class AddBid extends AsyncTask<Bid, Void, Void> {
         @Override
         protected Void doInBackground(Bid... bids) {
             verifySettings();
@@ -227,7 +227,7 @@ public class ElasticSearchController {
         }
     }
 
-    public static class removeBid extends AsyncTask<Bid, Void, Void> {
+    public static class RemoveBid extends AsyncTask<Bid, Void, Void> {
         @Override
         protected Void doInBackground(Bid... bids) {
             verifySettings();
