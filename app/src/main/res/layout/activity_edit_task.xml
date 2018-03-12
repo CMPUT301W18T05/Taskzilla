@@ -60,7 +60,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="48dp"
         android:layout_marginStart="36dp"
-        android:onClick="cancelButton"
+        android:onClick="TaskCancelButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
@@ -71,7 +71,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="48dp"
         android:layout_marginEnd="36dp"
-        android:onClick="saveButton"
+        android:onClick="TaskSaveButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/ic_menu_save" />
