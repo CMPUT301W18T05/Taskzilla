@@ -11,7 +11,7 @@ public class User {
 
     private String name;
     private String username;
-    private Integer id;
+    private String id;
     private PhoneNumber phone;
     private EmailAddress email;
     private Float providerRating;
@@ -51,7 +51,7 @@ public class User {
         return false;
     }
 
-    public Integer getId() {
+    public String getId() {
         return this.id;
     }
 
