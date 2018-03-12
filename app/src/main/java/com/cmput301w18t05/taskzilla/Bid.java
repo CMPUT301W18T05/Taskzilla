@@ -7,7 +7,7 @@ package com.cmput301w18t05.taskzilla;
 public class Bid implements Comparable<Bid> {
 
     private float bidAmount;
-    private String bidId;
+    private String id;
     private String requester;
     private String provider;
     private String taskName;
@@ -26,8 +26,12 @@ public class Bid implements Comparable<Bid> {
         return this.bidAmount;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getId() {
-        return bidId;
+        return id;
     }
 
     public String getRequester() {
