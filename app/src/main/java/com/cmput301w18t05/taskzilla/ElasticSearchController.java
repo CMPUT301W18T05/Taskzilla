@@ -3,35 +3,34 @@ package com.cmput301w18t05.taskzilla;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.google.common.base.Strings;
-
 import com.searchly.jestdroid.DroidClientConfig;
 import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;
 
+import io.searchbox.client.JestResult;
 import io.searchbox.core.Delete;
+import io.searchbox.core.Get;
 import io.searchbox.core.Index;
 import io.searchbox.core.DocumentResult;
-import io.searchbox.core.Index;
 import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  * Created by Jeremy
+ *
+ * TODO: my bids returns a list of tasks
  */
 
 public class ElasticSearchController {
 
     private static JestDroidClient client;
 
-    public static class addTask extends AsyncTask<Task, Void, Void> {
+    public static class AddTask extends AsyncTask<Task, Void, Void> {
         @Override
-        protected Void doInBackground(Task...tasks) {
+        protected Void doInBackground(Task... tasks) {
             verifySettings();
             for (Task task : tasks) {
                 Index index = new Index.Builder(task).index("cmput301w18t05").type("task").build();
@@ -48,9 +47,9 @@ public class ElasticSearchController {
         }
     }
 
-    public static class updateTask extends AsyncTask<Task, Void, Void> {
+    public static class UpdateTask extends AsyncTask<Task, Void, Void> {
         @Override
-        protected Void doInBackground(Task...tasks) {
+        protected Void doInBackground(Task... tasks) {
             verifySettings();
             for (Task task : tasks) {
                 Index index = new Index.Builder(task).index("cmput301w18t05").type("task").id(task.getId()).build();
@@ -64,9 +63,9 @@ public class ElasticSearchController {
         }
     }
 
-    public static class removeTask extends AsyncTask<Task, Void, Void> {
+    public static class RemoveTask extends AsyncTask<Task, Void, Void> {
         @Override
-        protected Void doInBackground(Task...tasks) {
+        protected Void doInBackground(Task... tasks) {
             verifySettings();
             for (Task task : tasks) {
                 try {
@@ -79,32 +78,71 @@ public class ElasticSearchController {
         }
     }
 
-    public static class searchForTasks extends AsyncTask<String, Void, ArrayList<SearchResult.Hit<Task, Void>>> {
+    public static class GetTask extends AsyncTask<String, Void, Task> {
         @Override
-        protected ArrayList<SearchResult.Hit<Task, Void>> doInBackground(String...keywords) {
+        protected Task doInBackground(String... taskId) {
             verifySettings();
-            ArrayList<SearchResult.Hit<Task, Void>> tasks = new ArrayList<>();
-            /*
-            for (String keyword : keywords) {
-                Search search = new Search.Builder(keyword).addIndex("cmput301w18t05").addType("task").build();
+            Task task = new Task();
+            for (String id : taskId) {
                 try {
-                    SearchResult result = client.execute(search);
-                    if (result.isSucceeded()) {
-                        SearchHit[] results = result.getHits(Task.class);
-                        tasks.addAll(result.getHits(Task.class));
-                    }
+                    Get get = new Get.Builder("cmput301w18t05", id).type("task").build();
+                    JestResult result = client.execute(get);
+                    task = result.getSourceAsObject(Task.class);
+
                 } catch (Exception e) {
-                    Log.i("Error", "Search failed");
+                    Log.i("Error", "Get task failed");
+                }
+            }
+            return task;
+        }
+    }
+
+    public static class SearchForTasks extends AsyncTask<String, Void, List<SearchResult.Hit<Task, Void>>> {
+        @Override
+        protected List<SearchResult.Hit<Task, Void>> doInBackground(String... keywords) {
+            verifySettings();
+            List<SearchResult.Hit<Task, Void>> tasks = new ArrayList<>();
+
+            /*
+            {
+                "query": {
+                    "match": {
+                        "description": {
+                            "query": keywords,
+                            "operator": "and"
+                        }
+                    }
                 }
             }
             */
+            String query =
+                    "{\n" +
+                            "   \"query\": {\n" +
+                            "       \"match\" : {\n" +
+                            "           \"description\" : {\n" +
+                            "               \"query\" : " + keywords[0] + ",\n" +
+                            "               \"operator\" : \"and\"\n" +
+                            "           }\n" +
+                            "       }\n" +
+                            "   }\n" +
+                            "}";
+
+            Search search = new Search.Builder(query).addIndex("cmput301w18t05").addType("task").build();
+            try {
+                SearchResult result = client.execute(search);
+                if (result.isSucceeded()) {
+                    tasks = result.getHits(Task.class);
+                }
+            } catch (Exception e) {
+                Log.i("Error", "Search failed");
+            }
             return tasks;
         }
     }
 
-    public static class addUser extends AsyncTask<User, Void, Void> {
+    public static class AddUser extends AsyncTask<User, Void, Void> {
         @Override
-        protected Void doInBackground(User...users) {
+        protected Void doInBackground(User... users) {
             verifySettings();
             for (User user : users) {
                 Index index = new Index.Builder(user).index("cmput301w18t05").type("user").build();
@@ -121,9 +159,9 @@ public class ElasticSearchController {
         }
     }
 
-    public static class updateUser extends AsyncTask<User, Void, Void> {
+    public static class UpdateUser extends AsyncTask<User, Void, Void> {
         @Override
-        protected Void doInBackground(User...users) {
+        protected Void doInBackground(User... users) {
             verifySettings();
             for (User user : users) {
                 Index index = new Index.Builder(user).index("cmput301w18t05").type("user").id(user.getId()).build();
@@ -137,9 +175,9 @@ public class ElasticSearchController {
         }
     }
 
-    public static class removeUser extends AsyncTask<User, Void, Void> {
+    public static class RemoveUser extends AsyncTask<User, Void, Void> {
         @Override
-        protected Void doInBackground(User...users) {
+        protected Void doInBackground(User... users) {
             verifySettings();
             for (User user : users) {
                 try {
@@ -152,9 +190,27 @@ public class ElasticSearchController {
         }
     }
 
-    public static class addBid extends AsyncTask<Bid, Void, Void> {
+    public static class GetUser extends AsyncTask<String, Void, User> {
         @Override
-        protected Void doInBackground(Bid...bids) {
+        protected User doInBackground(String... userId) {
+            verifySettings();
+            User user = new User();
+            for (String id : userId) {
+                try {
+                    Get get = new Get.Builder("cmput301w18t05", id).type("user").build();
+                    JestResult result = client.execute(get);
+                    user = result.getSourceAsObject(User.class);
+                } catch (Exception e) {
+                    Log.i("Error", "Get task failed");
+                }
+            }
+            return user;
+        }
+    }
+
+    public static class AddBid extends AsyncTask<Bid, Void, Void> {
+        @Override
+        protected Void doInBackground(Bid... bids) {
             verifySettings();
             for (Bid bid : bids) {
                 Index index = new Index.Builder(bid).index("cmput301w18t05").type("bid").build();
@@ -171,9 +227,9 @@ public class ElasticSearchController {
         }
     }
 
-    public static class removeBid extends AsyncTask<Bid, Void, Void> {
+    public static class RemoveBid extends AsyncTask<Bid, Void, Void> {
         @Override
-        protected Void doInBackground(Bid...bids) {
+        protected Void doInBackground(Bid... bids) {
             verifySettings();
             for (Bid bid : bids) {
                 try {
@@ -196,3 +252,5 @@ public class ElasticSearchController {
         }
     }
 }
+
+
