@@ -87,6 +87,14 @@ public class User {
         return false;
     }
 
+    public boolean setProviderRating(double providerRating) {
+        if (providerRating < 5.0f || providerRating > 0.0f) {
+            this.providerRating = new Float(providerRating);
+            return true;
+        }
+        return false;
+    }
+
     public Float getRequesterRating() {
         return this.requesterRating;
     }
