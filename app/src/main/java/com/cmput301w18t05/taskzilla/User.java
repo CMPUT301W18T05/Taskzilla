@@ -55,8 +55,8 @@ public class User {
         return this.id;
     }
 
-    public void setId(Integer id) {
-        //dont need. generate random id for user at init
+    public void setId(String id) {
+        this.id = id;
     }
 
     public PhoneNumber getPhone() {

@@ -1,15 +1,20 @@
 package com.cmput301w18t05.taskzilla;
 
+import android.os.AsyncTask;
+import android.util.Log;
+
+import com.google.common.base.Strings;
+
 import com.searchly.jestdroid.DroidClientConfig;
 import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;
 
 import io.searchbox.core.Delete;
 import io.searchbox.core.Index;
-
-import org.elasticsearch.common.Strings;
-import org.elasticsearch.common.xcontent.XContentBuilder;
-import org.elasticsearch.common.xcontent.XContentFactory;
+import io.searchbox.core.DocumentResult;
+import io.searchbox.core.Index;
+import io.searchbox.core.Search;
+import io.searchbox.core.SearchResult;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,218 +29,162 @@ public class ElasticSearchController {
 
     private static JestDroidClient client;
 
-    public void addTask(Task task) throws Exception {
-        verifySettings();
-        String source = taskSourceString(task);
-        if (Strings.isNullOrEmpty(source)) {
-            throw new Exception("Builder error: returned empty string");
-        } else {
-            try {
-                Index index = new Index.Builder(source).index("cmput301w18t05").type("task").build();
-                client.execute(index);
-            } catch (Exception e) {
-                e.printStackTrace();
+    public static class addTask extends AsyncTask<Task, Void, Void> {
+        @Override
+        protected Void doInBackground(Task...tasks) {
+            verifySettings();
+            for (Task task : tasks) {
+                Index index = new Index.Builder(task).index("cmput301w18t05").type("task").build();
+                try {
+                    DocumentResult result = client.execute(index);
+                    if (result.isSucceeded()) {
+                        task.setId(result.getId());
+                    }
+                } catch (Exception e) {
+                    Log.i("Error", "Task not added");
+                }
             }
+            return null;
         }
     }
 
-    public void updateTask(Task task) throws Exception {
-        verifySettings();
-        String source = taskSourceString(task);
-        if (Strings.isNullOrEmpty(source)) {
-            throw new Exception("Builder error: returned empty string");
-        } else {
-            try {
-
-                Index index = new Index.Builder(source).index("cmput301w18t05").type("task").id(task.getId()).build();
-            } catch (Exception e) {
-                e.printStackTrace();
+    public static class updateTask extends AsyncTask<Task, Void, Void> {
+        @Override
+        protected Void doInBackground(Task...tasks) {
+            verifySettings();
+            for (Task task : tasks) {
+                Index index = new Index.Builder(task).index("cmput301w18t05").type("task").id(task.getId()).build();
+                try {
+                    client.execute(index);
+                } catch (Exception e) {
+                    Log.i("Error", "Task not updated");
+                }
             }
+            return null;
         }
     }
 
-    public void removeTask(String taskId) {
-        verifySettings();
-        try {
-            client.execute(new Delete.Builder(taskId).index("cmput301w18t05").type("task").build());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public Task searchTask(String taskName, String userName) {
-        Task task = new Task();
-        return task;
-    }
-
-    public List<Task> searchTaskDescriptions(List<String> keywords) {
-        List<Task> tasks = new ArrayList<Task>();
-        return tasks;
-    }
-
-    public String taskSourceString(Task task) {
-        String source = "";
-        try {
-            XContentBuilder builder = XContentFactory.jsonBuilder().startObject();
-            builder.field("name", task.getName());
-            builder.field("id", "");
-            builder.field("requester", task.getTaskRequester());
-            builder.field("provider", task.getTaskProvider());
-            builder.field("status", task.getStatus());
-            builder.field("description", task.getDescription());
-            builder.field("location", task.getLocation());
-            builder.startArray("bids");
-            for (Bid bid : task.getBids()) {
-                builder.value(bid.getBidAmount());
+    public static class removeTask extends AsyncTask<Task, Void, Void> {
+        @Override
+        protected Void doInBackground(Task...tasks) {
+            verifySettings();
+            for (Task task : tasks) {
+                try {
+                    client.execute(new Delete.Builder(task.getId()).index("cmput301w18t05").type("task").build());
+                } catch (Exception e) {
+                    Log.i("Error", "Task not deleted");
+                }
             }
-            builder.endArray();
-            builder.startArray("photos");
-            for (Photo photo : task.getPhotos()) {
-                builder.value(photo.getImage());
+            return null;
+        }
+    }
+
+    public static class searchForTasks extends AsyncTask<String, Void, ArrayList<SearchResult.Hit<Task, Void>>> {
+        @Override
+        protected ArrayList<SearchResult.Hit<Task, Void>> doInBackground(String...keywords) {
+            verifySettings();
+            ArrayList<SearchResult.Hit<Task, Void>> tasks = new ArrayList<>();
+            /*
+            for (String keyword : keywords) {
+                Search search = new Search.Builder(keyword).addIndex("cmput301w18t05").addType("task").build();
+                try {
+                    SearchResult result = client.execute(search);
+                    if (result.isSucceeded()) {
+                        SearchHit[] results = result.getHits(Task.class);
+                        tasks.addAll(result.getHits(Task.class));
+                    }
+                } catch (Exception e) {
+                    Log.i("Error", "Search failed");
+                }
             }
-            builder.endArray();
-            builder.endObject();
-            source = builder.toString();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            return source;
+            */
+            return tasks;
         }
     }
 
-    public void addUser(User user) throws Exception {
-        verifySettings();
-        String source = userSourceString(user);
-        if (Strings.isNullOrEmpty(source)) {
-            throw new Exception("Builder error: returned empty string");
-        } else {
-            try {
-                Index index = new Index.Builder(source).index("cmput301w18t05").type("user").build();
-                client.execute(index);
-            } catch (IOException e) {
-                e.printStackTrace();
+    public static class addUser extends AsyncTask<User, Void, Void> {
+        @Override
+        protected Void doInBackground(User...users) {
+            verifySettings();
+            for (User user : users) {
+                Index index = new Index.Builder(user).index("cmput301w18t05").type("user").build();
+                try {
+                    DocumentResult result = client.execute(index);
+                    if (result.isSucceeded()) {
+                        user.setId(result.getId());
+                    }
+                } catch (Exception e) {
+                    Log.i("Error", "User not added");
+                }
             }
+            return null;
         }
     }
 
-    public void updateUser(User user) throws Exception {
-        verifySettings();
-        String source = userSourceString(user);
-        if (Strings.isNullOrEmpty(source)) {
-            throw new Exception("Builder error: returned empty string");
-        } else {
-            try {
-                Index index = new Index.Builder(source).index("cmput301w18t05").type("user").id(user.getId()).build();
-                client.execute(index);
-            } catch (IOException e) {
-                e.printStackTrace();
+    public static class updateUser extends AsyncTask<User, Void, Void> {
+        @Override
+        protected Void doInBackground(User...users) {
+            verifySettings();
+            for (User user : users) {
+                Index index = new Index.Builder(user).index("cmput301w18t05").type("user").id(user.getId()).build();
+                try {
+                    client.execute(index);
+                } catch (Exception e) {
+                    Log.i("Error", "User not updated");
+                }
             }
+            return null;
         }
     }
 
-    public void removeUser(String userId) {
-        verifySettings();
-        try {
-            client.execute(new Delete.Builder(userId).index("cmput301w18t05").type("user").build());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public User searchUser(String userName) {
-        User user = new User();
-        return user;
-    }
-
-    public String userSourceString(User user) {
-        String source = "";
-        try {
-            XContentBuilder builder = XContentFactory.jsonBuilder().startObject();
-            builder.field("name", user.getName());
-            builder.field("username", user.getUsername());
-            builder.field("id", "");
-            builder.field("phone", user.getPhone());
-            builder.field("email", user.getEmail());
-            builder.field("providerRating", user.getProviderRating());
-            builder.field("requesterRating", user.getRequesterRating());
-            builder.field("numRequests", user.getNumRequests());
-            builder.field("numCompleteTasks", user.getNumCompleteTasks());
-            builder.startArray("photos");
-            for (Photo photo : user.getPhotos()) {
-                builder.value(photo.getImage());
+    public static class removeUser extends AsyncTask<User, Void, Void> {
+        @Override
+        protected Void doInBackground(User...users) {
+            verifySettings();
+            for (User user : users) {
+                try {
+                    client.execute(new Delete.Builder(user.getId()).index("cmput301w18t05").type("user").build());
+                } catch (Exception e) {
+                    Log.i("Error", "User not deleted");
+                }
             }
-            builder.endArray();
-            builder.endObject();
-            source = builder.toString();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            return source;
+            return null;
         }
     }
 
-    public void addBid(Bid bid) throws Exception {
-        verifySettings();
-        String source = bidSourceString(bid);
-        if (Strings.isNullOrEmpty(source)) {
-            throw new Exception("Builder error: returned empty string");
-        } else {
-            try {
-                Index index = new Index.Builder(source).index("cmput301w18t05").type("bid").build();
-                client.execute(index);
-            } catch (IOException e) {
-                e.printStackTrace();
+    public static class addBid extends AsyncTask<Bid, Void, Void> {
+        @Override
+        protected Void doInBackground(Bid...bids) {
+            verifySettings();
+            for (Bid bid : bids) {
+                Index index = new Index.Builder(bid).index("cmput301w18t05").type("bid").build();
+                try {
+                    DocumentResult result = client.execute(index);
+                    if (result.isSucceeded()) {
+                        bid.setId(result.getId());
+                    }
+                } catch (Exception e) {
+                    Log.i("Error", "Bid not added");
+                }
             }
+            return null;
         }
     }
 
-    public void updateBid(Bid bid) throws Exception {
-        verifySettings();
-        String source = bidSourceString(bid);
-        if (Strings.isNullOrEmpty(source)) {
-            throw new Exception("Builder error: returned empty string");
-        } else {
-            try {
-                Index index = new Index.Builder(source).index("cmput301w18t05").type("bid").id(bid.getId()).build();
-                client.execute(index);
-            } catch (IOException e) {
-                e.printStackTrace();
+    public static class removeBid extends AsyncTask<Bid, Void, Void> {
+        @Override
+        protected Void doInBackground(Bid...bids) {
+            verifySettings();
+            for (Bid bid : bids) {
+                try {
+                    client.execute(new Delete.Builder(bid.getId()).index("cmput301w18t05").type("bid").build());
+                } catch (Exception e) {
+                    Log.i("Error", "Bid not deleted");
+                }
             }
+            return null;
         }
     }
-
-    public void removeBid(String bidId) {
-        verifySettings();
-        try {
-            client.execute(new Delete.Builder(bidId).index("cmput301w18t05").type("bid").build());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public String bidSourceString(Bid bid) {
-        String source = "";
-        try {
-            XContentBuilder builder = XContentFactory.jsonBuilder().startObject();
-            builder.field("bidAmount", bid.getBidAmount());
-            builder.field("id", "");
-            builder.field("provider", bid.getProvider());
-            builder.field("requester", bid.getRequester());
-            builder.field("taskName", bid.getTaskName());
-            builder.endObject();
-            source = builder.toString();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            return source;
-        }
-    }
-
-    public List<Task> getTasksFromBid(String userName) {
-        List<Task> tasks = new ArrayList<Task>();
-        return tasks;
-    }
-
 
     private static void verifySettings() {
         if (client == null) {
