@@ -4,7 +4,7 @@ import android.os.AsyncTask;
 import android.test.ActivityInstrumentationTestCase2;
 
 /**
- * Created by Jeremy on 2018-02-23.
+ * Created by praharen on 2018-02-23.
  */
 
 public class ElasticSearchControllerTest extends ActivityInstrumentationTestCase2 {

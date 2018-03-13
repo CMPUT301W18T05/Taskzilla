@@ -146,7 +146,7 @@ public class ElasticSearchController {
             ESAddUserAsync.execute(user).get();
         }
         catch (Exception e) {
-            // ???
+            // todo
         }
     }
 
@@ -167,7 +167,8 @@ public class ElasticSearchController {
                     else {
                         Log.i("Event", "Failed to add user: "+user.toString());
                     }
-                } catch (Exception e) {
+                }
+                catch (Exception e) {
                     Log.i("Error", "User not added");
                 }
             }
@@ -260,7 +261,7 @@ public class ElasticSearchController {
 
     private static void verifySettings() {
         if (client == null) {
-            DroidClientConfig.Builder builder = new DroidClientConfig.Builder("http://cmput301.softwareprocess.es:8080/cmput301w18t05/");
+            DroidClientConfig.Builder builder = new DroidClientConfig.Builder("http://cmput301.softwareprocess.es:8080/"); // do not put the index here yet
             DroidClientConfig config = builder.build();
             JestClientFactory factory = new JestClientFactory();
             factory.setDroidClientConfig(config);
