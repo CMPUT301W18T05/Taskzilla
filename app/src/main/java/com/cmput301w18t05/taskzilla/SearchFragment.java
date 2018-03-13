@@ -50,7 +50,7 @@ public class SearchFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         // expand search bar by default
         searchField = view.findViewById(R.id.searchView);
-        searchField.setIconified(false);
+        //searchField.setIconified(false);
     }
 
     /**
