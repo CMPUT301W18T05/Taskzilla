@@ -130,4 +130,8 @@ public class User {
     public void setPhotos(ArrayList<Photo> photos) {
         this.photos = photos;
     }
+
+    public String toString() {
+        return this.name;
+    }
 }
