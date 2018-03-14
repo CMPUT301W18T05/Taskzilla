@@ -97,11 +97,12 @@ public class ElasticSearchController {
         }
     }
 
-    public static class SearchForTasks extends AsyncTask<String, Void, List<SearchResult.Hit<Task, Void>>> {
+    public static class SearchForTasks extends AsyncTask<String, Void, ArrayList<Task>/*List<SearchResult.Hit<Task, Void>>*/> {
         @Override
-        protected List<SearchResult.Hit<Task, Void>> doInBackground(String... keywords) {
+        protected /*List<SearchResult.Hit<Task, Void>>*/ ArrayList<Task> doInBackground(String... keywords) {
             verifySettings();
-            List<SearchResult.Hit<Task, Void>> tasks = new ArrayList<>();
+            //List<SearchResult.Hit<Task, Void>> tasks = new ArrayList<>();
+            ArrayList<Task> tasks = new ArrayList<Task>();
 
             /*
             {
@@ -131,7 +132,9 @@ public class ElasticSearchController {
             try {
                 SearchResult result = client.execute(search);
                 if (result.isSucceeded()) {
-                    tasks = result.getHits(Task.class);
+                    //tasks = result.getHits(Task.class);
+                    List<Task> foundTasks = result.getSourceAsObjectList(Task.class);
+                    tasks.addAll(foundTasks);
                 }
             } catch (Exception e) {
                 Log.i("Error", "Search failed");

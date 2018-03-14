@@ -6,6 +6,7 @@ import com.cmput301w18t05.taskzilla.ElasticSearchController;
 import com.cmput301w18t05.taskzilla.SearchController;
 import com.cmput301w18t05.taskzilla.Task;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import io.searchbox.core.Search;
@@ -19,8 +20,8 @@ public class SearchRequest extends Request {
     private String searchKeywords;
     private SearchController searchController;
 
-    public SearchRequest(SearchController searchController) {
-        this.searchController = searchController;
+    public SearchRequest(SearchController searchControllers) {
+        this.searchController = searchControllers;
         this.searchKeywords = searchController.getKeywords().get(0);
     }
 
@@ -34,7 +35,10 @@ public class SearchRequest extends Request {
         catch(Exception e) {
             Log.i("Error", "Failed to get tasks from the async object");
         }
+    }
 
+    public SearchController getTasks() {
+        return searchController;
     }
 
 }

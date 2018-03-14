@@ -67,6 +67,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         availableTasks = (ListView) mConstraintLayout.findViewById(R.id.ListView2);
         adapter = new ArrayAdapter<Task>(getActivity(), android.R.layout.simple_list_item_1, searchResults);
         availableTasks.setAdapter(adapter);
+        searchController = new SearchController();
 
         availableTasks.setClickable(true);
 
@@ -80,8 +81,8 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
 
         //Dummy Tasks for testing. Remove these and get the tasks from elastic search
-        searchResults.add(new Task());
-        searchResults.add(new Task());
+        //searchResults.add(new Task());
+        //searchResults.add(new Task());
         searchResults.add(new Task());
 
         return mConstraintLayout;
@@ -113,24 +114,30 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     }
 
     @Override
-    public boolean onQueryTextSubmit(String quary) {
+    public boolean onQueryTextChange(String quary) {
         return false;
     }
 
     @Override
-    public boolean onQueryTextChange(String text) {
+    public boolean onQueryTextSubmit(String text) {
         //final String keywordArray[] = text.split(" ");
         String sentence;
         sentence = text.toLowerCase();
 
         searchResults = searchController.getResults();
 
-        if (text.length() == 0) {                          // Checks if user entered text in search bar
+        if (sentence.length() == 0) {                          // Checks if user entered text in search bar
             if (searchController.getKeywords().isEmpty()){ // Checks if keywords is empty, if yes return already loaded array of tasks
                 // do nothing
             }
             else {                                         // Since keywords isn't empty, previous array of tasks isn't all available tasks
                 searchController.clearKeywords();
+
+                RequestManager requestManager = new RequestManager();
+                SearchRequest newRequest = new SearchRequest(searchController);
+
+                requestManager.invokeRequest(newRequest);
+                searchResults = searchController.getResults();
                 // do elastic search and add all task
             }
         }
@@ -151,7 +158,9 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
             requestManager.invokeRequest(newRequest);
 
-
+            searchController = newRequest.getTasks();
+            searchResults = searchController.getResults();
+            searchResults.add(new Task());
             //}
         }
 
