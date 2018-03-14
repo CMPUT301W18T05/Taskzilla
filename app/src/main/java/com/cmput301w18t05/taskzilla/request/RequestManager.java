@@ -9,6 +9,7 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Queue;
 import java.util.concurrent.TimeUnit;
@@ -30,10 +31,12 @@ import static android.content.ContentValues.TAG;
 public class RequestManager extends BroadcastReceiver {
 
     private static final RequestManager instance = new RequestManager();
-    private boolean isConnected = false;
+    private boolean isConnected = false; // be careful when testing...
     private static ArrayList<Request> requestQueue = new ArrayList<Request>();
 
     /* no constructor needed */
+    private RequestManager() {
+    }
 
     /* singleton class */
     public static RequestManager getInstance() {
@@ -47,8 +50,11 @@ public class RequestManager extends BroadcastReceiver {
      * @param request the request object with instructions on
      *                how to execute the request.
      */
-    public void invokeRequest(Request request) {
-        if (isConnected) {
+    public void invokeRequest(Context context, Request request) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo ni = cm.getActiveNetworkInfo();
+
+        if (ni != null && ni.isConnected()) {
             request.execute();
         }
         else {

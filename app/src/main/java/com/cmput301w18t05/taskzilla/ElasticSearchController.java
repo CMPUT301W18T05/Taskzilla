@@ -3,12 +3,14 @@ package com.cmput301w18t05.taskzilla;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.google.android.gms.tasks.Tasks;
 import com.searchly.jestdroid.DroidClientConfig;
 import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;
 
 import io.searchbox.client.JestResult;
 import io.searchbox.core.Delete;
+import io.searchbox.core.Doc;
 import io.searchbox.core.Get;
 import io.searchbox.core.Index;
 import io.searchbox.core.DocumentResult;
@@ -26,55 +28,72 @@ import java.util.List;
 
 public class ElasticSearchController {
 
+    private static final ElasticSearchController inst = new ElasticSearchController();
+
     private static JestDroidClient client;
 
-    public static class AddTask extends AsyncTask<Task, Void, Void> {
+    private ElasticSearchController() {
+    }
+
+    public static ElasticSearchController getInstance() {
+        return inst;
+    }
+
+    public static class AddTask extends AsyncTask<Task, Void, Boolean> {
         @Override
-        protected Void doInBackground(Task... tasks) {
+        protected Boolean doInBackground(Task... tasks) {
             verifySettings();
             for (Task task : tasks) {
                 Index index = new Index.Builder(task).index("cmput301w18t05").type("task").build();
                 try {
+                    Log.i("Event", "Trying to add user "+task.toString());
                     DocumentResult result = client.execute(index);
+                    Log.i("Event", "Jest returned with: "+result);
                     if (result.isSucceeded()) {
+                        Log.i("Event","Successfully added the task object");
                         task.setId(result.getId());
+                        return true;
                     }
                 } catch (Exception e) {
                     Log.i("Error", "Task not added");
                 }
             }
-            return null;
+            return false;
         }
     }
 
-    public static class UpdateTask extends AsyncTask<Task, Void, Void> {
+    // todo: needs to be fixed, just adds a new one.
+    public static class UpdateTask extends AsyncTask<Task, Void, Boolean> {
         @Override
-        protected Void doInBackground(Task... tasks) {
+        protected Boolean doInBackground(Task... tasks) {
             verifySettings();
+            DocumentResult result = null;
             for (Task task : tasks) {
                 Index index = new Index.Builder(task).index("cmput301w18t05").type("task").id(task.getId()).build();
                 try {
-                    client.execute(index);
+                    result = client.execute(index);
                 } catch (Exception e) {
                     Log.i("Error", "Task not updated");
                 }
             }
-            return null;
+            return result != null && result.isSucceeded();
         }
     }
 
-    public static class RemoveTask extends AsyncTask<Task, Void, Void> {
+    public static class RemoveTask extends AsyncTask<String, Void, Boolean> {
         @Override
-        protected Void doInBackground(Task... tasks) {
+        protected Boolean doInBackground(String... taskIds) {
             verifySettings();
-            for (Task task : tasks) {
+            DocumentResult result = null;
+            for (String id: taskIds) {
                 try {
-                    client.execute(new Delete.Builder(task.getId()).index("cmput301w18t05").type("task").build());
+                    result = client.execute(new Delete.Builder(id).index("cmput301w18t05").type("task").build());
                 } catch (Exception e) {
                     Log.i("Error", "Task not deleted");
                 }
             }
-            return null;
+
+            return result != null && result.isSucceeded();
         }
     }
 
@@ -82,13 +101,12 @@ public class ElasticSearchController {
         @Override
         protected Task doInBackground(String... taskId) {
             verifySettings();
-            Task task = new Task();
+            Task task = null;
             for (String id : taskId) {
                 try {
                     Get get = new Get.Builder("cmput301w18t05", id).type("task").build();
                     JestResult result = client.execute(get);
                     task = result.getSourceAsObject(Task.class);
-
                 } catch (Exception e) {
                     Log.i("Error", "Get task failed");
                 }
@@ -97,11 +115,11 @@ public class ElasticSearchController {
         }
     }
 
-    public static class SearchForTasks extends AsyncTask<String, Void, List<SearchResult.Hit<Task, Void>>> {
+    public static class SearchForTasks extends AsyncTask<String, Void, ArrayList<Task>> {
         @Override
-        protected List<SearchResult.Hit<Task, Void>> doInBackground(String... keywords) {
+        protected ArrayList<Task> doInBackground(String... keywords) {
             verifySettings();
-            List<SearchResult.Hit<Task, Void>> tasks = new ArrayList<>();
+            ArrayList<Task> taskList = new ArrayList<>();
 
             /*
             {
@@ -131,38 +149,34 @@ public class ElasticSearchController {
             try {
                 SearchResult result = client.execute(search);
                 if (result.isSucceeded()) {
-                    tasks = result.getHits(Task.class);
+                    List<Task> matchingTasks = result.getSourceAsObjectList(Task.class);
+                    taskList.addAll(matchingTasks);
+                }
+                else {
+                    Log.i("Event", "No results found in query: "+query);
                 }
             } catch (Exception e) {
                 Log.i("Error", "Search failed");
             }
-            return tasks;
+            return taskList;
         }
     }
 
-    public void addUser(User user) {
-        AsyncTask<User, Void, Void> ESAddUserAsync = new AddUser();
-        try {
-            ESAddUserAsync.execute(user).get();
-        }
-        catch (Exception e) {
-            // todo
-        }
-    }
-
-    public static class AddUser extends AsyncTask<User, Void, Void> {
+    public static class AddUser extends AsyncTask<User, Void, Boolean> {
         @Override
-        protected Void doInBackground(User... users) {
+        protected Boolean doInBackground(User... users) {
             verifySettings();
             for (User user : users) {
                 Index index = new Index.Builder(user).index("cmput301w18t05").type("user").build();
                 try {
                     Log.i("Event", "Trying to add user "+user.toString());
                     DocumentResult result = client.execute(index);
+
                     Log.i("Event", "Jest returned with: "+result);
                     if (result.isSucceeded()) {
                         user.setId(result.getId());
                         Log.i("Event", "Successfully added: "+user.toString()+" with id: "+user.getId()+" ... at least we think so.");
+                        return true;
                     }
                     else {
                         Log.i("Event", "Failed to add user: "+user.toString());
@@ -172,7 +186,7 @@ public class ElasticSearchController {
                     Log.i("Error", "User not added");
                 }
             }
-            return null;
+            return false;
         }
     }
 
@@ -209,38 +223,44 @@ public class ElasticSearchController {
 
     public static class GetUser extends AsyncTask<String, Void, User> {
         @Override
-        protected User doInBackground(String... userId) {
+        protected User doInBackground(String... userIds) {
             verifySettings();
-            User user = new User();
-            for (String id : userId) {
+            User user = null;
+
+            for (String id : userIds) {
                 try {
                     Get get = new Get.Builder("cmput301w18t05", id).type("user").build();
                     JestResult result = client.execute(get);
                     user = result.getSourceAsObject(User.class);
-                } catch (Exception e) {
+                }
+                catch (Exception e) {
                     Log.i("Error", "Get task failed");
                 }
             }
-            return user;
+
+            return user; // will return null if no user found
         }
     }
 
-    public static class AddBid extends AsyncTask<Bid, Void, Void> {
+    public static class AddBid extends AsyncTask<Bid, Void, Boolean> {
         @Override
-        protected Void doInBackground(Bid... bids) {
+        protected Boolean doInBackground(Bid... bids) {
             verifySettings();
+
             for (Bid bid : bids) {
                 Index index = new Index.Builder(bid).index("cmput301w18t05").type("bid").build();
                 try {
                     DocumentResult result = client.execute(index);
                     if (result.isSucceeded()) {
                         bid.setId(result.getId());
+                        return true;
                     }
                 } catch (Exception e) {
                     Log.i("Error", "Bid not added");
                 }
             }
-            return null;
+
+            return false;
         }
     }
 
