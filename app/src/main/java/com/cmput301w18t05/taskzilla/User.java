@@ -11,23 +11,39 @@ import io.searchbox.annotations.JestId;
 
 public class User {
 
-    private String name;
-    private String username;
+    protected String name;
+    protected String username;
 
     @JestId
-    private String id;
+    protected String id;
 
-    private PhoneNumber phone;
-    private EmailAddress email;
-    private Float providerRating;
-    private Float requesterRating;
-    private Integer numRequests;
-    private Integer numCompleteTasks;
-    private ArrayList<Photo> photos;
+    protected PhoneNumber phone;
+    protected EmailAddress email;
+    protected Float providerRating;
+    protected Float requesterRating;
+    protected Integer numRequests;
+    protected Integer numCompleteTasks;
+    protected ArrayList<Photo> photos;
 
     public User() {
 
 
+    }
+
+    public User(String name, String username, String id,
+                PhoneNumber phone, EmailAddress email,
+                double providerRating, double requesterRating,
+                Integer numRequests, Integer numCompleteTasks, ArrayList<Photo> photos){
+        this.name = name;
+        this.username = username;
+        this.id = id;
+        this.phone = phone;
+        this.email = email;
+        this.providerRating = (float) providerRating;
+        this.requesterRating = (float) requesterRating;
+        this.numRequests = numRequests;
+        this.numCompleteTasks = numCompleteTasks;
+        this.photos = photos;
     }
 
     public String getName() {
