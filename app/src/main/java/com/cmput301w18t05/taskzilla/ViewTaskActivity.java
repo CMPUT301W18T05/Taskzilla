@@ -35,7 +35,7 @@ public class ViewTaskActivity extends AppCompatActivity {
      */
     public void placeBid(android.view.View view){
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(ViewTaskActivity.this);
-        View mView = getLayoutInflater().inflate(R.layout.dialog_place_bid, null);
+        final View mView = getLayoutInflater().inflate(R.layout.dialog_place_bid, null);
 
         final EditText incomingBidText = mView.findViewById(R.id.place_bid_edittext);
         Button submitBidButton =  mView.findViewById(R.id.submit_bid_button);
@@ -43,18 +43,21 @@ public class ViewTaskActivity extends AppCompatActivity {
         submitBidButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Double incomingBidDouble;
+                Float incomingBidFloat;
                 try {
-                    incomingBidDouble = Double.parseDouble(incomingBidText.getText().toString());
-                    incomingBidDouble = Math.round(incomingBidDouble * 100.0) / 100.0;
+                    incomingBidFloat = Float.parseFloat(incomingBidText.getText().toString());
+                    incomingBidFloat = (float)(Math.round(incomingBidFloat * 100.0) / 100.0);
                 } catch (Exception exception) {
                     Toast.makeText(ViewTaskActivity.this,
                             "Please enter in a valid bid amount", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 // do stuff here to actually add bid
+
+
                 Toast.makeText(ViewTaskActivity.this,
-                        incomingBidDouble.toString(), Toast.LENGTH_SHORT).show();
+                        incomingBidFloat.toString(), Toast.LENGTH_SHORT).show();
+                
             } 
         });
         mBuilder.setView(mView);

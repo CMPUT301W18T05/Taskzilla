@@ -1,5 +1,10 @@
 package com.cmput301w18t05.taskzilla;
 
+import android.content.Context;
+
+import com.cmput301w18t05.taskzilla.request.RequestManager;
+import com.cmput301w18t05.taskzilla.request.command.SearchTaskRequest;
+
 import java.util.ArrayList;
 
 /**
@@ -9,6 +14,7 @@ import java.util.ArrayList;
 public class SearchController {
     private ArrayList<String> searchKeywords;
     private ArrayList<Task> searchResults;
+    private SearchTaskRequest newRequest;
 
     public SearchController() {
         this.searchKeywords = new ArrayList<String>();
@@ -27,16 +33,14 @@ public class SearchController {
         return this.searchResults;
     }
 
-    public void setResults(ArrayList<Task> updatedResults){
-        this.searchResults = updatedResults;
-    }
-
     public void clearKeywords() {
         this.searchKeywords.clear();
     }
 
-    public void searchRequest() {
-
+    public void searchRequest(Context ctx, String sentence) {
+        newRequest = new SearchTaskRequest(sentence);
+        RequestManager.getInstance().invokeRequest(ctx, newRequest);
+        this.searchResults = newRequest.getTasks();
     }
 
 }
