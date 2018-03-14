@@ -55,7 +55,7 @@ public class ViewTaskActivity extends AppCompatActivity {
                 // do stuff here to actually add bid
                 Toast.makeText(ViewTaskActivity.this,
                         incomingBidDouble.toString(), Toast.LENGTH_SHORT).show();
-            }
+            } 
         });
         mBuilder.setView(mView);
         AlertDialog dialog  = mBuilder.create();
