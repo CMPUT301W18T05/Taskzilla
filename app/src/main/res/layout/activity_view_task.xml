@@ -30,9 +30,9 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/TaskName"
+            app:layout_constraintTop_toBottomOf="@+id/TaskStatus"
             app:srcCompat="@mipmap/ic_launcher_round" />
 
         <TextView
@@ -40,14 +40,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="36dp"
+            android:layout_marginTop="8dp"
             android:clickable="true"
             android:onClick="viewProfile"
             android:text="Requester"
             android:textSize="12sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintStart_toEndOf="@+id/RequesterPicture"
-            app:layout_constraintTop_toBottomOf="@+id/TaskName" />
+            app:layout_constraintTop_toBottomOf="@+id/TaskStatus" />
 
         <ImageButton
             android:id="@+id/ProviderPicture"
@@ -57,6 +57,7 @@
             android:layout_marginTop="8dp"
             android:background="@android:color/transparent"
             android:onClick="viewProfile"
+            android:visibility="invisible"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/RequesterPicture"
             app:srcCompat="@mipmap/ic_launcher_round" />
@@ -71,6 +72,7 @@
             android:onClick="viewProfile"
             android:text="Provider Name"
             android:textSize="12sp"
+            android:visibility="invisible"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintStart_toEndOf="@+id/ProviderPicture"
             app:layout_constraintTop_toBottomOf="@+id/RequesterPicture" />
@@ -99,7 +101,7 @@
             app:srcCompat="@android:drawable/ic_menu_edit" />
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/rvContacts"
+            android:id="@+id/PhotosRV"
             android:layout_width="312dp"
             android:layout_height="60dp"
             android:layout_marginEnd="36dp"
@@ -112,19 +114,19 @@
             app:layout_constraintTop_toBottomOf="@+id/ProviderPicture" />
 
         <TextView
-            android:id="@+id/textView7"
-            android:layout_width="312dp"
+            android:id="@+id/Description"
+            android:layout_width="316dp"
             android:layout_height="97dp"
-            android:text="TextView"
+            android:text="No Description"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.333"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rvContacts" />
+            app:layout_constraintTop_toBottomOf="@+id/PhotosRV" />
 
         <ListView
-            android:id="@+id/listView"
+            android:id="@+id/BidList"
             android:layout_width="315dp"
             android:layout_height="30dp"
             android:layout_marginBottom="16dp"
@@ -134,16 +136,28 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+            app:layout_constraintTop_toBottomOf="@+id/TaskLocation" />
 
         <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="317dp"
+            android:id="@+id/TaskLocation"
+            android:layout_width="325dp"
             android:layout_height="200dp"
             android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/textView7"
+            app:layout_constraintTop_toBottomOf="@+id/Description"
             app:srcCompat="@mipmap/ic_launcher_round"
-            tools:layout_editor_absoluteX="32dp" />
+            tools:layout_editor_absoluteX="24dp" />
+
+        <TextView
+            android:id="@+id/TaskStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="24dp"
+            android:text="requested"
+            android:textSize="12sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/TaskName" />
 
 
     </android.support.constraint.ConstraintLayout>

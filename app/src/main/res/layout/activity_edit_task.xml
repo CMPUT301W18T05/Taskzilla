@@ -90,7 +90,7 @@
         app:srcCompat="@android:drawable/ic_input_add" />
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvContacts"
+        android:id="@+id/PhotosRV"
         android:layout_width="286dp"
         android:layout_height="60dp"
         android:layout_marginBottom="16dp"

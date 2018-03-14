@@ -1,5 +1,6 @@
 package com.cmput301w18t05.taskzilla;
 
+import android.app.ActivityManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -28,9 +29,30 @@ public class EditTaskActivity extends AppCompatActivity {
     }
 
     public void TaskSaveButton(View view){
+        EditText TaskNameText = (EditText) findViewById(R.id.TaskName);
+        EditText DescriptionText = (EditText) findViewById(R.id.Description);
+        String TaskName = TaskNameText.getText().toString();
+        String Description = DescriptionText.getText().toString();
+
+        if(TaskName.length() >25){
+            TaskNameText.requestFocus();
+            TaskNameText.setError("Title length exceeds 25 characters");
+        }
+        else if(TaskName.length() == 0){
+            TaskNameText.requestFocus();
+            TaskNameText.setError("Title required");
+        }
+        else if(Description.length()>280){
+            DescriptionText.requestFocus();
+            DescriptionText.setError("Description length exceeds 280 characters");
+        }
+
+
         /** Add Save Code when ESC and controllers get figured out **/
 
         /**                                         **/
+
+
         finish();
 
     }

@@ -7,6 +7,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 
 public class ViewTaskActivity extends AppCompatActivity {
@@ -18,9 +22,21 @@ public class ViewTaskActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_task);
         ImageButton EditButton = (ImageButton) findViewById(R.id.EditButton);
         ImageButton DeleteButton = (ImageButton) findViewById(R.id.DeleteButton);
+        ImageButton ProviderPicture = (ImageButton) findViewById(R.id.ProviderPicture);
+        TextView ProviderName = (TextView) findViewById(R.id.ProviderName);
+        TextView DescriptionView = (TextView) findViewById(R.id.Description);
+        TextView RequesterName = (TextView) findViewById(R.id.RequesterName);
         int currentUserId = 5;                              //Dummy for Testing
         int taskUserId = 5;                                 //Dummy for Testing
-        String taskStatus = "requested";
+        String status = "assigned";                         //Dummy
+        String taskStatus = "requested";                    //DUMMY
+        String Description = "test test test test test test test test test test test";
+        String TaskRequester = "user1";
+        String TaskProvider = "user2";
+
+        RequesterName.setText(TaskRequester);
+        DescriptionView.setText(Description);
+
         if(currentUserId == taskUserId && taskStatus == "requested" ){
             EditButton.setVisibility(View.VISIBLE);
         } else {
@@ -30,6 +46,11 @@ public class ViewTaskActivity extends AppCompatActivity {
             DeleteButton.setVisibility(View.VISIBLE);
         } else{
             DeleteButton.setVisibility(View.INVISIBLE);
+        }
+        if(status == "assigned"){
+            ProviderPicture.setVisibility(View.VISIBLE);
+            ProviderName.setVisibility(View.VISIBLE);
+            ProviderName.setText(TaskProvider);
         }
 
 
