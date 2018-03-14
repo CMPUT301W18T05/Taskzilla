@@ -81,8 +81,6 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
 
         //Dummy Tasks for testing. Remove these and get the tasks from elastic search
-        //searchResults.add(new Task());
-        //searchResults.add(new Task());
         searchResults.add(new Task());
 
         return mConstraintLayout;
@@ -123,8 +121,6 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         //final String keywordArray[] = text.split(" ");
         String sentence;
         sentence = text.toLowerCase();
-
-        searchResults = searchController.getResults();
 
         if (sentence.length() == 0) {                          // Checks if user entered text in search bar
             if (searchController.getKeywords().isEmpty()){ // Checks if keywords is empty, if yes return already loaded array of tasks

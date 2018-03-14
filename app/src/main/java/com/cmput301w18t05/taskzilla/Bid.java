@@ -21,6 +21,9 @@ public class Bid implements Comparable<Bid> {
         this.provider = user.getId();
         return 0;
     }
+    public Bid(User user, double bidAmount) {
+        this(user,new Float(10.0));
+    }
     */
 
     public Bid(User user, Task task, float bidAmount) {
@@ -28,6 +31,10 @@ public class Bid implements Comparable<Bid> {
         this.requester = task.getTaskRequester().getId();
         this.taskName = task.getId();
         this.provider = user.getId();
+    }
+
+    public Bid(double amt) {
+        this.bidAmount = new Float(amt);
     }
 
     public float getBidAmount() {

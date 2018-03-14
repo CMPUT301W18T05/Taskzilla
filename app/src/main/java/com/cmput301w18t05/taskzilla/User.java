@@ -2,6 +2,8 @@ package com.cmput301w18t05.taskzilla;
 
 import java.util.ArrayList;
 
+import io.searchbox.annotations.JestId;
+
 /**
  * Created by wyatt on 22/02/18.
  *
@@ -11,7 +13,10 @@ public class User {
 
     protected String name;
     protected String username;
+
+    @JestId
     protected String id;
+
     protected PhoneNumber phone;
     protected EmailAddress email;
     protected Float providerRating;
@@ -115,6 +120,10 @@ public class User {
         return this.requesterRating;
     }
 
+    public boolean setRequesterRating(double requesterRating) {
+        return this.setRequesterRating(new Float(requesterRating));
+    }
+
     public boolean setRequesterRating(Float requesterRating) {
         if (requesterRating < 5.0f || requesterRating > 0.0f) {
             this.requesterRating = requesterRating;
@@ -148,6 +157,6 @@ public class User {
     }
 
     public String toString() {
-        return this.name;
+        return this.name+" "+this.id;
     }
 }

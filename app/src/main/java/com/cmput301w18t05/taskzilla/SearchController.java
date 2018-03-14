@@ -11,8 +11,8 @@ public class SearchController {
     private ArrayList<Task> searchResults;
 
     public SearchController() {
-            this.searchKeywords = new ArrayList<String>();
-            this.searchResults = new ArrayList<Task>();
+        this.searchKeywords = new ArrayList<String>();
+        this.searchResults = new ArrayList<Task>();
     }
 
     public void addKeywords(String word) {
@@ -32,7 +32,11 @@ public class SearchController {
     }
 
     public void clearKeywords() {
-            this.searchKeywords.clear();
+        this.searchKeywords.clear();
+    }
+
+    public void searchRequest() {
+
     }
 
 }

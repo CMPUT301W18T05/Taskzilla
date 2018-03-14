@@ -4,6 +4,8 @@ import android.location.Location;
 
 import java.util.ArrayList;
 
+import io.searchbox.annotations.JestId;
+
 /**
  * Created by wyatt on 22/02/18.
  *
@@ -13,14 +15,17 @@ import java.util.ArrayList;
 public class Task {
 
     private String name;
+
+    @JestId
     private String Id;
+
     private User TaskRequester;
     private User TaskProvider;
     private String status;
     private String description;
     private Location location;
     private Bid bestBid;
-    private ArrayList<Bid> bids;
+    private ArrayList<Bid> bids = new ArrayList<>();
     private ArrayList<Photo> photos;
 
     //Test Constructors
