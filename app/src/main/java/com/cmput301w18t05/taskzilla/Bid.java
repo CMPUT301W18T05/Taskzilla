@@ -33,7 +33,8 @@ public class Bid implements Comparable<Bid> {
         this.provider = user.getId();
     }
 
-    public Bid(double amt) {
+    public Bid(User user, double amt) {
+        this.provider = user.getId();
         this.bidAmount = new Float(amt);
     }
 
