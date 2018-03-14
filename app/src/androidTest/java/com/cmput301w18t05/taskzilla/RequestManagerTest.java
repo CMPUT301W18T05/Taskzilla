@@ -3,11 +3,14 @@ package com.cmput301w18t05.taskzilla;
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.test.ActivityInstrumentationTestCase2;
+import android.util.Log;
 
 import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.AddTaskRequest;
 import com.cmput301w18t05.taskzilla.request.command.AddUserRequest;
+import com.cmput301w18t05.taskzilla.request.command.SearchTaskRequest;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
@@ -44,6 +47,20 @@ public class RequestManagerTest extends ActivityInstrumentationTestCase2 {
 
         AddTaskRequest addTaskRequest = new AddTaskRequest(task);
         RequestManager.getInstance().invokeRequest(ctx, addTaskRequest);
+    }
+
+    public void testSearchTaskRequest() {
+        String keywords = "test";
+
+        SearchTaskRequest request = new SearchTaskRequest(keywords);
+        RequestManager.getInstance().invokeRequest(ctx, request);
+
+        assertNotNull(request.getTasks());
+
+        for (Task t : request.getTasks()) {
+            Log.i("Found Task", t.getId());
+        }
+
     }
 
 }

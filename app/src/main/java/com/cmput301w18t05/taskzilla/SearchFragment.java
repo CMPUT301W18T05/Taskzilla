@@ -129,11 +129,10 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
             else {                                         // Since keywords isn't empty, previous array of tasks isn't all available tasks
                 searchController.clearKeywords();
 
-                RequestManager requestManager = new RequestManager();
-                SearchRequest newRequest = new SearchRequest(searchController);
+                //SearchRequest newRequest = new SearchRequest(searchController);
 
-                requestManager.invokeRequest(newRequest);
-                searchResults = searchController.getResults();
+                //requestManager.invokeRequest(newRequest);
+                //searchResults = searchController.getResults();
                 // do elastic search and add all task
             }
         }
@@ -148,8 +147,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
             searchController.addKeywords(sentence);
 
             // do elastic search and add results
-
-            RequestManager requestManager = new RequestManager();
+           /*
             SearchRequest newRequest = new SearchRequest(searchController);
 
             requestManager.invokeRequest(newRequest);
@@ -157,7 +155,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
             searchController = newRequest.getTasks();
             searchResults = searchController.getResults();
             searchResults.add(new Task());
-            //}
+            //}*/
         }
 
         adapter.notifyDataSetChanged();
