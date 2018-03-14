@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/place_bid_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:ems="10"
+        android:hint="Enter Bid Amount"
+        android:inputType="textPersonName"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/submit_bid_button"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="Place Bid" />
+</LinearLayout>
