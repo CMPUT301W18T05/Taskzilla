@@ -5,6 +5,7 @@ import android.support.test.InstrumentationRegistry;
 import android.test.ActivityInstrumentationTestCase2;
 
 import com.cmput301w18t05.taskzilla.request.RequestManager;
+import com.cmput301w18t05.taskzilla.request.command.AddTaskRequest;
 import com.cmput301w18t05.taskzilla.request.command.AddUserRequest;
 
 import java.util.ArrayList;
@@ -35,6 +36,14 @@ public class RequestManagerTest extends ActivityInstrumentationTestCase2 {
         RequestManager.getInstance().invokeRequest(ctx, test2);
 
         assertTrue(test2.getResult());
+    }
+
+    public void testAddTaskRequest() {
+        Task task = new Task();
+        task.setName("cmput301 project");
+
+        AddTaskRequest addTaskRequest = new AddTaskRequest(task);
+        RequestManager.getInstance().invokeRequest(ctx, addTaskRequest);
     }
 
 }
