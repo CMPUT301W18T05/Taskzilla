@@ -23,11 +23,42 @@ public class Task {
     private ArrayList<Bid> bids;
     private ArrayList<Photo> photos;
 
+    //Test Constructors
     public Task() {
         bids = new ArrayList<Bid>();
         photos = new ArrayList<Photo>();
+        name = "TEST TASK";
     }
 
+    public Task(String name, User TaskRequester, String description) {
+        bids = new ArrayList<Bid>();
+        photos = new ArrayList<Photo>();
+        this.name = name;
+        this.TaskRequester = TaskRequester;
+        this.status = "requested";
+        this.description = description;
+    }
+
+    //Real constructors
+    public Task(String name, User TaskRequester, String description, Location location) {
+        bids = new ArrayList<Bid>();
+        photos = new ArrayList<Photo>();
+        this.name = name;
+        this.TaskRequester = TaskRequester;
+        this.status = "requested";
+        this.description = description;
+        this.location = location;
+    }
+    public Task(String name, User TaskRequester, String description, Location location, ArrayList<Photo> photos) {
+        bids = new ArrayList<Bid>();
+        photos = new ArrayList<Photo>();
+        this.name = name;
+        this.TaskRequester = TaskRequester;
+        this.status = "requested";
+        this.description = description;
+        this.location = location;
+        this.photos = photos;
+    }
     /**
      * addBid
      * Insert into sorted bid list
@@ -147,6 +178,6 @@ public class Task {
     }
 
     public String toString(){
-        return"Test Task";
+        return name;
     }
 }

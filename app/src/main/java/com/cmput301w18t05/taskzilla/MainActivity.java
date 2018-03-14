@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView usernameView;
     private Button loginButton;
     private TextView signupButton;
+    private currentUser user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +58,9 @@ public class MainActivity extends AppCompatActivity {
         IntentFilter connectionFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         getApplicationContext().registerReceiver(RequestManager.getInstance(), connectionFilter);
 
+        /*initial singleton current user*/
+        user.getInstance();
+        
     }
     public void signUp(android.view.View view){
         Intent signupIntent = new Intent(this, SignUpActivity.class);
