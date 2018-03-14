@@ -28,7 +28,9 @@ public class TasksRequesterFragment extends Fragment {
     private ArrayList<Task> taskList;
     private ListView taskListView;
     private ArrayAdapter<Task> adapter;
-
+    private ElasticSearchController.AddTask addTask = new ElasticSearchController.AddTask();
+    private ElasticSearchController.SearchForTasks searchForTask = new ElasticSearchController.SearchForTasks();
+    private ElasticSearchController.GetTask getTask = new ElasticSearchController.GetTask();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -49,9 +51,14 @@ public class TasksRequesterFragment extends Fragment {
         taskListView.setAdapter(adapter);
 
         //Dummy Tasks for testing. Remove these and get the tasks from elastic search
-        taskList.add(new Task());
-        taskList.add(new Task());
-        taskList.add(new Task());
+
+        taskList.add(new Task("Pick up my dogs poop"));
+        taskList.add(new Task("Clip my toenails"));
+       // addTask.execute(new Task("Get off my lawn"));
+        //List<SearchResult.Hit<Task, Void>> tasks
+       // ArrayList<Task> tasks = searchForTask.execute("name = 1");
+       // Task t = getTask.execute("0");
+      //  taskList.add();
 
         taskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 

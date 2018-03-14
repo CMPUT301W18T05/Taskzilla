@@ -4,45 +4,113 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.cmput301w18t05.taskzilla.NewTaskActivity">
+    tools:layout_editor_absoluteY="81dp">
 
     <EditText
         android:id="@+id/TaskName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:ems="10"
-        android:hint="Task Name"
         android:inputType="textPersonName"
+        android:text="Task Name"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/Description"
-        android:layout_width="wrap_content"
+        android:layout_width="212dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="16dp"
         android:ems="10"
-        android:hint="Description"
         android:inputType="textPersonName"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        android:text="Description"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/TaskName" />
 
-    <Button
-        android:id="@+id/AddTask"
+    <TextView
+        android:id="@+id/TaskNameView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:text="Add Task"
+        android:layout_marginEnd="44dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="32dp"
+        android:text="Task Name:"
+        app:layout_constraintEnd_toStartOf="@+id/TaskName"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/DescriptionView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="44dp"
+        android:text="Task Description:"
+        app:layout_constraintEnd_toStartOf="@+id/Description"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TaskNameView" />
+
+    <ImageButton
+        android:id="@+id/cancelButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="48dp"
+        android:layout_marginStart="36dp"
+        android:onClick="TaskCancelButton"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+
+    <ImageButton
+        android:id="@+id/saveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="48dp"
+        android:layout_marginEnd="36dp"
+        android:onClick="TaskSaveButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_save" />
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="23dp"
+        android:layout_height="33dp"
+        android:layout_marginBottom="40dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="48dp"
+        android:tint="@color/common_google_signin_btn_text_dark_focused"
+        app:layout_constraintBottom_toTopOf="@+id/cancelButton"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Description" />
+        app:srcCompat="@android:drawable/ic_input_add" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvContacts"
+        android:layout_width="286dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="16dp"
+        android:orientation="horizontal"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@+id/textView5"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="111dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:layout_marginStart="8dp"
+        android:text="add photo"
+        android:textColor="@color/common_google_signin_btn_text_dark_focused"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/cancelButton"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageButton" />
+
 </android.support.constraint.ConstraintLayout>
