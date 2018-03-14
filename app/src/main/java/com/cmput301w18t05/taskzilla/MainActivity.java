@@ -2,11 +2,15 @@ package com.cmput301w18t05.taskzilla;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.cmput301w18t05.taskzilla.request.RequestManager;
 
 /**
  * main activity includes the login screen
@@ -44,11 +48,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 /* TODO: implement username checking */
-
                 Intent loginIntent = new Intent(view.getContext(), WelcomeActivity.class);
                 startActivity(loginIntent);
             }
         });
+
+        /* setup request manager */
+        IntentFilter connectionFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        getApplicationContext().registerReceiver(RequestManager.getInstance(), connectionFilter);
 
     }
     public void signUp(android.view.View view){

@@ -19,8 +19,20 @@ public class SearchController {
         this.searchKeywords.add(word);
     }
 
+    public ArrayList<String> getKeywords() {
+        return this.searchKeywords;
+    }
+
     public ArrayList<Task> getResults() {
-        // interact with elasticsearchcontroller to get results
         return this.searchResults;
     }
+
+    public void setResults(ArrayList<Task> updatedResults){
+        this.searchResults = updatedResults;
+    }
+
+    public void clearKeywords() {
+            this.searchKeywords.clear();
+    }
+
 }

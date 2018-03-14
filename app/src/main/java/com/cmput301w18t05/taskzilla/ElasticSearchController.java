@@ -140,6 +140,16 @@ public class ElasticSearchController {
         }
     }
 
+    public void addUser(User user) {
+        AsyncTask<User, Void, Void> ESAddUserAsync = new AddUser();
+        try {
+            ESAddUserAsync.execute(user).get();
+        }
+        catch (Exception e) {
+            // ???
+        }
+    }
+
     public static class AddUser extends AsyncTask<User, Void, Void> {
         @Override
         protected Void doInBackground(User... users) {
@@ -147,9 +157,15 @@ public class ElasticSearchController {
             for (User user : users) {
                 Index index = new Index.Builder(user).index("cmput301w18t05").type("user").build();
                 try {
+                    Log.i("Event", "Trying to add user "+user.toString());
                     DocumentResult result = client.execute(index);
+                    Log.i("Event", "Jest returned with: "+result);
                     if (result.isSucceeded()) {
                         user.setId(result.getId());
+                        Log.i("Event", "Successfully added: "+user.toString()+" with id: "+user.getId()+" ... at least we think so.");
+                    }
+                    else {
+                        Log.i("Event", "Failed to add user: "+user.toString());
                     }
                 } catch (Exception e) {
                     Log.i("Error", "User not added");
