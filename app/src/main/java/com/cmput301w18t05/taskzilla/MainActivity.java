@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.cmput301w18t05.taskzilla.request.RequestManager;
+import com.google.gson.Gson;
 
 /**
  * main activity includes the login screen
@@ -36,21 +37,38 @@ public class MainActivity extends AppCompatActivity {
     private Button loginButton;
     private TextView signupButton;
     private currentUser user;
+    private MainActivityController mainActivityController;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        /*Controller*/
+        mainActivityController = new MainActivityController(this);
+
+        mainActivityController.checkLoggedIn(new Gson());
+        /*initial singleton current user*/
+        user.getInstance();
+
+
         /* setup view vars */
         loginButton = findViewById(R.id.logInButton);
+        signupButton = findViewById(R.id.SignUp);
 
         /* login action */
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 /* TODO: implement username checking */
-                Intent loginIntent = new Intent(view.getContext(), WelcomeActivity.class);
-                startActivity(loginIntent);
+                mainActivityController.logIn();
+            }
+        });
+
+        signupButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mainActivityController.signUp();
             }
         });
 
@@ -58,12 +76,8 @@ public class MainActivity extends AppCompatActivity {
         IntentFilter connectionFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         getApplicationContext().registerReceiver(RequestManager.getInstance(), connectionFilter);
 
-        /*initial singleton current user*/
-        user.getInstance();
+
         
     }
-    public void signUp(android.view.View view){
-        Intent signupIntent = new Intent(this, SignUpActivity.class);
-        startActivity(signupIntent);
-    }
+
 }

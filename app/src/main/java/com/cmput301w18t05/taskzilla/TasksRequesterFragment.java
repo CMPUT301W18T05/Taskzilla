@@ -12,6 +12,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.cmput301w18t05.taskzilla.request.RequestManager;
+import com.cmput301w18t05.taskzilla.request.command.SearchTaskRequest;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 
@@ -28,9 +32,14 @@ public class TasksRequesterFragment extends Fragment {
     private ArrayList<Task> taskList;
     private ListView taskListView;
     private ArrayAdapter<Task> adapter;
+    /*
     private ElasticSearchController.AddTask addTask = new ElasticSearchController.AddTask();
     private ElasticSearchController.SearchForTasks searchForTask = new ElasticSearchController.SearchForTasks();
     private ElasticSearchController.GetTask getTask = new ElasticSearchController.GetTask();
+    */
+    private RequestManager requestManager;
+    private SearchTaskRequest searchTaskRequest;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -58,8 +67,22 @@ public class TasksRequesterFragment extends Fragment {
         //List<SearchResult.Hit<Task, Void>> tasks
        // ArrayList<Task> tasks = searchForTask.execute("name = 1");
        // Task t = getTask.execute("0");
-      //  taskList.add();
 
+
+
+      //  taskList.add();
+        /*
+        requestManager = RequestManager.getInstance();
+        searchTaskRequest = new SearchTaskRequest("NewName");
+        requestManager.invokeRequest(getContext(), searchTaskRequest);
+
+        ArrayList<Task> search = searchTaskRequest.getTasks();
+        //taskList.add(search.get(0));
+        for(Task t : search ){
+            taskList.add(t);
+            //taskList.add(new Task("Clip my toenails",new User(),"ez money"));
+        }
+        */
         taskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> a, View v, int position, long id) {
@@ -74,6 +97,7 @@ public class TasksRequesterFragment extends Fragment {
         Intent intent = new Intent(getActivity(), ViewTaskActivity.class);
         startActivity(intent);
     }
+
     public void newTask(){
         Intent intent = new Intent(getActivity(), NewTaskActivity.class);
         startActivity(intent);
