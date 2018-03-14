@@ -1,6 +1,7 @@
 package com.cmput301w18t05.taskzilla;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 
 import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.SearchRequest;
+import com.cmput301w18t05.taskzilla.request.command.SearchTaskRequest;
 
 import java.util.ArrayList;
 
@@ -44,7 +46,6 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     public SearchFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -74,14 +75,13 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         availableTasks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //Object task = availableTasks.getItemAtPosition(i);
                 viewTask();
             }
         });
 
-
-        //Dummy Tasks for testing. Remove these and get the tasks from elastic search
-        searchResults.add(new Task());
+        // get all available tasks
+        searchController.searchRequest(getContext(),"");
+        searchResults = searchController.getResults();
 
         return mConstraintLayout;
     }
@@ -112,13 +112,12 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     }
 
     @Override
-    public boolean onQueryTextChange(String quary) {
+    public boolean onQueryTextSubmit(String query) {
         return false;
     }
 
     @Override
-    public boolean onQueryTextSubmit(String text) {
-        //final String keywordArray[] = text.split(" ");
+    public boolean onQueryTextChange(String text) {
         String sentence;
         sentence = text.toLowerCase();
 
@@ -128,34 +127,14 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
             }
             else {                                         // Since keywords isn't empty, previous array of tasks isn't all available tasks
                 searchController.clearKeywords();
-
-                //SearchRequest newRequest = new SearchRequest(searchController);
-
-                //requestManager.invokeRequest(newRequest);
-                //searchResults = searchController.getResults();
-                // do elastic search and add all task
+                searchController.searchRequest(getContext(), sentence);
             }
         }
 
         else {                                             // Adds keyword to list and loads new set of tasks based on keywords
-            /*
-            for (int i = 0; i < keywordArray.length; i++) {
-                word = keywordArray[i].toLowerCase();
-                */
-
             searchController.clearKeywords();
             searchController.addKeywords(sentence);
-
-            // do elastic search and add results
-           /*
-            SearchRequest newRequest = new SearchRequest(searchController);
-
-            requestManager.invokeRequest(newRequest);
-
-            searchController = newRequest.getTasks();
-            searchResults = searchController.getResults();
-            searchResults.add(new Task());
-            //}*/
+            searchController.searchRequest(getContext(), sentence);
         }
 
         adapter.notifyDataSetChanged();
