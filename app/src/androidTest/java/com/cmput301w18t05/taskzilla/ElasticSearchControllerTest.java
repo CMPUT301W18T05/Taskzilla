@@ -4,6 +4,10 @@ import android.os.AsyncTask;
 import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
 
+import com.cmput301w18t05.taskzilla.request.RequestManager;
+import com.cmput301w18t05.taskzilla.request.SearchRequest;
+import com.cmput301w18t05.taskzilla.request.command.SearchTaskRequest;
+
 import org.junit.Test;
 
 import java.util.ArrayList;
