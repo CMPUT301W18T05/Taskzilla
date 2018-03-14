@@ -12,22 +12,26 @@ public class Bid implements Comparable<Bid> {
     private String provider;
     private String taskName;
 
-    public Bid(User user, float bidAmount) {
+    /*
+    public int Bid(User user, float bidAmount) {
+        if (bidAmount < 0.0f) {
+            return -1;
+        }
         this.bidAmount = bidAmount;
+        this.provider = user.getId();
+        return 0;
     }
+    */
 
     public Bid(User user, Task task, float bidAmount) {
         this.bidAmount = bidAmount;
-        //this.requesterID = user.getId();
-        //this.taskID = task.getId();
+        this.requester = task.getTaskRequester().getId();
+        this.taskName = task.getId();
+        this.provider = user.getId();
     }
 
     public float getBidAmount() {
         return this.bidAmount;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getId() {
@@ -44,6 +48,26 @@ public class Bid implements Comparable<Bid> {
 
     public String getTaskName() {
         return taskName;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setBidAmount(float bidAmount) {
+        this.bidAmount = bidAmount;
+    }
+
+    public void setRequester(String requester) {
+        this.requester = requester;
+    }
+
+    public void setProvider(String provider) {
+        this.provider = provider;
+    }
+
+    public void setTaskName(String taskName) {
+        this.taskName = taskName;
     }
 
     public int compareTo(Bid bid) {
