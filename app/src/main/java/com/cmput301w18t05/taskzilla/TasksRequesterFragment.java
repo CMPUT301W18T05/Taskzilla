@@ -52,8 +52,8 @@ public class TasksRequesterFragment extends Fragment {
 
         //Dummy Tasks for testing. Remove these and get the tasks from elastic search
 
-        taskList.add(new Task("Pick up my dogs poop"));
-        taskList.add(new Task("Clip my toenails"));
+        taskList.add(new Task("Pick up my dogs poop",new User(),"do it"));
+        taskList.add(new Task("Clip my toenails",new User(),"ez money"));
        // addTask.execute(new Task("Get off my lawn"));
         //List<SearchResult.Hit<Task, Void>> tasks
        // ArrayList<Task> tasks = searchForTask.execute("name = 1");
