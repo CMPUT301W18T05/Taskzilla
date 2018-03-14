@@ -8,17 +8,29 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+
+import io.searchbox.core.Search;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SearchFragment extends Fragment {
+public class SearchFragment extends Fragment implements SearchView.OnQueryTextListener {
 
     private SearchView searchField;
+    private ListView availableTasks;
+    private ArrayAdapter<Task> adapter;
+    private ArrayList<Task> searchResults;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -33,6 +45,7 @@ public class SearchFragment extends Fragment {
                 container, false);
 
         ImageButton mButton = (ImageButton) mConstraintLayout.findViewById(R.id.MapButton);
+
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -40,17 +53,33 @@ public class SearchFragment extends Fragment {
             }
         });
 
+        //Set up listview and adapter
+        searchResults = new ArrayList<Task>();
+        availableTasks = (ListView) mConstraintLayout.findViewById(R.id.ListView2);
+        adapter = new ArrayAdapter<Task>(getActivity(), android.R.layout.simple_list_item_1, searchResults);
+        availableTasks.setAdapter(adapter);
+
+
+        //Dummy Tasks for testing. Remove these and get the tasks from elastic search
+        searchResults.add(new Task());
+        searchResults.add(new Task());
+        searchResults.add(new Task());
+
         return mConstraintLayout;
     }
 
-
-
+    public void viewTask(){
+        Intent intent = new Intent(getActivity(), ViewTaskActivity.class);
+        startActivity(intent);
+    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         // expand search bar by default
         searchField = view.findViewById(R.id.searchView);
-        searchField.setIconified(false);
+        searchField.setOnQueryTextListener(this);
+
+        //searchField.setIconified(false);
     }
 
     /**
@@ -60,4 +89,38 @@ public class SearchFragment extends Fragment {
         Intent intent = new Intent(getActivity(), MapActivity.class);
         startActivity(intent);
     }
+    @Override
+    public boolean onQueryTextSubmit(String quary) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String text) {
+        //final String keywordArray[] = text.split(" ");
+        String word;
+        word = text.toLowerCase();
+
+        searchResults.clear();
+
+        if (text.length() == 0) {
+            // do elastic search and add all results
+        }
+
+        else {
+            /*
+            for (int i = 0; i < keywordArray.length; i++) {
+                word = keywordArray[i].toLowerCase();
+                */
+
+            // do elastic search and add to array
+
+
+            //}
+        }
+
+        adapter.notifyDataSetChanged();
+
+        return false;
+    }
+
 }
