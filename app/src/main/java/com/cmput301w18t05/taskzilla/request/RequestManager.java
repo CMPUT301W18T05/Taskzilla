@@ -59,6 +59,7 @@ public class RequestManager extends BroadcastReceiver {
         }
         else {
             // todo: implement execute offline here!!
+            Log.i("IMPORTANT", "DEVICE IS OFFLINE!!!!");
             requestQueue.add(request);
         }
     }

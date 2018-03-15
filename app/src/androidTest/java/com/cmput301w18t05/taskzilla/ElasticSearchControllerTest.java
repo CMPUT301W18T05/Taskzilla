@@ -14,7 +14,6 @@ import java.util.ArrayList;
 
 /**
  * Unit tests for ES controller
- *
  */
 
 public class ElasticSearchControllerTest extends ActivityInstrumentationTestCase2 {

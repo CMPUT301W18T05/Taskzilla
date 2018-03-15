@@ -43,24 +43,50 @@ public class RequestManagerTest extends ActivityInstrumentationTestCase2 {
 
     public void testAddTaskRequest() {
         Task task = new Task();
-        task.setName("cmput301 project");
+        task.setName("cmput301 number 2 project");
 
-        AddTaskRequest addTaskRequest = new AddTaskRequest(task);
+        //AddTaskRequest addTaskRequest = new AddTaskRequest(task);
+        //RequestManager.getInstance().invokeRequest(ctx, addTaskRequest);
+
+        // add a task with some desc real quick
+        Task mockTask = new Task();
+        User mockUser = new User();
+        mockUser.setName("Linus Torvalds");
+        mockUser.setEmail(new EmailAddress("linus@kernal.org"));
+
+        Bid mockBid = new Bid(mockUser, 1000.0f);
+
+        mockTask.setName("MockTask");
+        mockTask.addBid(mockBid);
+        mockTask.setDescription(
+                "cite: http://wikipedia.com -- C (/siː/, as in the letter c) is a general-purpose, imperative computer programming language, supporting structured programming, lexical variable scope and recursion, while a static type system prevents many unintended operations. By design, C provides constructs that map efficiently to typical machine instructions, and therefore it has found lasting use in applications that had formerly been coded in assembly language, including operating systems, as well as various application software for computers ranging from supercomputers to embedded systems."
+        );
+        mockTask.setTaskProvider(mockUser);
+
+        AddTaskRequest addTaskRequest = new AddTaskRequest(mockTask);
         RequestManager.getInstance().invokeRequest(ctx, addTaskRequest);
     }
 
     public void testSearchTaskRequest() {
-        String keywords = "test";
+
+
+
+        String keywords = "imperative computer programming";
 
         SearchTaskRequest request = new SearchTaskRequest(keywords);
         RequestManager.getInstance().invokeRequest(ctx, request);
 
-        assertNotNull(request.getTasks());
+        //assertNotNull(request.getTasks());
 
-        for (Task t : request.getTasks()) {
+        System.out.println("------- Search output -------");
+        System.out.println("******************************");
+
+        ArrayList<Task> ret = request.getTasks();
+        System.out.println(ret);
+
+        for (Task t : ret) {
+            System.out.println(t);
             Log.i("Found Task", t.getId());
         }
-
     }
-
 }

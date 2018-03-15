@@ -9,16 +9,28 @@ import com.cmput301w18t05.taskzilla.request.InsertionRequest;
  */
 
 public class AddTaskRequest extends InsertionRequest {
-    private Task task;
+    private ElasticSearchController.AddTask task;
+    private Task taskData;
 
     public AddTaskRequest(Task task) {
-        this.task = task;
+        this.taskData = task;
     }
 
     public void execute() {
+        task = new ElasticSearchController.AddTask();
+        task.execute(taskData); // for now, subject to change.
     }
 
     public void executeOffline() {
+    }
+
+    public boolean getResult() {
+        try {
+            return task.get();
+        }
+        catch (Exception e) {
+            return false;
+        }
     }
 
 }
