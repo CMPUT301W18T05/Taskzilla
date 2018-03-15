@@ -15,9 +15,7 @@ public class MainActivityController {
         this.view = view;
     }
 
-    public void checkLoggedIn(Gson gson){
-        view.finish();
-    }
+
     public void signUp(){
         Intent signupIntent = new Intent(view, SignUpActivity.class);
         view.startActivity(signupIntent);
