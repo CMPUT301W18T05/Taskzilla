@@ -121,42 +121,36 @@ public class ElasticSearchController {
             verifySettings();
             ArrayList<Task> taskList = new ArrayList<>();
 
-            /*
-            {
-                "query": {
-                    "match": {
-                        "description": {
-                            "query": keywords,
-                            "operator": "and"
-                        }
-                    }
-                }
-            }
-            */
-            String query =
-                    "{\n" +
-                            "   \"query\": {\n" +
-                            "       \"match\" : {\n" +
-                            "           \"description\" : {\n" +
-                            "               \"query\" : " + keywords[0] + ",\n" +
-                            "               \"operator\" : \"and\"\n" +
-                            "           }\n" +
-                            "       }\n" +
-                            "   }\n" +
-                            "}";
+            for (String keyword : keywords) {
+                String query =
+                "{\n" +
+                "   \"query\": {\n" +
+                "       \"common\" : {\n" +
+                "           \"description\" : {\n" +
+                "               \"query\" : \"" + keyword + "\"\n" +
+                "           }\n" +
+                "       }\n" +
+                "   }\n" +
+                "}";
+                Log.i("Query:",query);
 
-            Search search = new Search.Builder(query).addIndex("cmput301w18t05").addType("task").build();
-            try {
-                SearchResult result = client.execute(search);
-                if (result.isSucceeded()) {
-                    List<Task> matchingTasks = result.getSourceAsObjectList(Task.class);
-                    taskList.addAll(matchingTasks);
+                Search search = new Search.Builder(query)
+                        .addIndex("cmput301w18t05")
+                        .addType("task")
+                        .build();
+                try {
+                    SearchResult result = client.execute(search);
+                    if (result.isSucceeded()) {
+                        List<Task> matchingTasks = result.getSourceAsObjectList(Task.class);
+                        taskList.addAll(matchingTasks);
+                    }
+                    else {
+                        Log.i("Event", "No results found in query: " + query);
+                    }
+                } catch (Exception e) {
+                    Log.i("Error", "Search failed");
+                    return null;
                 }
-                else {
-                    Log.i("Event", "No results found in query: "+query);
-                }
-            } catch (Exception e) {
-                Log.i("Error", "Search failed");
             }
             return taskList;
         }
