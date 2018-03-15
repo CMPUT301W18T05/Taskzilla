@@ -1,6 +1,7 @@
 package com.cmput301w18t05.taskzilla;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.SearchTaskRequest;
@@ -40,6 +41,7 @@ public class SearchController {
     public void searchRequest(Context ctx, String sentence) {
         newRequest = new SearchTaskRequest(sentence);
         RequestManager.getInstance().invokeRequest(ctx, newRequest);
+
         this.searchResults = newRequest.getTasks();
     }
 
