@@ -47,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
         /*Controller*/
         mainActivityController = new MainActivityController(this);
 
-        mainActivityController.checkLoggedIn(new Gson());
         /*initial singleton current user*/
         user.getInstance();
 
