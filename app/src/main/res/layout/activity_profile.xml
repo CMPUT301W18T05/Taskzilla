@@ -21,8 +21,10 @@
         android:id="@+id/Name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/textView15"
+        android:layout_alignEnd="@+id/EmailField"
         android:layout_alignTop="@+id/imageView"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="15dp"
         android:text="Android 2"
         android:textSize="28sp" />
 
@@ -127,14 +129,13 @@
         android:id="@+id/EmailField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/Email"
-        android:layout_alignBottom="@+id/Email"
-        android:layout_toStartOf="@+id/NumTasksDoneField"
+        android:layout_above="@+id/Phone"
+        android:layout_toEndOf="@+id/imageView"
         android:text="android2@gmail.com"
         android:textSize="20sp" />
 
     <TextView
-        android:id="@+id/textView15"
+        android:id="@+id/PhoneField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/Phone"
@@ -142,4 +143,5 @@
         android:layout_alignEnd="@+id/NumRequests"
         android:text="780 123 4567"
         android:textSize="20sp" />
+
 </RelativeLayout>

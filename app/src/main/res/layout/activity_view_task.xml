@@ -1,37 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="false"
-    android:orientation="vertical">
+    android:fillViewport="true">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:context="com.cmput301w18t05.taskzilla.ViewTaskActivity">
 
+
         <TextView
             android:id="@+id/TaskName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="8dp"
             android:text="My Task 1"
             android:textSize="24sp"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/RequesterPicture"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/task-status_textview"
+            app:layout_constraintTop_toBottomOf="@+id/TaskStatus"
             app:srcCompat="@mipmap/ic_launcher_round" />
 
         <TextView
@@ -39,22 +40,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="44dp"
+            android:layout_marginTop="8dp"
+            android:clickable="true"
             android:onClick="viewProfile"
             android:text="Requester"
-            android:textSize="24sp"
+            android:textSize="12sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintStart_toEndOf="@+id/RequesterPicture"
-            app:layout_constraintTop_toBottomOf="@+id/task-status_textview" />
+            app:layout_constraintTop_toBottomOf="@+id/TaskStatus" />
 
         <ImageButton
             android:id="@+id/ProviderPicture"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="8dp"
             android:background="@android:color/transparent"
             android:onClick="viewProfile"
+            android:visibility="invisible"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/RequesterPicture"
             app:srcCompat="@mipmap/ic_launcher_round" />
@@ -64,59 +67,185 @@
             android:layout_width="161dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="24dp"
             android:clickable="true"
             android:onClick="viewProfile"
             android:text="Provider Name"
-            android:textSize="24sp"
+            android:textSize="12sp"
+            android:visibility="invisible"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintStart_toEndOf="@+id/ProviderPicture"
             app:layout_constraintTop_toBottomOf="@+id/RequesterPicture" />
 
-        <Button
-            android:id="@+id/button_at_bottom"
-            style="@style/Widget.AppCompat.Button.Colored"
+        <ImageButton
+            android:id="@+id/DeleteButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="thePinkButton"
-            android:textSize="14sp"
-            tools:layout_editor_absoluteX="280dp"
-            tools:layout_editor_absoluteY="64dp" />
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp"
+            android:background="@android:color/transparent"
+            android:onClick="DeleteTask"
+            android:visibility="visible"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@android:drawable/ic_menu_delete" />
+
+        <ImageButton
+            android:id="@+id/EditButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@android:color/transparent"
+            android:onClick="editTask"
+            android:visibility="visible"
+            app:layout_constraintEnd_toStartOf="@+id/DeleteButton"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@android:drawable/ic_menu_edit" />
 
         <TextView
-            android:id="@+id/task_details_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:id="@+id/Description"
+            android:layout_width="372dp"
+            android:layout_height="97dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="No Description"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ProviderPicture" />
 
         <TextView
-            android:id="@+id/task-status_textview"
+            android:id="@+id/TaskStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="8dp"
-            android:text="task status"
+            android:text="requested"
+            android:textSize="12sp"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/TaskName" />
 
-        <ExpandableListView
-            android:id="@+id/bids_list_listview"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+        <HorizontalScrollView
+            android:id="@+id/horizontalScrollView"
+            android:layout_width="368dp"
+            android:layout_height="75dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Description">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imageView8"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@android:drawable/btn_star_big_on" />
+
+                <ImageView
+                    android:id="@+id/imageView9"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:layout_weight="1"
+                    app:srcCompat="@android:drawable/ic_delete" />
+
+                <ImageView
+                    android:id="@+id/imageView14"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/googleg_standard_color_18" />
+
+                <ImageView
+                    android:id="@+id/imageView13"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@android:drawable/ic_lock_lock" />
+
+                <ImageView
+                    android:id="@+id/imageView12"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@mipmap/ic_launcher_round" />
+
+                <ImageView
+                    android:id="@+id/imageView11"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@android:drawable/ic_lock_power_off" />
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginBottom="36dp"
+            android:layout_marginRight="24dp"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:srcCompat="@android:drawable/ic_menu_mylocation" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginStart="8dp"
+            android:text="Location"
+            android:textAlignment="center"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/imageButton"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/imageButton"
+            app:layout_constraintTop_toBottomOf="@+id/imageButton" />
+
+        <Button
+            android:id="@+id/button_at_bottom"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="46dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:onClick="thePinkButton"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/EditButton" />
+
+        <ExpandableListView
+            android:id="@+id/bids_list_listview"
+            android:layout_width="288dp"
+            android:layout_height="132dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.503"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/task_details_textview" />
+            app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView"
+            app:layout_constraintVertical_bias="1.0" />
+
 
     </android.support.constraint.ConstraintLayout>
 
