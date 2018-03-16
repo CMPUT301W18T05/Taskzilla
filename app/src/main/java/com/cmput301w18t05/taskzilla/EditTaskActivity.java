@@ -1,24 +1,30 @@
 package com.cmput301w18t05.taskzilla;
 
 import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
+import com.cmput301w18t05.taskzilla.request.RequestManager;
+import com.cmput301w18t05.taskzilla.request.command.AddTaskRequest;
+import com.cmput301w18t05.taskzilla.request.command.UpdateTaskRequest;
+
 public class EditTaskActivity extends AppCompatActivity {
-
-
+    private Task task;
+    private Context ctx;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        task = new Task();
+        ctx = getApplicationContext();
         super.onCreate(savedInstanceState);
         setTitle("Edit Task");
         setContentView(R.layout.activity_edit_task);
         EditText TaskNameText = (EditText) findViewById(R.id.TaskName);
         EditText DescriptionText = (EditText) findViewById(R.id.Description);
-        Task task = new Task(); //Dummy Task
         task.setName("testTask"); //Dummy
         task.setDescription("testDescription"); //Dummy
         TaskNameText.setText(task.getName());
@@ -50,11 +56,14 @@ public class EditTaskActivity extends AppCompatActivity {
         }
 
 
-        /** Add Save Code when ESC and controllers get figured out **/
 
-        /**                                         **/
-
-        else {
+         else {
+            task = new Task();
+            task.setId("AWIwRF0u42PX8bQQT0sL");
+            task.setName(TaskName);
+            task.setDescription(Description);
+            UpdateTaskRequest request = new UpdateTaskRequest(task);
+            RequestManager.getInstance().invokeRequest(ctx, request);
             Intent returnIntent = new Intent();
             returnIntent.putExtra("Task Name", TaskName);
             returnIntent.putExtra("Description", Description);
