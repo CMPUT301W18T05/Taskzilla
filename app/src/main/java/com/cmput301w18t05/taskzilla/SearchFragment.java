@@ -1,28 +1,18 @@
 package com.cmput301w18t05.taskzilla;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.SearchView;
-import android.widget.TextView;
-
-import com.cmput301w18t05.taskzilla.request.RequestManager;
-import com.cmput301w18t05.taskzilla.request.SearchRequest;
-import com.cmput301w18t05.taskzilla.request.command.SearchTaskRequest;
 
 import java.util.ArrayList;
 
@@ -82,7 +72,8 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
         });
 
         // get all available tasks
-        searchController.searchRequest("imperative computer programming");
+        searchController.getAllRequest();
+
         notifyChange();
 
         return mConstraintLayout;
@@ -109,15 +100,13 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
                 String sentence;
                 sentence = text.toLowerCase();
 
-                Log.i("Inside","hi");
-
                 if (sentence.length() == 0) {                          // Checks if user entered text in search bar
                     if (searchController.getKeywords().isEmpty()){ // Checks if keywords is empty, if yes return already loaded array of tasks
                         // do nothing
                     }
                     else {                                         // Since keywords isn't empty, previous array of tasks isn't all available tasks
                         searchController.clearKeywords();
-                        searchController.searchRequest(sentence);
+                        searchController.getAllRequest();
                     }
                 }
 

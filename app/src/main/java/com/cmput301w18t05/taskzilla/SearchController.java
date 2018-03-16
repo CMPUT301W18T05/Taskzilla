@@ -4,7 +4,9 @@ import android.content.Context;
 import android.util.Log;
 import android.view.View;
 
+import com.cmput301w18t05.taskzilla.request.Request;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
+import com.cmput301w18t05.taskzilla.request.command.GetAllTasksRequest;
 import com.cmput301w18t05.taskzilla.request.command.SearchTaskRequest;
 
 import java.util.ArrayList;
@@ -48,6 +50,15 @@ public class SearchController {
         RequestManager.getInstance().invokeRequest(ctx, newRequest);
 
         this.searchResults = newRequest.getTasks();
+
+        view.notifyChange();
+    }
+
+    public void getAllRequest() {
+        GetAllTasksRequest request = new GetAllTasksRequest();
+        RequestManager.getInstance().invokeRequest(ctx, request);
+
+        this.searchResults = request.getResult();
 
         view.notifyChange();
     }
