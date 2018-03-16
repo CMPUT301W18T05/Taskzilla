@@ -28,45 +28,56 @@ public class ViewTaskActivity extends AppCompatActivity {
         TextView RequesterName = (TextView) findViewById(R.id.RequesterName);
         int currentUserId = 5;                              //Dummy for Testing
         int taskUserId = 5;                                 //Dummy for Testing
+        final String taskID = "5";
         String status = "assigned";                         //Dummy
         String taskStatus = "requested";                    //DUMMY
-        String Description = "test test test test test test test test test test test";
+        final String Description = "test test test test test test test test test test test";
         String TaskRequester = "user1";
         String TaskProvider = "user2";
 
         RequesterName.setText(TaskRequester);
         DescriptionView.setText(Description);
 
-        if(currentUserId == taskUserId && taskStatus == "requested" ){
+        if (currentUserId == taskUserId && taskStatus == "requested") {
             EditButton.setVisibility(View.VISIBLE);
         } else {
             EditButton.setVisibility(View.INVISIBLE);
         }
-        if(currentUserId == taskUserId){
+        if (currentUserId == taskUserId) {
             DeleteButton.setVisibility(View.VISIBLE);
-        } else{
+        } else {
             DeleteButton.setVisibility(View.INVISIBLE);
         }
-        if(status == "assigned"){
+        if (status == "assigned") {
             ProviderPicture.setVisibility(View.VISIBLE);
             ProviderName.setVisibility(View.VISIBLE);
             ProviderName.setText(TaskProvider);
         }
 
+        ProviderPicture.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), ProfileActivity.class);
+                startActivity(intent);
+            }
 
+        });
+
+        EditButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), EditTaskActivity.class);
+                intent.putExtra("taskID", taskID);
+                intent.putExtra("Description", Description);
+                startActivity(intent);
+            }
+        });
+
+        //Implement delete button
+        DeleteButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View view) {
+            }
+
+        });
     }
 
-    public void viewProfile(View view){
-        Intent intent = new Intent(this, ProfileActivity.class);
-        startActivity(intent);
-    }
-
-    public void editTask(View view){
-        Intent intent = new Intent(this, EditTaskActivity.class);
-        startActivity(intent);
-    }
-
-    public void DeleteTask(View view){
-
-    }
 }
