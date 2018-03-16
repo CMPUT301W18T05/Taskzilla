@@ -31,6 +31,7 @@
             android:name=".WelcomeActivity"
             android:theme="@style/AppTheme" />
         <activity android:name=".EditProfileActivity" />
+        <activity android:name=".EditTaskActivity" />
         <activity android:name=".SignUpActivity" />
         <activity android:name=".ViewTaskActivity" />
         <activity android:name=".NewTaskActivity" />
