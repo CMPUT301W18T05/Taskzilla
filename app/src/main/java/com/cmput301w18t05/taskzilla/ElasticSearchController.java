@@ -16,6 +16,7 @@ import io.searchbox.core.Index;
 import io.searchbox.core.DocumentResult;
 import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
+import io.searchbox.core.Update;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -63,16 +64,15 @@ public class ElasticSearchController {
         }
     }
 
-    // todo: needs to be fixed, just adds a new one.
     public static class UpdateTask extends AsyncTask<Task, Void, Boolean> {
         @Override
         protected Boolean doInBackground(Task... tasks) {
             verifySettings();
             DocumentResult result = null;
             for (Task task : tasks) {
-                Index index = new Index.Builder(task).index("cmput301w18t05").type("task").id(task.getId()).build();
+                Update update = new Update.Builder(task).index("cmput301w18t05").type("task").id(task.getId()).build();
                 try {
-                    result = client.execute(index);
+                    result = client.execute(update);
                 } catch (Exception e) {
                     Log.i("Error", "Task not updated");
                 }
