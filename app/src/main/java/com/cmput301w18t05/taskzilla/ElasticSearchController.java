@@ -293,14 +293,37 @@ public class ElasticSearchController {
         }
     }
 
-    public static class GetBidByUserID extends AsyncTask<String, Void, Bid> {
+    public static class GetBidsByUserID extends AsyncTask<String, Void, ArrayList<Bid>> {
         @Override
-        protected Bid doInBackground(String... userIds) {
+        protected ArrayList<Bid> doInBackground(String... userIds) {
             verifySettings();
+            ArrayList<Bid> foundBids = new ArrayList<>();
 
             for (String  userId : userIds) {
+                String query = "{ \"query\" : { \"common\" : { \"requesterId\" : \""+ userId + "\" } }";
+                Log.i("Query: ", query);
+
+                SearchResult result;
+                Search search = new Search.Builder(query)
+                        .addIndex("cmput301w18t05")
+                        .addType("bid")
+                        .build();
+
+                try {
+                    result = client.execute(search);
+                    if (result.isSucceeded()) {
+                        List<Bid> newBids = result.getSourceAsObjectList(Bid.class);
+                        foundBids.addAll(newBids);
+                    }
+                    else {
+                        return null;
+                    }
+                }
+                catch (Exception e) {
+                    return null;
+                }
             }
-            return null;
+            return foundBids;
         }
     }
 

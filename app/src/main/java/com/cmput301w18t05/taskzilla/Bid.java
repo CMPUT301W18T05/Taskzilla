@@ -1,5 +1,7 @@
 package com.cmput301w18t05.taskzilla;
 
+import io.searchbox.annotations.JestId;
+
 /**
  * Created by wyatt on 23/02/18.
  */
@@ -7,10 +9,13 @@ package com.cmput301w18t05.taskzilla;
 public class Bid implements Comparable<Bid> {
 
     private float bidAmount;
+
+    @JestId
     private String id;
-    private String requester;
-    private String provider;
-    private String taskName;
+
+    private String requesterId;
+    private String providerId;
+    private String taskId;
 
     /*
     public int Bid(User user, float bidAmount) {
@@ -18,7 +23,7 @@ public class Bid implements Comparable<Bid> {
             return -1;
         }
         this.bidAmount = bidAmount;
-        this.provider = user.getId();
+        this.providerId = user.getId();
         return 0;
     }
     public Bid(User user, double bidAmount) {
@@ -28,13 +33,13 @@ public class Bid implements Comparable<Bid> {
 
     public Bid(User user, Task task, float bidAmount) {
         this.bidAmount = bidAmount;
-        this.requester = task.getTaskRequester().getId();
-        this.taskName = task.getId();
-        this.provider = user.getId();
+        this.requesterId = task.getTaskRequester().getId();
+        this.taskId = task.getId();
+        this.providerId = user.getId();
     }
 
     public Bid(User user, double amt) {
-        this.provider = user.getId();
+        this.providerId = user.getId();
         this.bidAmount = new Float(amt);
     }
 
@@ -46,16 +51,16 @@ public class Bid implements Comparable<Bid> {
         return id;
     }
 
-    public String getRequester() {
-        return requester;
+    public String getRequesterId() {
+        return requesterId;
     }
 
-    public String getProvider() {
-        return provider;
+    public String getProviderId() {
+        return providerId;
     }
 
-    public String getTaskName() {
-        return taskName;
+    public String getTaskId() {
+        return taskId;
     }
 
     public void setId(String id) {
@@ -66,16 +71,16 @@ public class Bid implements Comparable<Bid> {
         this.bidAmount = bidAmount;
     }
 
-    public void setRequester(String requester) {
-        this.requester = requester;
+    public void setRequesterId(String requesterId) {
+        this.requesterId = requesterId;
     }
 
-    public void setProvider(String provider) {
-        this.provider = provider;
+    public void setProviderId(String providerId) {
+        this.providerId = providerId;
     }
 
-    public void setTaskName(String taskName) {
-        this.taskName = taskName;
+    public void setTaskId(String taskId) {
+        this.taskId = taskId;
     }
 
     public int compareTo(Bid bid) {
