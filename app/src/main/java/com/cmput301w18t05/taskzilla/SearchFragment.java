@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SearchView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
@@ -66,7 +68,8 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
         availableTasks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                viewTask();
+                viewTask(searchResults.get(i).getId());
+                //Log.i("ID", searchResults.get(i).getId());
             }
         });
 
@@ -77,8 +80,9 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
         return mConstraintLayout;
     }
 
-    public void viewTask(){
+    public void viewTask(String taskId){
         Intent intent = new Intent(getActivity(), ViewTaskActivity.class);
+        intent.putExtra("TaskId", taskId);
         startActivity(intent);
     }
 

@@ -26,6 +26,7 @@ import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -40,33 +41,62 @@ import java.util.ArrayList;
  *
  */
 
-
 public class ViewTaskActivity extends AppCompatActivity {
+    private String taskID;
+    private ViewTaskController viewTaskController;
+    private Task task;
+    private String taskStatus;
+    private int currentUserId;
+    private int taskUserId;
+    private String Description;
+    private String TaskRequester;
+    private String TaskProvider;
+    private String taskName;
 
+    private TextView ProviderName;
+    private TextView DescriptionView;
+    private TextView RequesterName;
+    private TextView TaskName;
+
+    private ImageButton EditButton;
+    private ImageButton DeleteButton;
+    private ImageButton ProviderPicture;
+    private ImageButton RequesterPicture;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_task);
 
-        ImageButton EditButton = (ImageButton) findViewById(R.id.EditButton);
-        ImageButton DeleteButton = (ImageButton) findViewById(R.id.DeleteButton);
-        ImageButton ProviderPicture = (ImageButton) findViewById(R.id.ProviderPicture);
-        ImageButton RequesterPicture = (ImageButton) findViewById(R.id.RequesterPicture);
-        TextView ProviderName = (TextView) findViewById(R.id.ProviderName);
-        TextView DescriptionView = (TextView) findViewById(R.id.Description);
-        TextView RequesterName = (TextView) findViewById(R.id.RequesterName);
-        int currentUserId = 5;                              //Dummy for Testing
-        int taskUserId = 5;                                 //Dummy for Testing
-        final String taskID = "5";
-        String status = "assigned";                         //Dummy
-        String taskStatus = "requested";                    //DUMMY
-        final String Description = "test test test test test test test test test test test";
-        final String TaskRequester = "user1";
-        final String TaskProvider = "user2";
+        EditButton = (ImageButton) findViewById(R.id.EditButton);
+        DeleteButton = (ImageButton) findViewById(R.id.DeleteButton);
+        ProviderPicture = (ImageButton) findViewById(R.id.ProviderPicture);
+        RequesterPicture = (ImageButton) findViewById(R.id.RequesterPicture);
+        ProviderName = (TextView) findViewById(R.id.ProviderName);
+        DescriptionView = (TextView) findViewById(R.id.Description);
+        RequesterName = (TextView) findViewById(R.id.RequesterName);
+        TaskName = (TextView) findViewById(R.id.TaskName);
+
+        this.viewTaskController = new ViewTaskController(this.findViewById(android.R.id.content),this);
+        taskID = getIntent().getStringExtra("TaskId");
+
+        viewTaskController.setTaskID(taskID);
+        viewTaskController.getTaskRequest();
+        task = viewTaskController.getTask();
+
+        currentUserId = 5;                              //Dummy for Testing
+        taskUserId = 5;                                 //Dummy for Testing
+
+        taskName = task.getName();
+        taskStatus = task.getStatus();
+        Description = task.getDescription();
+
+        TaskRequester = "4";                            //Dummy for Testing
+        TaskProvider = "5";                             //Dummy for Testing
 
         RequesterName.setText(TaskRequester);
         DescriptionView.setText(Description);
+        TaskName.setText(taskName);
 
         if (currentUserId == taskUserId && taskStatus == "requested") {
             EditButton.setVisibility(View.VISIBLE);
@@ -78,7 +108,7 @@ public class ViewTaskActivity extends AppCompatActivity {
         } else {
             DeleteButton.setVisibility(View.INVISIBLE);
         }
-        if (status == "assigned") {
+        if (taskStatus == "assigned") {
             ProviderPicture.setVisibility(View.VISIBLE);
             ProviderName.setVisibility(View.VISIBLE);
             ProviderName.setText(TaskProvider);
