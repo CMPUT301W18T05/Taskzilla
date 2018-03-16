@@ -22,8 +22,8 @@ public class MyBidsFragment extends Fragment {
     private ArrayList<Task> taskList;
     private ListView taskListView;
     private ArrayAdapter<Task> adapter;
-    private GetBidByUserIdController bidController;
-    private currentUser cuser;
+    //private GetBidByUserIdController bidController;
+    //private currentUser cuser;
 
 
     public MyBidsFragment() {
@@ -44,9 +44,11 @@ public class MyBidsFragment extends Fragment {
         taskListView.setAdapter(adapter);
 
         // controller stuff
-        bidController = new GetBidByUserIdController(getContext(), cuser);
-        bidController.doTaskRequest();
-        taskList = bidController.getResultTaskList();
+        //bidController = new GetBidByUserIdController(getContext(), cuser);
+        //bidController.doTaskRequest();
+        //taskList = bidController.getResultTaskList();
+
+        taskList.add(new Task());
 
         taskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 

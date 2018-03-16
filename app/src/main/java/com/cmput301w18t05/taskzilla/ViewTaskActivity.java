@@ -255,6 +255,5 @@ public class ViewTaskActivity extends AppCompatActivity {
             }
         }
     }
-
 }
 

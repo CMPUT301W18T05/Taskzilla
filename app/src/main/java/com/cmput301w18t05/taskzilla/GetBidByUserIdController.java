@@ -48,6 +48,4 @@ public class GetBidByUserIdController {
             resultTaskList.add(taskRequest.getResult());
         }
     }
-
-
 }
