@@ -83,6 +83,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="16dp"
             android:layout_marginTop="8dp"
+            android:background="@android:color/transparent"
             android:onClick="DeleteTask"
             android:visibility="visible"
             app:layout_constraintRight_toRightOf="parent"
@@ -94,6 +95,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:background="@android:color/transparent"
             android:onClick="editTask"
             android:visibility="visible"
             app:layout_constraintEnd_toStartOf="@+id/DeleteButton"
@@ -217,6 +219,30 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintStart_toStartOf="@+id/imageButton"
             app:layout_constraintTop_toBottomOf="@+id/imageButton" />
+
+        <Button
+            android:id="@+id/button_at_bottom"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="thePinkButton"
+            android:textSize="14sp"
+            tools:layout_editor_absoluteX="280dp"
+            tools:layout_editor_absoluteY="64dp" />
+
+        <ExpandableListView
+            android:id="@+id/bids_list_listview"
+            android:layout_width="288dp"
+            android:layout_height="132dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView"
+            app:layout_constraintVertical_bias="1.0" />
 
 
     </android.support.constraint.ConstraintLayout>
