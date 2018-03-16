@@ -87,4 +87,10 @@ public class Bid implements Comparable<Bid> {
             return -1;
     }
 
+    public String toString() {
+        return "test bid stuff";
+    }
+
+
+
 }
