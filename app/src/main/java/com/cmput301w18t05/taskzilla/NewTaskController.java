@@ -49,7 +49,7 @@ public class NewTaskController {
             if (TextUtils.getTrimmedLength(taskDescription.getText()) > 280) {
                 taskDescription.setError("Description can not exceed 280 characters");
             }
-            
+
             if (TextUtils.getTrimmedLength(taskDescription.getText()) == 0) {
                 taskDescription.setError("Description can not be empty");
             }
