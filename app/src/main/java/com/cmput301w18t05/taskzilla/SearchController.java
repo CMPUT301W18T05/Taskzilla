@@ -2,6 +2,7 @@ package com.cmput301w18t05.taskzilla;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.View;
 
 import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.SearchTaskRequest;
@@ -16,10 +17,14 @@ public class SearchController {
     private ArrayList<String> searchKeywords;
     private ArrayList<Task> searchResults;
     private SearchTaskRequest newRequest;
+    private SearchFragment view;
+    private Context ctx;
 
-    public SearchController() {
+    public SearchController(SearchFragment v, Context context) {
         this.searchKeywords = new ArrayList<String>();
         this.searchResults = new ArrayList<Task>();
+        this.view = v;
+        this.ctx = context;
     }
 
     public void addKeywords(String word) {
@@ -38,11 +43,13 @@ public class SearchController {
         this.searchKeywords.clear();
     }
 
-    public void searchRequest(Context ctx, String sentence) {
+    public void searchRequest(String sentence) {
         newRequest = new SearchTaskRequest(sentence);
         RequestManager.getInstance().invokeRequest(ctx, newRequest);
 
         this.searchResults = newRequest.getTasks();
+
+        view.notifyChange();
     }
 
 }
