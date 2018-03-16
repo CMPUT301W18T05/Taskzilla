@@ -16,6 +16,7 @@ import io.searchbox.core.Index;
 import io.searchbox.core.DocumentResult;
 import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
+import io.searchbox.core.Update;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -63,16 +64,15 @@ public class ElasticSearchController {
         }
     }
 
-    // todo: needs to be fixed, just adds a new one.
     public static class UpdateTask extends AsyncTask<Task, Void, Boolean> {
         @Override
         protected Boolean doInBackground(Task... tasks) {
             verifySettings();
             DocumentResult result = null;
             for (Task task : tasks) {
-                Index index = new Index.Builder(task).index("cmput301w18t05").type("task").id(task.getId()).build();
+                Update update = new Update.Builder(task).index("cmput301w18t05").type("task").id(task.getId()).build();
                 try {
-                    result = client.execute(index);
+                    result = client.execute(update);
                 } catch (Exception e) {
                     Log.i("Error", "Task not updated");
                 }
@@ -147,6 +147,66 @@ public class ElasticSearchController {
                 return null;
             }
 
+            return foundTasks;
+        }
+    }
+
+    public static class GetTasksByProviderUsername extends AsyncTask<String, Void, ArrayList<Task>> {
+        @Override
+        protected ArrayList<Task> doInBackground(String... usernames) {
+            verifySettings();
+            ArrayList<Task> foundTasks = new ArrayList<>();
+
+            for (String username : usernames) {
+                String query = "{ \"query\" : { \"common\" : \"TaskProvider.username\" : " + username + " }}";
+                Log.i("Query:", query);
+
+                Search search = new Search.Builder(query)
+                        .addIndex("cmput301w18t05")
+                        .addType("task")
+                        .build();
+
+                try {
+                    SearchResult result = client.execute(search);
+                    if (result.isSucceeded()) {
+                        List<Task> matchingTasks = result.getSourceAsObjectList(Task.class);
+                        foundTasks.addAll(matchingTasks);
+                    }
+                } catch (Exception e) {
+                    Log.i("Error", "GetAllTasks search encountered an error.");
+                    return null;
+                }
+            }
+            return foundTasks;
+        }
+    }
+
+    public static class GetTasksByRequesterUsername extends AsyncTask<String, Void, ArrayList<Task>> {
+        @Override
+        protected ArrayList<Task> doInBackground(String... usernames) {
+            verifySettings();
+            ArrayList<Task> foundTasks = new ArrayList<>();
+
+            for (String username : usernames) {
+                String query = "{ \"query\" : { \"common\" : \"TaskRequester.username\" : " + username + " }}";
+                Log.i("Query:", query);
+
+                Search search = new Search.Builder(query)
+                        .addIndex("cmput301w18t05")
+                        .addType("task")
+                        .build();
+
+                try {
+                    SearchResult result = client.execute(search);
+                    if (result.isSucceeded()) {
+                        List<Task> matchingTasks = result.getSourceAsObjectList(Task.class);
+                        foundTasks.addAll(matchingTasks);
+                    }
+                } catch (Exception e) {
+                    Log.i("Error", "GetAllTasks search encountered an error.");
+                    return null;
+                }
+            }
             return foundTasks;
         }
     }
@@ -289,8 +349,41 @@ public class ElasticSearchController {
                     Log.i("Error", "Bid not added");
                 }
             }
-
             return false;
+        }
+    }
+
+    public static class GetBidsByUserID extends AsyncTask<String, Void, ArrayList<Bid>> {
+        @Override
+        protected ArrayList<Bid> doInBackground(String... userIds) {
+            verifySettings();
+            ArrayList<Bid> foundBids = new ArrayList<>();
+
+            for (String  userId : userIds) {
+                String query = "{ \"query\" : { \"common\" : { \"requesterId\" : \""+ userId + "\" } }";
+                Log.i("Query: ", query);
+
+                SearchResult result;
+                Search search = new Search.Builder(query)
+                        .addIndex("cmput301w18t05")
+                        .addType("bid")
+                        .build();
+
+                try {
+                    result = client.execute(search);
+                    if (result.isSucceeded()) {
+                        List<Bid> newBids = result.getSourceAsObjectList(Bid.class);
+                        foundBids.addAll(newBids);
+                    }
+                    else {
+                        return null;
+                    }
+                }
+                catch (Exception e) {
+                    return null;
+                }
+            }
+            return foundBids;
         }
     }
 

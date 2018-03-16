@@ -29,17 +29,6 @@ import android.widget.Toast;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-/**
- *
- *
- *
- *
- *
- *
- *
- *
- *
- */
 
 public class ViewTaskActivity extends AppCompatActivity {
     private String taskID;
