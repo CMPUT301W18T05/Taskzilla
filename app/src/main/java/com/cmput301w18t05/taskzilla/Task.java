@@ -4,6 +4,8 @@ import android.location.Location;
 
 import java.util.ArrayList;
 
+import io.searchbox.annotations.JestId;
+
 /**
  * Created by wyatt on 22/02/18.
  *
@@ -13,21 +15,55 @@ import java.util.ArrayList;
 public class Task {
 
     private String name;
-    private Integer Id;
+
+    @JestId
+    private String Id;
+
     private User TaskRequester;
     private User TaskProvider;
     private String status;
     private String description;
     private Location location;
     private Bid bestBid;
-    private ArrayList<Bid> bids;
+    private ArrayList<Bid> bids = new ArrayList<>();
     private ArrayList<Photo> photos;
 
+    //Test Constructors
     public Task() {
         bids = new ArrayList<Bid>();
         photos = new ArrayList<Photo>();
+        name = "TEST TASK";
     }
 
+    public Task(String name, User TaskRequester, String description) {
+        bids = new ArrayList<Bid>();
+        photos = new ArrayList<Photo>();
+        this.name = name;
+        this.TaskRequester = TaskRequester;
+        this.status = "requested";
+        this.description = description;
+    }
+
+    //Real constructors
+    public Task(String name, User TaskRequester, String description, Location location) {
+        bids = new ArrayList<Bid>();
+        photos = new ArrayList<Photo>();
+        this.name = name;
+        this.TaskRequester = TaskRequester;
+        this.status = "requested";
+        this.description = description;
+        this.location = location;
+    }
+    public Task(String name, User TaskRequester, String description, Location location, ArrayList<Photo> photos) {
+        bids = new ArrayList<Bid>();
+        photos = new ArrayList<Photo>();
+        this.name = name;
+        this.TaskRequester = TaskRequester;
+        this.status = "requested";
+        this.description = description;
+        this.location = location;
+        this.photos = photos;
+    }
     /**
      * addBid
      * Insert into sorted bid list
@@ -62,6 +98,10 @@ public class Task {
         return this.photos.get(i);
     }
 
+    public ArrayList<Photo> getPhotos() {
+        return photos;
+    }
+
     public void removePhoto(int i) {
         this.photos.remove(i);
     }
@@ -76,6 +116,10 @@ public class Task {
 
     public Bid getBid(int i) {
         return bids.get(i);
+    }
+
+    public ArrayList<Bid> getBids() {
+        return bids;
     }
 
     public String getName() {
@@ -126,11 +170,11 @@ public class Task {
         this.location = location;
     }
 
-    public Integer getId() {
+    public String getId() {
         return Id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         Id = id;
     }
 
@@ -139,6 +183,6 @@ public class Task {
     }
 
     public String toString(){
-        return"Test Task";
+        return name;
     }
 }

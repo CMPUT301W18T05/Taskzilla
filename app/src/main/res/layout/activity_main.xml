@@ -54,6 +54,5 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:onClick="signUp"
         android:clickable="true"/>
 </android.support.constraint.ConstraintLayout>

@@ -2,6 +2,8 @@ package com.cmput301w18t05.taskzilla;
 
 import java.util.ArrayList;
 
+import io.searchbox.annotations.JestId;
+
 /**
  * Created by wyatt on 22/02/18.
  *
@@ -9,20 +11,39 @@ import java.util.ArrayList;
 
 public class User {
 
-    private String name;
-    private String username;
-    private Integer id;
-    private PhoneNumber phone;
-    private EmailAddress email;
-    private Float providerRating;
-    private Float requesterRating;
-    private Integer numRequests;
-    private Integer numCompleteTasks;
-    private ArrayList<Photo> photos;
+    protected String name;
+    protected String username;
+
+    @JestId
+    protected String id;
+
+    protected PhoneNumber phone;
+    protected EmailAddress email;
+    protected Float providerRating;
+    protected Float requesterRating;
+    protected Integer numRequests;
+    protected Integer numCompleteTasks;
+    protected ArrayList<Photo> photos;
 
     public User() {
 
 
+    }
+
+    public User(String name, String username, String id,
+                PhoneNumber phone, EmailAddress email,
+                double providerRating, double requesterRating,
+                Integer numRequests, Integer numCompleteTasks, ArrayList<Photo> photos){
+        this.name = name;
+        this.username = username;
+        this.id = id;
+        this.phone = phone;
+        this.email = email;
+        this.providerRating = (float) providerRating;
+        this.requesterRating = (float) requesterRating;
+        this.numRequests = numRequests;
+        this.numCompleteTasks = numCompleteTasks;
+        this.photos = photos;
     }
 
     public String getName() {
@@ -51,12 +72,12 @@ public class User {
         return false;
     }
 
-    public Integer getId() {
+    public String getId() {
         return this.id;
     }
 
-    public void setId(Integer id) {
-        //dont need. generate random id for user at init
+    public void setId(String id) {
+        this.id = id;
     }
 
     public PhoneNumber getPhone() {
@@ -87,8 +108,20 @@ public class User {
         return false;
     }
 
+    public boolean setProviderRating(double providerRating) {
+        if (providerRating < 5.0f || providerRating > 0.0f) {
+            this.providerRating = new Float(providerRating);
+            return true;
+        }
+        return false;
+    }
+
     public Float getRequesterRating() {
         return this.requesterRating;
+    }
+
+    public boolean setRequesterRating(double requesterRating) {
+        return this.setRequesterRating(new Float(requesterRating));
     }
 
     public boolean setRequesterRating(Float requesterRating) {
@@ -121,5 +154,9 @@ public class User {
 
     public void setPhotos(ArrayList<Photo> photos) {
         this.photos = photos;
+    }
+
+    public String toString() {
+        return this.name+" "+this.id;
     }
 }
