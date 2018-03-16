@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -21,6 +22,7 @@ public class ProfileFragment extends Fragment {
     private TextView requesterRatingField;
     private TextView numRequestsField;
     private TextView numTasksDoneField;
+    private Button logOut;
     private User user;
     private ProfileController profileController;
 
@@ -52,6 +54,14 @@ public class ProfileFragment extends Fragment {
         requesterRatingField = view.findViewById(R.id.RequesterRatingField);
         numRequestsField = view.findViewById(R.id.NumRequestsField);
         numTasksDoneField = view.findViewById(R.id.NumTasksDoneField);
+        logOut = view.findViewById(R.id.LogOutButton);
+
+        logOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logOutCLicked();
+            }
+        });
     }
 
     /**
@@ -65,6 +75,11 @@ public class ProfileFragment extends Fragment {
         startActivity(intent);
     }
 
+    public void logOutCLicked(){
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+        //Delete User from gson
+        startActivity(intent);
+    }
     public void notifyChange() {
         // update fields
         providerRatingField.setText(user.getProviderRating().toString());
