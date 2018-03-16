@@ -89,7 +89,7 @@ public class ViewTaskActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), ProfileActivity.class);
-                intent.putExtra("user",TaskProvider);
+                intent.putExtra("user", TaskProvider);
                 startActivity(intent);
             }
 
@@ -100,7 +100,7 @@ public class ViewTaskActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), ProfileActivity.class);
-                intent.putExtra("user",TaskRequester);
+                intent.putExtra("user", TaskRequester);
                 startActivity(intent);
             }
         });
@@ -117,7 +117,7 @@ public class ViewTaskActivity extends AppCompatActivity {
         });
 
         //Implement delete button
-        DeleteButton.setOnClickListener(new View.OnClickListener(){
+        DeleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder alert = new AlertDialog.Builder(ViewTaskActivity.this);
@@ -144,9 +144,6 @@ public class ViewTaskActivity extends AppCompatActivity {
         });
 
 
-
-
-
         Button buttonAtBottom = findViewById(R.id.button_at_bottom);
 
         ExpandableListView bidsListView = findViewById(R.id.bids_list_listview);
@@ -157,12 +154,10 @@ public class ViewTaskActivity extends AppCompatActivity {
         buttonAtBottom.setText("PLACE BID");
 
 
-
         ArrayList<Bid> bidsList = new ArrayList<>();
 
         //ArrayAdapter<Bid> adapter = new ArrayAdapter<>(ViewTaskActivity.this, android.R.layout.simple_list_item_1, bidsList);
         //bidsListView.setAdapter(adapter);
-
 
 
         bidsList.add(new Bid(new User(), 1.0f));
@@ -183,13 +178,13 @@ public class ViewTaskActivity extends AppCompatActivity {
      * otherwise
      * prompts user to enter in a bid amount
      * if valid input, will add bid to task
-     *
+     * <p>
      * notes
      * can probably add more stuff to dialog
      *
      * @author myapplestory
      */
-    public void thePinkButton(android.view.View view){
+    public void thePinkButton(android.view.View view) {
 
         // if this task's requester is the current logged in user
         // show a dialog or fragment where the requester can select which bid to accept
@@ -199,7 +194,7 @@ public class ViewTaskActivity extends AppCompatActivity {
         final View mView = getLayoutInflater().inflate(R.layout.dialog_place_bid, null);
 
         final EditText incomingBidText = mView.findViewById(R.id.place_bid_edittext);
-        Button submitBidButton =  mView.findViewById(R.id.submit_bid_button);
+        Button submitBidButton = mView.findViewById(R.id.submit_bid_button);
 
         submitBidButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -207,7 +202,7 @@ public class ViewTaskActivity extends AppCompatActivity {
                 Float incomingBidFloat;
                 try {
                     incomingBidFloat = Float.parseFloat(incomingBidText.getText().toString());
-                    incomingBidFloat = (float)(Math.round(incomingBidFloat * 100.0) / 100.0);
+                    incomingBidFloat = (float) (Math.round(incomingBidFloat * 100.0) / 100.0);
                 } catch (Exception exception) {
                     Toast.makeText(ViewTaskActivity.this,
                             "Please enter in a valid bid amount", Toast.LENGTH_SHORT).show();
@@ -222,26 +217,26 @@ public class ViewTaskActivity extends AppCompatActivity {
             }
         });
         mBuilder.setView(mView);
-        AlertDialog dialog  = mBuilder.create();
+        AlertDialog dialog = mBuilder.create();
         dialog.show();
 
     }
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch(requestCode){
-            case(1) : {
+        switch (requestCode) {
+            case (1): {
                 //code to add to ESC
-                if(resultCode == RESULT_OK) {
+                if (resultCode == RESULT_OK) {
                     String TaskName = data.getStringExtra("Task Name");
                     String Description = data.getStringExtra("Description");
                     TextView DescriptionView = (TextView) findViewById(R.id.Description);
                     TextView TaskNameView = (TextView) findViewById(R.id.TaskName);
                     TaskNameView.setText(TaskName);
-                    if(Description.length()>0) {
+                    if (Description.length() > 0) {
                         DescriptionView.setText(Description);
-                    }
-                    else{
+                    } else {
                         DescriptionView.setText("No Description");
                     }
                 }
@@ -249,5 +244,5 @@ public class ViewTaskActivity extends AppCompatActivity {
         }
     }
 
-
 }
+

@@ -1,25 +1,30 @@
 package com.cmput301w18t05.taskzilla.request.command;
 
+import android.os.AsyncTask;
+import android.util.Log;
+
 import com.cmput301w18t05.taskzilla.ElasticSearchController;
-import com.cmput301w18t05.taskzilla.Task;
+import com.cmput301w18t05.taskzilla.User;
 import com.cmput301w18t05.taskzilla.request.InsertionRequest;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by wyatt on 07/03/18.
  */
 
-public class AddTaskRequest extends InsertionRequest {
-    private ElasticSearchController.AddTask task;
-    private Task taskData;
+public class AddUserRequest extends InsertionRequest {
+    User user;
+    ElasticSearchController.AddUser task;
 
-    public AddTaskRequest(Task task) {
-        this.taskData = task;
+    public AddUserRequest(User user) {
+        this.user = user;
     }
 
     @Override
     public void execute() {
-        task = new ElasticSearchController.AddTask();
-        task.execute(taskData); // for now, subject to change.
+        task = new ElasticSearchController.AddUser();
+        task.execute(user); // for now, subject to change.
     }
 
     @Override

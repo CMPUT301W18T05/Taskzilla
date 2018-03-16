@@ -14,6 +14,9 @@ public abstract class Request {
     private boolean serverRequired;
 
     public abstract void execute();
+
+    public abstract void executeOffline();
+
     public boolean requiresConnection() {
         return serverRequired;
     }

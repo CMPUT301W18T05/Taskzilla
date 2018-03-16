@@ -8,22 +8,36 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
-import android.widget.RelativeLayout;
+import android.widget.ListView;
 import android.widget.SearchView;
+
+import java.util.ArrayList;
+
+import io.searchbox.core.Search;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SearchFragment extends Fragment {
+
+/**
+ *
+ */
+
+public class SearchFragment extends Fragment {//implements SearchView.OnQueryTextListener {
 
     private SearchView searchField;
+    private ListView availableTasks;
+    private ArrayAdapter<Task> adapter;
+    private ArrayList<Task> searchResults;
+    private SearchController searchController;
 
     public SearchFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,6 +47,7 @@ public class SearchFragment extends Fragment {
                 container, false);
 
         ImageButton mButton = (ImageButton) mConstraintLayout.findViewById(R.id.MapButton);
+
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -40,17 +55,72 @@ public class SearchFragment extends Fragment {
             }
         });
 
+        //Set up listview and adapter
+        searchResults = new ArrayList<Task>();
+        availableTasks = (ListView) mConstraintLayout.findViewById(R.id.ListView2);
+        adapter = new ArrayAdapter<Task>(getActivity(), android.R.layout.simple_list_item_1, searchResults);
+        availableTasks.setAdapter(adapter);
+        searchController = new SearchController(this, getActivity());
+
+        availableTasks.setClickable(true);
+
+        availableTasks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                viewTask();
+            }
+        });
+
+        // get all available tasks
+        searchController.getAllRequest();
+
+        notifyChange();
+
         return mConstraintLayout;
     }
 
-
-
+    public void viewTask(){
+        Intent intent = new Intent(getActivity(), ViewTaskActivity.class);
+        startActivity(intent);
+    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         // expand search bar by default
         searchField = view.findViewById(R.id.searchView);
-        searchField.setIconified(false);
+
+        searchField.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String text) {
+                String sentence;
+                sentence = text.toLowerCase();
+
+                if (sentence.length() == 0) {                          // Checks if user entered text in search bar
+                    if (searchController.getKeywords().isEmpty()){ // Checks if keywords is empty, if yes return already loaded array of tasks
+                        // do nothing
+                    }
+                    else {                                         // Since keywords isn't empty, previous array of tasks isn't all available tasks
+                        searchController.clearKeywords();
+                        searchController.getAllRequest();
+                    }
+                }
+
+                else {                                             // Adds keyword to list and loads new set of tasks based on keywords
+                    searchController.clearKeywords();
+                    searchController.addKeywords(sentence);
+                    searchController.searchRequest(sentence);
+                }
+
+                return false;
+            }
+        });
+
+        //searchField.setIconified(false);
     }
 
     /**
@@ -59,5 +129,20 @@ public class SearchFragment extends Fragment {
     public void viewMap(){
         Intent intent = new Intent(getActivity(), MapActivity.class);
         startActivity(intent);
+    }
+
+    public void setSearchController (SearchController searchController) {
+        this.searchController = searchController;
+    }
+
+    // Clears adapter and inputs new tasks
+    public void notifyChange() {
+        searchResults = searchController.getResults();
+        adapter.clear();
+
+        for(Task t : searchResults)
+            adapter.add(t);
+
+        adapter.notifyDataSetChanged();
     }
 }

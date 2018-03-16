@@ -17,11 +17,16 @@ import android.widget.TextView;
  */
 public class ProfileFragment extends Fragment {
 
+    private TextView providerRatingField;
+    private TextView requesterRatingField;
+    private TextView numRequestsField;
+    private TextView numTasksDoneField;
+    private User user;
+    private ProfileController profileController;
 
     public ProfileFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,6 +46,14 @@ public class ProfileFragment extends Fragment {
         return mRelativeLayout;
     }
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        providerRatingField = view.findViewById(R.id.ProviderRatingField);
+        requesterRatingField = view.findViewById(R.id.RequesterRatingField);
+        numRequestsField = view.findViewById(R.id.NumRequestsField);
+        numTasksDoneField = view.findViewById(R.id.NumTasksDoneField);
+    }
+
     /**
      * Switch to EditProfile Activity
      * Send users information to the activity
@@ -50,5 +63,22 @@ public class ProfileFragment extends Fragment {
         Intent intent = new Intent(getActivity(), EditProfileActivity.class);
         intent.putExtra("name","Name goes here" );
         startActivity(intent);
+    }
+
+    public void notifyChange() {
+        // update fields
+        providerRatingField.setText(user.getProviderRating().toString());
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setProfileController(ProfileController profileController) {
+        this.profileController = profileController;
+    }
+
+    public TextView getProviderRatingField() {
+        return providerRatingField;
     }
 }
