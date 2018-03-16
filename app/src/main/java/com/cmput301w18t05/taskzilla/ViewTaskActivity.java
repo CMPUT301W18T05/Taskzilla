@@ -28,17 +28,6 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-/**
- *
- *
- *
- *
- *
- *
- *
- *
- *
- */
 
 
 public class ViewTaskActivity extends AppCompatActivity {
@@ -49,19 +38,19 @@ public class ViewTaskActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_task);
 
-        ImageButton EditButton = (ImageButton) findViewById(R.id.EditButton);
-        ImageButton DeleteButton = (ImageButton) findViewById(R.id.DeleteButton);
-        ImageButton ProviderPicture = (ImageButton) findViewById(R.id.ProviderPicture);
-        ImageButton RequesterPicture = (ImageButton) findViewById(R.id.RequesterPicture);
-        TextView ProviderName = (TextView) findViewById(R.id.ProviderName);
-        TextView DescriptionView = (TextView) findViewById(R.id.Description);
-        TextView RequesterName = (TextView) findViewById(R.id.RequesterName);
+        ImageButton EditButton = findViewById(R.id.EditButton);
+        ImageButton DeleteButton = findViewById(R.id.DeleteButton);
+        ImageButton ProviderPicture = findViewById(R.id.ProviderPicture);
+        ImageButton RequesterPicture = findViewById(R.id.RequesterPicture);
+        TextView ProviderName =  findViewById(R.id.ProviderName);
+        TextView DescriptionView = findViewById(R.id.Description);
+        TextView RequesterName = findViewById(R.id.RequesterName);
         int currentUserId = 5;                              //Dummy for Testing
         int taskUserId = 5;                                 //Dummy for Testing
         final String taskID = "5";
         String status = "assigned";                         //Dummy
         String taskStatus = "requested";                    //DUMMY
-        final String Description = "test test test test test test test test test test test";
+        final String Description = "test\ntest\ntest\ntest\ntest\ntest\ntest\ntest\ntest\ntest\ntest\ntest\ntest\n";
         final String TaskRequester = "user1";
         final String TaskProvider = "user2";
 

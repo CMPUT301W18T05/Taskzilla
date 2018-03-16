@@ -81,6 +81,9 @@ public class TasksRequesterFragment extends Fragment {
             //taskList.add(new Task("Clip my toenails",new User(),"ez money"));
         }
         */
+
+
+
         taskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> a, View v, int position, long id) {
