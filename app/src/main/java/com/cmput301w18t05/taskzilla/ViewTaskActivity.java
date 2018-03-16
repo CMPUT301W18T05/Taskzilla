@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.EventLogTags;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -35,9 +36,9 @@ public class ViewTaskActivity extends AppCompatActivity {
     private ViewTaskController viewTaskController;
     private Task task;
     private String taskStatus;
-    private int currentUserId;
-    private int taskUserId;
-    private String Description;
+    private String currentUserId;
+    private String taskUserId;
+    private String description;
     private String TaskRequester;
     private String TaskProvider;
     private String taskName;
@@ -57,14 +58,14 @@ public class ViewTaskActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_task);
 
-        EditButton = (ImageButton) findViewById(R.id.EditButton);
-        DeleteButton = (ImageButton) findViewById(R.id.DeleteButton);
-        ProviderPicture = (ImageButton) findViewById(R.id.ProviderPicture);
-        RequesterPicture = (ImageButton) findViewById(R.id.RequesterPicture);
-        ProviderName = (TextView) findViewById(R.id.ProviderName);
-        DescriptionView = (TextView) findViewById(R.id.Description);
-        RequesterName = (TextView) findViewById(R.id.RequesterName);
-        TaskName = (TextView) findViewById(R.id.TaskName);
+        EditButton = findViewById(R.id.EditButton);
+        DeleteButton = findViewById(R.id.DeleteButton);
+        ProviderPicture = findViewById(R.id.ProviderPicture);
+        RequesterPicture = findViewById(R.id.RequesterPicture);
+        ProviderName = findViewById(R.id.ProviderName);
+        DescriptionView = findViewById(R.id.Description);
+        RequesterName = findViewById(R.id.RequesterName);
+        TaskName = findViewById(R.id.TaskName);
 
         this.viewTaskController = new ViewTaskController(this.findViewById(android.R.id.content),this);
         taskID = getIntent().getStringExtra("TaskId");
@@ -73,31 +74,31 @@ public class ViewTaskActivity extends AppCompatActivity {
         viewTaskController.getTaskRequest();
         task = viewTaskController.getTask();
 
-        currentUserId = 5;                              //Dummy for Testing
-        taskUserId = 5;                                 //Dummy for Testing
+        currentUserId = "5";                              //Dummy for Testing
+        taskUserId = "5";                                 //Dummy for Testing
 
         taskName = task.getName();
         taskStatus = task.getStatus();
-        Description = task.getDescription();
+        description = task.getDescription();
 
-        TaskRequester = "4";                            //Dummy for Testing
-        TaskProvider = "5";                             //Dummy for Testing
+        TaskRequester = "user4";                            //Dummy for Testing
+        TaskProvider = "user5";                             //Dummy for Testing
 
         RequesterName.setText(TaskRequester);
-        DescriptionView.setText(Description);
+        DescriptionView.setText(description);
         TaskName.setText(taskName);
 
-        if (currentUserId == taskUserId && taskStatus == "requested") {
+        if (currentUserId.equals(taskUserId) && taskStatus.equals("requested")) {
             EditButton.setVisibility(View.VISIBLE);
         } else {
             EditButton.setVisibility(View.INVISIBLE);
         }
-        if (currentUserId == taskUserId) {
+        if (currentUserId.equals(taskUserId)) {
             DeleteButton.setVisibility(View.VISIBLE);
         } else {
             DeleteButton.setVisibility(View.INVISIBLE);
         }
-        if (taskStatus == "assigned") {
+        if (taskStatus.equals("assigned")) {
             ProviderPicture.setVisibility(View.VISIBLE);
             ProviderName.setVisibility(View.VISIBLE);
             ProviderName.setText(TaskProvider);
@@ -130,7 +131,7 @@ public class ViewTaskActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), EditTaskActivity.class);
                 intent.putExtra("taskID", taskID);
-                intent.putExtra("Description", Description);
+                intent.putExtra("Description", description);
                 startActivityForResult(intent, 1);
             }
         });
@@ -248,8 +249,8 @@ public class ViewTaskActivity extends AppCompatActivity {
             case (1): {
                 //code to add to ESC
                 if (resultCode == RESULT_OK) {
-                    String TaskName = data.getStringExtra("Task Name");
-                    String Description = data.getStringExtra("Description");
+                    String TaskName = data.getStringExtra(taskName);
+                    String Description = data.getStringExtra(description);
                     TextView DescriptionView = (TextView) findViewById(R.id.Description);
                     TextView TaskNameView = (TextView) findViewById(R.id.TaskName);
                     TaskNameView.setText(TaskName);
