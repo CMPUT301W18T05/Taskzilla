@@ -10,6 +10,7 @@ import com.cmput301w18t05.taskzilla.request.command.AddTaskRequest;
 import com.cmput301w18t05.taskzilla.request.command.AddUserRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetAllTasksRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetTaskRequest;
+import com.cmput301w18t05.taskzilla.request.command.RemoveTaskRequest;
 import com.cmput301w18t05.taskzilla.request.command.SearchTaskRequest;
 
 import java.lang.reflect.Array;
@@ -71,8 +72,6 @@ public class RequestManagerTest extends ActivityInstrumentationTestCase2 {
 
     public void testSearchTaskRequest() {
 
-
-
         String keywords = "imperative computer programming";
 
         SearchTaskRequest request = new SearchTaskRequest(keywords);
@@ -110,7 +109,21 @@ public class RequestManagerTest extends ActivityInstrumentationTestCase2 {
         Log.i("Event", "RETURNED TASK: "+ret.toString());
         assertEquals(id, getTaskRequest.getResult().getId());
     }
+/*
+    public void testRemoveTask() {
+        Task mockTask = new Task();
+        mockTask.setName("testing remove task");
+        mockTask.setDescription("testing remove task");
 
+        AddTaskRequest addTaskRequest = new AddTaskRequest(mockTask);
+        RequestManager.getInstance().invokeRequest(ctx,addTaskRequest);
+
+        String id = mockTask.getId();
+
+        RemoveTaskRequest request = new RemoveTaskRequest(id);
+        RequestManager.getInstance().invokeRequest(ctx,request);
+    }
+*/
     public void testGetAllTasks() {
         GetAllTasksRequest getAllTasksRequest = new GetAllTasksRequest();
         RequestManager.getInstance().invokeRequest(ctx,getAllTasksRequest);

@@ -16,7 +16,7 @@ public class NewTaskActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_task);
 
-        newTaskController =  new NewTaskController(this);
+        newTaskController =  new NewTaskController(this, getApplicationContext());
         Button cancel = (Button) findViewById(R.id.CancelButton);
         Button addTask = (Button) findViewById(R.id.addTaskButton);
         final EditText taskName = (EditText) findViewById(R.id.TaskName);
