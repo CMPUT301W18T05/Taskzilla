@@ -22,6 +22,9 @@ public class MyBidsFragment extends Fragment {
     private ArrayList<Task> taskList;
     private ListView taskListView;
     private ArrayAdapter<Task> adapter;
+    private GetBidByUserIdController bidController;
+    private currentUser cuser;
+
 
     public MyBidsFragment() {
         // Required empty public constructor
@@ -35,27 +38,15 @@ public class MyBidsFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_my_bids, container, false);
 
         //Set up listview and adapater
-        taskList = new ArrayList<Task>();
-        taskListView = (ListView)v.findViewById(R.id.MyBidsListView);
-        adapter = new ArrayAdapter<Task>(getActivity(), android.R.layout.simple_list_item_1, taskList);
+        taskList = new ArrayList<>();
+        taskListView = v.findViewById(R.id.MyBidsListView);
+        adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, taskList);
         taskListView.setAdapter(adapter);
 
-        //Dummy Tasks for testing. Remove these and get the tasks from elastic search
-        taskList.add(new Task());
-        taskList.add(new Task());
-        taskList.add(new Task());
-        taskList.add(new Task());
-        taskList.add(new Task());
-        taskList.add(new Task());
-        taskList.add(new Task());
-        taskList.add(new Task());
-        taskList.add(new Task());
-        taskList.add(new Task());
-        taskList.add(new Task());
-        taskList.add(new Task());
-        taskList.add(new Task());
-        taskList.add(new Task());
-        taskList.add(new Task());
+        // controller stuff
+        bidController = new GetBidByUserIdController(getContext(), cuser);
+        bidController.doTaskRequest();
+        taskList = bidController.getResultTaskList();
 
         taskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 

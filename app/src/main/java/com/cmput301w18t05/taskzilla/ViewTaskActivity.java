@@ -219,6 +219,12 @@ public class ViewTaskActivity extends AppCompatActivity {
                 // do stuff here to actually add bid
 
 
+
+
+
+
+
+
                 Toast.makeText(ViewTaskActivity.this,
                         incomingBidFloat.toString(), Toast.LENGTH_SHORT).show();
                 mBuilder.dismiss();
