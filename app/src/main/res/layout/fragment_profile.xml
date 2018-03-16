@@ -152,4 +152,15 @@
         android:layout_alignEnd="@+id/NumRequests"
         android:text="780 123 4567"
         android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/LogOutButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/NumTasksDone"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="12dp"
+        android:background="@android:color/holo_red_light"
+        android:text="Log out"
+        android:textColor="@android:color/background_light" />
 </RelativeLayout>
