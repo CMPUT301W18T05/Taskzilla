@@ -89,6 +89,7 @@ public class ElasticSearchController {
             for (String id: taskIds) {
                 try {
                     result = client.execute(new Delete.Builder(id).index("cmput301w18t05").type("task").build());
+                    Log.i("Success", "Task deleted");
                 } catch (Exception e) {
                     Log.i("Error", "Task not deleted");
                 }
@@ -145,6 +146,7 @@ public class ElasticSearchController {
                 Log.i("Error","GetAllTasks search encountered an error.");
                 return null;
             }
+
             return foundTasks;
         }
     }

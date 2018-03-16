@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.cmput301w18t05.taskzilla.request.RequestManager;
+import com.cmput301w18t05.taskzilla.request.command.AddTaskRequest;
 import com.cmput301w18t05.taskzilla.request.command.SearchTaskRequest;
 
 import java.lang.reflect.Array;
@@ -61,19 +62,16 @@ public class TasksRequesterFragment extends Fragment {
 
         //Dummy Tasks for testing. Remove these and get the tasks from elastic search
 
-        taskList.add(new Task("Pick up my dogs poop",new User(),"do it"));
-        taskList.add(new Task("Clip my toenails",new User(),"ez money"));
+        //taskList.add(new Task("Pick up my dogs poop",new User(),"do it"));
+        //taskList.add(new Task("Clip my toenails",new User(),"ez money"));
        // addTask.execute(new Task("Get off my lawn"));
         //List<SearchResult.Hit<Task, Void>> tasks
        // ArrayList<Task> tasks = searchForTask.execute("name = 1");
        // Task t = getTask.execute("0");
 
-
-
       //  taskList.add();
         /*
-        requestManager = RequestManager.getInstance();
-        searchTaskRequest = new SearchTaskRequest("NewName");
+        searchTaskRequest = new SearchTaskRequest("");
         requestManager.invokeRequest(getContext(), searchTaskRequest);
 
         ArrayList<Task> search = searchTaskRequest.getTasks();

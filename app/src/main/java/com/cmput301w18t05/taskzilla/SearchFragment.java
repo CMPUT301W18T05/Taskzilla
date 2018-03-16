@@ -16,8 +16,6 @@ import android.widget.SearchView;
 
 import java.util.ArrayList;
 
-import io.searchbox.core.Search;
-
 
 /**
  * A simple {@link Fragment} subclass.
@@ -58,9 +56,10 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
         //Set up listview and adapter
         searchResults = new ArrayList<Task>();
         availableTasks = (ListView) mConstraintLayout.findViewById(R.id.ListView2);
+        searchController = new SearchController(this, getActivity());
+
         adapter = new ArrayAdapter<Task>(getActivity(), android.R.layout.simple_list_item_1, searchResults);
         availableTasks.setAdapter(adapter);
-        searchController = new SearchController(this, getActivity());
 
         availableTasks.setClickable(true);
 
@@ -73,7 +72,6 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
 
         // get all available tasks
         searchController.getAllRequest();
-
         notifyChange();
 
         return mConstraintLayout;
@@ -137,11 +135,10 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
 
     // Clears adapter and inputs new tasks
     public void notifyChange() {
-        searchResults = searchController.getResults();
-        adapter.clear();
+        searchResults.clear();
 
-        for(Task t : searchResults)
-            adapter.add(t);
+        for(Task t : searchController.getResults())
+            searchResults.add(t);
 
         adapter.notifyDataSetChanged();
     }
