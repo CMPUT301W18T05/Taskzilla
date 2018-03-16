@@ -2,7 +2,6 @@ package com.cmput301w18t05.taskzilla;
 
 import android.content.Intent;
 
-import com.google.gson.Gson;
 
 /**
  * Created by Colin on 2018-03-14.
@@ -24,6 +23,13 @@ public class MainActivityController {
         Intent loginIntent = new Intent(view, WelcomeActivity.class);
         view.startActivity(loginIntent);
     }
+
+    public boolean checkLoggedIn(){
+        return true;
+    }
+
+
+
 
 
 }
