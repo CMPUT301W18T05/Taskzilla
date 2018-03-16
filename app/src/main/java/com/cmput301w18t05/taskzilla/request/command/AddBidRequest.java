@@ -8,7 +8,13 @@ import com.cmput301w18t05.taskzilla.request.InsertionRequest;
 
 public class AddBidRequest extends InsertionRequest {
 
+    @Override
     public void execute() {
+    }
+
+    @Override
+    public void executeOffline() {
+
     }
 
 }

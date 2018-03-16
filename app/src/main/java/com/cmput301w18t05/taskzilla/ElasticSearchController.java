@@ -17,6 +17,7 @@ import io.searchbox.core.DocumentResult;
 import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -112,6 +113,39 @@ public class ElasticSearchController {
                 }
             }
             return task;
+        }
+    }
+
+    public static class GetAllTasks extends AsyncTask<Void, Void, ArrayList<Task>> {
+        @Override
+        protected ArrayList<Task> doInBackground(Void... voids) {
+            verifySettings();
+            ArrayList<Task> foundTasks = new ArrayList<>();
+            String query =
+                    "{\n" +
+                            "   \"query\": {\n" +
+                            "       \"match_all\" : {}\n" +
+                            "   }\n" +
+                            "}";
+            Log.i("Query:",query);
+
+            Search search = new Search.Builder(query)
+                    .addIndex("cmput301w18t05")
+                    .addType("task")
+                    .build();
+
+            try {
+                SearchResult result = client.execute(search);
+                if (result.isSucceeded()) {
+                    List<Task> matchingTasks = result.getSourceAsObjectList(Task.class);
+                    foundTasks.addAll(matchingTasks);
+                }
+            }
+            catch (Exception e) {
+                Log.i("Error","GetAllTasks search encountered an error.");
+                return null;
+            }
+            return foundTasks;
         }
     }
 

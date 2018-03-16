@@ -21,6 +21,7 @@ public class SearchTaskRequest extends SearchRequest {
         this.searchKeywords = keywords;
     }
 
+    @Override
     public void execute() {
         ElasticSearchController.SearchForTasks search = new ElasticSearchController.SearchForTasks();
         search.execute(searchKeywords);
@@ -31,6 +32,10 @@ public class SearchTaskRequest extends SearchRequest {
         catch(Exception e) {
             Log.i("Error", "Failed to get tasks from the async object");
         }
+    }
+
+    @Override
+    public void executeOffline() {
     }
 
     public ArrayList<Task> getTasks() {

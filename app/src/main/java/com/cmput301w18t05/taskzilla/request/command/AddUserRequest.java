@@ -21,11 +21,13 @@ public class AddUserRequest extends InsertionRequest {
         this.user = user;
     }
 
+    @Override
     public void execute() {
         task = new ElasticSearchController.AddUser();
         task.execute(user); // for now, subject to change.
     }
 
+    @Override
     public void executeOffline() {
     }
 

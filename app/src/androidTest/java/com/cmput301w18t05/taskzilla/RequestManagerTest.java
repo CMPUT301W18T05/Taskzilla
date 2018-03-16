@@ -8,6 +8,8 @@ import android.util.Log;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.AddTaskRequest;
 import com.cmput301w18t05.taskzilla.request.command.AddUserRequest;
+import com.cmput301w18t05.taskzilla.request.command.GetAllTasksRequest;
+import com.cmput301w18t05.taskzilla.request.command.GetTaskRequest;
 import com.cmput301w18t05.taskzilla.request.command.SearchTaskRequest;
 
 import java.lang.reflect.Array;
@@ -87,6 +89,38 @@ public class RequestManagerTest extends ActivityInstrumentationTestCase2 {
         for (Task t : ret) {
             System.out.println(t);
             Log.i("Found Task", t.getId());
+        }
+    }
+
+    public void testGetTaskRequest() {
+        Task mockTask = new Task();
+        mockTask.setName("testing get task");
+        mockTask.setDescription("testing get task");
+
+        AddTaskRequest addTaskRequest = new AddTaskRequest(mockTask);
+        RequestManager.getInstance().invokeRequest(ctx,addTaskRequest);
+
+        while (mockTask.getId() == null);
+        String id = mockTask.getId();
+
+        GetTaskRequest getTaskRequest = new GetTaskRequest(id);
+        RequestManager.getInstance().invokeRequest(ctx,getTaskRequest);
+
+        Task ret = getTaskRequest.getResult();
+        Log.i("Event", "RETURNED TASK: "+ret.toString());
+        assertEquals(id, getTaskRequest.getResult().getId());
+    }
+
+    public void testGetAllTasks() {
+        GetAllTasksRequest getAllTasksRequest = new GetAllTasksRequest();
+        RequestManager.getInstance().invokeRequest(ctx,getAllTasksRequest);
+
+        ArrayList<Task> res = getAllTasksRequest.getResult();
+        assertNotNull(res);
+        assertTrue(res.size() > 0);
+
+        for (Task t : res) {
+            Log.i("FOUND TASK: ", t.getId()+" "+t.getName());
         }
     }
 }

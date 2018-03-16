@@ -16,11 +16,13 @@ public class AddTaskRequest extends InsertionRequest {
         this.taskData = task;
     }
 
+    @Override
     public void execute() {
         task = new ElasticSearchController.AddTask();
         task.execute(taskData); // for now, subject to change.
     }
 
+    @Override
     public void executeOffline() {
     }
 
