@@ -70,7 +70,7 @@ public class ElasticSearchController {
             verifySettings();
             DocumentResult result = null;
             for (Task task : tasks) {
-                Update update = new Update.Builder(task).index("cmput301w18t05").type("task").id(task.getId()).build();
+                Update update = new Update.Builder(task).index("cmput301w18t05").type("task").build();
                 try {
                     result = client.execute(update);
                 } catch (Exception e) {

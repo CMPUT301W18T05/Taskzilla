@@ -53,6 +53,7 @@ public class ViewTaskActivity extends AppCompatActivity {
     private ImageButton ProviderPicture;
     private ImageButton RequesterPicture;
 
+    private Button PinkButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +67,7 @@ public class ViewTaskActivity extends AppCompatActivity {
         DescriptionView = findViewById(R.id.Description);
         RequesterName = findViewById(R.id.RequesterName);
         TaskName = findViewById(R.id.TaskName);
+        PinkButton = findViewById(R.id.PinkButton);
 
         this.viewTaskController = new ViewTaskController(this.findViewById(android.R.id.content),this);
         taskID = getIntent().getStringExtra("TaskId");
@@ -87,6 +89,7 @@ public class ViewTaskActivity extends AppCompatActivity {
         RequesterName.setText(TaskRequester);
         DescriptionView.setText(description);
         TaskName.setText(taskName);
+        PinkButton.setText("PLACE BID");
 
         if (currentUserId.equals(taskUserId) && taskStatus.equals("requested")) {
             EditButton.setVisibility(View.VISIBLE);
@@ -163,21 +166,7 @@ public class ViewTaskActivity extends AppCompatActivity {
 
         });
 
-
-        Button buttonAtBottom = findViewById(R.id.button_at_bottom);
-
-        ExpandableListView bidsListView = findViewById(R.id.bids_list_listview);
-
-        // if this task's requester is the current logged in user
-        //buttonAtBottom.setText("ACCEPT A BID");
-        //otherwise
-        buttonAtBottom.setText("PLACE BID");
-
-
         ArrayList<Bid> bidsList = new ArrayList<>();
-
-        //ArrayAdapter<Bid> adapter = new ArrayAdapter<>(ViewTaskActivity.this, android.R.layout.simple_list_item_1, bidsList);
-        //bidsListView.setAdapter(adapter);
 
 
         bidsList.add(new Bid(new User(), 1.0f));
@@ -190,7 +179,7 @@ public class ViewTaskActivity extends AppCompatActivity {
 
 
     /**
-     * placeBid
+     * thePinkButton
      * upon pressing place button on task page
      * depending on if the user viewing the task is the owner of task or someone else
      * if they are the owner
@@ -210,7 +199,7 @@ public class ViewTaskActivity extends AppCompatActivity {
         // show a dialog or fragment where the requester can select which bid to accept
         // otherwise
 
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(ViewTaskActivity.this);
+        final AlertDialog mBuilder = new AlertDialog.Builder(ViewTaskActivity.this).create();
         final View mView = getLayoutInflater().inflate(R.layout.dialog_place_bid, null);
 
         final EditText incomingBidText = mView.findViewById(R.id.place_bid_edittext);
@@ -231,15 +220,19 @@ public class ViewTaskActivity extends AppCompatActivity {
                 // do stuff here to actually add bid
 
 
+
+
+
+
+
+
                 Toast.makeText(ViewTaskActivity.this,
                         incomingBidFloat.toString(), Toast.LENGTH_SHORT).show();
-
+                mBuilder.dismiss();
             }
         });
         mBuilder.setView(mView);
-        AlertDialog dialog = mBuilder.create();
-        dialog.show();
-
+        mBuilder.show();
     }
 
 
@@ -263,6 +256,5 @@ public class ViewTaskActivity extends AppCompatActivity {
             }
         }
     }
-
 }
 
