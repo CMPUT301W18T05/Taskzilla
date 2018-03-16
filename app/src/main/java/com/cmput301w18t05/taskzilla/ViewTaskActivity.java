@@ -1,6 +1,8 @@
 package com.cmput301w18t05.taskzilla;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,6 +25,7 @@ public class ViewTaskActivity extends AppCompatActivity {
         ImageButton EditButton = (ImageButton) findViewById(R.id.EditButton);
         ImageButton DeleteButton = (ImageButton) findViewById(R.id.DeleteButton);
         ImageButton ProviderPicture = (ImageButton) findViewById(R.id.ProviderPicture);
+        ImageButton RequesterPicture = (ImageButton) findViewById(R.id.RequesterPicture);
         TextView ProviderName = (TextView) findViewById(R.id.ProviderName);
         TextView DescriptionView = (TextView) findViewById(R.id.Description);
         TextView RequesterName = (TextView) findViewById(R.id.RequesterName);
@@ -54,7 +57,9 @@ public class ViewTaskActivity extends AppCompatActivity {
             ProviderName.setText(TaskProvider);
         }
 
+        //Provider Profile
         ProviderPicture.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), ProfileActivity.class);
                 startActivity(intent);
@@ -62,6 +67,16 @@ public class ViewTaskActivity extends AppCompatActivity {
 
         });
 
+        //Requester Profile
+        RequesterPicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), ProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        //Edit Task Button
         EditButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -74,7 +89,27 @@ public class ViewTaskActivity extends AppCompatActivity {
 
         //Implement delete button
         DeleteButton.setOnClickListener(new View.OnClickListener(){
+            @Override
             public void onClick(View view) {
+                AlertDialog.Builder alert = new AlertDialog.Builder(ViewTaskActivity.this);
+                alert.setTitle("Delete");
+                alert.setMessage("Are you sure you want to delete?");
+                //DELETE CODE
+                alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+
+                //DELETE CANCEL CODE
+                alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                alert.show();
             }
 
         });
