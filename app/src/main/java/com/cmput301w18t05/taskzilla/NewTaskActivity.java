@@ -10,6 +10,7 @@ import android.widget.EditText;
 public class NewTaskActivity extends AppCompatActivity {
 
     private NewTaskController newTaskController;
+    private currentUser cUser = currentUser.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTitle("Add a Task");
@@ -32,7 +33,7 @@ public class NewTaskActivity extends AppCompatActivity {
         addTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                newTaskController.addTask(taskName.getText().toString(),new User(), taskDescription.getText().toString());
+                newTaskController.addTask(taskName.getText().toString(),cUser, taskDescription.getText().toString());
             }
         });
 

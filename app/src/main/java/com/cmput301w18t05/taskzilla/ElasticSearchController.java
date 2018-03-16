@@ -188,7 +188,7 @@ public class ElasticSearchController {
             ArrayList<Task> foundTasks = new ArrayList<>();
 
             for (String username : usernames) {
-                String query = "{ \"query\" : { \"common\" : \"TaskRequester.username\" : " + username + " }}";
+                String query = "{ \"query\" : { \"common\" : {\"TaskRequester.username\" : \"" + username + "\" }}}";
                 Log.i("Query:", query);
 
                 Search search = new Search.Builder(query)
