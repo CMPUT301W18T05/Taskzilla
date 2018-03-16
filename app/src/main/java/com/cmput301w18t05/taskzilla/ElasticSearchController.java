@@ -287,8 +287,18 @@ public class ElasticSearchController {
                     Log.i("Error", "Bid not added");
                 }
             }
-
             return false;
+        }
+    }
+
+    public static class GetBidByUserID extends AsyncTask<String, Void, Bid> {
+        @Override
+        protected Bid doInBackground(String... userIds) {
+            verifySettings();
+
+            for (String  userId : userIds) {
+            }
+            return null;
         }
     }
 
