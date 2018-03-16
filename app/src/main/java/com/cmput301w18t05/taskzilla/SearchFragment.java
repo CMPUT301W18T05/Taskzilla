@@ -6,11 +6,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -35,7 +37,7 @@ import io.searchbox.core.Search;
  *
  */
 
-public class SearchFragment extends Fragment implements SearchView.OnQueryTextListener {
+public class SearchFragment extends Fragment {//implements SearchView.OnQueryTextListener {
 
     private SearchView searchField;
     private ListView availableTasks;
@@ -68,7 +70,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         availableTasks = (ListView) mConstraintLayout.findViewById(R.id.ListView2);
         adapter = new ArrayAdapter<Task>(getActivity(), android.R.layout.simple_list_item_1, searchResults);
         availableTasks.setAdapter(adapter);
-        searchController = new SearchController();
+        searchController = new SearchController(this, getActivity());
 
         availableTasks.setClickable(true);
 
@@ -80,8 +82,8 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         });
 
         // get all available tasks
-        searchController.searchRequest(getContext(),"");
-        searchResults = searchController.getResults();
+        searchController.searchRequest("imperative computer programming");
+        notifyChange();
 
         return mConstraintLayout;
     }
@@ -95,6 +97,39 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     public void onViewCreated(View view, Bundle savedInstanceState) {
         // expand search bar by default
         searchField = view.findViewById(R.id.searchView);
+
+        searchField.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String text) {
+                String sentence;
+                sentence = text.toLowerCase();
+
+                Log.i("Inside","hi");
+
+                if (sentence.length() == 0) {                          // Checks if user entered text in search bar
+                    if (searchController.getKeywords().isEmpty()){ // Checks if keywords is empty, if yes return already loaded array of tasks
+                        // do nothing
+                    }
+                    else {                                         // Since keywords isn't empty, previous array of tasks isn't all available tasks
+                        searchController.clearKeywords();
+                        searchController.searchRequest(sentence);
+                    }
+                }
+
+                else {                                             // Adds keyword to list and loads new set of tasks based on keywords
+                    searchController.clearKeywords();
+                    searchController.addKeywords(sentence);
+                    searchController.searchRequest(sentence);
+                }
+
+                return false;
+            }
+        });
 
         //searchField.setIconified(false);
     }
@@ -111,35 +146,14 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         this.searchController = searchController;
     }
 
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-        return false;
-    }
+    // Clears adapter and inputs new tasks
+    public void notifyChange() {
+        searchResults = searchController.getResults();
+        adapter.clear();
 
-    @Override
-    public boolean onQueryTextChange(String text) {
-        String sentence;
-        sentence = text.toLowerCase();
-
-        if (sentence.length() == 0) {                          // Checks if user entered text in search bar
-            if (searchController.getKeywords().isEmpty()){ // Checks if keywords is empty, if yes return already loaded array of tasks
-                // do nothing
-            }
-            else {                                         // Since keywords isn't empty, previous array of tasks isn't all available tasks
-                searchController.clearKeywords();
-                searchController.searchRequest(getContext(), sentence);
-            }
-        }
-
-        else {                                             // Adds keyword to list and loads new set of tasks based on keywords
-            searchController.clearKeywords();
-            searchController.addKeywords(sentence);
-            searchController.searchRequest(getContext(), sentence);
-        }
+        for(Task t : searchResults)
+            adapter.add(t);
 
         adapter.notifyDataSetChanged();
-
-        return false;
     }
-
 }
