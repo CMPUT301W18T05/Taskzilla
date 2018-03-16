@@ -151,6 +151,66 @@ public class ElasticSearchController {
         }
     }
 
+    public static class GetTasksByProviderUsername extends AsyncTask<String, Void, ArrayList<Task>> {
+        @Override
+        protected ArrayList<Task> doInBackground(String... usernames) {
+            verifySettings();
+            ArrayList<Task> foundTasks = new ArrayList<>();
+
+            for (String username : usernames) {
+                String query = "{ \"query\" : { \"common\" : \"TaskProvider.username\" : " + username + " }}";
+                Log.i("Query:", query);
+
+                Search search = new Search.Builder(query)
+                        .addIndex("cmput301w18t05")
+                        .addType("task")
+                        .build();
+
+                try {
+                    SearchResult result = client.execute(search);
+                    if (result.isSucceeded()) {
+                        List<Task> matchingTasks = result.getSourceAsObjectList(Task.class);
+                        foundTasks.addAll(matchingTasks);
+                    }
+                } catch (Exception e) {
+                    Log.i("Error", "GetAllTasks search encountered an error.");
+                    return null;
+                }
+            }
+            return foundTasks;
+        }
+    }
+
+    public static class GetTasksByRequesterUsername extends AsyncTask<String, Void, ArrayList<Task>> {
+        @Override
+        protected ArrayList<Task> doInBackground(String... usernames) {
+            verifySettings();
+            ArrayList<Task> foundTasks = new ArrayList<>();
+
+            for (String username : usernames) {
+                String query = "{ \"query\" : { \"common\" : \"TaskRequester.username\" : " + username + " }}";
+                Log.i("Query:", query);
+
+                Search search = new Search.Builder(query)
+                        .addIndex("cmput301w18t05")
+                        .addType("task")
+                        .build();
+
+                try {
+                    SearchResult result = client.execute(search);
+                    if (result.isSucceeded()) {
+                        List<Task> matchingTasks = result.getSourceAsObjectList(Task.class);
+                        foundTasks.addAll(matchingTasks);
+                    }
+                } catch (Exception e) {
+                    Log.i("Error", "GetAllTasks search encountered an error.");
+                    return null;
+                }
+            }
+            return foundTasks;
+        }
+    }
+
     public static class SearchForTasks extends AsyncTask<String, Void, ArrayList<Task>> {
         @Override
         protected ArrayList<Task> doInBackground(String... keywords) {
