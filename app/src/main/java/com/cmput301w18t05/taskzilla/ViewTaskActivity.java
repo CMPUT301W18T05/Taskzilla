@@ -123,14 +123,19 @@ public class ViewTaskActivity extends AppCompatActivity {
         switch(requestCode){
             case(1) : {
                 //code to add to ESC
-
-                String TaskName = data.getStringExtra("Task Name");
-                String Description = data.getStringExtra("Description");
-                TextView DescriptionView = (TextView) findViewById(R.id.Description);
-                TextView TaskNameView = (TextView) findViewById(R.id.TaskName);
-                TaskNameView.setText(TaskName);
-                DescriptionView.setText(Description);
-
+                if(resultCode == RESULT_OK) {
+                    String TaskName = data.getStringExtra("Task Name");
+                    String Description = data.getStringExtra("Description");
+                    TextView DescriptionView = (TextView) findViewById(R.id.Description);
+                    TextView TaskNameView = (TextView) findViewById(R.id.TaskName);
+                    TaskNameView.setText(TaskName);
+                    if(Description.length()>0) {
+                        DescriptionView.setText(Description);
+                    }
+                    else{
+                        DescriptionView.setText("No Description");
+                    }
+                }
             }
         }
     }
