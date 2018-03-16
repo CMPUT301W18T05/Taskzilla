@@ -1,7 +1,5 @@
 package com.cmput301w18t05.taskzilla;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.support.v7.app.AppCompatActivity;
@@ -11,7 +9,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.cmput301w18t05.taskzilla.request.RequestManager;
-import com.google.gson.Gson;
 
 /**
  * main activity includes the login screen
