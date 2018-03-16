@@ -1,6 +1,7 @@
 package com.cmput301w18t05.taskzilla;
 
 import android.app.ActivityManager;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -52,8 +53,12 @@ public class EditTaskActivity extends AppCompatActivity {
 
         /**                                         **/
 
-
-        finish();
-
+        else {
+            Intent returnIntent = new Intent();
+            returnIntent.putExtra("Task Name", TaskName);
+            returnIntent.putExtra("Description", Description);
+            setResult(RESULT_OK,returnIntent);
+            finish();
+        }
     }
 }
