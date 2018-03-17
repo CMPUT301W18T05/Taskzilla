@@ -229,13 +229,7 @@ public class ViewTaskActivity extends AppCompatActivity {
                     return;
                 }
                 // do stuff here to actually add bid
-
-
-
-
-
-
-
+                task.addBid(new Bid(currentUserId, taskID, incomingBidFloat));
 
                 Toast.makeText(ViewTaskActivity.this,
                         incomingBidFloat.toString(), Toast.LENGTH_SHORT).show();

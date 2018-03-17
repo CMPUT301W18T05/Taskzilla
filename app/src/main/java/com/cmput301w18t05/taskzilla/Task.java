@@ -3,7 +3,9 @@ package com.cmput301w18t05.taskzilla;
 import android.location.Location;
 
 import com.cmput301w18t05.taskzilla.request.RequestManager;
+import com.cmput301w18t05.taskzilla.request.command.AddBidRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetBidsByTaskIdRequest;
+import com.cmput301w18t05.taskzilla.request.command.GetUserRequest;
 
 import java.util.ArrayList;
 
@@ -22,8 +24,9 @@ public class Task {
     @JestId
     private String Id;
 
-    private User TaskRequester;
-    private User TaskProvider;
+    private String providerId;
+    private String requesterId;
+
     private String status;
     private String description;
     private Location location;
@@ -40,7 +43,7 @@ public class Task {
     public Task(String name, User TaskRequester, String description) {
         photos = new ArrayList<Photo>();
         this.name = name;
-        this.TaskRequester = TaskRequester;
+        this.requesterId = TaskRequester.getId();
         this.status = "requested";
         this.description = description;
     }
@@ -48,7 +51,7 @@ public class Task {
     public Task(String name, User TaskRequester, String description, Location location) {
         photos = new ArrayList<Photo>();
         this.name = name;
-        this.TaskRequester = TaskRequester;
+        this.requesterId = TaskRequester.getId();
         this.status = "requested";
         this.description = description;
         this.location = location;
@@ -56,7 +59,7 @@ public class Task {
     public Task(String name, User TaskRequester, String description, Location location, ArrayList<Photo> photos) {
         photos = new ArrayList<Photo>();
         this.name = name;
-        this.TaskRequester = TaskRequester;
+        this.requesterId = TaskRequester.getId();
         this.status = "requested";
         this.description = description;
         this.location = location;
@@ -70,9 +73,8 @@ public class Task {
      * @param bid
      */
     public void addBid(Bid bid) {
-        int i;
-        for (i = 0; i < bids.size() && bid.compareTo(bids.get(i)) > 0; i++);
-        bids.add(i, bid);
+        AddBidRequest addBidRequest = new AddBidRequest(bid);
+        RequestManager.getInstance().invokeRequest(addBidRequest);
     }
 
     /**
@@ -129,19 +131,35 @@ public class Task {
     }
 
     public User getTaskRequester() {
-        return TaskRequester;
+        return userRequest(this.providerId);
     }
 
     public void setTaskRequester(User taskRequester) {
-        this.TaskRequester = taskRequester;
+        this.requesterId = taskRequester.getId();
+    }
+
+    public String getProviderId() {
+        return providerId;
+    }
+
+    public void setProviderId(String providerId) {
+        this.providerId = providerId;
+    }
+
+    public String getRequesterId() {
+        return requesterId;
+    }
+
+    public void setRequesterId(String requesterId) {
+        this.requesterId = requesterId;
     }
 
     public User getTaskProvider() {
-        return TaskProvider;
+        return userRequest(this.requesterId);
     }
 
     public void setTaskProvider(User taskProvider) {
-        this.TaskProvider = taskProvider;
+        this.providerId = taskProvider.getId();
     }
 
     public String getStatus() {
@@ -182,6 +200,13 @@ public class Task {
 
     public String toString(){
         return name;
+    }
+
+    private User userRequest(String uid) {
+        GetUserRequest getUser = new GetUserRequest(uid);
+        RequestManager.getInstance().invokeRequest(getUser);
+
+        return getUser.getResult();
     }
 
     /**
