@@ -11,6 +11,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.cmput301w18t05.taskzilla.request.RequestManager;
+import com.cmput301w18t05.taskzilla.request.command.GetTasksByProviderUsernameRequest;
+import com.cmput301w18t05.taskzilla.request.command.GetTasksByRequesterUsernameRequest;
+import com.cmput301w18t05.taskzilla.request.command.SearchTaskRequest;
+
 import java.util.ArrayList;
 
 
@@ -23,6 +28,12 @@ public class TasksProviderFragment extends Fragment {
     private ArrayList<Task> taskList;
     private ListView taskListView;
     private ArrayAdapter<Task> adapter;
+
+    private RequestManager requestManager;
+    private GetTasksByProviderUsernameRequest requestTasks;
+    private SearchTaskRequest newRequest;
+    private currentUser cUser = currentUser.getInstance();
+
 
     public TasksProviderFragment() {
         // Required empty public constructor
@@ -41,20 +52,20 @@ public class TasksProviderFragment extends Fragment {
         adapter = new ArrayAdapter<Task>(getActivity(), android.R.layout.simple_list_item_1, taskList);
         taskListView.setAdapter(adapter);
 
-        //Dummy Tasks for testing. Remove these and get the tasks from elastic search
-        taskList.add(new Task());
-        taskList.add(new Task());
-        taskList.add(new Task());
-        taskList.add(new Task());
-        taskList.add(new Task());
-        taskList.add(new Task());
-        taskList.add(new Task());
-        taskList.add(new Task());
+
+        requestTasks = new GetTasksByProviderUsernameRequest(cUser.getUsername());
+        requestManager.getInstance().invokeRequest(getContext(), requestTasks);
+
+        for (Task t : requestTasks.getResult()) {
+            taskList.add(t);
+        }
+        
+        adapter.notifyDataSetChanged();
 
         taskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> a, View v, int position, long id) {
-                viewTask();
+                viewTask(taskList.get(position).getId());
             }
         });
 
@@ -62,8 +73,9 @@ public class TasksProviderFragment extends Fragment {
     }
 
 
-    public void viewTask(){
+    public void viewTask(String id){
         Intent intent = new Intent(getActivity(), ViewTaskActivity.class);
+        intent.putExtra("TaskId",id);
         startActivity(intent);
     }
 
