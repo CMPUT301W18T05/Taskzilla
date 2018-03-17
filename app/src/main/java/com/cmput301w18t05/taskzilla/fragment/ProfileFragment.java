@@ -17,6 +17,7 @@ import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.User;
 import com.cmput301w18t05.taskzilla.activity.EditProfileActivity;
 import com.cmput301w18t05.taskzilla.activity.MainActivity;
+import com.cmput301w18t05.taskzilla.currentUser;
 
 
 /**
