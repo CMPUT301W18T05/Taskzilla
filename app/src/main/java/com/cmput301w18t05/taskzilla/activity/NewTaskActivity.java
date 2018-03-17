@@ -1,10 +1,14 @@
-package com.cmput301w18t05.taskzilla;
+package com.cmput301w18t05.taskzilla.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
+import com.cmput301w18t05.taskzilla.controller.NewTaskController;
+import com.cmput301w18t05.taskzilla.R;
+import com.cmput301w18t05.taskzilla.currentUser;
 
 
 public class NewTaskActivity extends AppCompatActivity {

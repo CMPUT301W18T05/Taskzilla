@@ -9,7 +9,7 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context="com.cmput301w18t05.taskzilla.ViewTaskActivity">
+        tools:context="com.cmput301w18t05.taskzilla.activity.ViewTaskActivity">
 
 
         <TextView

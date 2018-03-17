@@ -1,4 +1,4 @@
-package com.cmput301w18t05.taskzilla;
+package com.cmput301w18t05.taskzilla.fragment;
 
 
 import android.content.Intent;
@@ -10,6 +10,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import com.cmput301w18t05.taskzilla.R;
+import com.cmput301w18t05.taskzilla.Task;
+import com.cmput301w18t05.taskzilla.activity.ViewTaskActivity;
 
 import java.util.ArrayList;
 

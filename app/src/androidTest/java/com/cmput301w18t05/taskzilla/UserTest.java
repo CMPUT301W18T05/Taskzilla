@@ -2,6 +2,8 @@ package com.cmput301w18t05.taskzilla;
 
 import android.test.ActivityInstrumentationTestCase2;
 
+import com.cmput301w18t05.taskzilla.activity.MainActivity;
+
 /**
  * Created by James on 2/23/2018.
  *

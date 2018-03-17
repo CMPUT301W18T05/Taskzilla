@@ -1,12 +1,14 @@
-package com.cmput301w18t05.taskzilla;
+package com.cmput301w18t05.taskzilla.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.cmput301w18t05.taskzilla.EmailAddress;
+import com.cmput301w18t05.taskzilla.R;
+import com.cmput301w18t05.taskzilla.User;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.AddUserRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetUserByUsernameRequest;

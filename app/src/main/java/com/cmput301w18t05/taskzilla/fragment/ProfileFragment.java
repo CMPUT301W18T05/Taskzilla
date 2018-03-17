@@ -1,4 +1,4 @@
-package com.cmput301w18t05.taskzilla;
+package com.cmput301w18t05.taskzilla.fragment;
 
 
 import android.content.Intent;
@@ -11,6 +11,12 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.cmput301w18t05.taskzilla.controller.ProfileController;
+import com.cmput301w18t05.taskzilla.R;
+import com.cmput301w18t05.taskzilla.User;
+import com.cmput301w18t05.taskzilla.activity.EditProfileActivity;
+import com.cmput301w18t05.taskzilla.activity.MainActivity;
 
 
 /**

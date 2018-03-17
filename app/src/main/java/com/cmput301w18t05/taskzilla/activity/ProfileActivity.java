@@ -1,8 +1,12 @@
-package com.cmput301w18t05.taskzilla;
+package com.cmput301w18t05.taskzilla.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
+
+import com.cmput301w18t05.taskzilla.controller.ProfileController;
+import com.cmput301w18t05.taskzilla.R;
+import com.cmput301w18t05.taskzilla.User;
 
 public class ProfileActivity extends AppCompatActivity {
     private ProfileController profileController;

@@ -1,9 +1,13 @@
-package com.cmput301w18t05.taskzilla;
+package com.cmput301w18t05.taskzilla.controller;
 
 import android.content.Context;
 import android.text.TextUtils;
 import android.widget.EditText;
 
+import com.cmput301w18t05.taskzilla.R;
+import com.cmput301w18t05.taskzilla.Task;
+import com.cmput301w18t05.taskzilla.User;
+import com.cmput301w18t05.taskzilla.activity.NewTaskActivity;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.AddTaskRequest;
 

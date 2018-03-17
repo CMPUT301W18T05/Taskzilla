@@ -1,6 +1,5 @@
-package com.cmput301w18t05.taskzilla;
+package com.cmput301w18t05.taskzilla.activity;
 
-import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -8,9 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
-import com.cmput301w18t05.taskzilla.request.RequestManager;
-import com.cmput301w18t05.taskzilla.request.command.AddTaskRequest;
-import com.cmput301w18t05.taskzilla.request.command.UpdateTaskRequest;
+import com.cmput301w18t05.taskzilla.R;
+import com.cmput301w18t05.taskzilla.Task;
 
 public class EditTaskActivity extends AppCompatActivity {
     private Task task;

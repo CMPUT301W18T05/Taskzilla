@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.cmput301w18t05.taskzilla.TasksFragment">
+    tools:context="com.cmput301w18t05.taskzilla.fragment.TasksFragment">
 
     <android.support.design.widget.TabLayout
         android:id="@+id/ProviderRequesterTab"

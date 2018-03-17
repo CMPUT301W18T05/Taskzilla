@@ -1,6 +1,5 @@
-package com.cmput301w18t05.taskzilla;
+package com.cmput301w18t05.taskzilla.activity;
 
-import android.content.Context;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.support.v7.app.AppCompatActivity;
@@ -9,14 +8,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.cmput301w18t05.taskzilla.controller.MainActivityController;
+import com.cmput301w18t05.taskzilla.R;
+import com.cmput301w18t05.taskzilla.currentUser;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
-import com.google.gson.Gson;
-
-import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
 
 /**
  * main activity includes the login screen

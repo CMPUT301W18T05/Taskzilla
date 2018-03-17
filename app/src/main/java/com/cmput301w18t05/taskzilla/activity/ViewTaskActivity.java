@@ -1,4 +1,4 @@
-package com.cmput301w18t05.taskzilla;
+package com.cmput301w18t05.taskzilla.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,6 +14,13 @@ import android.widget.TextView;
 
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.cmput301w18t05.taskzilla.Bid;
+import com.cmput301w18t05.taskzilla.R;
+import com.cmput301w18t05.taskzilla.Task;
+import com.cmput301w18t05.taskzilla.User;
+import com.cmput301w18t05.taskzilla.controller.ViewTaskController;
+import com.cmput301w18t05.taskzilla.currentUser;
 
 import java.util.ArrayList;
 
@@ -221,13 +228,7 @@ public class ViewTaskActivity extends AppCompatActivity {
                     return;
                 }
                 // do stuff here to actually add bid
-
-
-
-
-
-
-
+                task.addBid(new Bid(currentUserId, taskID, incomingBidFloat));
 
                 Toast.makeText(ViewTaskActivity.this,
                         incomingBidFloat.toString(), Toast.LENGTH_SHORT).show();

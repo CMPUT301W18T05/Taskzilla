@@ -1,8 +1,9 @@
-package com.cmput301w18t05.taskzilla;
+package com.cmput301w18t05.taskzilla.activity;
 
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
+import com.cmput301w18t05.taskzilla.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
