@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.EventLogTags;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -35,11 +36,11 @@ public class ViewTaskActivity extends AppCompatActivity {
     private ViewTaskController viewTaskController;
     private Task task;
     private String taskStatus;
-    private int currentUserId;
-    private int taskUserId;
-    private String Description;
-    private String TaskRequester;
-    private String TaskProvider;
+    private String currentUserId;
+    private String taskUserId;
+    private String description;
+    private User TaskRequester;
+    private User TaskProvider;
     private String taskName;
 
     private TextView ProviderName;
@@ -52,19 +53,21 @@ public class ViewTaskActivity extends AppCompatActivity {
     private ImageButton ProviderPicture;
     private ImageButton RequesterPicture;
 
+    private Button PinkButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_task);
 
-        EditButton = (ImageButton) findViewById(R.id.EditButton);
-        DeleteButton = (ImageButton) findViewById(R.id.DeleteButton);
-        ProviderPicture = (ImageButton) findViewById(R.id.ProviderPicture);
-        RequesterPicture = (ImageButton) findViewById(R.id.RequesterPicture);
-        ProviderName = (TextView) findViewById(R.id.ProviderName);
-        DescriptionView = (TextView) findViewById(R.id.Description);
-        RequesterName = (TextView) findViewById(R.id.RequesterName);
-        TaskName = (TextView) findViewById(R.id.TaskName);
+        EditButton = findViewById(R.id.EditButton);
+        DeleteButton = findViewById(R.id.DeleteButton);
+        ProviderPicture = findViewById(R.id.ProviderPicture);
+        RequesterPicture = findViewById(R.id.RequesterPicture);
+        ProviderName = findViewById(R.id.ProviderName);
+        DescriptionView = findViewById(R.id.Description);
+        RequesterName = findViewById(R.id.RequesterName);
+        TaskName = findViewById(R.id.TaskName);
+        PinkButton = findViewById(R.id.PinkButton);
 
         this.viewTaskController = new ViewTaskController(this.findViewById(android.R.id.content),this);
         taskID = getIntent().getStringExtra("TaskId");
@@ -73,34 +76,39 @@ public class ViewTaskActivity extends AppCompatActivity {
         viewTaskController.getTaskRequest();
         task = viewTaskController.getTask();
 
-        currentUserId = 5;                              //Dummy for Testing
-        taskUserId = 5;                                 //Dummy for Testing
+        currentUserId = currentUser.getInstance().getId();
+        taskUserId = task.getTaskRequester().getId();
 
         taskName = task.getName();
         taskStatus = task.getStatus();
-        Description = task.getDescription();
+        description = task.getDescription();
 
-        TaskRequester = "4";                            //Dummy for Testing
-        TaskProvider = "5";                             //Dummy for Testing
-
-        RequesterName.setText(TaskRequester);
-        DescriptionView.setText(Description);
+        TaskRequester = task.getTaskRequester();
+        try {
+            TaskProvider = task.getTaskProvider();
+        }
+        catch (Exception e){
+            TaskProvider = new User();
+        }
+        RequesterName.setText(TaskRequester.getName());
+        DescriptionView.setText(description);
         TaskName.setText(taskName);
+        PinkButton.setText("PLACE BID");
 
-        if (currentUserId == taskUserId && taskStatus == "requested") {
+        if (currentUserId.equals(taskUserId) && taskStatus.equals("requested")) {
             EditButton.setVisibility(View.VISIBLE);
         } else {
             EditButton.setVisibility(View.INVISIBLE);
         }
-        if (currentUserId == taskUserId) {
+        if (currentUserId.equals(taskUserId)) {
             DeleteButton.setVisibility(View.VISIBLE);
         } else {
             DeleteButton.setVisibility(View.INVISIBLE);
         }
-        if (taskStatus == "assigned") {
+        if (taskStatus.equals("assigned")) {
             ProviderPicture.setVisibility(View.VISIBLE);
             ProviderName.setVisibility(View.VISIBLE);
-            ProviderName.setText(TaskProvider);
+            ProviderName.setText(TaskProvider.getName());
         }
 
         //Provider Profile
@@ -108,7 +116,7 @@ public class ViewTaskActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), ProfileActivity.class);
-                intent.putExtra("user", TaskProvider);
+                intent.putExtra("user", TaskProvider.getId());
                 startActivity(intent);
             }
 
@@ -119,7 +127,7 @@ public class ViewTaskActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), ProfileActivity.class);
-                intent.putExtra("user", TaskRequester);
+                intent.putExtra("user", TaskRequester.getId());
                 startActivity(intent);
             }
         });
@@ -129,8 +137,8 @@ public class ViewTaskActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), EditTaskActivity.class);
-                intent.putExtra("taskID", taskID);
-                intent.putExtra("Description", Description);
+                intent.putExtra("task Name", taskName);
+                intent.putExtra("Description", description);
                 startActivityForResult(intent, 1);
             }
         });
@@ -162,21 +170,7 @@ public class ViewTaskActivity extends AppCompatActivity {
 
         });
 
-
-        Button buttonAtBottom = findViewById(R.id.button_at_bottom);
-
-        ExpandableListView bidsListView = findViewById(R.id.bids_list_listview);
-
-        // if this task's requester is the current logged in user
-        //buttonAtBottom.setText("ACCEPT A BID");
-        //otherwise
-        buttonAtBottom.setText("PLACE BID");
-
-
         ArrayList<Bid> bidsList = new ArrayList<>();
-
-        //ArrayAdapter<Bid> adapter = new ArrayAdapter<>(ViewTaskActivity.this, android.R.layout.simple_list_item_1, bidsList);
-        //bidsListView.setAdapter(adapter);
 
 
         bidsList.add(new Bid(new User(), 1.0f));
@@ -189,7 +183,7 @@ public class ViewTaskActivity extends AppCompatActivity {
 
 
     /**
-     * placeBid
+     * thePinkButton
      * upon pressing place button on task page
      * depending on if the user viewing the task is the owner of task or someone else
      * if they are the owner
@@ -209,7 +203,7 @@ public class ViewTaskActivity extends AppCompatActivity {
         // show a dialog or fragment where the requester can select which bid to accept
         // otherwise
 
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(ViewTaskActivity.this);
+        final AlertDialog mBuilder = new AlertDialog.Builder(ViewTaskActivity.this).create();
         final View mView = getLayoutInflater().inflate(R.layout.dialog_place_bid, null);
 
         final EditText incomingBidText = mView.findViewById(R.id.place_bid_edittext);
@@ -230,15 +224,19 @@ public class ViewTaskActivity extends AppCompatActivity {
                 // do stuff here to actually add bid
 
 
+
+
+
+
+
+
                 Toast.makeText(ViewTaskActivity.this,
                         incomingBidFloat.toString(), Toast.LENGTH_SHORT).show();
-
+                mBuilder.dismiss();
             }
         });
         mBuilder.setView(mView);
-        AlertDialog dialog = mBuilder.create();
-        dialog.show();
-
+        mBuilder.show();
     }
 
 
@@ -248,13 +246,16 @@ public class ViewTaskActivity extends AppCompatActivity {
             case (1): {
                 //code to add to ESC
                 if (resultCode == RESULT_OK) {
-                    String TaskName = data.getStringExtra("Task Name");
-                    String Description = data.getStringExtra("Description");
+                    taskName = data.getStringExtra("Task Name");
+                    description = data.getStringExtra("Description");
+                    task.setName(taskName);
+                    task.setDescription(description);
+                    viewTaskController.updateTaskRequest(task);
                     TextView DescriptionView = (TextView) findViewById(R.id.Description);
                     TextView TaskNameView = (TextView) findViewById(R.id.TaskName);
-                    TaskNameView.setText(TaskName);
-                    if (Description.length() > 0) {
-                        DescriptionView.setText(Description);
+                    TaskNameView.setText(taskName);
+                    if (description.length() > 0) {
+                        DescriptionView.setText(description);
                     } else {
                         DescriptionView.setText("No Description");
                     }
@@ -262,6 +263,5 @@ public class ViewTaskActivity extends AppCompatActivity {
             }
         }
     }
-
 }
 

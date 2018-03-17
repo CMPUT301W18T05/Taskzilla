@@ -135,7 +135,7 @@ public class Task {
     }
 
     public void setTaskRequester(User taskRequester) {
-        TaskRequester = taskRequester;
+        this.TaskRequester = taskRequester;
     }
 
     public User getTaskProvider() {
@@ -143,7 +143,7 @@ public class Task {
     }
 
     public void setTaskProvider(User taskProvider) {
-        TaskProvider = taskProvider;
+        this.TaskProvider = taskProvider;
     }
 
     public String getStatus() {
