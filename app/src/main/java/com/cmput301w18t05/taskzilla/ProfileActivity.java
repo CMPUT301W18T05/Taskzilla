@@ -2,18 +2,26 @@ package com.cmput301w18t05.taskzilla;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 public class ProfileActivity extends AppCompatActivity {
+    private ProfileController profileController;
+    private String userID;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        String userid = "5";
-        String Name = "Micheal Nguyen";
-        String Email = "mlnguyen@ualberta.ca";
-        String Phone = "911";
+        userID = getIntent().getStringExtra("user id");
+        this.profileController = new ProfileController(this.findViewById(android.R.id.content),this);
+        profileController.setUserID(userID);
+        profileController.getUserRequest();
+        user = profileController.getUser();
+        String Name = "DOG";
+        String Email = "test@hello.com";
+        String Phone = "boom@eoo.com";
         String RequestCount = "5";
         String NumberRequests= "99";
         String NumberTasksDone = "29";
