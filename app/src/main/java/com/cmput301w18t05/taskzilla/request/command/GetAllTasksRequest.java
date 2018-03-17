@@ -14,11 +14,14 @@ public class GetAllTasksRequest extends Request {
     ElasticSearchController.GetAllTasks task;
     ArrayList<Task> result;
 
+    private int from = 0;
+    private int size = 10;
+
     public GetAllTasksRequest() {
     }
 
     public void execute() {
-        task = new ElasticSearchController.GetAllTasks();
+        task = new ElasticSearchController.GetAllTasks(from,size);
         task.execute();
     }
 
@@ -29,6 +32,7 @@ public class GetAllTasksRequest extends Request {
     public ArrayList<Task> getResult() {
         try {
             result = this.task.get();
+            from += size;
             return result;
         }
         catch (Exception e) {

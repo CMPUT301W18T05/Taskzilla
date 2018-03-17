@@ -118,12 +118,21 @@ public class ElasticSearchController {
     }
 
     public static class GetAllTasks extends AsyncTask<Void, Void, ArrayList<Task>> {
+        int from;
+        int size;
+
+        public GetAllTasks(int from, int size) {
+            this.from = from;
+            this.size = size;
+        }
+
         @Override
         protected ArrayList<Task> doInBackground(Void... voids) {
             verifySettings();
             ArrayList<Task> foundTasks = new ArrayList<>();
             String query =
                     "{\n" +
+                            "   \"from\" : "+ from +", \"size\" : "+ size +"\n"+
                             "   \"query\": {\n" +
                             "       \"match_all\" : {}\n" +
                             "   }\n" +

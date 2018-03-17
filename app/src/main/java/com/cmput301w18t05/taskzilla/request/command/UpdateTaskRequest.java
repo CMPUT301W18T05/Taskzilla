@@ -25,6 +25,6 @@ public class UpdateTaskRequest extends Request {
         updateRequest.execute(taskData);
     }
 
-    public void executeOffline(){}
+    public void executeOffline() {}
 
 }
