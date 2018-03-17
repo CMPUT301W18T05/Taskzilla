@@ -53,11 +53,11 @@ public class MainActivity extends AppCompatActivity {
         /*Controller*/
         mainActivityController = new MainActivityController(this);
 
-
-
         /*initial singleton current user*/
         user.getInstance();
 
+        /* initalize request manager */
+        RequestManager.getInstance().setContext(getApplicationContext());
 
         /* setup view vars */
         loginButton = findViewById(R.id.logInButton);

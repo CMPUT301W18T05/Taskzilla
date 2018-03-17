@@ -10,12 +10,9 @@ import com.cmput301w18t05.taskzilla.request.command.AddTaskRequest;
 import com.cmput301w18t05.taskzilla.request.command.AddUserRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetAllTasksRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetTaskRequest;
-import com.cmput301w18t05.taskzilla.request.command.RemoveTaskRequest;
 import com.cmput301w18t05.taskzilla.request.command.SearchTaskRequest;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by praharen on 2018-02-23.
@@ -57,7 +54,7 @@ public class RequestManagerTest extends ActivityInstrumentationTestCase2 {
         mockUser.setName("Linus Torvalds");
         mockUser.setEmail(new EmailAddress("linus@kernal.org"));
 
-        Bid mockBid = new Bid(mockUser, 1000.0f);
+        Bid mockBid = new Bid(mockUser, 1000.0f, );
 
         mockTask.setName("MockTask");
         mockTask.addBid(mockBid);

@@ -33,8 +33,9 @@ public class RequestManager extends BroadcastReceiver {
     private static final RequestManager instance = new RequestManager();
     private boolean isConnected = false; // be careful when testing...
     private static ArrayList<Request> requestQueue = new ArrayList<Request>();
+    private Context ctx;
 
-    /* no constructor needed */
+    /* Need app context */
     private RequestManager() {
     }
 
@@ -50,8 +51,8 @@ public class RequestManager extends BroadcastReceiver {
      * @param request the request object with instructions on
      *                how to execute the request.
      */
-    public void invokeRequest(Context context, Request request) {
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+    public void invokeRequest(Request request) {
+        ConnectivityManager cm = (ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo ni = cm.getActiveNetworkInfo();
 
         if (ni != null && ni.isConnected()) {
@@ -62,6 +63,9 @@ public class RequestManager extends BroadcastReceiver {
             Log.i("IMPORTANT", "DEVICE IS OFFLINE!!!!");
             requestQueue.add(request);
         }
+    }
+    public void invokeRequest(Context ctx, Request request) {
+        this.invokeRequest(request);
     }
 
     /**
@@ -118,14 +122,9 @@ public class RequestManager extends BroadcastReceiver {
         requestQueue.remove(requestQueue.size()-1);
         return req;
     }
-        /*final PendingResult pendingResult = goAsync();
-        AsyncTask<String, Integer, String> asyncTask = new AsyncTask<String, Integer, String>() {
-            @Override
-            protected String doInBackground(String... params) {
-                // Must call finish() so the BroadcastReceiver can be recycled.
-                //pendingResult.finish();
-                return "test";
-            }
-        };
-        asyncTask.execute();*/
+
+    public void setContext(Context ctx) {
+        this.ctx = ctx;
+    }
+
 }

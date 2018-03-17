@@ -2,6 +2,9 @@ package com.cmput301w18t05.taskzilla;
 
 import android.location.Location;
 
+import com.cmput301w18t05.taskzilla.request.RequestManager;
+import com.cmput301w18t05.taskzilla.request.command.GetBidsByTaskIdRequest;
+
 import java.util.ArrayList;
 
 import io.searchbox.annotations.JestId;
@@ -25,18 +28,16 @@ public class Task {
     private String description;
     private Location location;
     private Bid bestBid;
-    private ArrayList<Bid> bids = new ArrayList<>();
+    private ArrayList<Bid> bids;
     private ArrayList<Photo> photos;
 
-    //Test Constructors
     public Task() {
-        bids = new ArrayList<Bid>();
         photos = new ArrayList<Photo>();
         name = "TEST TASK";
+        retrieveBids();
     }
 
     public Task(String name, User TaskRequester, String description) {
-        bids = new ArrayList<Bid>();
         photos = new ArrayList<Photo>();
         this.name = name;
         this.TaskRequester = TaskRequester;
@@ -44,9 +45,7 @@ public class Task {
         this.description = description;
     }
 
-    //Real constructors
     public Task(String name, User TaskRequester, String description, Location location) {
-        bids = new ArrayList<Bid>();
         photos = new ArrayList<Photo>();
         this.name = name;
         this.TaskRequester = TaskRequester;
@@ -55,7 +54,6 @@ public class Task {
         this.location = location;
     }
     public Task(String name, User TaskRequester, String description, Location location, ArrayList<Photo> photos) {
-        bids = new ArrayList<Bid>();
         photos = new ArrayList<Photo>();
         this.name = name;
         this.TaskRequester = TaskRequester;
@@ -184,5 +182,13 @@ public class Task {
 
     public String toString(){
         return name;
+    }
+
+    /**
+     * get bids from elastic search
+     */
+    private void retrieveBids() {
+        GetBidsByTaskIdRequest getBids = new GetBidsByTaskIdRequest(this.getId());
+        RequestManager.getInstance().invokeRequest(getBids);
     }
 }

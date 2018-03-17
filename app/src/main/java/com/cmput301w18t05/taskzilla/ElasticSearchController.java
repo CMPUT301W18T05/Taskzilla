@@ -341,6 +341,34 @@ public class ElasticSearchController {
         }
     }
 
+    public static class GetUserByUsername extends AsyncTask<String, Void, User> {
+        @Override
+        protected User doInBackground(String... userIds) {
+            verifySettings();
+            User user = null;
+
+            for (String id : userIds) {
+                String query = "{ \"query\" : { \"match\" : { \"username\" : "+ id +" } } }";
+
+                try {
+                    Search search = new Search.Builder(query)
+                            .addIndex("cmput301w18t05")
+                            .addType("user")
+                            .build();
+
+                    SearchResult result = client.execute(search);
+                    List<User> test = result.getSourceAsObjectList(User.class);
+                    return test.get(0);
+                }
+                catch (Exception e) {
+                    Log.i("Error", "Get task failed");
+                }
+            }
+
+            return user; // will return null if no user found
+        }
+    }
+
     public static class AddBid extends AsyncTask<Bid, Void, Boolean> {
         @Override
         protected Boolean doInBackground(Bid... bids) {
@@ -370,6 +398,40 @@ public class ElasticSearchController {
 
             for (String  userId : userIds) {
                 String query = "{ \"query\" : { \"common\" : { \"requesterId\" : \""+ userId + "\" } }";
+                Log.i("Query: ", query);
+
+                SearchResult result;
+                Search search = new Search.Builder(query)
+                        .addIndex("cmput301w18t05")
+                        .addType("bid")
+                        .build();
+
+                try {
+                    result = client.execute(search);
+                    if (result.isSucceeded()) {
+                        List<Bid> newBids = result.getSourceAsObjectList(Bid.class);
+                        foundBids.addAll(newBids);
+                    }
+                    else {
+                        return null;
+                    }
+                }
+                catch (Exception e) {
+                    return null;
+                }
+            }
+            return foundBids;
+        }
+    }
+
+    public static class GetBidsByTaskID extends AsyncTask<String, Void, ArrayList<Bid>> {
+        @Override
+        protected ArrayList<Bid> doInBackground(String... taskIds) {
+            verifySettings();
+            ArrayList<Bid> foundBids = new ArrayList<>();
+
+            for (String  taskId : taskIds) {
+                String query = "{ \"query\" : { \"common\" : { \"requesterId\" : \""+ taskId + "\" } }";
                 Log.i("Query: ", query);
 
                 SearchResult result;

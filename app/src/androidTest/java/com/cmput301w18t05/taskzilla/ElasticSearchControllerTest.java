@@ -1,14 +1,7 @@
 package com.cmput301w18t05.taskzilla;
 
-import android.os.AsyncTask;
 import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
-
-import com.cmput301w18t05.taskzilla.request.RequestManager;
-import com.cmput301w18t05.taskzilla.request.SearchRequest;
-import com.cmput301w18t05.taskzilla.request.command.SearchTaskRequest;
-
-import org.junit.Test;
 
 import java.util.ArrayList;
 
@@ -33,7 +26,7 @@ public class ElasticSearchControllerTest extends ActivityInstrumentationTestCase
         user.setRequesterRating(8.0);
         user.setPhotos(new ArrayList<Photo>());
 
-        Bid bid = new Bid(user,10.0);
+        Bid bid = new Bid(user.getId(), task.getId(), 10.0f);
 
         task = new Task();
         task.setName("My test task");
@@ -105,7 +98,7 @@ public class ElasticSearchControllerTest extends ActivityInstrumentationTestCase
     }
 
     public void testAddBid() {
-        Bid bid = new Bid(user,10.0);
+        Bid bid = new Bid(user.getId(), task.getId(), 10.0f);
         ElasticSearchController.AddBid task = new ElasticSearchController.AddBid();
         try {
             boolean added = task.execute(bid).get();
@@ -118,7 +111,7 @@ public class ElasticSearchControllerTest extends ActivityInstrumentationTestCase
     }
 
     public void testAddTask() {
-        Bid bid = new Bid(user,10.0);
+        Bid bid = new Bid(user.getId(), task.getId(), 10.0f);
 
         ElasticSearchController.AddBid task = new ElasticSearchController.AddBid();
         try {
