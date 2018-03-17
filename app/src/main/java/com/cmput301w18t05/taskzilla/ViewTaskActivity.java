@@ -39,8 +39,8 @@ public class ViewTaskActivity extends AppCompatActivity {
     private String currentUserId;
     private String taskUserId;
     private String description;
-    private String TaskRequester;
-    private String TaskProvider;
+    private User TaskRequester;
+    private User TaskProvider;
     private String taskName;
 
     private TextView ProviderName;
@@ -76,17 +76,21 @@ public class ViewTaskActivity extends AppCompatActivity {
         viewTaskController.getTaskRequest();
         task = viewTaskController.getTask();
 
-        currentUserId = "5";                              //Dummy for Testing
-        taskUserId = "5";                                 //Dummy for Testing
+        currentUserId = currentUser.getInstance().getId();
+        taskUserId = task.getTaskRequester().getId();
 
         taskName = task.getName();
         taskStatus = task.getStatus();
         description = task.getDescription();
 
-        TaskRequester = "user4";                            //Dummy for Testing
-        TaskProvider = "user5";                             //Dummy for Testing
-
-        RequesterName.setText(TaskRequester);
+        TaskRequester = task.getTaskRequester();
+        try {
+            TaskProvider = task.getTaskProvider();
+        }
+        catch (Exception e){
+            TaskProvider = new User();
+        }
+        RequesterName.setText(TaskRequester.getName());
         DescriptionView.setText(description);
         TaskName.setText(taskName);
         PinkButton.setText("PLACE BID");
@@ -104,7 +108,7 @@ public class ViewTaskActivity extends AppCompatActivity {
         if (taskStatus.equals("assigned")) {
             ProviderPicture.setVisibility(View.VISIBLE);
             ProviderName.setVisibility(View.VISIBLE);
-            ProviderName.setText(TaskProvider);
+            ProviderName.setText(TaskProvider.getName());
         }
 
         //Provider Profile
@@ -112,7 +116,7 @@ public class ViewTaskActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), ProfileActivity.class);
-                intent.putExtra("user", TaskProvider);
+                intent.putExtra("user", TaskProvider.getId());
                 startActivity(intent);
             }
 
@@ -123,7 +127,7 @@ public class ViewTaskActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), ProfileActivity.class);
-                intent.putExtra("user", TaskRequester);
+                intent.putExtra("user", TaskRequester.getId());
                 startActivity(intent);
             }
         });
@@ -133,7 +137,7 @@ public class ViewTaskActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), EditTaskActivity.class);
-                intent.putExtra("taskID", taskID);
+                intent.putExtra("task Name", taskName);
                 intent.putExtra("Description", description);
                 startActivityForResult(intent, 1);
             }
@@ -242,13 +246,16 @@ public class ViewTaskActivity extends AppCompatActivity {
             case (1): {
                 //code to add to ESC
                 if (resultCode == RESULT_OK) {
-                    String TaskName = data.getStringExtra(taskName);
-                    String Description = data.getStringExtra(description);
+                    taskName = data.getStringExtra("Task Name");
+                    description = data.getStringExtra("Description");
+                    task.setName(taskName);
+                    task.setDescription(description);
+                    viewTaskController.updateTaskRequest(task);
                     TextView DescriptionView = (TextView) findViewById(R.id.Description);
                     TextView TaskNameView = (TextView) findViewById(R.id.TaskName);
-                    TaskNameView.setText(TaskName);
-                    if (Description.length() > 0) {
-                        DescriptionView.setText(Description);
+                    TaskNameView.setText(taskName);
+                    if (description.length() > 0) {
+                        DescriptionView.setText(description);
                     } else {
                         DescriptionView.setText("No Description");
                     }
