@@ -131,7 +131,7 @@ public class Task {
     }
 
     public User getTaskRequester() {
-        return userRequest(this.providerId);
+        return userRequest(this.requesterId);
     }
 
     public void setTaskRequester(User taskRequester) {

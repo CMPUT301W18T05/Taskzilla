@@ -7,6 +7,7 @@ import com.cmput301w18t05.taskzilla.Task;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.AddTaskRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetTaskRequest;
+import com.cmput301w18t05.taskzilla.request.command.RemoveTaskRequest;
 import com.cmput301w18t05.taskzilla.request.command.UpdateTaskRequest;
 
 /**
@@ -50,6 +51,11 @@ public class ViewTaskController {
 
     public void updateTaskRequest(Task task) {
         AddTaskRequest request = new AddTaskRequest(task);
+        RequestManager.getInstance().invokeRequest(ctx, request);
+    }
+
+    public void RemoveTaskRequest(Task task) {
+        RemoveTaskRequest request = new RemoveTaskRequest(task.getId());
         RequestManager.getInstance().invokeRequest(ctx, request);
     }
 

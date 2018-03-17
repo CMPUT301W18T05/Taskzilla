@@ -159,7 +159,9 @@ public class ViewTaskActivity extends AppCompatActivity {
                 alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        viewTaskController.RemoveTaskRequest(task);
                         dialogInterface.dismiss();
+                        finish();
                     }
                 });
 
