@@ -19,8 +19,8 @@ public class Task {
     @JestId
     private String Id;
 
-    private User TaskRequester;
-    private User TaskProvider;
+    private User taskRequester;
+    private User taskProvider;
     private String status;
     private String description;
     private Location location;
@@ -39,7 +39,7 @@ public class Task {
         bids = new ArrayList<Bid>();
         photos = new ArrayList<Photo>();
         this.name = name;
-        this.TaskRequester = TaskRequester;
+        this.taskRequester = TaskRequester;
         this.status = "requested";
         this.description = description;
     }
@@ -49,7 +49,7 @@ public class Task {
         bids = new ArrayList<Bid>();
         photos = new ArrayList<Photo>();
         this.name = name;
-        this.TaskRequester = TaskRequester;
+        this.taskRequester = TaskRequester;
         this.status = "requested";
         this.description = description;
         this.location = location;
@@ -58,7 +58,7 @@ public class Task {
         bids = new ArrayList<Bid>();
         photos = new ArrayList<Photo>();
         this.name = name;
-        this.TaskRequester = TaskRequester;
+        this.taskRequester = TaskRequester;
         this.status = "requested";
         this.description = description;
         this.location = location;
@@ -131,19 +131,19 @@ public class Task {
     }
 
     public User getTaskRequester() {
-        return TaskRequester;
+        return taskRequester;
     }
 
     public void setTaskRequester(User taskRequester) {
-        TaskRequester = taskRequester;
+        this.taskRequester = taskRequester;
     }
 
     public User getTaskProvider() {
-        return TaskProvider;
+        return taskProvider;
     }
 
     public void setTaskProvider(User taskProvider) {
-        TaskProvider = taskProvider;
+        this.taskProvider = taskProvider;
     }
 
     public String getStatus() {

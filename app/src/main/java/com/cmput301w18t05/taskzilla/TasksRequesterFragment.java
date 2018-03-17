@@ -87,7 +87,7 @@ public class TasksRequesterFragment extends Fragment {
         });
         return v;
     }
-
+    
 
     public void viewTask(String id) {
         Intent intent = new Intent(getActivity(), ViewTaskActivity.class);

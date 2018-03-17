@@ -59,7 +59,7 @@ public class TasksProviderFragment extends Fragment {
         for (Task t : requestTasks.getResult()) {
             taskList.add(t);
         }
-        
+
         adapter.notifyDataSetChanged();
 
         taskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
