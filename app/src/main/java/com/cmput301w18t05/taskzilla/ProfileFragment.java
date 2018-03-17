@@ -18,10 +18,19 @@ import android.widget.TextView;
  */
 public class ProfileFragment extends Fragment {
 
-    private TextView providerRatingField;
-    private TextView requesterRatingField;
+    private TextView nameField;
+    private TextView emailField;
+    private TextView phoneField;
     private TextView numRequestsField;
     private TextView numTasksDoneField;
+    private TextView providerRatingField;
+    private TextView requesterRatingField;
+
+    private String name;
+    private String email;
+    private String phone;
+    private String numRequests;
+    private String numTasksDone;
     private Button logOut;
     private User user;
     private ProfileController profileController;
@@ -48,22 +57,47 @@ public class ProfileFragment extends Fragment {
         return mRelativeLayout;
     }
 
+
+    /**
+     * Set fields in the fragment_profile.xml
+     * using the currentUser object which stores
+     * all necessary information of the current user that
+     * is logged in
+     *
+     * @author Micheal-Nguyen
+     */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        nameField = view.findViewById(R.id.NameField);
+        emailField = view.findViewById(R.id.EmailField);
+        phoneField = view.findViewById(R.id.PhoneField);
         providerRatingField = view.findViewById(R.id.ProviderRatingField);
         requesterRatingField = view.findViewById(R.id.RequesterRatingField);
         numRequestsField = view.findViewById(R.id.NumRequestsField);
         numTasksDoneField = view.findViewById(R.id.NumTasksDoneField);
         logOut = view.findViewById(R.id.LogOutButton);
+        user = currentUser.getInstance();
+
+        name = user.getName();
+        email = user.getEmail().toString();
+        phone = user.getPhone().toString();
+        numRequests = "69";
+        numTasksDone = "69";
+
+        nameField.setText(name);
+        emailField.setText(email);
+        phoneField.setText(phone);
+        numRequestsField.setText(numRequests);
+        numTasksDoneField.setText(numTasksDone);
 
         logOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                logOutCLicked();
+                logOutClicked();
             }
         });
-    }
 
+    }
     /**
      * Switch to EditProfile Activity
      * Send users information to the activity
@@ -75,7 +109,7 @@ public class ProfileFragment extends Fragment {
         startActivity(intent);
     }
 
-    public void logOutCLicked(){
+    public void logOutClicked(){
         Intent intent = new Intent(getActivity(), MainActivity.class);
         //Delete User from gson
         startActivity(intent);

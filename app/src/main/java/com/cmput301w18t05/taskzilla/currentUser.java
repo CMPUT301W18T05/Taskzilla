@@ -1,5 +1,7 @@
 package com.cmput301w18t05.taskzilla;
 
+
+
 import java.util.ArrayList;
 
 /**
@@ -12,7 +14,7 @@ public class currentUser extends User {
 
     private currentUser(){
         //Get the actual values from elastic search
-        super("tom","myuniqueUN","1",new PhoneNumber(),new EmailAddress("Tom1@gmail.com"),
+        super("Wyatt P","wyatt","1",new PhoneNumber(7802493469L),new EmailAddress("praharen@ualberta.ca"),
                 8.4, 2.2, 4, 6,new ArrayList<Photo>());
 
     }
@@ -21,7 +23,7 @@ public class currentUser extends User {
     public static currentUser getInstance() {
         if (user == null) {
             user = new currentUser();
-            user.setId("1");
+            user.setId("AWI1UerXTLbhBxRrCZea");
         }
         return user;
     }

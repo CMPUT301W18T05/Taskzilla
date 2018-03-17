@@ -80,7 +80,6 @@ public class ViewTaskActivity extends AppCompatActivity {
         DescriptionView.setText(description);
         TaskName.setText(taskName);
         PinkButton.setText("PLACE BID");
-        Log.i("currentUserId", currentUserId+" "+taskUserId+" "+taskStatus);
         if (currentUserId.equals(taskUserId) && taskStatus.equals("requested")) {
             EditButton.setVisibility(View.VISIBLE);
         } else {
@@ -240,6 +239,16 @@ public class ViewTaskActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * onActivityResult
+     * upon return from EditTaskActivity update
+     * the details of teh task and call viewTaskController
+     * to update the details of the task
+     * also update the activity_profile.xml to reflect
+     * the changes in the task
+     *
+     * @author Micheal-Nguyen
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {

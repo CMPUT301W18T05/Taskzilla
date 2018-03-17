@@ -18,10 +18,10 @@
         android:src="@mipmap/ic_launcher_round" />
 
     <TextView
-        android:id="@+id/Name"
+        android:id="@+id/NameField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/textView15"
+        android:layout_alignStart="@+id/PhoneField"
         android:layout_alignTop="@+id/imageView"
         android:text="Android"
         android:textSize="28sp" />
@@ -137,14 +137,13 @@
         android:id="@+id/EmailField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/Email"
-        android:layout_alignBottom="@+id/Email"
-        android:layout_toStartOf="@+id/NumTasksDoneField"
+        android:layout_above="@+id/Phone"
+        android:layout_alignStart="@+id/PhoneField"
         android:text="android1@gmail.com"
         android:textSize="20sp" />
 
     <TextView
-        android:id="@+id/textView15"
+        android:id="@+id/PhoneField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/Phone"

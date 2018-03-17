@@ -9,32 +9,57 @@ public class ProfileActivity extends AppCompatActivity {
     private String userID;
     private User user;
 
+    private TextView nameField;
+    private TextView emailField;
+    private TextView phoneField;
+    private TextView numRequestsField;
+    private TextView numTasksDoneField;
+    private TextView providerRatingField;
+    private TextView requesterRatingField;
+
+    private String name;
+    private String email;
+    private String phone;
+    private String numRequests;
+    private String numTasksDone;
+
+
+
+    /**
+     * onCreate
+     * Set fields in the activity_profile.xml
+     * using ProfileController to retrieve the data of
+     * the user through Elastic Search
+     *
+     * @author Micheal-Nguyen
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         userID = getIntent().getStringExtra("user id");
         this.profileController = new ProfileController(this.findViewById(android.R.id.content),this);
-        profileController.setUserID(userID);
+        profileController.setUserID("AWI1r0poTLbhBxRrCZhM");
         profileController.getUserRequest();
         user = profileController.getUser();
-        String Name = "DOG";
-        String Email = "test@hello.com";
-        String Phone = "boom@eoo.com";
-        String RequestCount = "5";
-        String NumberRequests= "99";
-        String NumberTasksDone = "29";
 
-        TextView NameView = (TextView) findViewById(R.id.Name);
-        TextView EmailView = (TextView) findViewById(R.id.EmailField);
-        TextView PhoneView = (TextView) findViewById(R.id.PhoneField);
-        TextView NumberRequestsView = (TextView) findViewById(R.id.NumRequestsField);
-        TextView NumberTasksDoneView = (TextView) findViewById(R.id.NumTasksDoneField);
-        NameView.setText(Name);
-        EmailView.setText(Email);
-        PhoneView.setText(Phone);
-        NumberRequestsView.setText(NumberRequests);
-        NumberTasksDoneView.setText(NumberTasksDone);
+        name = user.getName();
+        email = user.getEmail().toString();
+        phone = user.getPhone().toString();
+        numRequests = "99";
+        numTasksDone = "29";
+
+        nameField = (TextView) findViewById(R.id.NameField);
+        emailField = (TextView) findViewById(R.id.EmailField);
+        phoneField = (TextView) findViewById(R.id.PhoneField);
+        numRequestsField = (TextView) findViewById(R.id.NumRequestsField);
+        numTasksDoneField = (TextView) findViewById(R.id.NumTasksDoneField);
+
+        nameField.setText(name);
+        emailField.setText(email);
+        phoneField.setText(phone);
+        numRequestsField.setText(numRequests);
+        numTasksDoneField.setText(numTasksDone);
 
     }
 }

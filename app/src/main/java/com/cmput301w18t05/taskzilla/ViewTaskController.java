@@ -32,6 +32,14 @@ public class ViewTaskController {
         return this.task;
     }
 
+
+    /**
+     * getTaskRequest
+     * get the task from elastic search using request manager
+     * and set the task of the controller to be the result
+     *
+     * @author Micheal-Nguyen
+     */
     public void getTaskRequest() {
         GetTaskRequest request = new GetTaskRequest(taskID);
         RequestManager.getInstance().invokeRequest(ctx, request);

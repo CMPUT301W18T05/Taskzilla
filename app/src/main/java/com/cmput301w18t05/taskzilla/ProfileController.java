@@ -34,6 +34,13 @@ public class ProfileController {
         return this.user;
     }
 
+    /**
+     * getUserRequest
+     * get user from RequestManager and set the
+     * user to be the result for the controller
+     *
+     * @author Micheal-Nguyen
+     */
     public void getUserRequest() {
         GetUserRequest request = new GetUserRequest(userId);
         RequestManager.getInstance().invokeRequest(ctx, request);

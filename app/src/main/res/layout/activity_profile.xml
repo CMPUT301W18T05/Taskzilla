@@ -18,7 +18,7 @@
         android:src="@mipmap/ic_launcher_round" />
 
     <TextView
-        android:id="@+id/Name"
+        android:id="@+id/NameField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/EmailField"
