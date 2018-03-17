@@ -19,7 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:theme="@style/AppThemeNoBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,13 +28,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".WelcomeActivity"
+            android:name=".activity.WelcomeActivity"
             android:theme="@style/AppTheme" />
-        <activity android:name=".EditProfileActivity" />
-        <activity android:name=".EditTaskActivity" />
-        <activity android:name=".SignUpActivity" />
-        <activity android:name=".ViewTaskActivity" />
-        <activity android:name=".NewTaskActivity" />
+        <activity android:name=".activity.EditProfileActivity" />
+        <activity android:name=".activity.EditTaskActivity" />
+        <activity android:name=".activity.SignUpActivity" />
+        <activity android:name=".activity.ViewTaskActivity" />
+        <activity android:name=".activity.NewTaskActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -48,9 +48,9 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".MapActivity"
+            android:name=".activity.MapActivity"
             android:label="@string/title_activity_map" />
-        <activity android:name=".ProfileActivity"></activity>
+        <activity android:name=".activity.ProfileActivity"></activity>
     </application>
 
 </manifest>

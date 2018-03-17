@@ -1,9 +1,7 @@
 package com.cmput301w18t05.taskzilla.request.command;
 
-import com.cmput301w18t05.taskzilla.ElasticSearchController;
-import com.cmput301w18t05.taskzilla.Task;
+import com.cmput301w18t05.taskzilla.controller.ElasticSearchController;
 import com.cmput301w18t05.taskzilla.User;
-import com.cmput301w18t05.taskzilla.request.InsertionRequest;
 import com.cmput301w18t05.taskzilla.request.Request;
 
 /**

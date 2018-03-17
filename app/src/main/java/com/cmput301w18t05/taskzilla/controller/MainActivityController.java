@@ -1,6 +1,10 @@
-package com.cmput301w18t05.taskzilla;
+package com.cmput301w18t05.taskzilla.controller;
 
 import android.content.Intent;
+
+import com.cmput301w18t05.taskzilla.activity.MainActivity;
+import com.cmput301w18t05.taskzilla.activity.SignUpActivity;
+import com.cmput301w18t05.taskzilla.activity.WelcomeActivity;
 
 
 /**

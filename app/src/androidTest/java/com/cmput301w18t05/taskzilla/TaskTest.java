@@ -3,6 +3,8 @@ package com.cmput301w18t05.taskzilla;
 import android.location.Location;
 import android.test.ActivityInstrumentationTestCase2;
 
+import com.cmput301w18t05.taskzilla.activity.MainActivity;
+
 /**
  * TaskTest
  * unit test for Task class

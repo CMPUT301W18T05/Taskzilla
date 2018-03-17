@@ -3,6 +3,9 @@ package com.cmput301w18t05.taskzilla;
 import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
 
+import com.cmput301w18t05.taskzilla.activity.MainActivity;
+import com.cmput301w18t05.taskzilla.controller.ElasticSearchController;
+
 import java.util.ArrayList;
 
 /**

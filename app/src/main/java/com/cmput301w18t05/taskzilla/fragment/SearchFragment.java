@@ -1,11 +1,10 @@
-package com.cmput301w18t05.taskzilla;
+package com.cmput301w18t05.taskzilla.fragment;
 
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,12 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SearchView;
 
-import java.io.Serializable;
+import com.cmput301w18t05.taskzilla.R;
+import com.cmput301w18t05.taskzilla.controller.SearchController;
+import com.cmput301w18t05.taskzilla.Task;
+import com.cmput301w18t05.taskzilla.activity.MapActivity;
+import com.cmput301w18t05.taskzilla.activity.ViewTaskActivity;
+
 import java.util.ArrayList;
 
 

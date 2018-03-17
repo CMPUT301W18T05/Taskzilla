@@ -3,7 +3,7 @@
     android:id="@+id/ProviderTasks"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.cmput301w18t05.taskzilla.TasksProviderFragment">
+    tools:context="com.cmput301w18t05.taskzilla.fragment.TasksProviderFragment">
 
     <!-- TODO: Update blank fragment layout -->
 

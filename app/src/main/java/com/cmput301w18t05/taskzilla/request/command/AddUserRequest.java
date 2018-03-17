@@ -1,13 +1,8 @@
 package com.cmput301w18t05.taskzilla.request.command;
 
-import android.os.AsyncTask;
-import android.util.Log;
-
-import com.cmput301w18t05.taskzilla.ElasticSearchController;
+import com.cmput301w18t05.taskzilla.controller.ElasticSearchController;
 import com.cmput301w18t05.taskzilla.User;
 import com.cmput301w18t05.taskzilla.request.InsertionRequest;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by wyatt on 07/03/18.

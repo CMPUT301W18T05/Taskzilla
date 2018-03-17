@@ -1,8 +1,9 @@
-package com.cmput301w18t05.taskzilla;
+package com.cmput301w18t05.taskzilla.controller;
 
 import android.content.Context;
 import android.view.View;
 
+import com.cmput301w18t05.taskzilla.Task;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.AddTaskRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetTaskRequest;
