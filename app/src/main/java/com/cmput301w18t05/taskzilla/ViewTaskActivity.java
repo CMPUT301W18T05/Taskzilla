@@ -101,9 +101,15 @@ public class ViewTaskActivity extends AppCompatActivity {
         ProviderPicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), ProfileActivity.class);
-                intent.putExtra("user", TaskProvider.getId());
-                startActivity(intent);
+                try {
+
+                    Intent intent = new Intent(view.getContext(), ProfileActivity.class);
+                    intent.putExtra("user id", TaskProvider.getId());
+                    startActivity(intent);
+                }
+                catch (Exception e){
+
+                }
             }
 
         });
@@ -112,9 +118,14 @@ public class ViewTaskActivity extends AppCompatActivity {
         RequesterPicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), ProfileActivity.class);
-                intent.putExtra("user", TaskRequester.getId());
-                startActivity(intent);
+                try {
+                    Intent intent = new Intent(view.getContext(), ProfileActivity.class);
+                    intent.putExtra("user id", TaskRequester.getId());
+                    startActivity(intent);
+                }
+                catch (Exception e){
+
+                }
             }
         });
 
