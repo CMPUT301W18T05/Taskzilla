@@ -25,7 +25,9 @@ public class Task {
     private String Id;
 
     private String providerId;
+    private String providerUsername;
     private String requesterId;
+    private String requesterUsername;
 
     private String status;
     private String description;
@@ -44,6 +46,7 @@ public class Task {
         photos = new ArrayList<Photo>();
         this.name = name;
         this.requesterId = TaskRequester.getId();
+        this.requesterUsername = TaskRequester.getUsername();
         this.status = "requested";
         this.description = description;
     }
@@ -52,6 +55,7 @@ public class Task {
         photos = new ArrayList<Photo>();
         this.name = name;
         this.requesterId = TaskRequester.getId();
+        this.requesterUsername = TaskRequester.getUsername();
         this.status = "requested";
         this.description = description;
         this.location = location;
@@ -60,6 +64,7 @@ public class Task {
         photos = new ArrayList<Photo>();
         this.name = name;
         this.requesterId = TaskRequester.getId();
+        this.requesterUsername = TaskRequester.getUsername();
         this.status = "requested";
         this.description = description;
         this.location = location;
@@ -136,6 +141,7 @@ public class Task {
 
     public void setTaskRequester(User taskRequester) {
         this.requesterId = taskRequester.getId();
+        this.requesterUsername = taskRequester.getUsername();
     }
 
     public String getProviderId() {
@@ -160,6 +166,7 @@ public class Task {
 
     public void setTaskProvider(User taskProvider) {
         this.providerId = taskProvider.getId();
+        this.providerUsername = taskProvider.getUsername();
     }
 
     public String getStatus() {
