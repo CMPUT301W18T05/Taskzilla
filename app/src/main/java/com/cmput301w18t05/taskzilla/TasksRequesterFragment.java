@@ -14,7 +14,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.cmput301w18t05.taskzilla.request.RequestManager;
-import com.cmput301w18t05.taskzilla.request.command.AddTaskRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetTasksByRequesterUsernameRequest;
 import com.cmput301w18t05.taskzilla.request.command.SearchTaskRequest;
 
@@ -64,37 +63,16 @@ public class TasksRequesterFragment extends Fragment {
         adapter = new ArrayAdapter<Task>(getActivity(), android.R.layout.simple_list_item_1, taskList);
         taskListView.setAdapter(adapter);
 
-        //Dummy Tasks for testing. Remove these and get the tasks from elastic search
-
-        //taskList.add(new Task("Pick up my dogs poop",new User(),"do it"));
-        //taskList.add(new Task("Clip my toenails",new User(),"ez money"));
-        // addTask.execute(new Task("Get off my lawn"));
-        //List<SearchResult.Hit<Task, Void>> tasks
-        // ArrayList<Task> tasks = searchForTask.execute("name = 1");
-        // Task t = getTask.execute("0");
-
-        //  taskList.add();
-
-
-        //newRequest = new SearchTaskRequest("cTest1");
-        //RequestManager.getInstance().invokeRequest(getContext(), newRequest);
-
-       // ArrayList<Task> search = newRequest.getTasks();
-
 
 
 
         requestTasks = new GetTasksByRequesterUsernameRequest(cUser.getUsername());
         requestManager.getInstance().invokeRequest(getContext(), requestTasks);
 
-        //ArrayList<Task> search = requestTasks.getResult();
-        //taskList.add(search.get(0));
 
 
         for (Task t : requestTasks.getResult()) {
-            Log.i("FDFDFDFDFSDSG","FDSFDSFDSFDSF");
             taskList.add(t);
-            //taskList.add(new Task("Clip my toenails",new User(),"ez money"));
         }
 
 
