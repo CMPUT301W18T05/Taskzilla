@@ -25,8 +25,10 @@ public class EditTaskActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_task);
         EditText TaskNameText = (EditText) findViewById(R.id.TaskName);
         EditText DescriptionText = (EditText) findViewById(R.id.Description);
-        task.setName("testTask"); //Dummy
-        task.setDescription("testDescription"); //Dummy
+        String taskName = getIntent().getStringExtra("task Name");
+        String taskDescription = getIntent().getStringExtra("Description");
+        task.setName(taskName); //Dummy
+        task.setDescription(taskDescription); //Dummy
         TaskNameText.setText(task.getName());
         DescriptionText.setText(task.getDescription());
 
@@ -58,12 +60,6 @@ public class EditTaskActivity extends AppCompatActivity {
 
 
          else {
-            task = new Task();
-            task.setId("AWIwRF0u42PX8bQQT0sL");
-            task.setName(TaskName);
-            task.setDescription(Description);
-            UpdateTaskRequest request = new UpdateTaskRequest(task);
-            RequestManager.getInstance().invokeRequest(ctx, request);
             Intent returnIntent = new Intent();
             returnIntent.putExtra("Task Name", TaskName);
             returnIntent.putExtra("Description", Description);

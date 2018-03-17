@@ -4,7 +4,9 @@ import android.content.Context;
 import android.view.View;
 
 import com.cmput301w18t05.taskzilla.request.RequestManager;
+import com.cmput301w18t05.taskzilla.request.command.AddTaskRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetTaskRequest;
+import com.cmput301w18t05.taskzilla.request.command.UpdateTaskRequest;
 
 /**
  * Created by Andy on 3/16/2018.
@@ -35,6 +37,11 @@ public class ViewTaskController {
         RequestManager.getInstance().invokeRequest(ctx, request);
 
         this.task = request.getResult();
+    }
+
+    public void updateTaskRequest(Task task) {
+        AddTaskRequest request = new AddTaskRequest(task);
+        RequestManager.getInstance().invokeRequest(ctx, request);
     }
 
 }
