@@ -104,17 +104,16 @@ public class TasksRequesterFragment extends Fragment {
         taskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> a, View v, int position, long id) {
-                viewTask();
+                viewTask(taskList.get(position).getId());
             }
         });
         return v;
     }
+    
 
-
-
-
-    public void viewTask() {
+    public void viewTask(String id) {
         Intent intent = new Intent(getActivity(), ViewTaskActivity.class);
+        intent.putExtra("TaskId",id);
         startActivity(intent);
     }
 
