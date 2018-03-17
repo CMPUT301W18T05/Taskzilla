@@ -132,7 +132,7 @@ public class ElasticSearchController {
             ArrayList<Task> foundTasks = new ArrayList<>();
             String query =
                     "{\n" +
-                            "   \"from\" : "+ from +", \"size\" : "+ size +"\n"+
+                            "   \"from\" : "+ from +", \"size\" : "+ size +",\n"+
                             "   \"query\": {\n" +
                             "       \"match_all\" : {}\n" +
                             "   }\n" +
@@ -236,8 +236,8 @@ public class ElasticSearchController {
             for (String keyword : keywords) {
                 String query =
                 "{\n" +
-                "   \"from\" : " + from + "\n" +
-                "   \"size\" : " + size + "\n" +
+                "   \"from\" : " + from + ",\n" +
+                "   \"size\" : " + size + ",\n" +
                 "   \"query\": {\n" +
                 "       \"common\" : {\n" +
                 "           \"description\" : {\n" +
@@ -260,6 +260,7 @@ public class ElasticSearchController {
                     }
                     else {
                         Log.i("Event", "No results found in query: " + query);
+                        return null;
                     }
                 } catch (Exception e) {
                     Log.i("Error", "Search failed");

@@ -16,8 +16,9 @@ import java.util.ArrayList;
 public class SearchTaskRequest extends SearchRequest {
     private String searchKeywords;
     private ArrayList<Task> results;
-    int from = 0;
-    int size = 10;
+    private ElasticSearchController.SearchForTasks search;
+    private int from = 0;
+    private int size = 10;
 
     public SearchTaskRequest(String keywords) {
         this.searchKeywords = keywords;
@@ -25,7 +26,7 @@ public class SearchTaskRequest extends SearchRequest {
 
     @Override
     public void execute() {
-        ElasticSearchController.SearchForTasks search = new ElasticSearchController.SearchForTasks(from,size);
+        search = new ElasticSearchController.SearchForTasks(from,size);
         search.execute(searchKeywords);
 
         try {

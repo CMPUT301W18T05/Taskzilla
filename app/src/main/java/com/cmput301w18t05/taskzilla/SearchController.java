@@ -49,7 +49,23 @@ public class SearchController {
         newRequest = new SearchTaskRequest(sentence);
         RequestManager.getInstance().invokeRequest(ctx, newRequest);
 
-        this.searchResults = newRequest.getTasks();
+        ArrayList<Task> temp;
+        temp = newRequest.getTasks();
+
+        if(temp.size() != 0) {
+
+            while (temp.size() > 0) {
+
+                for (Task t : temp)
+                    this.searchResults.add(t);
+
+                RequestManager.getInstance().invokeRequest(ctx, newRequest);
+                temp = newRequest.getTasks();
+            }
+        }
+        else {
+            searchResults.clear();
+        }
 
         view.notifyChange();
     }
@@ -58,7 +74,17 @@ public class SearchController {
         GetAllTasksRequest request = new GetAllTasksRequest();
         RequestManager.getInstance().invokeRequest(ctx, request);
 
-        this.searchResults = request.getResult();
+        ArrayList<Task> temp;
+        temp = request.getResult();
+
+        while (temp.size() > 0) {
+
+            for (Task t : temp)
+                this.searchResults.add(t);
+
+            RequestManager.getInstance().invokeRequest(ctx, request);
+            temp = request.getResult();
+        }
 
         view.notifyChange();
     }
