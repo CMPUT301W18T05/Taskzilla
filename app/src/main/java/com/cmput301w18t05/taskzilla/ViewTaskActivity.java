@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -61,7 +62,6 @@ public class ViewTaskActivity extends AppCompatActivity {
         viewTaskController.setTaskID(taskID);
         viewTaskController.getTaskRequest();
         task = viewTaskController.getTask();
-
         currentUserId = currentUser.getInstance().getId();
         taskUserId = task.getTaskRequester().getId();
 
@@ -80,7 +80,7 @@ public class ViewTaskActivity extends AppCompatActivity {
         DescriptionView.setText(description);
         TaskName.setText(taskName);
         PinkButton.setText("PLACE BID");
-
+        Log.i("currentUserId", currentUserId+" "+taskUserId+" "+taskStatus);
         if (currentUserId.equals(taskUserId) && taskStatus.equals("requested")) {
             EditButton.setVisibility(View.VISIBLE);
         } else {
@@ -91,11 +91,13 @@ public class ViewTaskActivity extends AppCompatActivity {
         } else {
             DeleteButton.setVisibility(View.INVISIBLE);
         }
+
         if (taskStatus.equals("assigned")) {
             ProviderPicture.setVisibility(View.VISIBLE);
             ProviderName.setVisibility(View.VISIBLE);
             ProviderName.setText(TaskProvider.getName());
         }
+
 
         //Provider Profile
         ProviderPicture.setOnClickListener(new View.OnClickListener() {

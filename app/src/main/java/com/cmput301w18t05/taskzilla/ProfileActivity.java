@@ -25,7 +25,7 @@ public class ProfileActivity extends AppCompatActivity {
         String NumberRequests= "99";
         String NumberTasksDone = "29";
 
-        TextView NameView = (TextView) findViewById(R.id.NameField);
+        TextView NameView = (TextView) findViewById(R.id.Name);
         TextView EmailView = (TextView) findViewById(R.id.EmailField);
         TextView PhoneView = (TextView) findViewById(R.id.PhoneField);
         TextView NumberRequestsView = (TextView) findViewById(R.id.NumRequestsField);

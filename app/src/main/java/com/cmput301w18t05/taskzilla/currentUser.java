@@ -14,12 +14,14 @@ public class currentUser extends User {
         //Get the actual values from elastic search
         super("tom","myuniqueUN","1",new PhoneNumber(),new EmailAddress("Tom1@gmail.com"),
                 8.4, 2.2, 4, 6,new ArrayList<Photo>());
+
     }
 
 
     public static currentUser getInstance() {
         if (user == null) {
             user = new currentUser();
+            user.setId("1");
         }
         return user;
     }
