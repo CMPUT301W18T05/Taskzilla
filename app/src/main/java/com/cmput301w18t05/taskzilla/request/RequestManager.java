@@ -35,7 +35,6 @@ public class RequestManager extends BroadcastReceiver {
     private static ArrayList<Request> requestQueue = new ArrayList<Request>();
     private Context ctx;
 
-    /* Need app context */
     private RequestManager() {
     }
 

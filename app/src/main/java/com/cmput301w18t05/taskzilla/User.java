@@ -26,8 +26,6 @@ public class User {
     protected ArrayList<Photo> photos;
 
     public User() {
-
-
     }
 
     public User(String name, String username, String id,
@@ -36,7 +34,6 @@ public class User {
                 Integer numRequests, Integer numCompleteTasks, ArrayList<Photo> photos){
         this.name = name;
         this.username = username;
-        this.id = id;
         this.phone = phone;
         this.email = email;
         this.providerRating = (float) providerRating;

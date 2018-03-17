@@ -34,7 +34,7 @@ public class Task {
     public Task() {
         photos = new ArrayList<Photo>();
         name = "TEST TASK";
-        retrieveBids();
+        //retrieveBids();
     }
 
     public Task(String name, User TaskRequester, String description) {
@@ -117,7 +117,7 @@ public class Task {
     }
 
     public ArrayList<Bid> getBids() {
-        return bids;
+        return retrieveBids();
     }
 
     public String getName() {
@@ -187,8 +187,14 @@ public class Task {
     /**
      * get bids from elastic search
      */
-    private void retrieveBids() {
+    private ArrayList<Bid> retrieveBids() {
+        if (this.getId() == null) {
+            return null;
+        }
+
         GetBidsByTaskIdRequest getBids = new GetBidsByTaskIdRequest(this.getId());
         RequestManager.getInstance().invokeRequest(getBids);
+
+        return getBids.getResult();
     }
 }

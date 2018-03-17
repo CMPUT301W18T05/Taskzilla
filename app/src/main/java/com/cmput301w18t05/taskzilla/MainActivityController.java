@@ -25,7 +25,7 @@ public class MainActivityController {
     }
 
     public boolean checkLoggedIn(){
-        return true;
+        return false;
     }
 
 

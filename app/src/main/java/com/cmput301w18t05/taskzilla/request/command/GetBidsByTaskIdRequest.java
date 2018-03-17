@@ -8,7 +8,7 @@ import com.cmput301w18t05.taskzilla.request.Request;
 import java.util.ArrayList;
 
 /**
- * Created by wyatt on 07/03/18.
+ * Created by wyatt
  */
 
 public class GetBidsByTaskIdRequest extends Request {
@@ -34,9 +34,8 @@ public class GetBidsByTaskIdRequest extends Request {
 
     public ArrayList<Bid> getResult() {
         try {
-            result = this.task.get();
-            from += size;
-            return result;
+            this.result = task.get();
+            return this.result;
         }
         catch (Exception e) {
             return null;

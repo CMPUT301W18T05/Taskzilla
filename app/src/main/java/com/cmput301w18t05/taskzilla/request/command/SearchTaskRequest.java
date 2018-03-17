@@ -16,6 +16,8 @@ import java.util.ArrayList;
 public class SearchTaskRequest extends SearchRequest {
     private String searchKeywords;
     private ArrayList<Task> results;
+    int from = 0;
+    int size = 10;
 
     public SearchTaskRequest(String keywords) {
         this.searchKeywords = keywords;
@@ -23,11 +25,12 @@ public class SearchTaskRequest extends SearchRequest {
 
     @Override
     public void execute() {
-        ElasticSearchController.SearchForTasks search = new ElasticSearchController.SearchForTasks();
+        ElasticSearchController.SearchForTasks search = new ElasticSearchController.SearchForTasks(from,size);
         search.execute(searchKeywords);
 
         try {
             results = search.get();
+            from += size;
         }
         catch(Exception e) {
             Log.i("Error", "Failed to get tasks from the async object");

@@ -221,6 +221,13 @@ public class ElasticSearchController {
     }
 
     public static class SearchForTasks extends AsyncTask<String, Void, ArrayList<Task>> {
+        int from,size;
+
+        public SearchForTasks(int from, int size) {
+            this.from = from;
+            this.size = size;
+        }
+
         @Override
         protected ArrayList<Task> doInBackground(String... keywords) {
             verifySettings();
@@ -229,6 +236,8 @@ public class ElasticSearchController {
             for (String keyword : keywords) {
                 String query =
                 "{\n" +
+                "   \"from\" : " + from + "\n" +
+                "   \"size\" : " + size + "\n" +
                 "   \"query\": {\n" +
                 "       \"common\" : {\n" +
                 "           \"description\" : {\n" +
@@ -345,10 +354,11 @@ public class ElasticSearchController {
         @Override
         protected User doInBackground(String... userIds) {
             verifySettings();
-            User user = null;
+            ArrayList<User> foundUsers = new ArrayList<>();
 
             for (String id : userIds) {
-                String query = "{ \"query\" : { \"match\" : { \"username\" : "+ id +" } } }";
+                String query = "{ \"query\" : { \"match\" : { \"username\" : \""+ id +"\" } } }";
+                Log.i("QUERY: ",query);
 
                 try {
                     Search search = new Search.Builder(query)
@@ -357,15 +367,21 @@ public class ElasticSearchController {
                             .build();
 
                     SearchResult result = client.execute(search);
-                    List<User> test = result.getSourceAsObjectList(User.class);
-                    return test.get(0);
+                    if (result.isSucceeded()) {
+                        List<User> test = result.getSourceAsObjectList(User.class);
+                        foundUsers.addAll(test);
+                    }
                 }
                 catch (Exception e) {
-                    Log.i("Error", "Get task failed");
+                    Log.i("Error", "Get user by username failed");
+                    return null;
                 }
             }
-
-            return user; // will return null if no user found
+            if (foundUsers.size() > 0) {
+                Log.i("FOUND USER: ", foundUsers.get(0).getId()+ " " +foundUsers.get(0).getName());
+                return foundUsers.get(0); // will return null if no user found
+            }
+            return null;
         }
     }
 
@@ -397,7 +413,7 @@ public class ElasticSearchController {
             ArrayList<Bid> foundBids = new ArrayList<>();
 
             for (String  userId : userIds) {
-                String query = "{ \"query\" : { \"common\" : { \"requesterId\" : \""+ userId + "\" } }";
+                String query = "{ \"query\" : { \"match\" : { \"userId\" : \""+ userId + "\" } }";
                 Log.i("Query: ", query);
 
                 SearchResult result;
@@ -431,7 +447,7 @@ public class ElasticSearchController {
             ArrayList<Bid> foundBids = new ArrayList<>();
 
             for (String  taskId : taskIds) {
-                String query = "{ \"query\" : { \"common\" : { \"requesterId\" : \""+ taskId + "\" } }";
+                String query = "{ \"query\" : { \"common\" : { \"taskId\" : \""+ taskId + "\" } }";
                 Log.i("Query: ", query);
 
                 SearchResult result;

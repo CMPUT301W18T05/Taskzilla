@@ -2,7 +2,6 @@ package com.cmput301w18t05.taskzilla;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -26,7 +25,7 @@ public class ProfileActivity extends AppCompatActivity {
         String NumberRequests= "99";
         String NumberTasksDone = "29";
 
-        TextView NameView = (TextView) findViewById(R.id.Name);
+        TextView NameView = (TextView) findViewById(R.id.NameField);
         TextView EmailView = (TextView) findViewById(R.id.EmailField);
         TextView PhoneView = (TextView) findViewById(R.id.PhoneField);
         TextView NumberRequestsView = (TextView) findViewById(R.id.NumRequestsField);

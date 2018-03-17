@@ -58,6 +58,9 @@ public class MainActivity extends AppCompatActivity {
 
         /* initalize request manager */
         RequestManager.getInstance().setContext(getApplicationContext());
+        IntentFilter connectionFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        getApplicationContext().registerReceiver(RequestManager.getInstance(), connectionFilter);
+
 
         /* setup view vars */
         loginButton = findViewById(R.id.logInButton);
@@ -93,10 +96,6 @@ public class MainActivity extends AppCompatActivity {
                 mainActivityController.signUp();
             }
         });
-
-        /* setup request manager */
-        IntentFilter connectionFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        getApplicationContext().registerReceiver(RequestManager.getInstance(), connectionFilter);
 
         /*If you are already logged in, skip screen*/
         if (mainActivityController.checkLoggedIn()) {
