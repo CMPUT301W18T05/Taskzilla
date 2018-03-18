@@ -87,6 +87,31 @@ public class ElasticSearchController {
             verifySettings();
             DocumentResult result = null;
             for (String id: taskIds) {
+
+                // get the bids
+                try {
+                    String query = "{ \"query\" : { \"match\" : { \"taskId\" : \"" + id + "\" } } }";
+                    Log.i("Query",query);
+                    Search search = new Search.Builder(query)
+                                        .addIndex("cmput301w18t05")
+                                        .addType("bid")
+                                        .build();
+                    SearchResult bidsResult = client.execute(search);
+
+                    if (bidsResult.isSucceeded()) {
+                        List<Bid> bids = bidsResult.getSourceAsObjectList(Bid.class);
+
+                        for (Bid b : bids) {  // delete them
+                            client.execute(
+                                    new Delete.Builder(b.getId()).index("cmput301w18t05").type("bid").build()
+                            );
+                        }
+                    }
+                }
+                catch (Exception e) {
+                    Log.i("Error","could not delete bids when removing task");
+                }
+
                 try {
                     result = client.execute(new Delete.Builder(id).index("cmput301w18t05").type("task").build());
                     Log.i("Success", "Task deleted");

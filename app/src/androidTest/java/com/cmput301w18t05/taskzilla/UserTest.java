@@ -50,10 +50,10 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
         User user = new User();
 
         String username = "James Sun";
-        assertTrue(user.setUsername(username));
+        assertFalse(user.setUsername(username));
 
         username = "C0lin Ch0i";
-        assertTrue(user.setUsername(username));
+        assertFalse(user.setUsername(username));
 
         username = "4ndy_l1";
         assertTrue(user.setUsername(username));
@@ -78,13 +78,14 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
         User user = new User();
 
         String name = "Asd Dsa";
+        String username = "hax04";
         user.setName(name);
         assertEquals(user.getName(), name);
 
-        user.setUsername(name);
-        assertEquals(user.getUsername(), name);
+        user.setUsername(username);
+        assertEquals(user.getUsername(), username);
 
-        PhoneNumber phone = new PhoneNumber(1234567890);
+        PhoneNumber phone = new PhoneNumber("1234567890");
         user.setPhone(phone);
         assertEquals(user.getPhone(), phone);
 
@@ -97,13 +98,5 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
         EmailAddress mail = new EmailAddress("asd@dsa.f");
         user.setEmail(mail);
         assertEquals(user.getEmail(), mail);
-
-        user.setNumRequests(1);
-        assertEquals(user.getNumRequests(),1d);
-
-        user.setNumCompleteTasks(1);
-        assertEquals(user.getNumCompleteTasks(), 1d);
     }
-
-
 }

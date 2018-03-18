@@ -30,7 +30,7 @@ public class PhoneNumberTest extends ActivityInstrumentationTestCase2{
      * @author Micheal-Nguyen
      */
     public void testGetPhoneNumber(){
-        PhoneNumber phone = new PhoneNumber(7802324563L);
+        PhoneNumber phone = new PhoneNumber("7802324563");
         assertEquals("7802324563",phone.toString());
     }
 
@@ -41,8 +41,8 @@ public class PhoneNumberTest extends ActivityInstrumentationTestCase2{
      * @author Micheal-Nguyen
      */
     public void testSetPhoneNumber(){
-        PhoneNumber phone = new PhoneNumber(7802324563L);
-        phone.setPhoneNumber(7809352312L);
+        PhoneNumber phone = new PhoneNumber("7802324563");
+        phone.setPhoneNumber("7809352312");
         assertEquals("7802324563",phone.toString());
 
     }

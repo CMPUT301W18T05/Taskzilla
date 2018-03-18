@@ -36,6 +36,15 @@ public class EditTaskActivity extends AppCompatActivity {
         finish();
     }
 
+    /**
+     * TaskSaveButton
+     * Upon pressing the save button in the activity_edit_task.xml
+     * check that the information that is inputted is within
+     * the constraints set and return
+     *
+     * @param view
+     * @author Micheal-Nguyen
+     */
     public void TaskSaveButton(View view){
         EditText TaskNameText = (EditText) findViewById(R.id.TaskName);
         EditText DescriptionText = (EditText) findViewById(R.id.Description);

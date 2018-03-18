@@ -67,7 +67,14 @@ public class EmailAddressTest extends ActivityInstrumentationTestCase2{
         assertEquals(mail.getEmailUsername(), username);
         assertEquals(mail.getEmailDomain(), domain);
 
-        mail.setEmail(invalidEmail);
+        boolean caught = false;
+        try {
+            mail.setEmail(invalidEmail);
+        }
+        catch (Exception e) {
+            caught = true;
+        }
+        assertTrue(caught);
     }
 
 }
