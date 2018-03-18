@@ -10,7 +10,6 @@ import com.cmput301w18t05.taskzilla.request.Request;
 
 public class UpdateTaskRequest extends Request {
     ElasticSearchController.UpdateTask updateRequest;
-    private String taskId;
     private Task taskData;
 
     public UpdateTaskRequest(Task task) {
@@ -24,12 +23,4 @@ public class UpdateTaskRequest extends Request {
 
     public void executeOffline() {}
 
-    public Task getResult() {
-        try {
-            //this.taskData = this.updateRequest.get();
-            return taskData;
-        }
-        catch (Exception e) {
-            return null;
-        }    }
 }
