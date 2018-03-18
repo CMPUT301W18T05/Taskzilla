@@ -1,5 +1,7 @@
 package com.cmput301w18t05.taskzilla;
 
+import java.util.Locale;
+
 import io.searchbox.annotations.JestId;
 
 public class Bid implements Comparable<Bid> {
@@ -62,6 +64,7 @@ public class Bid implements Comparable<Bid> {
     }
 
     public String toString() {
-        return "test bid stuff";
+       return "asdasdasd";
+        /// / return String.format(Locale.CANADA,"%f", this.bidAmount);
     }
 }
