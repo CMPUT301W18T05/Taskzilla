@@ -14,7 +14,7 @@ public class currentUser extends User {
 
     private currentUser(){
         //Get the actual values from elastic search
-        super("Wyatt P","wyatt","1",new PhoneNumber(7802493469L),new EmailAddress("praharen@ualberta.ca"),
+        super("Wyatt P","wyatt","1",new PhoneNumber("7802493469"),new EmailAddress("praharen@ualberta.ca"),
                 8.4, 2.2, 4, 6,new ArrayList<Photo>());
     }
 
