@@ -3,6 +3,7 @@ package com.cmput301w18t05.taskzilla.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,6 +42,17 @@ public class MyBidsFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_my_bids, container, false);
 
+        /*taskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            public void onItemClick(AdapterView<?> a, View v, int position, long id) {
+                viewTask();
+            }
+        });*/
+        return v;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         // controller stuff
         bidList = new ArrayList<>();
         bidController = new GetBidByUserIdController(getContext(), currentUser.getInstance());
@@ -49,18 +61,9 @@ public class MyBidsFragment extends Fragment {
 
 
         //Set up listview and adapater
-        taskListView = v.findViewById(R.id.MyBidsListView);
+        taskListView = view.findViewById(R.id.MyBidsListView);
         adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, bidList);
         taskListView.setAdapter(adapter);
-
-        taskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            public void onItemClick(AdapterView<?> a, View v, int position, long id) {
-                viewTask();
-            }
-        });
-
-        return v;
     }
 
     /**

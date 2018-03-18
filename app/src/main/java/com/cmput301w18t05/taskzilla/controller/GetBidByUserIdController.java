@@ -22,10 +22,8 @@ import java.util.ArrayList;
 public class GetBidByUserIdController {
 
     private ArrayList<Bid> resultBidList;
-    private ArrayList<Task> resultTaskList;
     private User bidOwner;
     private GetBidsByUserIdRequest bidRequest;
-    private GetTaskRequest taskRequest;
     private Context ctx;
 
     public GetBidByUserIdController(Context context, User user) {
@@ -38,22 +36,9 @@ public class GetBidByUserIdController {
         return this.resultBidList;
     }
 
-    public ArrayList<Task> getResultTaskList() {
-        return this.resultTaskList;
-    }
-
     public void doTaskRequest() {
         bidRequest = new GetBidsByUserIdRequest(bidOwner.getId());
         RequestManager.getInstance().invokeRequest(ctx,bidRequest);
         resultBidList = bidRequest.getResult();
-        //resultBidList.add(new Bid());
-        //resultBidList.add(new Bid());
-
-
-        /*for (int i = 0; i < getResultBidList().size(); i++) {
-            taskRequest = new GetTaskRequest(resultBidList.get(i).getTaskId());
-            RequestManager.getInstance().invokeRequest(ctx, taskRequest);
-            resultTaskList.add(taskRequest.getResult());
-        }*/
     }
 }

@@ -24,7 +24,6 @@ public class GetTaskRequest extends Request {
 
     @Override
     public void executeOffline() {
-
     }
 
     public Task getResult() {
