@@ -23,10 +23,10 @@ public class NewTaskActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_task);
 
         newTaskController =  new NewTaskController(this, getApplicationContext());
-        Button cancel = (Button) findViewById(R.id.CancelButton);
-        Button addTask = (Button) findViewById(R.id.addTaskButton);
-        final EditText taskName = (EditText) findViewById(R.id.TaskName);
-        final EditText taskDescription = (EditText) findViewById(R.id.Description);
+        Button cancel =  findViewById(R.id.CancelButton);
+        Button addTask = findViewById(R.id.addTaskButton);
+        final EditText taskName = findViewById(R.id.TaskName);
+        final EditText taskDescription = findViewById(R.id.Description);
 
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
