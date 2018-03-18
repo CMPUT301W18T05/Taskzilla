@@ -42,7 +42,7 @@ public class NewTaskController {
 
             AddTaskRequest request = new AddTaskRequest(task);
             RequestManager.getInstance().invokeRequest(ctx, request);
-
+            request.getResult();
 
             taskId = task.getId();
 
