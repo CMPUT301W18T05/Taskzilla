@@ -30,7 +30,6 @@ public class MyBidsFragment extends Fragment {
     private ListView taskListView;
     private ArrayAdapter<Bid> adapter;
     private GetBidByUserIdController bidController;
-    private currentUser cuser;
 
 
     public MyBidsFragment() {
@@ -46,7 +45,7 @@ public class MyBidsFragment extends Fragment {
 
         // controller stuff
         bidList = new ArrayList<>();
-        bidController = new GetBidByUserIdController(getContext(), cuser);
+        bidController = new GetBidByUserIdController(getContext(), currentUser.getInstance());
         bidController.doTaskRequest();
         bidList = bidController.getResultBidList();
 
