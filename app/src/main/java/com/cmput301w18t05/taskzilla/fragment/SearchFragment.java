@@ -97,12 +97,12 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
 
         searchField.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public boolean onQueryTextSubmit(String s) {
+            public boolean onQueryTextChange(String s) {
                 return false;
             }
 
             @Override
-            public boolean onQueryTextChange(String text) {
+            public boolean onQueryTextSubmit(String text) {
                 String sentence;
                 sentence = text.toLowerCase();
 

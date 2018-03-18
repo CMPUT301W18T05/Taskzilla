@@ -3,6 +3,7 @@ package com.cmput301w18t05.taskzilla.activity;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -13,6 +14,11 @@ import com.cmput301w18t05.taskzilla.User;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.AddUserRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetUserByUsernameRequest;
+
+import org.w3c.dom.Text;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SignUpActivity extends AppCompatActivity {
     public TextView username;
@@ -41,20 +47,86 @@ public class SignUpActivity extends AppCompatActivity {
                 if (validateInformation()) {
                     convertToUserObject();
                     System.out.println(addUserToDB());
-                }
-                else {
-                    showError();
+                    finish();
                 }
             }
         });
     }
 
     public boolean validateInformation() {
-        return true; // todo
-    }
+        if(TextUtils.isEmpty(username.getText())) {
+            showError("Username required!");
+            return false;
+        } else if(username.getText().length() > 30) {
+            showError("Username too long!");
+            return false;
+        } else {
+            String usernameTemp = username.getText().toString();
+            Pattern usernameConstraint = Pattern.compile("[^a-zA-Z0-9_]");
+            boolean hasChar = usernameConstraint.matcher(usernameTemp).find();
+            if(hasChar == true) {
+                showError("Username contains illegal character!");
+                return false;
+            }
+        }
+        if(TextUtils.isEmpty(email.getText())) {
+            showError("Email required!");
+            return false;
+        } else if(email.getText().length() > 30) {
+            showError("Email too long!");
+            return false;
+        } else {
+            String emailTemp = email.getText().toString();
 
-    public void showError() {
-        // todo
+            int periodCount = 0;
+            int atCount = 0;
+
+            Pattern period = Pattern.compile("([.])");
+            Pattern at = Pattern.compile("([@])");
+
+            Matcher periodMatcher = period.matcher(emailTemp);
+            Matcher atMatcher = at.matcher(emailTemp);
+
+            while(periodMatcher.find()) periodCount++;
+            while(atMatcher.find()) atCount++;
+
+            if(periodCount != 1 || atCount != 1) {
+                showError("Email invalid!");
+                return false;
+            }
+        }
+        if(TextUtils.isEmpty(phone.getText())) {
+            showError("Phone number required!");
+            return false;
+        } else if(phone.getText().length() != 10) {
+            showError("Phone number not of length 10!");
+            return false;
+        } else {
+            String phoneTemp  = phone.getText().toString();
+            Pattern phoneConstraint = Pattern.compile("[^0-9]");
+            boolean hasChar = phoneConstraint.matcher(phoneTemp).find();
+            if(hasChar == true) {
+                showError("Phone contains illegal character!");
+                return false;
+            }
+        }
+        if(TextUtils.isEmpty(name.getText())) {
+            showError("Name required!");
+            return false;
+        } else if(name.getText().length() > 30) {
+            showError("Name too long!");
+            return false;
+        } else {
+            String nameTemp = name.getText().toString();
+            Pattern nameConstraint = Pattern.compile("[^a-zA-Z]");
+            boolean hasChar = nameConstraint.matcher(nameTemp).find();
+            if(hasChar == true) {
+                showError("Name contains illegal character!");
+                return false;
+            }
+        }
+
+        return true; // todo
     }
 
     public void convertToUserObject() {
