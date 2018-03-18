@@ -1,5 +1,6 @@
 package com.cmput301w18t05.taskzilla.activity;
 
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -82,6 +83,14 @@ public class SignUpActivity extends AppCompatActivity {
             requestManager.invokeRequest(addUserRequest);
             return addUserRequest.getResult();
         }
-        return false;
+        else {
+            showError("This username is already is use. Please try another.");
+            return false;
+        }
+    }
+
+    public void showError(String err) {
+        Snackbar snackbar = Snackbar.make(findViewById(R.id.SignUpPage),err,Snackbar.LENGTH_LONG);
+        snackbar.show();
     }
 }
