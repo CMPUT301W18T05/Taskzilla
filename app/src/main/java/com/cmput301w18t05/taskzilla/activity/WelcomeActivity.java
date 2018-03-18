@@ -30,6 +30,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
         tabsAdapter = new TabsManager(this.getSupportFragmentManager());
         tabsContent = findViewById(R.id.welcome_tabs_content);
+        tabsContent.setOffscreenPageLimit(4);
         tabsContent.setAdapter(tabsAdapter);
 
         tabs = findViewById(R.id.tabs_bar);
