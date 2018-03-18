@@ -32,10 +32,10 @@ public class TaskTest extends ActivityInstrumentationTestCase2 {
     public void testAddBid() {
         Task testTask = new Task();
         assertEquals(0, testTask.numBids());
-        Bid newBid = new Bid(, user, , testTask);
+        Bid newBid = new Bid(user.getId(), testTask.getId(), 10.00f);
         testTask.addBid(newBid);
         assertEquals(1, testTask.numBids());
-        Bid newBid2 = new Bid(, user, , testTask);
+        Bid newBid2 = new Bid(user.getId(), testTask.getId(), 10.00f);
         testTask.addBid(newBid2);
         assertEquals(2, testTask.numBids());
         assertTrue(testTask.getBid(0).compareTo(testTask.getBid(1)) < 0);
@@ -143,10 +143,10 @@ public class TaskTest extends ActivityInstrumentationTestCase2 {
      */
     public void testGetBestBid() {
         Task testTask = new Task();
-        Bid bid1 = new Bid(user, new Float(100), );
+        Bid bid1 = new Bid(user.getId(), testTask.getId(), 10.00f);
         assertEquals(new Float(100), testTask.getBestBid());
 
-        Bid bid2 = new Bid(user, new Float(200), );
+        Bid bid2 = new Bid(user.getId(), testTask.getId(), 10.00f);
         assertEquals(new Float(200), testTask.getBestBid());
     }
 }

@@ -19,10 +19,13 @@ import com.cmput301w18t05.taskzilla.activity.NewTaskActivity;
 import com.cmput301w18t05.taskzilla.activity.ViewTaskActivity;
 import com.cmput301w18t05.taskzilla.currentUser;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
+import com.cmput301w18t05.taskzilla.request.command.GetTaskRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetTasksByRequesterUsernameRequest;
 import com.cmput301w18t05.taskzilla.request.command.SearchTaskRequest;
 
 import java.util.ArrayList;
+
+import static android.app.Activity.RESULT_OK;
 
 
 /**
@@ -39,6 +42,8 @@ public class TasksRequesterFragment extends Fragment {
     private ArrayList<Task> taskList;
     private ListView taskListView;
     private ArrayAdapter<Task> adapter;
+    private Task currentTask;
+
     /*
     private ElasticSearchController.AddTask addTask = new ElasticSearchController.AddTask();
     private ElasticSearchController.SearchForTasks searchForTask = new ElasticSearchController.SearchForTasks();
@@ -83,27 +88,50 @@ public class TasksRequesterFragment extends Fragment {
         taskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> a, View v, int position, long id) {
+                currentTask = taskList.get(position);
                 viewTask(taskList.get(position).getId());
             }
         });
         return v;
     }
+
     public void onResume(){
         super.onResume();
         adapter.notifyDataSetChanged();
-
-
     }
 
     public void viewTask(String id) {
         Intent intent = new Intent(getActivity(), ViewTaskActivity.class);
         intent.putExtra("TaskId",id);
-        startActivity(intent);
+        startActivityForResult(intent,1);
     }
 
     public void newTask() {
         Intent intent = new Intent(getActivity(), NewTaskActivity.class);
+        //startActivityForResult(intent, 2);
         startActivity(intent);
     }
 
+    @Override
+    public void onActivityResult(int reqCode, int resultCode, Intent data) {
+        if(reqCode == 1) {
+            if(resultCode == RESULT_OK) {
+                Boolean result = data.getBooleanExtra("result", false);
+
+                if(result == true)
+                    taskList.remove(currentTask);
+            }
+        }
+        /*
+        if(reqCode == 2)
+            if(resultCode == RESULT_OK) {
+                String result = data.getStringExtra("result");
+
+                GetTaskRequest request = new GetTaskRequest(result);
+                RequestManager.getInstance().invokeRequest(getContext(), request);
+                taskList.add(request.getResult());
+
+            }
+            */
+    }
 }
