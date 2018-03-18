@@ -11,18 +11,18 @@
 package com.cmput301w18t05.taskzilla;
 
 /**
- * Created by wyatt on 22/02/18.
+ * Created by wyatt on
  */
 
 public class PhoneNumber {
 
-    private long phone;
-    public PhoneNumber(long phone) {
+    private String phone;
+
+    public PhoneNumber(String phone) {
         this.phone = phone;
     }
 
     public PhoneNumber(){
-
     }
 
     /**
@@ -30,8 +30,7 @@ public class PhoneNumber {
      * @param phone
      * @author Micheal-Nguyen
      */
-
-    public void setPhoneNumber(long phone){
+    public void setPhoneNumber(String phone){
         this.phone = phone;
     }
 
@@ -39,10 +38,9 @@ public class PhoneNumber {
      * get the phone number and return it
      * @return
      */
-    public long getPhoneNumber(){
+    public String getPhoneNumber(){
         return phone;
     }
-
 
     /**
      * convert phone number from long to string
@@ -50,10 +48,8 @@ public class PhoneNumber {
      * @author Micheal-Nguyen
      */
     public String toString() {
-        return Long.toString(phone);
+        return phone;
     }
-
-
 }
 
 
