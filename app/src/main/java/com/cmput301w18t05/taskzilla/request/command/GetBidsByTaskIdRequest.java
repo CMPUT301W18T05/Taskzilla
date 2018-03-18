@@ -17,6 +17,7 @@ public class GetBidsByTaskIdRequest extends Request {
 
     public GetBidsByTaskIdRequest(String taskId) {
         this.taskId = taskId;
+        this.result = new ArrayList<>();
     }
 
     public void execute() {
@@ -30,11 +31,11 @@ public class GetBidsByTaskIdRequest extends Request {
 
     public ArrayList<Bid> getResult() {
         try {
-            this.result = this.task.get();
+            this.result.addAll(this.task.get());
             return this.result;
         }
         catch (Exception e) {
-            return null;
+            return this.result;
         }
     }
 }
