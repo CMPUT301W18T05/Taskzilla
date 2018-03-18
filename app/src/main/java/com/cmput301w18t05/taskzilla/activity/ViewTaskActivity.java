@@ -231,7 +231,6 @@ public class ViewTaskActivity extends AppCompatActivity {
                 }
                 // do stuff here to actually add bid
                 task.addBid(new Bid(currentUserId, taskID, incomingBidFloat));
-
                 task.setStatus("bidded");
 
 

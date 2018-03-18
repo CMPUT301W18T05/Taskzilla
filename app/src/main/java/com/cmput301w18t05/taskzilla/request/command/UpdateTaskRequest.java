@@ -24,4 +24,12 @@ public class UpdateTaskRequest extends Request {
 
     public void executeOffline() {}
 
+    public Task getResult() {
+        try {
+            //this.taskData = this.updateRequest.get();
+            return taskData;
+        }
+        catch (Exception e) {
+            return null;
+        }    }
 }
