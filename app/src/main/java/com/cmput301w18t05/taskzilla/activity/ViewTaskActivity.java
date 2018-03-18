@@ -48,6 +48,17 @@ public class ViewTaskActivity extends AppCompatActivity {
     private ImageButton RequesterPicture;
 
     private Button PinkButton;
+
+    /**onCreate
+     * Retrieve the task using the task id that was sent using
+     * intent into the activity updating the information on the
+     * activity_ViewTaskActivity while checking if the task has
+     * a provider, what the status is and if the user viewing
+     * is the owner of the task
+     *
+     * @param savedInstanceState
+     * @author Micheal-Nguyen
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,7 +116,14 @@ public class ViewTaskActivity extends AppCompatActivity {
             ProviderName.setText(TaskProvider.getName());
         }
 
-        //Provider Profile
+        /**
+         * ProviderPicture and RequesterPicture
+         * when provider or requester picture clicked in
+         * activity_view_task.xml pass user id through intent
+         * and start the ProfileActivity
+         *
+         * @author Micheal-Nguyen
+         */
         ProviderPicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -122,7 +140,7 @@ public class ViewTaskActivity extends AppCompatActivity {
 
         });
 
-        //Requester Profile
+
         RequesterPicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -148,7 +166,15 @@ public class ViewTaskActivity extends AppCompatActivity {
             }
         });
 
-        //Implement delete button
+        /**
+         * DeleteButton
+         * in the activity_view_taskxml, when the delete button is pressed
+         * prompt user with a confirmation dialog.
+         * upon confirmation call vieTaskController to remove
+         * the task through elastic search
+         *
+         * @author Micheal-Nguyen
+         */
         DeleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
