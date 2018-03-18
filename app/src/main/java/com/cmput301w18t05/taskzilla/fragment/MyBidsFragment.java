@@ -30,13 +30,10 @@ public class MyBidsFragment extends Fragment {
     private ListView taskListView;
     private ArrayAdapter<Bid> adapter;
     private GetBidByUserIdController bidController;
-    private currentUser cuser;
-
 
     public MyBidsFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -46,7 +43,7 @@ public class MyBidsFragment extends Fragment {
 
         // controller stuff
         bidList = new ArrayList<>();
-        bidController = new GetBidByUserIdController(getContext(), cuser);
+        bidController = new GetBidByUserIdController(getContext(), currentUser.getInstance());
         bidController.doTaskRequest();
         bidList = bidController.getResultBidList();
 
