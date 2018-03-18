@@ -87,6 +87,7 @@ public class ViewTaskActivity extends AppCompatActivity {
         DescriptionView.setText(description);
         TaskName.setText(taskName);
         PinkButton.setText("PLACE BID");
+
         if (currentUserId.equals(taskUserId) && taskStatus.equals("requested")) {
             EditButton.setVisibility(View.VISIBLE);
         } else {
@@ -103,7 +104,6 @@ public class ViewTaskActivity extends AppCompatActivity {
             ProviderName.setVisibility(View.VISIBLE);
             ProviderName.setText(TaskProvider.getName());
         }
-
 
         //Provider Profile
         ProviderPicture.setOnClickListener(new View.OnClickListener() {
@@ -263,8 +263,8 @@ public class ViewTaskActivity extends AppCompatActivity {
                     task.setName(taskName);
                     task.setDescription(description);
                     viewTaskController.updateTaskRequest(task);
-                    TextView DescriptionView = (TextView) findViewById(R.id.Description);
-                    TextView TaskNameView = (TextView) findViewById(R.id.TaskName);
+                    TextView DescriptionView = findViewById(R.id.Description);
+                    TextView TaskNameView = findViewById(R.id.TaskName);
                     TaskNameView.setText(taskName);
                     if (description.length() > 0) {
                         DescriptionView.setText(description);

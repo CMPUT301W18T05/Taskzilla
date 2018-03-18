@@ -12,6 +12,8 @@ public class Bid implements Comparable<Bid> {
     private String userId;
     private String taskId;
 
+    public Bid(){}
+
     public Bid(String userId, String taskId, float bidAmount) {
         this.userId = userId;
         this.taskId = taskId;
