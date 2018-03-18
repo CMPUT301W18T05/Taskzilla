@@ -4,8 +4,10 @@ import android.location.Location;
 
 import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.AddBidRequest;
+import com.cmput301w18t05.taskzilla.request.command.AddTaskRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetBidsByTaskIdRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetUserRequest;
+import com.cmput301w18t05.taskzilla.request.command.UpdateTaskRequest;
 
 import java.util.ArrayList;
 
@@ -175,6 +177,8 @@ public class Task {
 
     public void setStatus(String status) {
         this.status = status;
+        AddTaskRequest request = new AddTaskRequest(this);
+        RequestManager.getInstance().invokeRequest(request);
     }
 
     public String getDescription() {

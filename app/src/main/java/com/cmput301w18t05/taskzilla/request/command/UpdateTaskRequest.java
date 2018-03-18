@@ -5,12 +5,11 @@ import com.cmput301w18t05.taskzilla.Task;
 import com.cmput301w18t05.taskzilla.request.Request;
 
 /**
- * Created by kio22 on 2018-03-16.
+ * Created by Micheal-Nguyen on 2018-03-16.
  */
 
 public class UpdateTaskRequest extends Request {
     ElasticSearchController.UpdateTask updateRequest;
-    private String taskId;
     private Task taskData;
 
     public UpdateTaskRequest(Task task) {

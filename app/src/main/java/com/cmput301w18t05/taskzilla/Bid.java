@@ -69,7 +69,7 @@ public class Bid implements Comparable<Bid> {
     public String toString() {
         GetTaskRequest taskRequest = new GetTaskRequest(this.taskId);
         RequestManager.getInstance().invokeRequest(taskRequest);
-        return "Task: " + taskRequest.getResult().getStatus() +
-                "\nBid amount: " + Float.toString(this.bidAmount);
+        return "Task: " + taskRequest.getResult().getName() +
+                "\nBid amount: $" + Float.toString(this.bidAmount);
     }
 }
