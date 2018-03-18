@@ -73,6 +73,8 @@ public class SearchController {
         GetAllTasksRequest request = new GetAllTasksRequest();
         RequestManager.getInstance().invokeRequest(ctx, request);
 
+        searchResults.clear();
+
         ArrayList<Task> temp;
         temp = request.getResult();
 

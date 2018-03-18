@@ -161,6 +161,11 @@ public class ViewTaskActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         viewTaskController.RemoveTaskRequest(task);
                         dialogInterface.dismiss();
+
+                        Intent intent = new Intent();
+                        intent.putExtra("result", true);
+                        setResult(RESULT_OK,intent);
+
                         finish();
                     }
                 });

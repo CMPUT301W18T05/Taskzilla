@@ -22,6 +22,8 @@ import com.cmput301w18t05.taskzilla.activity.ViewTaskActivity;
 
 import java.util.ArrayList;
 
+import static android.app.Activity.RESULT_OK;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,6 +40,7 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
     private ArrayAdapter<Task> adapter;
     private ArrayList<Task> searchResults;
     private SearchController searchController;
+    private Task currentTask;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -72,14 +75,14 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
         availableTasks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                currentTask = searchResults.get(i);
                 viewTask(searchResults.get(i).getId());
-                //Log.i("ID", searchResults.get(i).getId());
+
             }
         });
 
         // get all available tasks
         searchController.getAllRequest();
-        notifyChange();
 
         return mConstraintLayout;
     }
@@ -87,7 +90,19 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
     public void viewTask(String taskId){
         Intent intent = new Intent(getActivity(), ViewTaskActivity.class);
         intent.putExtra("TaskId", taskId);
-        startActivity(intent);
+        startActivityForResult(intent, 1);
+    }
+
+    @Override
+    public void onActivityResult(int reqCode, int resultCode, Intent data) {
+        if(reqCode == 1) {
+            if(resultCode == RESULT_OK) {
+                Boolean result = data.getBooleanExtra("result", false);
+
+                if(result == true)
+                    searchResults.remove(currentTask);
+            }
+        }
     }
 
     @Override
@@ -97,20 +112,21 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
 
         searchField.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public boolean onQueryTextChange(String s) {
+            public boolean onQueryTextSubmit(String s) {
                 return false;
             }
 
             @Override
-            public boolean onQueryTextSubmit(String text) {
+            public boolean onQueryTextChange(String text) {
                 String sentence;
                 sentence = text.toLowerCase();
 
                 if (sentence.length() == 0) {                          // Checks if user entered text in search bar
                     if (searchController.getKeywords().isEmpty()){ // Checks if keywords is empty, if yes return already loaded array of tasks
-                        // do nothing
+                        //do nothing
                     }
-                    else {                                         // Since keywords isn't empty, previous array of tasks isn't all available tasks
+
+                    else {                                          // Since keywords isn't empty, previous array of tasks isn't all available tasks
                         searchController.clearKeywords();
                         searchController.getAllRequest();
                     }
@@ -148,6 +164,11 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
         for(Task t : searchController.getResults())
             searchResults.add(t);
 
+        adapter.notifyDataSetChanged();
+    }
+
+    public void onResume(){
+        super.onResume();
         adapter.notifyDataSetChanged();
     }
 }
