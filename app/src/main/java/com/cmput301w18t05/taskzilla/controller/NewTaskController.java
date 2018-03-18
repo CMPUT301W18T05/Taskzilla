@@ -43,13 +43,13 @@ public class NewTaskController {
             AddTaskRequest request = new AddTaskRequest(task);
             RequestManager.getInstance().invokeRequest(ctx, request);
 
-            /*
+
             taskId = task.getId();
 
             Intent intent = new Intent();
             intent.putExtra("result", taskId);
             view.setResult(RESULT_OK, intent);
-            */
+
 
             view.finish();
 

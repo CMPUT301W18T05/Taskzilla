@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -108,8 +109,8 @@ public class TasksRequesterFragment extends Fragment {
 
     public void newTask() {
         Intent intent = new Intent(getActivity(), NewTaskActivity.class);
-        //startActivityForResult(intent, 2);
-        startActivity(intent);
+        startActivityForResult(intent, 2);
+        //startActivity(intent);
     }
 
     @Override
@@ -122,16 +123,18 @@ public class TasksRequesterFragment extends Fragment {
                     taskList.remove(currentTask);
             }
         }
-        /*
+
         if(reqCode == 2)
             if(resultCode == RESULT_OK) {
                 String result = data.getStringExtra("result");
+
+                Log.i("Fuck this shit", "goksodks");
 
                 GetTaskRequest request = new GetTaskRequest(result);
                 RequestManager.getInstance().invokeRequest(getContext(), request);
                 taskList.add(request.getResult());
 
             }
-            */
+
     }
 }
