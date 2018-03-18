@@ -88,13 +88,9 @@ public class Task {
         ArrayList<Bid> bidlist = getbidrequest.getResult();
         for (Bid bid : bidlist) {
             if (bid.getUserId().equals(newbid.getUserId())) {
-                if (bid.getBidAmount() <= newbid.getBidAmount()) {
-                    return;
-                } else {
-                    RemoveBidRequest removerequest = new RemoveBidRequest(bid);
-                    RequestManager.getInstance().invokeRequest(removerequest);
-                    break;
-                }
+                RemoveBidRequest removerequest = new RemoveBidRequest(bid);
+                RequestManager.getInstance().invokeRequest(removerequest);
+                break;
             }
         }
 

@@ -50,7 +50,6 @@ public class NewTaskController {
             intent.putExtra("result", taskId);
             view.setResult(RESULT_OK, intent);
 
-
             view.finish();
 
         }else{
