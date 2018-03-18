@@ -13,6 +13,7 @@ import android.widget.ListView;
 
 import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.Task;
+import com.cmput301w18t05.taskzilla.User;
 import com.cmput301w18t05.taskzilla.activity.ViewTaskActivity;
 import com.cmput301w18t05.taskzilla.currentUser;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
@@ -35,7 +36,7 @@ public class TasksProviderFragment extends Fragment {
     private RequestManager requestManager;
     private GetTasksByProviderUsernameRequest requestTasks;
     private SearchTaskRequest newRequest;
-    private currentUser cUser = currentUser.getInstance();
+    private User cUser = currentUser.getInstance();
 
 
     public TasksProviderFragment() {
@@ -56,7 +57,7 @@ public class TasksProviderFragment extends Fragment {
         taskListView.setAdapter(adapter);
 
 
-        requestTasks = new GetTasksByProviderUsernameRequest(cUser.getUsername());
+        requestTasks = new GetTasksByProviderUsernameRequest(currentUser.getInstance().getUsername());
         requestManager.getInstance().invokeRequest(getContext(), requestTasks);
 
         for (Task t : requestTasks.getResult()) {

@@ -29,8 +29,10 @@ public class GetBidsByUserIdRequest extends Request {
     }
 
     public ArrayList<Bid> getResult() {
+
         try {
-            this.result = this.task.get();
+            //this.result = this.task.get();
+            result.add(new Bid());
             return result;
         }
         catch (Exception e) {

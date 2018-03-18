@@ -14,6 +14,7 @@ import android.widget.ListView;
 
 import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.Task;
+import com.cmput301w18t05.taskzilla.User;
 import com.cmput301w18t05.taskzilla.activity.NewTaskActivity;
 import com.cmput301w18t05.taskzilla.activity.ViewTaskActivity;
 import com.cmput301w18t05.taskzilla.currentUser;
@@ -34,7 +35,7 @@ public class TasksRequesterFragment extends Fragment {
         // Required empty public constructor
     }
 
-    private currentUser cUser = currentUser.getInstance();
+    private User cUser = currentUser.getInstance();
     private ArrayList<Task> taskList;
     private ListView taskListView;
     private ArrayAdapter<Task> adapter;
