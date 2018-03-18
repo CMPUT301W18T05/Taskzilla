@@ -66,9 +66,6 @@ public class TasksRequesterFragment extends Fragment {
         adapter = new ArrayAdapter<Task>(getActivity(), android.R.layout.simple_list_item_1, taskList);
         taskListView.setAdapter(adapter);
 
-
-
-
         requestTasks = new GetTasksByRequesterUsernameRequest(cUser.getUsername());
         requestManager.getInstance().invokeRequest(getContext(), requestTasks);
 
