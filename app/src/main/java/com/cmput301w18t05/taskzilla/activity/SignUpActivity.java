@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.cmput301w18t05.taskzilla.EmailAddress;
+import com.cmput301w18t05.taskzilla.PhoneNumber;
 import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.User;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
@@ -140,6 +141,7 @@ public class SignUpActivity extends AppCompatActivity {
         newUser.setName(name);
         newUser.setEmail(new EmailAddress(email));
         newUser.setUsername(username);
+        newUser.setPhone(new PhoneNumber(phone));
     }
 
     public boolean addUserToDB() {
