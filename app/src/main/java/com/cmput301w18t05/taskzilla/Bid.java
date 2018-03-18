@@ -1,5 +1,8 @@
 package com.cmput301w18t05.taskzilla;
 
+import com.cmput301w18t05.taskzilla.request.RequestManager;
+import com.cmput301w18t05.taskzilla.request.command.GetTaskRequest;
+
 import java.util.Locale;
 
 import io.searchbox.annotations.JestId;
@@ -64,7 +67,9 @@ public class Bid implements Comparable<Bid> {
     }
 
     public String toString() {
-       return "asdasdasd";
-        /// / return String.format(Locale.CANADA,"%f", this.bidAmount);
+        GetTaskRequest taskRequest = new GetTaskRequest(this.taskId);
+        RequestManager.getInstance().invokeRequest(taskRequest);
+        return "Task: " + taskRequest.getResult().getStatus() +
+                "\nBid amount: " + Float.toString(this.bidAmount);
     }
 }

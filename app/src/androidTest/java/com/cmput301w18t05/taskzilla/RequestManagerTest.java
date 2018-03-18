@@ -34,7 +34,7 @@ public class RequestManagerTest extends ActivityInstrumentationTestCase2 {
         user.setRequesterRating(10.0);
         user.setProviderRating(10.0);
         user.setEmail(new EmailAddress("test3@cmput301.com"));
-        user.setPhone(new PhoneNumber(1111));
+        user.setPhone(new PhoneNumber("1111"));
 
         AddUserRequest test2 = new AddUserRequest(user);
         RequestManager.getInstance().invokeRequest(ctx, test2);
@@ -55,7 +55,7 @@ public class RequestManagerTest extends ActivityInstrumentationTestCase2 {
         mockUser.setName("Linus Torvalds");
         mockUser.setEmail(new EmailAddress("linus@kernal.org"));
 
-        Bid mockBid = new Bid(mockUser, 1000.0f, );
+        Bid mockBid = new Bid(mockUser.getId(), mockTask.getId(), 1000.0f);
 
         mockTask.setName("MockTask");
         mockTask.addBid(mockBid);

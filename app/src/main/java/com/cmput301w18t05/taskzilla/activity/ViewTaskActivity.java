@@ -217,7 +217,7 @@ public class ViewTaskActivity extends AppCompatActivity {
         // otherwise
 
         final AlertDialog mBuilder = new AlertDialog.Builder(ViewTaskActivity.this).create();
-        final View mView = getLayoutInflater().inflate(R.layout.dialog_place_bid, null);
+        final View mView = getLayoutInflater().inflate(R.layout.dialog_place_bid,null);
 
         final EditText incomingBidText = mView.findViewById(R.id.place_bid_edittext);
         Button submitBidButton = mView.findViewById(R.id.submit_bid_button);
@@ -237,8 +237,10 @@ public class ViewTaskActivity extends AppCompatActivity {
                 // do stuff here to actually add bid
                 task.addBid(new Bid(currentUserId, taskID, incomingBidFloat));
 
-                Toast.makeText(ViewTaskActivity.this,
-                        incomingBidFloat.toString(), Toast.LENGTH_SHORT).show();
+                task.setStatus("bidded");
+
+
+
                 mBuilder.dismiss();
             }
         });
