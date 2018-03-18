@@ -105,7 +105,6 @@ public class ViewTaskActivity extends AppCompatActivity {
             ProviderName.setText(TaskProvider.getName());
         }
 
-
         //Provider Profile
         ProviderPicture.setOnClickListener(new View.OnClickListener() {
             @Override

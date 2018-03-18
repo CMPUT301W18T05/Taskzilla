@@ -10,10 +10,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.cmput301w18t05.taskzilla.Bid;
 import com.cmput301w18t05.taskzilla.R;
-import com.cmput301w18t05.taskzilla.Task;
 import com.cmput301w18t05.taskzilla.activity.ViewTaskActivity;
+import com.cmput301w18t05.taskzilla.controller.GetBidByUserIdController;
+import com.cmput301w18t05.taskzilla.currentUser;
 
 import java.util.ArrayList;
 
@@ -23,11 +26,11 @@ import java.util.ArrayList;
  */
 public class MyBidsFragment extends Fragment {
 
-    private ArrayList<Task> taskList;
+    private ArrayList<Bid> bidList;
     private ListView taskListView;
-    private ArrayAdapter<Task> adapter;
-    //private GetBidByUserIdController bidController;
-    //private currentUser cuser;
+    private ArrayAdapter<Bid> adapter;
+    private GetBidByUserIdController bidController;
+    private currentUser cuser;
 
 
     public MyBidsFragment() {
@@ -41,18 +44,17 @@ public class MyBidsFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_my_bids, container, false);
 
-        //Set up listview and adapater
-        taskList = new ArrayList<>();
-        taskListView = v.findViewById(R.id.MyBidsListView);
-        adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, taskList);
-        taskListView.setAdapter(adapter);
-
         // controller stuff
-        //bidController = new GetBidByUserIdController(getContext(), cuser);
-        //bidController.doTaskRequest();
-        //taskList = bidController.getResultTaskList();
+        bidList = new ArrayList<>();
+        bidController = new GetBidByUserIdController(getContext(), cuser);
+        bidController.doTaskRequest();
+        bidList = bidController.getResultBidList();
 
-        taskList.add(new Task());
+
+        //Set up listview and adapater
+        taskListView = v.findViewById(R.id.MyBidsListView);
+        adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, bidList);
+        taskListView.setAdapter(adapter);
 
         taskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 

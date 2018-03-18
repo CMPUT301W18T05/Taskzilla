@@ -21,8 +21,8 @@
         android:id="@+id/NameField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/PhoneField"
         android:layout_alignTop="@+id/imageView"
+        android:layout_toEndOf="@+id/imageView"
         android:text="Android"
         android:textSize="28sp" />
 
@@ -42,7 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/imageView"
         android:layout_below="@+id/imageView"
-        android:layout_marginTop="21dp"
+        android:layout_marginTop="20dp"
         android:text="Provider Rating:"
         android:textSize="20sp" />
 
@@ -52,7 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/ProviderRating"
         android:layout_below="@+id/ProviderRating"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="20dp"
         android:text="Requester Rating:"
         android:textSize="20sp" />
 
@@ -62,7 +62,7 @@
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/RequesterRating"
         android:layout_below="@+id/RequesterRatingField"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="20dp"
         android:text="Number of Requests: "
         android:textSize="20sp" />
 
@@ -72,7 +72,7 @@
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/RequesterRating"
         android:layout_below="@+id/NumRequests"
-        android:layout_marginTop="27dp"
+        android:layout_marginTop="20dp"
         android:text="Number of Tasks Done: "
         android:textSize="20sp" />
 
@@ -82,7 +82,7 @@
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/NumTasksDone"
         android:layout_below="@+id/NumTasksDoneField"
-        android:layout_marginTop="46dp"
+        android:layout_marginTop="20dp"
         android:text="Email:"
         android:textSize="20sp" />
 
@@ -92,7 +92,7 @@
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/Email"
         android:layout_below="@+id/Email"
-        android:layout_marginTop="19dp"
+        android:layout_marginTop="20dp"
         android:text="Phone:"
         android:textSize="20sp" />
 
@@ -138,8 +138,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/Phone"
-        android:layout_alignStart="@+id/PhoneField"
+        android:layout_alignEnd="@+id/RequesterRatingField"
         android:text="android1@gmail.com"
+        android:textAlignment="textEnd"
         android:textSize="20sp" />
 
     <TextView
@@ -148,16 +149,17 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/Phone"
         android:layout_alignBottom="@+id/Phone"
-        android:layout_alignEnd="@+id/NumRequests"
+        android:layout_alignEnd="@+id/EmailField"
         android:text="780 123 4567"
+        android:textAlignment="textEnd"
         android:textSize="20sp" />
 
     <Button
         android:id="@+id/LogOutButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/NumTasksDone"
         android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
         android:layout_marginBottom="12dp"
         android:background="@android:color/holo_red_light"
         android:text="Log out"
