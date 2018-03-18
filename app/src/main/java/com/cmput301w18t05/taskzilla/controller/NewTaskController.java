@@ -1,6 +1,7 @@
 package com.cmput301w18t05.taskzilla.controller;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.TextUtils;
 import android.widget.EditText;
 
@@ -11,6 +12,8 @@ import com.cmput301w18t05.taskzilla.activity.NewTaskActivity;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.AddTaskRequest;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Created by Colin on 2018-03-13.
  */
@@ -19,6 +22,7 @@ public class NewTaskController {
 
     private NewTaskActivity view;
     private Context ctx;
+    private String taskId;
 
     public NewTaskController(NewTaskActivity view, Context context) {
         this.view = view;
@@ -39,7 +43,16 @@ public class NewTaskController {
             AddTaskRequest request = new AddTaskRequest(task);
             RequestManager.getInstance().invokeRequest(ctx, request);
 
+            /*
+            taskId = task.getId();
+
+            Intent intent = new Intent();
+            intent.putExtra("result", taskId);
+            view.setResult(RESULT_OK, intent);
+            */
+
             view.finish();
+
         }else{
 
             if (TextUtils.getTrimmedLength(taskName.getText()) > 25) {
@@ -57,7 +70,6 @@ public class NewTaskController {
             if (TextUtils.getTrimmedLength(taskDescription.getText()) == 0) {
                 taskDescription.setError("Description can not be empty");
             }
-
         }
     }
 
