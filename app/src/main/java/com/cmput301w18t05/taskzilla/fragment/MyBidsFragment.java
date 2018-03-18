@@ -41,13 +41,6 @@ public class MyBidsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_my_bids, container, false);
-
-        /*taskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            public void onItemClick(AdapterView<?> a, View v, int position, long id) {
-                viewTask();
-            }
-        });*/
         return v;
     }
 
@@ -63,13 +56,20 @@ public class MyBidsFragment extends Fragment {
         taskListView = view.findViewById(R.id.MyBidsListView);
         adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, bidList);
         taskListView.setAdapter(adapter);
+
+        taskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> a, View v, int position, long id) {
+                viewTask(bidList.get(position));
+            }
+        });
     }
 
     /**
      * Swtich activity to ViewTaskActivity when a task is clicked
      */
-    public void viewTask(){
+    public void viewTask(Bid bid){
         Intent intent = new Intent(getActivity(), ViewTaskActivity.class);
+        intent.putExtra("TaskId",bid.getTaskId());
         startActivity(intent);
     }
 }

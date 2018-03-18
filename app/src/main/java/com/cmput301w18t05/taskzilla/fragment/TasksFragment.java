@@ -75,7 +75,6 @@ public class TasksFragment extends Fragment {
                     return "Requester";
                 case 1:
                     return "Provider";
-
                 default:
                     return null;
             }

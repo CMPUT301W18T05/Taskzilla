@@ -68,23 +68,19 @@ public class TasksRequesterFragment extends Fragment {
         });
 
         //Set up listview and adapter
-        taskList = new ArrayList<Task>();
-        taskListView = (ListView) v.findViewById(R.id.RequesterTasksListView);
-        adapter = new ArrayAdapter<Task>(getActivity(), android.R.layout.simple_list_item_1, taskList);
+        taskList = new ArrayList<>();
+        taskListView = v.findViewById(R.id.RequesterTasksListView);
+        adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, taskList);
         taskListView.setAdapter(adapter);
 
         requestTasks = new GetTasksByRequesterUsernameRequest(cUser.getUsername());
         requestManager.getInstance().invokeRequest(getContext(), requestTasks);
 
-
-
         for (Task t : requestTasks.getResult()) {
             taskList.add(t);
         }
 
-
         adapter.notifyDataSetChanged();
-
 
         taskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -110,7 +106,7 @@ public class TasksRequesterFragment extends Fragment {
     public void newTask() {
         Intent intent = new Intent(getActivity(), NewTaskActivity.class);
         startActivityForResult(intent, 2);
-        //startActivity(intent);
+        startActivity(intent);
     }
 
     @Override
@@ -118,8 +114,7 @@ public class TasksRequesterFragment extends Fragment {
         if(reqCode == 1) {
             if(resultCode == RESULT_OK) {
                 Boolean result = data.getBooleanExtra("result", false);
-
-                if(result == true)
+                if(result)
                     taskList.remove(currentTask);
             }
         }
@@ -133,8 +128,6 @@ public class TasksRequesterFragment extends Fragment {
                 GetTaskRequest request = new GetTaskRequest(result);
                 RequestManager.getInstance().invokeRequest(getContext(), request);
                 taskList.add(request.getResult());
-
             }
-
     }
 }
