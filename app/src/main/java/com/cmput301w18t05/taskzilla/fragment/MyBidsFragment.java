@@ -59,7 +59,6 @@ public class MyBidsFragment extends Fragment {
         bidController.doTaskRequest();
         bidList = bidController.getResultBidList();
 
-
         //Set up listview and adapater
         taskListView = view.findViewById(R.id.MyBidsListView);
         adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, bidList);

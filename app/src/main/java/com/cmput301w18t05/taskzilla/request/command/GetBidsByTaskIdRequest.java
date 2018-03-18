@@ -14,8 +14,6 @@ public class GetBidsByTaskIdRequest extends Request {
     ElasticSearchController.GetBidsByTaskID task;
     ArrayList<Bid> result;
 
-    private int from = 0;
-    private int size = 10;
     private String taskId;
 
     public GetBidsByTaskIdRequest(String taskId) {

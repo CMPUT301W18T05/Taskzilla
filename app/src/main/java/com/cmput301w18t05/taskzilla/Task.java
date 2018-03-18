@@ -1,12 +1,15 @@
 package com.cmput301w18t05.taskzilla;
 
 import android.location.Location;
+import android.widget.Toast;
 
+import com.cmput301w18t05.taskzilla.controller.GetBidByUserIdController;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.AddBidRequest;
 import com.cmput301w18t05.taskzilla.request.command.AddTaskRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetBidsByTaskIdRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetUserRequest;
+import com.cmput301w18t05.taskzilla.request.command.RemoveBidRequest;
 import com.cmput301w18t05.taskzilla.request.command.UpdateTaskRequest;
 
 import java.util.ArrayList;
@@ -77,10 +80,26 @@ public class Task {
      * Insert into sorted bid list
      *
      * @author praharen
-     * @param bid
+     *
      */
-    public void addBid(Bid bid) {
-        AddBidRequest addBidRequest = new AddBidRequest(bid);
+    public void addBid(Bid newbid) {
+        GetBidsByTaskIdRequest getbidrequest = new GetBidsByTaskIdRequest(this.Id);
+        RequestManager.getInstance().invokeRequest(getbidrequest);
+        ArrayList<Bid> bidlist = getbidrequest.getResult();
+        //System.out.println(bidlist.toString());
+        //for (Bid bid : bidlist) {
+            /*if (bidlist.get(i).getUserId().equals(newbid.getUserId())) {
+                if (bidlist.get(i).getBidAmount() >= newbid.getBidAmount()) {
+                    return;
+                } else {
+                    //RemoveBidRequest removerequest = new RemoveBidRequest(bidlist.get(i));
+                    //RequestManager.getInstance().invokeRequest(removerequest);
+                    break;
+                }
+            }*/
+        //}
+
+        AddBidRequest addBidRequest = new AddBidRequest(newbid);
         RequestManager.getInstance().invokeRequest(addBidRequest);
     }
 

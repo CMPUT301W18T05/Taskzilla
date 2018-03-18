@@ -116,8 +116,7 @@ public class ViewTaskActivity extends AppCompatActivity {
                     Intent intent = new Intent(view.getContext(), ProfileActivity.class);
                     intent.putExtra("user id", TaskProvider.getId());
                     startActivity(intent);
-                }
-                catch (Exception e){
+                } catch (Exception e){
                 }
             }
 
@@ -131,8 +130,7 @@ public class ViewTaskActivity extends AppCompatActivity {
                     Intent intent = new Intent(view.getContext(), ProfileActivity.class);
                     intent.putExtra("user id", TaskRequester.getId());
                     startActivity(intent);
-                }
-                catch (Exception e){
+                } catch (Exception e){
                 }
             }
         });
@@ -193,13 +191,9 @@ public class ViewTaskActivity extends AppCompatActivity {
     /**
      * thePinkButton
      * upon pressing place button on task page
-     * depending on if the user viewing the task is the owner of task or someone else
-     * if they are the owner
-     * show a dialog or something for the user to select a bid to accept
-     * otherwise
      * prompts user to enter in a bid amount
      * if valid input, will add bid to task
-     * <p>
+     *
      * notes
      * can probably add more stuff to dialog
      *
@@ -225,6 +219,7 @@ public class ViewTaskActivity extends AppCompatActivity {
                 }
                 // do stuff here to actually add bid
                 task.addBid(new Bid(currentUserId, taskID, incomingBidFloat));
+
                 task.setStatus("bidded");
                 TaskStatus.setText("bidded");
 
