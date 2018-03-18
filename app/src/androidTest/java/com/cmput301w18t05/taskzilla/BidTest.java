@@ -5,7 +5,7 @@ import android.test.ActivityInstrumentationTestCase2;
 import com.cmput301w18t05.taskzilla.activity.MainActivity;
 
 /**
- * Created by Jeremy on 2018-02-23.
+ * Created by Jeremy
  */
 
 public class BidTest extends ActivityInstrumentationTestCase2 {
@@ -17,11 +17,10 @@ public class BidTest extends ActivityInstrumentationTestCase2 {
      * Test for setting the bid
      */
     public void testSetBid() {
-
         User user = new User();
         Task task = new Task();
         float bidAmount = 10.00f;
-        Bid bid = new Bid(, user, , task);
+        Bid bid = new Bid(user.getId(), task.getId(), 10.00f);
         assertEquals(bid.getBidAmount(), bidAmount);
     }
 
@@ -37,21 +36,21 @@ public class BidTest extends ActivityInstrumentationTestCase2 {
         User user1 = new User();
         Task task = new Task();
         float bidAmount1 = 10.00f;
-        Bid bid1 =  new Bid(, user1, , task);
+        Bid bid1 = new Bid(user1.getId(), task.getId(), bidAmount1);
 
         User user2 = new User();
         float bidAmount2 = 1.00f;
-        Bid bid2 =  new Bid(, user2, , task);
+        Bid bid2 = new Bid(user2.getId(), task.getId(), bidAmount2);
         assertEquals(bid1.compareTo(bid2), 1);
 
         User user3 = new User();
         float bidAmount3 = 10.00f;
-        Bid bid3 =  new Bid(, user3, , task);
+        Bid bid3 = new Bid(user3.getId(), task.getId(), bidAmount3);
         assertEquals(bid1.compareTo(bid3), 0);
 
         User user4 = new User();
         float bidAmount4 = 20.00f;
-        Bid bid4 =  new Bid(, user4, , task);
+        Bid bid4 = new Bid(user4.getId(), task.getId(), bidAmount4);
         assertEquals(bid1.compareTo(bid4), -1);
     }
 }

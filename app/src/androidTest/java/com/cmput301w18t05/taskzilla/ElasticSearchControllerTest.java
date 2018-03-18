@@ -148,7 +148,7 @@ public class ElasticSearchControllerTest extends ActivityInstrumentationTestCase
         removeTask.execute(taskId);
 
         // try to find again
-        ElasticSearchController.SearchForTasks searchForTasks = new ElasticSearchController.SearchForTasks();
+        ElasticSearchController.SearchForTasks searchForTasks = new ElasticSearchController.SearchForTasks(0,10);
         searchForTasks.execute(taskId);
 
         try {
