@@ -37,13 +37,13 @@ public class Task {
     private ArrayList<Photo> photos;
 
     public Task() {
-        photos = new ArrayList<Photo>();
+        photos = new ArrayList<>();
         name = "TEST TASK";
         //retrieveBids();
     }
 
     public Task(String name, User TaskRequester, String description) {
-        photos = new ArrayList<Photo>();
+        photos = new ArrayList<>();
         this.name = name;
         this.requesterId = TaskRequester.getId();
         this.requesterUsername = TaskRequester.getUsername();
@@ -52,7 +52,7 @@ public class Task {
     }
 
     public Task(String name, User TaskRequester, String description, Location location) {
-        photos = new ArrayList<Photo>();
+        photos = new ArrayList<>();
         this.name = name;
         this.requesterId = TaskRequester.getId();
         this.requesterUsername = TaskRequester.getUsername();
@@ -61,7 +61,7 @@ public class Task {
         this.location = location;
     }
     public Task(String name, User TaskRequester, String description, Location location, ArrayList<Photo> photos) {
-        photos = new ArrayList<Photo>();
+        photos = new ArrayList<>();
         this.name = name;
         this.requesterId = TaskRequester.getId();
         this.requesterUsername = TaskRequester.getUsername();

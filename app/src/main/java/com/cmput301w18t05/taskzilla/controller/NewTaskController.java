@@ -27,8 +27,8 @@ public class NewTaskController {
 
     public void addTask(String name, User user, String description){
         //Check field lengths and give error
-        EditText taskName = (EditText) view.findViewById(R.id.TaskName);
-        EditText taskDescription = (EditText) view.findViewById(R.id.Description);
+        EditText taskName = view.findViewById(R.id.TaskName);
+        EditText taskDescription = view.findViewById(R.id.Description);
 
         if(TextUtils.getTrimmedLength(taskName.getText()) <= 25
                 && TextUtils.getTrimmedLength(taskName.getText()) >0
