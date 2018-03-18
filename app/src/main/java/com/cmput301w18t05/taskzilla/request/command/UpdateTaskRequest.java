@@ -10,7 +10,6 @@ import com.cmput301w18t05.taskzilla.request.Request;
 
 public class UpdateTaskRequest extends Request {
     ElasticSearchController.UpdateTask updateRequest;
-    private String taskId;
     private Task taskData;
 
     public UpdateTaskRequest(Task task) {

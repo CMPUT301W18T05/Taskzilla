@@ -41,6 +41,7 @@ public class ViewTaskActivity extends AppCompatActivity {
     private TextView DescriptionView;
     private TextView RequesterName;
     private TextView TaskName;
+    private TextView TaskStatus;
 
     private ImageButton EditButton;
     private ImageButton DeleteButton;
@@ -72,6 +73,7 @@ public class ViewTaskActivity extends AppCompatActivity {
         DescriptionView = findViewById(R.id.Description);
         RequesterName = findViewById(R.id.RequesterName);
         TaskName = findViewById(R.id.TaskName);
+        TaskStatus = findViewById(R.id.TaskStatus);
         PinkButton = findViewById(R.id.PinkButton);
 
         this.viewTaskController = new ViewTaskController(this.findViewById(android.R.id.content),this);
@@ -97,6 +99,7 @@ public class ViewTaskActivity extends AppCompatActivity {
         RequesterName.setText(TaskRequester.getName());
         DescriptionView.setText(description);
         TaskName.setText(taskName);
+        TaskStatus.setText(taskStatus);
         PinkButton.setText("PLACE BID");
 
         if (currentUserId.equals(taskUserId) && taskStatus.equals("requested")) {
@@ -128,13 +131,11 @@ public class ViewTaskActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 try {
-
                     Intent intent = new Intent(view.getContext(), ProfileActivity.class);
                     intent.putExtra("user id", TaskProvider.getId());
                     startActivity(intent);
                 }
                 catch (Exception e){
-
                 }
             }
 
@@ -150,7 +151,6 @@ public class ViewTaskActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
                 catch (Exception e){
-
                 }
             }
         });
@@ -232,17 +232,11 @@ public class ViewTaskActivity extends AppCompatActivity {
      * @author myapplestory
      */
     public void thePinkButton(android.view.View view) {
-
-        // if this task's requester is the current logged in user
-        // show a dialog or fragment where the requester can select which bid to accept
-        // otherwise
-
         final AlertDialog mBuilder = new AlertDialog.Builder(ViewTaskActivity.this).create();
         final View mView = getLayoutInflater().inflate(R.layout.dialog_place_bid,null);
-
         final EditText incomingBidText = mView.findViewById(R.id.place_bid_edittext);
-        Button submitBidButton = mView.findViewById(R.id.submit_bid_button);
 
+        Button submitBidButton = mView.findViewById(R.id.submit_bid_button);
         submitBidButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -257,10 +251,8 @@ public class ViewTaskActivity extends AppCompatActivity {
                 }
                 // do stuff here to actually add bid
                 task.addBid(new Bid(currentUserId, taskID, incomingBidFloat));
-
                 task.setStatus("bidded");
-
-
+                TaskStatus.setText("bidded");
 
                 mBuilder.dismiss();
             }
