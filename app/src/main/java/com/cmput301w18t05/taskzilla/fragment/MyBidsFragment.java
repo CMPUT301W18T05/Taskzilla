@@ -31,11 +31,9 @@ public class MyBidsFragment extends Fragment {
     private ArrayAdapter<Bid> adapter;
     private GetBidByUserIdController bidController;
 
-
     public MyBidsFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

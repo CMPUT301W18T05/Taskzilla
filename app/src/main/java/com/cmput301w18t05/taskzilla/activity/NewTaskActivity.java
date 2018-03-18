@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.cmput301w18t05.taskzilla.User;
 import com.cmput301w18t05.taskzilla.controller.NewTaskController;
 import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.currentUser;
@@ -14,7 +15,7 @@ import com.cmput301w18t05.taskzilla.currentUser;
 public class NewTaskActivity extends AppCompatActivity {
 
     private NewTaskController newTaskController;
-    private currentUser cUser = currentUser.getInstance();
+    private User cUser = currentUser.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTitle("Add a Task");
