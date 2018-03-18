@@ -473,7 +473,7 @@ public class ElasticSearchController {
             ArrayList<Bid> foundBids = new ArrayList<>();
 
             for (String  taskId : taskIds) {
-                String query = "{ \"query\" : { \"common\" : { \"taskId\" : \""+ taskId + "\" } }";
+                String query = "{ \"query\" : { \"common\" : { \"taskId\" : \""+ taskId + "\" } } }";
                 Log.i("Query: ", query);
 
                 SearchResult result;

@@ -86,18 +86,17 @@ public class Task {
         GetBidsByTaskIdRequest getbidrequest = new GetBidsByTaskIdRequest(this.Id);
         RequestManager.getInstance().invokeRequest(getbidrequest);
         ArrayList<Bid> bidlist = getbidrequest.getResult();
-        //System.out.println(bidlist.toString());
-        //for (Bid bid : bidlist) {
-            /*if (bidlist.get(i).getUserId().equals(newbid.getUserId())) {
-                if (bidlist.get(i).getBidAmount() >= newbid.getBidAmount()) {
+        for (Bid bid : bidlist) {
+            if (bid.getUserId().equals(newbid.getUserId())) {
+                if (bid.getBidAmount() <= newbid.getBidAmount()) {
                     return;
                 } else {
-                    //RemoveBidRequest removerequest = new RemoveBidRequest(bidlist.get(i));
-                    //RequestManager.getInstance().invokeRequest(removerequest);
+                    RemoveBidRequest removerequest = new RemoveBidRequest(bid);
+                    RequestManager.getInstance().invokeRequest(removerequest);
                     break;
                 }
-            }*/
-        //}
+            }
+        }
 
         AddBidRequest addBidRequest = new AddBidRequest(newbid);
         RequestManager.getInstance().invokeRequest(addBidRequest);

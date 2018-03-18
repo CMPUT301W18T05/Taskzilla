@@ -12,8 +12,7 @@ import java.util.ArrayList;
 
 public class GetBidsByTaskIdRequest extends Request {
     ElasticSearchController.GetBidsByTaskID task;
-    ArrayList<Bid> result;
-
+    private ArrayList<Bid> result;
     private String taskId;
 
     public GetBidsByTaskIdRequest(String taskId) {
@@ -22,7 +21,7 @@ public class GetBidsByTaskIdRequest extends Request {
 
     public void execute() {
         task = new ElasticSearchController.GetBidsByTaskID();
-        task.execute(taskId);
+        task.execute(this.taskId);
     }
 
     @Override
@@ -31,7 +30,7 @@ public class GetBidsByTaskIdRequest extends Request {
 
     public ArrayList<Bid> getResult() {
         try {
-            this.result = task.get();
+            this.result = this.task.get();
             return this.result;
         }
         catch (Exception e) {
@@ -39,3 +38,4 @@ public class GetBidsByTaskIdRequest extends Request {
         }
     }
 }
+

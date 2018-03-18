@@ -12,8 +12,8 @@ import java.util.ArrayList;
 
 public class GetBidsByUserIdRequest extends Request {
     ElasticSearchController.GetBidsByUserID task;
-    String userId;
-    ArrayList<Bid> result;
+    private String userId;
+    private ArrayList<Bid> result;
 
     public GetBidsByUserIdRequest(String userId) {
         this.userId = userId;
@@ -31,10 +31,11 @@ public class GetBidsByUserIdRequest extends Request {
     public ArrayList<Bid> getResult() {
         try {
             this.result = this.task.get();
-            return result;
+            return this.result;
         }
         catch (Exception e) {
             return null;
         }
     }
 }
+
