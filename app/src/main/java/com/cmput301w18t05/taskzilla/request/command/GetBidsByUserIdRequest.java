@@ -15,8 +15,8 @@ public class GetBidsByUserIdRequest extends Request {
     String userId;
     ArrayList<Bid> result;
 
-    public GetBidsByUserIdRequest(String taskId) {
-        this.userId = taskId;
+    public GetBidsByUserIdRequest(String userId) {
+        this.userId = userId;
     }
 
     public void execute() {

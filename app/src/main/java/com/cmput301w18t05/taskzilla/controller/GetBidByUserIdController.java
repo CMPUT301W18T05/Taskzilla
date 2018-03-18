@@ -1,6 +1,7 @@
 package com.cmput301w18t05.taskzilla.controller;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.cmput301w18t05.taskzilla.Bid;
@@ -44,7 +45,7 @@ public class GetBidByUserIdController {
     public void doTaskRequest() {
         bidRequest = new GetBidsByUserIdRequest(bidOwner.getId());
         RequestManager.getInstance().invokeRequest(ctx,bidRequest);
-        //resultBidList = bidRequest.getResult();
+        resultBidList = bidRequest.getResult();
         //resultBidList.add(new Bid());
         //resultBidList.add(new Bid());
 

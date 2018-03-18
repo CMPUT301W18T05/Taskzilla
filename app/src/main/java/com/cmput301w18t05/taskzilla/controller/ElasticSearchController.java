@@ -414,7 +414,7 @@ public class ElasticSearchController {
             ArrayList<Bid> foundBids = new ArrayList<>();
 
             for (String  userId : userIds) {
-                String query = "{ \"query\" : { \"match\" : { \"userId\" : \""+ userId + "\" } }";
+                String query = "{ \"query\" : { \"match\" : { \"userId\" : \""+ userId + "\" } } }";
                 Log.i("Query: ", query);
 
                 SearchResult result;
