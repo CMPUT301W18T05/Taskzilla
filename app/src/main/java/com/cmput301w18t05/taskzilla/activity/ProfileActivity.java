@@ -43,13 +43,19 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
         userID = getIntent().getStringExtra("user id");
         this.profileController = new ProfileController(this.findViewById(android.R.id.content),this);
-        profileController.setUserID("AWI1r0poTLbhBxRrCZhM");
+        profileController.setUserID(userID);
         profileController.getUserRequest();
         user = profileController.getUser();
 
         name = user.getName();
-        email = user.getEmail().toString();
-        phone = user.getPhone().toString();
+        try {
+            email = user.getEmail().toString();
+            phone = user.getPhone().toString();
+        }
+        catch(Exception e){
+            email = "No Email";
+            phone = "No Number";
+        }
         numRequests = "99";
         numTasksDone = "29";
 
