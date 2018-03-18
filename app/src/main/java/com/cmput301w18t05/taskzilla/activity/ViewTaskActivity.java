@@ -203,7 +203,6 @@ public class ViewTaskActivity extends AppCompatActivity {
                 });
                 alert.show();
             }
-
         });
 
         ArrayList<Bid> bidsList = new ArrayList<>();

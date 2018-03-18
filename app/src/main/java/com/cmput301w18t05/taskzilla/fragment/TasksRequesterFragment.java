@@ -106,7 +106,6 @@ public class TasksRequesterFragment extends Fragment {
     public void newTask() {
         Intent intent = new Intent(getActivity(), NewTaskActivity.class);
         startActivityForResult(intent, 2);
-        startActivity(intent);
     }
 
     @Override
