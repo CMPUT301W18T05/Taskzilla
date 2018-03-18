@@ -17,6 +17,7 @@ import com.cmput301w18t05.taskzilla.request.Request;
 
 /**
  * Created by wyatt on 07/03/18.
+ *
  */
 
 public class GetTaskRequest extends Request {
@@ -43,7 +44,7 @@ public class GetTaskRequest extends Request {
             return result;
         }
         catch (Exception e) {
-            return null;
+            return result;
         }
     }
 }

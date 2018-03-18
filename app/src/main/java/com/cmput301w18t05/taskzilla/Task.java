@@ -200,10 +200,19 @@ public class Task {
         return this.status;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-        AddTaskRequest request = new AddTaskRequest(this);
-        RequestManager.getInstance().invokeRequest(request);
+    /**
+     * changes task status to bidded if it is previously requested
+     * or changes it to requested if there are no longer any bids
+     * @param newStatus incoming new status that may be the new task status
+     */
+    public void setStatus(String newStatus) {
+        if ((this.status.equals("requested") && newStatus.equals("bidded")) ||
+                (this.status.equals("bidded") && newStatus.equals("requested") && this.retrieveBids().isEmpty())) {
+            this.status = newStatus;
+            AddTaskRequest request = new AddTaskRequest(this);
+            RequestManager.getInstance().invokeRequest(request);
+        }
+        // if newStatus == "assigned" delete all bids under this task
     }
 
     public String getDescription() {
@@ -235,7 +244,7 @@ public class Task {
     }
 
     public String toString(){
-        return name;
+        return "Name: " + name + "\nStatus: " + status;
     }
 
     private User userRequest(String uid) {
@@ -249,13 +258,8 @@ public class Task {
      * get bids from elastic search
      */
     private ArrayList<Bid> retrieveBids() {
-        if (this.getId() == null) {
-            return null;
-        }
-
         GetBidsByTaskIdRequest getBids = new GetBidsByTaskIdRequest(this.getId());
         RequestManager.getInstance().invokeRequest(getBids);
-
         return getBids.getResult();
     }
 }
