@@ -41,11 +41,11 @@ public class GetBidByUserIdController {
     }
 
     public void doTaskRequest() {
-        //this.bidRequest = new GetBidsByUserIdRequest(bidOwner.getId());
+        this.bidRequest = new GetBidsByUserIdRequest(bidOwner.getId());
         //RequestManager.getInstance().invokeRequest(ctx,bidRequest);
         //resultBidList = bidRequest.getResult();
 
-        //resultBidList.add(new Bid());
+        resultBidList.add(new Bid());
         //resultBidList.add(new Bid());
 
 
