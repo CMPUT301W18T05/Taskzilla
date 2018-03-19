@@ -13,6 +13,7 @@ package com.cmput301w18t05.taskzilla.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.SystemClock;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -119,17 +120,18 @@ public class ViewTaskActivity extends AppCompatActivity {
         DescriptionView.setText(description);
         TaskName.setText(taskName);
         TaskStatus.setText(taskStatus);
-        PinkButton.setText("PLACE BID");
 
-        if (currentUserId.equals(taskUserId) && taskStatus.equals("requested")) {
-            EditButton.setVisibility(View.VISIBLE);
-        } else {
-            EditButton.setVisibility(View.INVISIBLE);
-        }
         if (currentUserId.equals(taskUserId)) {
             DeleteButton.setVisibility(View.VISIBLE);
+            PinkButton.setVisibility(View.INVISIBLE);
+            if (taskStatus.equals("requested") || taskStatus.equals("bidded")) {
+                EditButton.setVisibility(View.VISIBLE);
+            } else {
+                EditButton.setVisibility(View.INVISIBLE);
+            }
         } else {
             DeleteButton.setVisibility(View.INVISIBLE);
+            EditButton.setVisibility(View.INVISIBLE);
         }
 
         if (taskStatus.equals("assigned")) {
@@ -158,7 +160,6 @@ public class ViewTaskActivity extends AppCompatActivity {
             }
 
         });
-
 
         RequesterPicture.setOnClickListener(new View.OnClickListener() {
             @Override

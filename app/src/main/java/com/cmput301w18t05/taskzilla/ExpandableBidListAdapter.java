@@ -70,8 +70,7 @@ public class ExpandableBidListAdapter extends BaseExpandableListAdapter {
         return false;
     }
 
-    /**
-     * @param groupPosition which group was clicked
+    /*** @param groupPosition which group was clicked
      * @param isExpanded if it is currently expanded
      * @param view the listview parent in context
      * @param parent the parent group this group belongs to (none)

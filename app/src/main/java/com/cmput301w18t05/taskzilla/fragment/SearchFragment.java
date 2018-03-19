@@ -35,11 +35,6 @@ import java.util.ArrayList;
 
 import static android.app.Activity.RESULT_OK;
 
-
-/**
- * A simple {@link Fragment} subclass.
- */
-
 /**
  * Main screen the user interacts with when searching for tasks.
  *
@@ -68,7 +63,7 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
         final ConstraintLayout mConstraintLayout = (ConstraintLayout) inflater.inflate(R.layout.fragment_search,
                 container, false);
 
-        ImageButton mButton = (ImageButton) mConstraintLayout.findViewById(R.id.MapButton);
+        ImageButton mButton = mConstraintLayout.findViewById(R.id.MapButton);
 
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,11 +73,11 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
         });
 
         //Set up listview and adapter
-        searchResults = new ArrayList<Task>();
-        availableTasks = (ListView) mConstraintLayout.findViewById(R.id.ListView2);
+        searchResults = new ArrayList<>();
+        availableTasks = mConstraintLayout.findViewById(R.id.ListView2);
         searchController = new SearchController(this, getActivity());
 
-        adapter = new ArrayAdapter<Task>(getActivity(), android.R.layout.simple_list_item_1, searchResults);
+        adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, searchResults);
         availableTasks.setAdapter(adapter);
 
         availableTasks.setClickable(true);
@@ -94,7 +89,7 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
          *  is used later on to determine which item to remove from the listview
          *  if the item was deleted.
          */
-         availableTasks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        availableTasks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 currentTask = searchResults.get(i);
@@ -102,10 +97,8 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
 
             }
         });
-
         // get all available tasks
         searchController.getAllRequest();
-
         return mConstraintLayout;
     }
 
@@ -139,7 +132,7 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
                 Boolean result = data.getBooleanExtra("result", false);
 
                 //if item is deleted, result == true
-                if(result == true)
+                if(result)
                     searchResults.remove(currentTask);
             }
         }
@@ -157,7 +150,7 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
         // expand search bar by default
         searchField = view.findViewById(R.id.searchView);
 
-        /**
+        /*
          * Listens for changes in the searchview
          * OnQueryTextChange invokes whenever the user types, while on the other hand
          * OnQueryTextSubmit invokes only when the user submits the keywords.
@@ -195,25 +188,18 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
                 if (sentence.length() == 0) {                          // Checks if user entered text in search bar
                     if (searchController.getKeywords().isEmpty()){ // Checks if keywords is empty, if yes return already loaded array of tasks
                         //do nothing
-                    }
-
-                    else {                                          // Since keywords isn't empty, previous array of tasks isn't all available tasks
+                    } else {                                          // Since keywords isn't empty, previous array of tasks isn't all available tasks
                         searchController.clearKeywords();
                         searchController.getAllRequest();
                     }
-                }
-
-                else {                                             // Adds keyword to list and loads new set of tasks based on keywords
+                } else {                                             // Adds keyword to list and loads new set of tasks based on keywords
                     searchController.clearKeywords();
                     searchController.addKeywords(sentence);
                     searchController.searchRequest(sentence);
                 }
-
                 return false;
             }
         });
-
-        //searchField.setIconified(false);
     }
 
     /**
@@ -224,17 +210,10 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
         startActivity(intent);
     }
 
-    public void setSearchController (SearchController searchController) {
-        this.searchController = searchController;
-    }
-
     // Clears adapter and inputs new tasks
     public void notifyChange() {
         searchResults.clear();
-
-        for(Task t : searchController.getResults())
-            searchResults.add(t);
-
+        searchResults.addAll(searchController.getResults());
         adapter.notifyDataSetChanged();
     }
 
