@@ -80,6 +80,9 @@ public class EmailAddress {
         }
     }
 
+    // Taken from https://stackoverflow.com/questions/18463848/how-to-tell-if-a-random-string-is-an-email-address-or-something-else
+    // 2018/03/18
+
     /**
      * This checks if the email is valid by checking if it contains exactly one period and one @.
      *
@@ -88,22 +91,16 @@ public class EmailAddress {
      */
 
     public Boolean isValid(String email) {
-        int periodCount = 0;
-        int atCount = 0;
+        Pattern p = Pattern.compile("[a-zA-z0-9._%+-]{1,}+@[a-zA-Z0-9.-]+\\.[a-zA-Z0-9]{1,}");
+        Matcher m = p.matcher(email);
 
-        Pattern period = Pattern.compile("([.])");
-        Pattern at = Pattern.compile("([@])");
-
-        Matcher periodMatcher = period.matcher(email);
-        Matcher atMatcher = at.matcher(email);
-
-        while(periodMatcher.find()) periodCount++;
-        while(atMatcher.find()) atCount++;
-
-        if(periodCount == 1 && atCount == 1)
+        boolean matchFound = m.matches();
+        if(matchFound) { //valid email
             return true;
-
-        return false;
+        }
+        else {
+            return false;
+        }
     }
 
     /**

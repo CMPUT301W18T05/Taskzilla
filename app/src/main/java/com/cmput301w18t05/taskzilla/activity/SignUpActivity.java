@@ -32,6 +32,13 @@ import org.w3c.dom.Text;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Main screen that deals with creating a user.
+ *
+ * @author Wyatt Praharenka
+ * @version 1
+ */
+
 public class SignUpActivity extends AppCompatActivity {
     public TextView username;
     public TextView name;
@@ -65,6 +72,10 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Returns false if any of the information the user entered is invalid.
+     */
+
     public boolean validateInformation() {
         if(TextUtils.isEmpty(username.getText())) {
             showError("Username required!");
@@ -81,6 +92,10 @@ public class SignUpActivity extends AppCompatActivity {
                 return false;
             }
         }
+
+        // Taken from https://stackoverflow.com/questions/18463848/how-to-tell-if-a-random-string-is-an-email-address-or-something-else
+        // 2018/03/18
+
         if(TextUtils.isEmpty(email.getText())) {
             showError("Email required!");
             return false;
@@ -90,19 +105,14 @@ public class SignUpActivity extends AppCompatActivity {
         } else {
             String emailTemp = email.getText().toString();
 
-            int periodCount = 0;
-            int atCount = 0;
+            Pattern p = Pattern.compile("[a-zA-z0-9._%+-]{1,}+@[a-zA-Z0-9.-]+\\.[a-zA-Z0-9]{1,}");
+            Matcher m = p.matcher(emailTemp);
 
-            Pattern period = Pattern.compile("([.])");
-            Pattern at = Pattern.compile("([@])");
-
-            Matcher periodMatcher = period.matcher(emailTemp);
-            Matcher atMatcher = at.matcher(emailTemp);
-
-            while(periodMatcher.find()) periodCount++;
-            while(atMatcher.find()) atCount++;
-
-            if(periodCount != 1 || atCount != 1) {
+            boolean matchFound = m.matches();
+            if(matchFound) {
+                // valid email do nothing
+            }
+            else {
                 showError("Email invalid!");
                 return false;
             }
@@ -141,6 +151,13 @@ public class SignUpActivity extends AppCompatActivity {
         return true; // todo
     }
 
+    /**
+     * Takes info that was already validated and converts it to the proper type.
+     * It is then used as parameters when creating a new user.
+     *
+     * @see User
+     */
+
     public void convertToUserObject() {
         String name = this.name.getText().toString();
         String username = this.username.getText().toString();
@@ -154,6 +171,17 @@ public class SignUpActivity extends AppCompatActivity {
         newUser.setUsername(username);
         newUser.setPhone(new PhoneNumber(phone));
     }
+
+    /**
+     * This method takes the user object created and adds it to the elastic search
+     * database.
+     * <p>
+     * This method returns false if the username the user is trying to use is already in the databse.
+     *
+     * @return  boolean value to determine if user was successfully added or not
+     * @see     AddUserRequest
+     * @see     RequestManager
+     */
 
     public boolean addUserToDB() {
         RequestManager requestManager = RequestManager.getInstance();
@@ -173,6 +201,12 @@ public class SignUpActivity extends AppCompatActivity {
             return false;
         }
     }
+
+    /**
+     * This method prints the error at the bottom of the activity.
+     *
+     * @param err   string representation of the error that occured
+     */
 
     public void showError(String err) {
         Snackbar snackbar = Snackbar.make(findViewById(R.id.SignUpPage),err,Snackbar.LENGTH_LONG);
