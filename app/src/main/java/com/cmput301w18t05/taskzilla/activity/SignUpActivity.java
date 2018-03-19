@@ -140,7 +140,7 @@ public class SignUpActivity extends AppCompatActivity {
             return false;
         } else {
             String nameTemp = name.getText().toString();
-            Pattern nameConstraint = Pattern.compile("[^a-zA-Z]");
+            Pattern nameConstraint = Pattern.compile("[^a-zA-Z ]");
             boolean hasChar = nameConstraint.matcher(nameTemp).find();
             if(hasChar == true) {
                 showError("Name contains illegal character!");
