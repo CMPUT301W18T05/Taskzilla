@@ -25,6 +25,14 @@ import java.util.ArrayList;
  * Created by Andy on 3/12/2018.
  */
 
+/**
+ * Controller that deals with the backend stuff related to the screen.
+ *
+ * @author Andy
+ * @see    SearchFragment
+ * @version 1
+ */
+
 public class SearchController {
     private ArrayList<String> searchKeywords;
     private ArrayList<Task> searchResults;
@@ -39,21 +47,52 @@ public class SearchController {
         this.ctx = context;
     }
 
+    /**
+     * Adds keywords the user input into an arraylist
+     *
+     * @param word  string containing the keywords the user inputted
+     */
+
     public void addKeywords(String word) {
         this.searchKeywords.add(word);
     }
+
+    /**
+     * Returns the arraylist containing the keywords the user inputted
+     *
+     * @return  the arraylist containing a string of keywords
+     */
 
     public ArrayList<String> getKeywords() {
         return this.searchKeywords;
     }
 
+    /**
+     * Returns a list of tasks which corresponds to the keywords given
+     *
+     * @return  arraylist containing the tasks
+     */
+
     public ArrayList<Task> getResults() {
         return this.searchResults;
     }
 
+    /**
+     * Clears the arraylist holding the keywords
+     */
+
     public void clearKeywords() {
         this.searchKeywords.clear();
     }
+
+    /**
+     * This method invokes a search request using the given keywords, which is then sent
+     * to the request manager which determines if the app is online or offline, before doing
+     * the request.
+     *
+     * @param sentence  string of keywords
+     * @see             RequestManager
+     */
 
     public void searchRequest(String sentence) {
         newRequest = new SearchTaskRequest(sentence);
@@ -79,6 +118,14 @@ public class SearchController {
 
         view.notifyChange();
     }
+
+    /**
+     * This method invokes a get all request, which is then sent
+     * to the request manager which determines if the app is online or offline,
+     * before doing the request.
+     *
+     * @see             RequestManager
+     */
 
     public void getAllRequest() {
         GetAllTasksRequest request = new GetAllTasksRequest();

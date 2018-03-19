@@ -35,6 +35,7 @@
         android:layout_alignTop="@+id/imageView"
         android:layout_toEndOf="@+id/imageView"
         android:text="Android"
+        android:textAlignment="textEnd"
         android:textSize="28sp" />
 
     <ImageButton
@@ -113,35 +114,39 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/ProviderRating"
         android:layout_alignBottom="@+id/ProviderRating"
-        android:layout_alignEnd="@+id/EditButton"
+        android:layout_alignEnd="@+id/NumRequestsField"
         android:text="9.8"
+        android:textAlignment="textEnd"
         android:textSize="24sp" />
 
     <TextView
         android:id="@+id/RequesterRatingField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/ProviderRatingField"
+        android:layout_alignStart="@+id/EditButton"
         android:layout_alignTop="@+id/RequesterRating"
         android:text="0.7"
+        android:textAlignment="textEnd"
         android:textSize="24sp" />
 
     <TextView
         android:id="@+id/NumRequestsField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/NumTasksDone"
-        android:layout_alignStart="@+id/EditButton"
+        android:layout_alignEnd="@+id/NumTasksDoneField"
+        android:layout_alignTop="@+id/NumRequests"
         android:text="2"
+        android:textAlignment="textEnd"
         android:textSize="24sp" />
 
     <TextView
         android:id="@+id/NumTasksDoneField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/RequesterRatingField"
+        android:layout_alignEnd="@+id/EmailField"
         android:layout_alignTop="@+id/NumTasksDone"
         android:text="998"
+        android:textAlignment="textEnd"
         android:textSize="24sp" />
 
     <TextView

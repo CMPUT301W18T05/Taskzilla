@@ -35,13 +35,12 @@ import java.util.ArrayList;
 
 import static android.app.Activity.RESULT_OK;
 
-
 /**
- * A simple {@link Fragment} subclass.
- */
-
-/**
+ * Main screen the user interacts with when searching for tasks.
  *
+ * @author Andy
+ * @see SearchController
+ * @version 1
  */
 
 public class SearchFragment extends Fragment {//implements SearchView.OnQueryTextListener {
@@ -64,7 +63,7 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
         final ConstraintLayout mConstraintLayout = (ConstraintLayout) inflater.inflate(R.layout.fragment_search,
                 container, false);
 
-        ImageButton mButton = (ImageButton) mConstraintLayout.findViewById(R.id.MapButton);
+        ImageButton mButton = mConstraintLayout.findViewById(R.id.MapButton);
 
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,15 +73,22 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
         });
 
         //Set up listview and adapter
-        searchResults = new ArrayList<Task>();
-        availableTasks = (ListView) mConstraintLayout.findViewById(R.id.ListView2);
+        searchResults = new ArrayList<>();
+        availableTasks = mConstraintLayout.findViewById(R.id.ListView2);
         searchController = new SearchController(this, getActivity());
 
-        adapter = new ArrayAdapter<Task>(getActivity(), android.R.layout.simple_list_item_1, searchResults);
+        adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, searchResults);
         availableTasks.setAdapter(adapter);
 
         availableTasks.setClickable(true);
 
+        /*
+         *  Listens for user tapping on a task in the listview
+         *
+         *  Sets currentTask variable to the current task tapped, which
+         *  is used later on to determine which item to remove from the listview
+         *  if the item was deleted.
+         */
         availableTasks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -91,12 +97,18 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
 
             }
         });
-
         // get all available tasks
         searchController.getAllRequest();
-
         return mConstraintLayout;
     }
+
+    /**
+     * Starts an intent of the given task the user clicked on.
+     *
+     * @param taskId    a string containing the id of the task selected
+     * @return          boolean value to determine if task was deleted; true = deleted, default is false
+     * @see             ViewTaskActivity
+     */
 
     public void viewTask(String taskId){
         Intent intent = new Intent(getActivity(), ViewTaskActivity.class);
@@ -104,22 +116,63 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
         startActivityForResult(intent, 1);
     }
 
+    /**
+     * Checks the result from viewTask and acts accordingly.
+     *
+     * @param reqCode       an integer determining the type of request was done
+     * @param resultCode    an integer determining what was done in the request
+     * @param data          data which was sent back from the activity
+     * @see                 ViewTaskActivity
+     */
+
     @Override
     public void onActivityResult(int reqCode, int resultCode, Intent data) {
         if(reqCode == 1) {
             if(resultCode == RESULT_OK) {
                 Boolean result = data.getBooleanExtra("result", false);
 
-                if(result == true)
+                //if item is deleted, result == true
+                if(result)
                     searchResults.remove(currentTask);
             }
         }
     }
 
+    /**
+     * Determines what is done on the view once it has been created
+     *
+     * @param view                  The current activity
+     * @param savedInstanceState    The state of the screen before interrupts appear, such as leaving the app
+     */
+
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         // expand search bar by default
         searchField = view.findViewById(R.id.searchView);
+
+        /*
+         * Listens for changes in the searchview
+         * OnQueryTextChange invokes whenever the user types, while on the other hand
+         * OnQueryTextSubmit invokes only when the user submits the keywords.
+         *
+         * There are 3 scenarios:
+         *      1. if(sentence.length == 0)  and if(searchController.getKeywords().isEmpty() == true)
+         *          sentence is the words the user types in.
+         *
+         *          These conditions check if the user entered in previous search words,
+         *          if not then nothing happens since all tasks are shown to begin with
+         *
+         *      2. if(sentence.length == 0)  and if(searchController.getKeywords().isEmpty() == false)
+         *
+         *          These conditions are for when the user had previously searched for keywords and now wants
+         *          to see all the available tasks. It first clears the listview then does a search returning all
+         *          available tasks.
+         *
+         *      3. The last condition is when the user is searching for tasks by entering in keyword(s).
+         *          This clears the listview and then proceeds to make a search request using the keyword(s)
+         *          as a parameter. It then returns the tasks containing the keywords in the descriptions.
+         *
+         */
 
         searchField.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -135,25 +188,18 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
                 if (sentence.length() == 0) {                          // Checks if user entered text in search bar
                     if (searchController.getKeywords().isEmpty()){ // Checks if keywords is empty, if yes return already loaded array of tasks
                         //do nothing
-                    }
-
-                    else {                                          // Since keywords isn't empty, previous array of tasks isn't all available tasks
+                    } else {                                          // Since keywords isn't empty, previous array of tasks isn't all available tasks
                         searchController.clearKeywords();
                         searchController.getAllRequest();
                     }
-                }
-
-                else {                                             // Adds keyword to list and loads new set of tasks based on keywords
+                } else {                                             // Adds keyword to list and loads new set of tasks based on keywords
                     searchController.clearKeywords();
                     searchController.addKeywords(sentence);
                     searchController.searchRequest(sentence);
                 }
-
                 return false;
             }
         });
-
-        //searchField.setIconified(false);
     }
 
     /**
@@ -164,17 +210,10 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
         startActivity(intent);
     }
 
-    public void setSearchController (SearchController searchController) {
-        this.searchController = searchController;
-    }
-
     // Clears adapter and inputs new tasks
     public void notifyChange() {
         searchResults.clear();
-
-        for(Task t : searchController.getResults())
-            searchResults.add(t);
-
+        searchResults.addAll(searchController.getResults());
         adapter.notifyDataSetChanged();
     }
 
