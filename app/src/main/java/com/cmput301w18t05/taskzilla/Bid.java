@@ -14,7 +14,6 @@ package com.cmput301w18t05.taskzilla;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.GetTaskRequest;
 
-import java.util.Locale;
 
 import io.searchbox.annotations.JestId;
 

@@ -20,12 +20,10 @@ import com.cmput301w18t05.taskzilla.activity.MainActivity;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.AddTaskRequest;
 import com.cmput301w18t05.taskzilla.request.command.AddUserRequest;
-import com.cmput301w18t05.taskzilla.request.command.GetAllTasksRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetTaskRequest;
 import com.cmput301w18t05.taskzilla.request.command.RemoveTaskRequest;
 import com.cmput301w18t05.taskzilla.request.command.SearchTaskRequest;
 
-import junit.framework.Assert;
 
 import java.util.ArrayList;
 

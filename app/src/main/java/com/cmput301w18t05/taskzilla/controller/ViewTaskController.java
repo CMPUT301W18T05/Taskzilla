@@ -19,7 +19,6 @@ import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.AddTaskRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetTaskRequest;
 import com.cmput301w18t05.taskzilla.request.command.RemoveTaskRequest;
-import com.cmput301w18t05.taskzilla.request.command.UpdateTaskRequest;
 
 /**
  * Created by Andy on 3/16/2018.

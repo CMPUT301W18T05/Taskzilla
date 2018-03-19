@@ -12,16 +12,11 @@
 package com.cmput301w18t05.taskzilla.controller;
 
 import android.content.Context;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.cmput301w18t05.taskzilla.Bid;
-import com.cmput301w18t05.taskzilla.Task;
 import com.cmput301w18t05.taskzilla.User;
-import com.cmput301w18t05.taskzilla.request.Request;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.GetBidsByUserIdRequest;
-import com.cmput301w18t05.taskzilla.request.command.GetTaskRequest;
 
 import java.util.ArrayList;
 

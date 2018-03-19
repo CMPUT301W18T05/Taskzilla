@@ -14,18 +14,14 @@ package com.cmput301w18t05.taskzilla.request;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import java.sql.Time;
-import java.util.ArrayList;
-import java.util.Queue;
-import java.util.concurrent.TimeUnit;
 
-import static android.content.ContentValues.TAG;
+import java.util.ArrayList;
+
 
 /**
  * RequestManager SINGLETON
