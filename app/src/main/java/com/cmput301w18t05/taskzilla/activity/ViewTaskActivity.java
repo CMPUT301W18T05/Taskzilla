@@ -119,17 +119,17 @@ public class ViewTaskActivity extends AppCompatActivity {
         DescriptionView.setText(description);
         TaskName.setText(taskName);
         TaskStatus.setText(taskStatus);
-        PinkButton.setText("PLACE BID");
 
-        if (currentUserId.equals(taskUserId) && taskStatus.equals("requested")) {
-            EditButton.setVisibility(View.VISIBLE);
-        } else {
-            EditButton.setVisibility(View.INVISIBLE);
-        }
         if (currentUserId.equals(taskUserId)) {
             DeleteButton.setVisibility(View.VISIBLE);
+            if (taskStatus.equals("requested") || taskStatus.equals("bidded")) {
+                EditButton.setVisibility(View.VISIBLE);
+            } else {
+                EditButton.setVisibility(View.INVISIBLE);
+            }
         } else {
             DeleteButton.setVisibility(View.INVISIBLE);
+            PinkButton.setVisibility(View.INVISIBLE);
         }
 
         if (taskStatus.equals("assigned")) {
@@ -158,7 +158,6 @@ public class ViewTaskActivity extends AppCompatActivity {
             }
 
         });
-
 
         RequesterPicture.setOnClickListener(new View.OnClickListener() {
             @Override

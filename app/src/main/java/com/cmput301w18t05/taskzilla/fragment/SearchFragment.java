@@ -14,6 +14,7 @@ package com.cmput301w18t05.taskzilla.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -40,9 +41,7 @@ import static android.app.Activity.RESULT_OK;
  * A simple {@link Fragment} subclass.
  */
 
-/**
- *
- */
+
 
 public class SearchFragment extends Fragment {//implements SearchView.OnQueryTextListener {
 
@@ -58,13 +57,18 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final ConstraintLayout mConstraintLayout = (ConstraintLayout) inflater.inflate(R.layout.fragment_search,
                 container, false);
 
-        ImageButton mButton = (ImageButton) mConstraintLayout.findViewById(R.id.MapButton);
+        ImageButton mButton = mConstraintLayout.findViewById(R.id.MapButton);
 
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,11 +78,11 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
         });
 
         //Set up listview and adapter
-        searchResults = new ArrayList<Task>();
-        availableTasks = (ListView) mConstraintLayout.findViewById(R.id.ListView2);
+        searchResults = new ArrayList<>();
+        availableTasks = mConstraintLayout.findViewById(R.id.ListView2);
         searchController = new SearchController(this, getActivity());
 
-        adapter = new ArrayAdapter<Task>(getActivity(), android.R.layout.simple_list_item_1, searchResults);
+        adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, searchResults);
         availableTasks.setAdapter(adapter);
 
         availableTasks.setClickable(true);
@@ -96,24 +100,6 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
         searchController.getAllRequest();
 
         return mConstraintLayout;
-    }
-
-    public void viewTask(String taskId){
-        Intent intent = new Intent(getActivity(), ViewTaskActivity.class);
-        intent.putExtra("TaskId", taskId);
-        startActivityForResult(intent, 1);
-    }
-
-    @Override
-    public void onActivityResult(int reqCode, int resultCode, Intent data) {
-        if(reqCode == 1) {
-            if(resultCode == RESULT_OK) {
-                Boolean result = data.getBooleanExtra("result", false);
-
-                if(result == true)
-                    searchResults.remove(currentTask);
-            }
-        }
     }
 
     @Override
@@ -154,6 +140,24 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
         });
 
         //searchField.setIconified(false);
+    }
+
+    public void viewTask(String taskId){
+        Intent intent = new Intent(getActivity(), ViewTaskActivity.class);
+        intent.putExtra("TaskId", taskId);
+        startActivityForResult(intent, 1);
+    }
+
+    @Override
+    public void onActivityResult(int reqCode, int resultCode, Intent data) {
+        if(reqCode == 1) {
+            if(resultCode == RESULT_OK) {
+                Boolean result = data.getBooleanExtra("result", false);
+
+                if(result == true)
+                    searchResults.remove(currentTask);
+            }
+        }
     }
 
     /**
