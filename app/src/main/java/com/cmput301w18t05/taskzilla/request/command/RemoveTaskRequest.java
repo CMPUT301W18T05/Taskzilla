@@ -11,7 +11,7 @@
 
 package com.cmput301w18t05.taskzilla.request.command;
 
-import com.cmput301w18t05.taskzilla.controller.ElasticSearchController;
+import com.cmput301w18t05.taskzilla.controller.ElasticsearchController;
 import com.cmput301w18t05.taskzilla.request.DeletionRequest;
 
 /**
@@ -26,7 +26,7 @@ public class RemoveTaskRequest extends DeletionRequest {
     }
 
     public void execute(){
-        ElasticSearchController.RemoveTask deleteRequest = new ElasticSearchController.RemoveTask();
+        ElasticsearchController.RemoveTask deleteRequest = new ElasticsearchController.RemoveTask();
         deleteRequest.execute(this.taskId);
     }
 

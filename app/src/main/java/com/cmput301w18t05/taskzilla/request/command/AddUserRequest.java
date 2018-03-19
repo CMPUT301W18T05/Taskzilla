@@ -11,7 +11,7 @@
 
 package com.cmput301w18t05.taskzilla.request.command;
 
-import com.cmput301w18t05.taskzilla.controller.ElasticSearchController;
+import com.cmput301w18t05.taskzilla.controller.ElasticsearchController;
 import com.cmput301w18t05.taskzilla.User;
 import com.cmput301w18t05.taskzilla.request.InsertionRequest;
 
@@ -21,7 +21,7 @@ import com.cmput301w18t05.taskzilla.request.InsertionRequest;
 
 public class AddUserRequest extends InsertionRequest {
     User user;
-    ElasticSearchController.AddUser task;
+    ElasticsearchController.AddUser task;
 
     public AddUserRequest(User user) {
         this.user = user;
@@ -29,7 +29,7 @@ public class AddUserRequest extends InsertionRequest {
 
     @Override
     public void execute() {
-        task = new ElasticSearchController.AddUser();
+        task = new ElasticsearchController.AddUser();
         task.execute(user); // for now, subject to change.
     }
 

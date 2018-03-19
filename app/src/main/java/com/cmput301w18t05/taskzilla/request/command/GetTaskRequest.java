@@ -11,7 +11,7 @@
 
 package com.cmput301w18t05.taskzilla.request.command;
 
-import com.cmput301w18t05.taskzilla.controller.ElasticSearchController;
+import com.cmput301w18t05.taskzilla.controller.ElasticsearchController;
 import com.cmput301w18t05.taskzilla.Task;
 import com.cmput301w18t05.taskzilla.request.Request;
 
@@ -21,7 +21,7 @@ import com.cmput301w18t05.taskzilla.request.Request;
  */
 
 public class GetTaskRequest extends Request {
-    ElasticSearchController.GetTask task;
+    ElasticsearchController.GetTask task;
     String taskId;
     Task result;
 
@@ -30,7 +30,7 @@ public class GetTaskRequest extends Request {
     }
 
     public void execute() {
-        task = new ElasticSearchController.GetTask();
+        task = new ElasticsearchController.GetTask();
         task.execute(this.taskId);
     }
 
