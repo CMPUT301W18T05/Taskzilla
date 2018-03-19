@@ -15,7 +15,7 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
 
 import com.cmput301w18t05.taskzilla.activity.MainActivity;
-import com.cmput301w18t05.taskzilla.controller.ElasticSearchController;
+import com.cmput301w18t05.taskzilla.controller.ElasticsearchController;
 
 import java.util.ArrayList;
 
@@ -23,12 +23,12 @@ import java.util.ArrayList;
  * Unit tests for ES controller
  */
 
-public class ElasticSearchControllerTest extends ActivityInstrumentationTestCase2 {
+public class ElasticsearchControllerTest extends ActivityInstrumentationTestCase2 {
     private User user;
     private Task task;
     private Bid bid;
 
-    public ElasticSearchControllerTest(){
+    public ElasticsearchControllerTest(){
         super(MainActivity.class);
 
         user = new User();
@@ -52,7 +52,7 @@ public class ElasticSearchControllerTest extends ActivityInstrumentationTestCase
         String origUID;
 
         /* ES will make the mapping for us */
-        ElasticSearchController.AddUser addUser = new ElasticSearchController.AddUser();
+        ElasticsearchController.AddUser addUser = new ElasticsearchController.AddUser();
         addUser.execute(user);
 
         try {
@@ -64,7 +64,7 @@ public class ElasticSearchControllerTest extends ActivityInstrumentationTestCase
         }
 
         // try to get the same user;
-        ElasticSearchController.GetUser getUser = new ElasticSearchController.GetUser();
+        ElasticsearchController.GetUser getUser = new ElasticsearchController.GetUser();
         getUser.execute(user.getId());
 
         try {
@@ -81,7 +81,7 @@ public class ElasticSearchControllerTest extends ActivityInstrumentationTestCase
     public void testRemoveUser() {
         User mockUser = new User();
 
-        ElasticSearchController.AddUser addUser = new ElasticSearchController.AddUser();
+        ElasticsearchController.AddUser addUser = new ElasticsearchController.AddUser();
         addUser.execute(mockUser);
 
         try {
@@ -94,11 +94,11 @@ public class ElasticSearchControllerTest extends ActivityInstrumentationTestCase
         String uid = mockUser.getId();
 
         // now remove the user
-        ElasticSearchController.RemoveUser removeUser = new ElasticSearchController.RemoveUser();
+        ElasticsearchController.RemoveUser removeUser = new ElasticsearchController.RemoveUser();
         removeUser.execute(mockUser); // todo: add remove by UID
 
         // look for it again
-        ElasticSearchController.GetUser getUser = new ElasticSearchController.GetUser();
+        ElasticsearchController.GetUser getUser = new ElasticsearchController.GetUser();
         getUser.execute(uid);
 
         try {
@@ -113,7 +113,7 @@ public class ElasticSearchControllerTest extends ActivityInstrumentationTestCase
 
     public void testAddBid() {
         Bid bid = new Bid(user.getId(), task.getId(), 10.0f);
-        ElasticSearchController.AddBid task = new ElasticSearchController.AddBid();
+        ElasticsearchController.AddBid task = new ElasticsearchController.AddBid();
         try {
             boolean added = task.execute(bid).get();
             assertTrue(added);
@@ -127,7 +127,7 @@ public class ElasticSearchControllerTest extends ActivityInstrumentationTestCase
     public void testAddTask() {
         Bid bid = new Bid(user.getId(), task.getId(), 10.0f);
 
-        ElasticSearchController.AddBid task = new ElasticSearchController.AddBid();
+        ElasticsearchController.AddBid task = new ElasticsearchController.AddBid();
         try {
             boolean added = task.execute(bid).get();
             assertTrue(added);
@@ -140,7 +140,7 @@ public class ElasticSearchControllerTest extends ActivityInstrumentationTestCase
     public void testRemoveTask() {
         Task mockTask = new Task();
 
-        ElasticSearchController.AddTask addTask = new ElasticSearchController.AddTask();
+        ElasticsearchController.AddTask addTask = new ElasticsearchController.AddTask();
         addTask.execute(mockTask);
 
         // get result
@@ -155,11 +155,11 @@ public class ElasticSearchControllerTest extends ActivityInstrumentationTestCase
         String taskId = mockTask.getId();
 
         // remove this one
-        ElasticSearchController.RemoveTask removeTask = new ElasticSearchController.RemoveTask();
+        ElasticsearchController.RemoveTask removeTask = new ElasticsearchController.RemoveTask();
         removeTask.execute(taskId);
 
         // try to find again
-        ElasticSearchController.SearchForTasks searchForTasks = new ElasticSearchController.SearchForTasks(0,10);
+        ElasticsearchController.SearchForTasks searchForTasks = new ElasticsearchController.SearchForTasks(0,10);
         searchForTasks.execute(taskId);
 
         try {
@@ -174,7 +174,7 @@ public class ElasticSearchControllerTest extends ActivityInstrumentationTestCase
     public void testGetTask() {
         Task mockTask = new Task();
 
-        ElasticSearchController.AddTask addTask = new ElasticSearchController.AddTask();
+        ElasticsearchController.AddTask addTask = new ElasticsearchController.AddTask();
         addTask.execute(mockTask);
 
         // get result
@@ -189,7 +189,7 @@ public class ElasticSearchControllerTest extends ActivityInstrumentationTestCase
         String taskId = mockTask.getId();
 
         // check to see if we can find it in db
-        ElasticSearchController.GetTask getTask = new ElasticSearchController.GetTask();
+        ElasticsearchController.GetTask getTask = new ElasticsearchController.GetTask();
         getTask.execute(taskId);
 
         try {
@@ -206,7 +206,7 @@ public class ElasticSearchControllerTest extends ActivityInstrumentationTestCase
         Task mockTask = new Task();
         mockTask.setName("OriginalName");
 
-        ElasticSearchController.AddTask addTask = new ElasticSearchController.AddTask();
+        ElasticsearchController.AddTask addTask = new ElasticsearchController.AddTask();
         addTask.execute(mockTask);
 
         // get result
@@ -223,11 +223,11 @@ public class ElasticSearchControllerTest extends ActivityInstrumentationTestCase
         mockTask.setName("NewName");
 
         // update this task
-        ElasticSearchController.UpdateTask updateTask = new ElasticSearchController.UpdateTask();
+        ElasticsearchController.UpdateTask updateTask = new ElasticsearchController.UpdateTask();
         updateTask.execute(mockTask);
 
         // check to see if we can find it in db
-        ElasticSearchController.GetTask getTask = new ElasticSearchController.GetTask();
+        ElasticsearchController.GetTask getTask = new ElasticsearchController.GetTask();
         getTask.execute(taskId);
 
         try {
