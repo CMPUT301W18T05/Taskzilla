@@ -11,7 +11,6 @@
 
 package com.cmput301w18t05.taskzilla.activity;
 
-import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -44,7 +43,6 @@ public class NewTaskActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 newTaskController.cancelTask();
-                finish();
             }
         });
 
@@ -52,7 +50,6 @@ public class NewTaskActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 newTaskController.addTask(taskName.getText().toString(),cUser, taskDescription.getText().toString());
-                finish();
             }
         });
 

@@ -32,9 +32,10 @@
         android:id="@+id/NameField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/NumRequests"
         android:layout_alignTop="@+id/imageView"
+        android:layout_toEndOf="@+id/imageView"
         android:text="Android"
+        android:textAlignment="textEnd"
         android:textSize="28sp" />
 
     <ImageButton
