@@ -11,7 +11,9 @@
 
 package com.cmput301w18t05.taskzilla.controller;
 
+import android.content.Context;
 import android.content.Intent;
+import android.view.inputmethod.InputMethodManager;
 
 import com.cmput301w18t05.taskzilla.activity.MainActivity;
 import com.cmput301w18t05.taskzilla.activity.SignUpActivity;

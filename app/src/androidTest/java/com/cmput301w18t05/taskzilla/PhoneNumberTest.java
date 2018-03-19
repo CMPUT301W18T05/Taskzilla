@@ -42,8 +42,8 @@ public class PhoneNumberTest extends ActivityInstrumentationTestCase2{
      * @author Micheal-Nguyen
      */
     public void testSetPhoneNumber(){
-        PhoneNumber phone = new PhoneNumber("7802324563");
-        phone.setPhoneNumber("7809352312");
+        PhoneNumber phone = new PhoneNumber("7802554563");
+        phone.setPhoneNumber("7802324563");
         assertEquals("7802324563",phone.toString());
 
     }

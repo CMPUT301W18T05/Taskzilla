@@ -11,18 +11,23 @@
 
 package com.cmput301w18t05.taskzilla.activity;
 
+import android.app.ActionBar;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.SystemClock;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
@@ -138,6 +143,14 @@ public class ViewTaskActivity extends AppCompatActivity {
             ProviderPicture.setVisibility(View.VISIBLE);
             ProviderName.setVisibility(View.VISIBLE);
             ProviderName.setText(TaskProvider.getName());
+
+
+//            LinearLayout.LayoutParams detailsLayout =
+//            new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+//            LinearLayout.LayoutParams.WRAP_CONTENT);
+//            detailsLayout.setMargins(0,999,0,0);
+//            DescriptionView.setLayoutParams(detailsLayout);
+
         }
 
         /**
@@ -251,6 +264,9 @@ public class ViewTaskActivity extends AppCompatActivity {
         final AlertDialog mBuilder = new AlertDialog.Builder(ViewTaskActivity.this).create();
         final View mView = getLayoutInflater().inflate(R.layout.dialog_place_bid,null);
         final EditText incomingBidText = mView.findViewById(R.id.place_bid_edittext);
+        //bring up keyboard when user taps place bid
+        InputMethodManager imm = (InputMethodManager)   getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 
         Button submitBidButton = mView.findViewById(R.id.submit_bid_button);
         submitBidButton.setOnClickListener(new View.OnClickListener() {
