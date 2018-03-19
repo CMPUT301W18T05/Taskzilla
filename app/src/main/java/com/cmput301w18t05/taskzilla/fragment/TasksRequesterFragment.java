@@ -14,9 +14,9 @@ package com.cmput301w18t05.taskzilla.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,81 +31,71 @@ import com.cmput301w18t05.taskzilla.activity.NewTaskActivity;
 import com.cmput301w18t05.taskzilla.activity.ViewTaskActivity;
 import com.cmput301w18t05.taskzilla.currentUser;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
-import com.cmput301w18t05.taskzilla.request.command.GetTaskRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetTasksByRequesterUsernameRequest;
-import com.cmput301w18t05.taskzilla.request.command.SearchTaskRequest;
 
 import java.util.ArrayList;
-
-import static android.app.Activity.RESULT_OK;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class TasksRequesterFragment extends Fragment {
+    private User cUser = currentUser.getInstance();
+    private ArrayList<Task> taskList;
+    private ListView taskListView;
+    private ArrayAdapter<Task> adapter;
 
+    private View view;
+    private GetTasksByRequesterUsernameRequest requestTasks;
 
     public TasksRequesterFragment() {
         // Required empty public constructor
     }
 
-    private User cUser = currentUser.getInstance();
-    private ArrayList<Task> taskList;
-    private ListView taskListView;
-    private ArrayAdapter<Task> adapter;
-    private Task currentTask;
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-    /*
-    private ElasticSearchController.AddTask addTask = new ElasticSearchController.AddTask();
-    private ElasticSearchController.SearchForTasks searchForTask = new ElasticSearchController.SearchForTasks();
-    private ElasticSearchController.GetTask getTask = new ElasticSearchController.GetTask();
-    */
-    private RequestManager requestManager;
-    private GetTasksByRequesterUsernameRequest requestTasks;
-    private SearchTaskRequest newRequest;
+        //Set up listview and adapter
+        taskList = new ArrayList<>();
+        adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, taskList);
+
+
+        //gets all of current user's tasks
+        requestTasks = new GetTasksByRequesterUsernameRequest(cUser.getUsername());
+        RequestManager.getInstance().invokeRequest(getContext(), requestTasks);
+        taskList.addAll(requestTasks.getResult());
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_tasks_requester, container, false);
-        FloatingActionButton fab = v.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        this.view = v;
+        return v;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        taskListView = this.view.findViewById(R.id.RequesterTasksListView);
+        taskListView.setAdapter(adapter);
+
+        FloatingActionButton floatingActionButton = this.view.findViewById(R.id.fab);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 newTask();
             }
         });
 
-        //Set up listview and adapter
-        taskList = new ArrayList<>();
-        taskListView = v.findViewById(R.id.RequesterTasksListView);
-        adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, taskList);
-        taskListView.setAdapter(adapter);
-
-        requestTasks = new GetTasksByRequesterUsernameRequest(cUser.getUsername());
-        requestManager.getInstance().invokeRequest(getContext(), requestTasks);
-
-        for (Task t : requestTasks.getResult()) {
-            taskList.add(t);
-        }
-
-        adapter.notifyDataSetChanged();
-
         taskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
             public void onItemClick(AdapterView<?> a, View v, int position, long id) {
-                currentTask = taskList.get(position);
                 viewTask(taskList.get(position).getId());
             }
         });
-        return v;
-    }
-
-    public void onResume(){
-        super.onResume();
-        adapter.notifyDataSetChanged();
     }
 
     public void viewTask(String id) {
@@ -121,22 +111,10 @@ public class TasksRequesterFragment extends Fragment {
 
     @Override
     public void onActivityResult(int reqCode, int resultCode, Intent data) {
-        if(reqCode == 1) {
-            if(resultCode == RESULT_OK) {
-                Boolean result = data.getBooleanExtra("result", false);
-                if(result)
-                    taskList.remove(currentTask);
-            }
-        }
-
-        if(reqCode == 2)
-            if(resultCode == RESULT_OK) {
-                String result = data.getStringExtra("result");
-                
-
-                GetTaskRequest request = new GetTaskRequest(result);
-                RequestManager.getInstance().invokeRequest(getContext(), request);
-                taskList.add(request.getResult());
-            }
+        //gets all of current user's tasks and updates list
+        RequestManager.getInstance().invokeRequest(getContext(), requestTasks);
+        taskList.clear();
+        taskList.addAll(requestTasks.getResult());
+        adapter.notifyDataSetChanged();
     }
 }
