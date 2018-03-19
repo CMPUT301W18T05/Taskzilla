@@ -26,6 +26,12 @@ import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.fragment.SearchFragment;
 import com.cmput301w18t05.taskzilla.fragment.TasksFragment;
 
+/**
+ * Welcome activity of the app
+ * All fragments of the app are displayed and accessible from here
+ *
+ * @version 1.0
+ */
 public class WelcomeActivity extends AppCompatActivity {
 
     TabLayout tabs;
