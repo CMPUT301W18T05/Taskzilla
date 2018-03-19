@@ -207,6 +207,7 @@
             android:layout_marginTop="8dp"
             android:background="@android:color/holo_orange_light"
             android:elevation="2dp"
+            android:onClick="addButton"
             android:text="Add Task"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

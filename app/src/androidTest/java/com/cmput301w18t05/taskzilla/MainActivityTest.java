@@ -57,6 +57,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2{
         //Wrong Info - Illegal character in username
         solo.clearEditText((EditText) solo.getView(R.id.usernameField));
         solo.enterText((EditText) solo.getView(R.id.usernameField), "Test%^User");
+        solo.sleep(1000);
         solo.clickOnButton("Sign Up");
         solo.assertCurrentActivity("Wrong Activity", SignUpActivity.class);
 
@@ -70,13 +71,22 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2{
         //Wrong Info - Illegal character in name
         solo.clearEditText((EditText) solo.getView(R.id.nameField));
         solo.enterText((EditText) solo.getView(R.id.nameField), "$%**@(@)!)");
+        solo.sleep(1000);
+        solo.clickOnButton("Sign Up");
+        solo.assertCurrentActivity("Wrong Activity", SignUpActivity.class);
+
+        //Wrong Info - Email Invalid
+        solo.clearEditText((EditText) solo.getView(R.id.nameField));
+        solo.clearEditText((EditText) solo.getView(R.id.emailField));
+        solo.enterText((EditText) solo.getView(R.id.nameField), "TestName");
+        solo.enterText((EditText) solo.getView(R.id.emailField), "TestEmaillcom");
         solo.clickOnButton("Sign Up");
         solo.assertCurrentActivity("Wrong Activity", SignUpActivity.class);
 
         //Wrong Info - Email Too Long
-        solo.clearEditText((EditText) solo.getView(R.id.nameField));
-        solo.enterText((EditText) solo.getView(R.id.nameField), "TestName");
+        solo.clearEditText((EditText) solo.getView(R.id.emailField));
         solo.enterText((EditText) solo.getView(R.id.emailField), "TestEmailcomTestEmailcomTestEmailcomTestEmailcomTestEmailcomTestEmailcomTestEmailcom");
+        solo.sleep(1000);
         solo.clickOnButton("Sign Up");
         solo.assertCurrentActivity("Wrong Activity", SignUpActivity.class);
 
@@ -87,10 +97,10 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2{
         solo.clickOnButton("Sign Up");
         solo.assertCurrentActivity("Wrong Activity", SignUpActivity.class);
 
-        //Right Info
+        //Valid Information
         solo.clearEditText((EditText) solo.getView(R.id.phoneField));
         solo.enterText((EditText) solo.getView(R.id.phoneField), "1234567890");
-
+        solo.sleep(1000);
         solo.clickOnButton("Sign Up");
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
     }
