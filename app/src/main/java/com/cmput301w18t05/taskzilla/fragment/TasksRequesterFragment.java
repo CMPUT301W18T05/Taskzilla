@@ -40,7 +40,7 @@ import java.util.ArrayList;
  * Child fragment of TasksFragment
  * Tasks that the user is requesting appear here
  *
- * @author Colin
+ * @author Colin, myapplestory
  * @version 1.0
  */
 public class TasksRequesterFragment extends Fragment {

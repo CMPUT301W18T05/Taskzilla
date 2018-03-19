@@ -15,6 +15,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.Task;
@@ -60,11 +61,10 @@ public class NewTaskController {
             Intent intent = new Intent();
             intent.putExtra("result", taskId);
             view.setResult(RESULT_OK, intent);
-
+            Toast.makeText(view, "New task created, refresh page to see updated list", Toast.LENGTH_SHORT).show();
             view.finish();
 
-        }else{
-
+        } else {
             if (TextUtils.getTrimmedLength(taskName.getText()) > 25) {
                 taskName.setError("Name can not exceed 25 characters");
             }
