@@ -100,13 +100,10 @@ public class MyBidsFragment extends Fragment {
                     RequestManager.getInstance().invokeRequest(removeRequest);
                     bidList.remove(position);
                     // change status of task
-                    //Toast.makeText(getContext(), targetBid.toString(), Toast.LENGTH_SHORT).show();
                     GetTaskRequest getTaskRequest = new GetTaskRequest(targetBid.getTaskId());
                     RequestManager.getInstance().invokeRequest(getTaskRequest);
-
                     Task temptask = getTaskRequest.getResult();
                     temptask.setStatus("requested");
-                    Toast.makeText(getContext(),temptask.getBids().toString(), Toast.LENGTH_SHORT).show();
 
                     adapter.notifyDataSetChanged();
                     dialogInterface.dismiss();
@@ -133,7 +130,6 @@ public class MyBidsFragment extends Fragment {
     public void onStart() {
         super.onStart();
         getUpdatedBids();
-        Toast.makeText(getContext(), "dwadawdwadwad", Toast.LENGTH_SHORT).show();
     }
 
     /**
