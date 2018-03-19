@@ -44,7 +44,6 @@ public class TasksProviderFragment extends Fragment {
     private ListView taskListView;
     private ArrayAdapter<Task> adapter;
 
-    private RequestManager requestManager;
     private GetTasksByProviderUsernameRequest requestTasks;
     private SearchTaskRequest newRequest;
     private User cUser = currentUser.getInstance();
@@ -54,7 +53,6 @@ public class TasksProviderFragment extends Fragment {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -62,18 +60,15 @@ public class TasksProviderFragment extends Fragment {
 
         //Set up listview and adapter
         View v = inflater.inflate(R.layout.fragment_tasks_provider, container, false);
-        taskList = new ArrayList<Task>();
-        taskListView = (ListView)v.findViewById(R.id.ProviderTasksListView);
-        adapter = new ArrayAdapter<Task>(getActivity(), android.R.layout.simple_list_item_1, taskList);
+        taskList = new ArrayList<>();
+        taskListView = v.findViewById(R.id.ProviderTasksListView);
+        adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, taskList);
         taskListView.setAdapter(adapter);
 
-
         requestTasks = new GetTasksByProviderUsernameRequest(currentUser.getInstance().getUsername());
-        requestManager.getInstance().invokeRequest(getContext(), requestTasks);
+        RequestManager.getInstance().invokeRequest(getContext(), requestTasks);
 
-        for (Task t : requestTasks.getResult()) {
-            taskList.add(t);
-        }
+            taskList.addAll(requestTasks.getResult());
 
         adapter.notifyDataSetChanged();
 
@@ -83,15 +78,12 @@ public class TasksProviderFragment extends Fragment {
                 viewTask(taskList.get(position).getId());
             }
         });
-
         return v;
     }
-
 
     public void viewTask(String id){
         Intent intent = new Intent(getActivity(), ViewTaskActivity.class);
         intent.putExtra("TaskId",id);
         startActivity(intent);
     }
-
 }

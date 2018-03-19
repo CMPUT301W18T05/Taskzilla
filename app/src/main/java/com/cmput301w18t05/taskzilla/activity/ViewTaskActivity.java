@@ -268,7 +268,7 @@ public class ViewTaskActivity extends AppCompatActivity {
         InputMethodManager imm = (InputMethodManager)   getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 
-        Button submitBidButton = mView.findViewById(R.id.submit_bid_button);
+        final Button submitBidButton = mView.findViewById(R.id.submit_bid_button);
         submitBidButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -285,6 +285,13 @@ public class ViewTaskActivity extends AppCompatActivity {
                 task.addBid(new Bid(currentUserId, taskID, incomingBidFloat));
                 task.setStatus("bidded");
                 TaskStatus.setText("bidded");
+
+                Toast.makeText(ViewTaskActivity.this, "Bid placed", Toast.LENGTH_SHORT).show();
+
+                // hide keyboard upon pressing button
+                InputMethodManager imm = (InputMethodManager)getSystemService(
+                        Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(submitBidButton.getWindowToken(), 0);
 
                 mBuilder.dismiss();
             }

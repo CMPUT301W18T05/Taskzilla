@@ -83,11 +83,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 /* TODO: implement username checking */
 
+                // hide keyboard upon pressing button
                 InputMethodManager imm = (InputMethodManager)getSystemService(
                         Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(loginButton.getWindowToken(), 0);
-
-
 
                 /* check if user exists */
                 User foundUser = getUser(usernameView.getText().toString());

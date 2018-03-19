@@ -27,8 +27,9 @@ import com.cmput301w18t05.taskzilla.controller.ProfileController;
 import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.User;
 import com.cmput301w18t05.taskzilla.activity.EditProfileActivity;
-import com.cmput301w18t05.taskzilla.activity.MainActivity;
 import com.cmput301w18t05.taskzilla.currentUser;
+
+import java.util.Locale;
 
 
 /**
@@ -118,7 +119,6 @@ public class ProfileFragment extends Fragment {
      * Send users information to the activity
      */
     public void editProfile(){
-
         Intent intent = new Intent(getActivity(), EditProfileActivity.class);
         intent.putExtra("name","Name goes here" );
         startActivity(intent);
@@ -130,7 +130,7 @@ public class ProfileFragment extends Fragment {
     }
     public void notifyChange() {
         // update fields
-        providerRatingField.setText(user.getProviderRating().toString());
+        providerRatingField.setText(String.format(Locale.CANADA,"%f", user.getProviderRating()));
     }
 
     public void setUser(User user) {
