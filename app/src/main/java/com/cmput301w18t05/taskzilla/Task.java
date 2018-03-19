@@ -1,3 +1,14 @@
+/*
+ * Copyright 2018 (c) Andy Li, Colin Choi, James Sun, Jeremy Ng, Micheal Nguyen, Wyatt Praharenka
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and limitations under the License.
+ */
+
 package com.cmput301w18t05.taskzilla;
 
 import android.location.Location;
@@ -189,10 +200,19 @@ public class Task {
         return this.status;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-        AddTaskRequest request = new AddTaskRequest(this);
-        RequestManager.getInstance().invokeRequest(request);
+    /**
+     * changes task status to bidded if it is previously requested
+     * or changes it to requested if there are no longer any bids
+     * @param newStatus incoming new status that may be the new task status
+     */
+    public void setStatus(String newStatus) {
+        if ((this.status.equals("requested") && newStatus.equals("bidded")) ||
+                (this.status.equals("bidded") && newStatus.equals("requested")) && this.getBids().size() == 1) {
+            this.status = newStatus;
+            AddTaskRequest request = new AddTaskRequest(this);
+            RequestManager.getInstance().invokeRequest(request);
+        }
+        // if newStatus == "assigned" delete all bids under this task
     }
 
     public String getDescription() {
@@ -224,7 +244,7 @@ public class Task {
     }
 
     public String toString(){
-        return name;
+        return "Name: " + name + "\nStatus: " + status;
     }
 
     private User userRequest(String uid) {
@@ -238,13 +258,8 @@ public class Task {
      * get bids from elastic search
      */
     private ArrayList<Bid> retrieveBids() {
-        if (this.getId() == null) {
-            return null;
-        }
-
         GetBidsByTaskIdRequest getBids = new GetBidsByTaskIdRequest(this.getId());
         RequestManager.getInstance().invokeRequest(getBids);
-
         return getBids.getResult();
     }
 }
