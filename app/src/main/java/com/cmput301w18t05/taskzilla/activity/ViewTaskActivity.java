@@ -17,6 +17,9 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputFilter;
+import android.text.Spanned;
+import android.text.method.DigitsKeyListener;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -267,6 +270,27 @@ public class ViewTaskActivity extends AppCompatActivity {
         final AlertDialog mBuilder = new AlertDialog.Builder(ViewTaskActivity.this).create();
         final View mView = getLayoutInflater().inflate(R.layout.dialog_place_bid,null);
         final EditText incomingBidText = mView.findViewById(R.id.place_bid_edittext);
+        // Taken from https://gist.github.com/gaara87/3607765
+        // 2018-03-19
+        // Limits the number of decimals allowed in input
+        incomingBidText.setFilters(new InputFilter[] {
+                new DigitsKeyListener(Boolean.FALSE, Boolean.TRUE) {
+                    @Override
+                    public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                        StringBuilder builder = new StringBuilder(dest);
+                        builder.insert(dstart, source);
+                        String temp=builder.toString();
+                        if (temp.contains(".")) {
+                            temp = temp.substring(temp.indexOf(".") + 1);
+                            if (temp.length() > 2) {
+                                return "";
+                            }
+                        }
+                        return super.filter(source, start, end, dest, dstart, dend);
+                    }
+                }
+        });
+
         //bring up keyboard when user taps place bid
         InputMethodManager imm = (InputMethodManager)   getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
