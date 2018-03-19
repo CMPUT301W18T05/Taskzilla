@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.cmput301w18t05.taskzilla.Bid;
 import com.cmput301w18t05.taskzilla.R;
@@ -83,14 +84,18 @@ public class MyBidsFragment extends Fragment {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     // remove bid
-                    RemoveBidRequest removeRequest = new RemoveBidRequest(bidList.get(position));
+                    Bid targetBid = bidList.get(position);
+                    RemoveBidRequest removeRequest = new RemoveBidRequest(targetBid);
                     RequestManager.getInstance().invokeRequest(removeRequest);
                     bidList.remove(position);
                     // change status of task
-                    //GetTaskRequest getTaskRequest = new GetTaskRequest(bidList.get(position).getTaskId());
-                    //RequestManager.getInstance().invokeRequest(getTaskRequest);
-                    //Task temptask = getTaskRequest.getResult();
-                    //temptask.setStatus("requested");
+                    //Toast.makeText(getContext(), targetBid.toString(), Toast.LENGTH_SHORT).show();
+                    GetTaskRequest getTaskRequest = new GetTaskRequest(targetBid.getTaskId());
+                    RequestManager.getInstance().invokeRequest(getTaskRequest);
+
+                    Task temptask = getTaskRequest.getResult();
+                    temptask.setStatus("requested");
+                    Toast.makeText(getContext(),temptask.getBids().toString(), Toast.LENGTH_SHORT).show();
 
                     adapter.notifyDataSetChanged();
                     dialogInterface.dismiss();
@@ -117,6 +122,7 @@ public class MyBidsFragment extends Fragment {
     public void onStart() {
         super.onStart();
         getUpdatedBids();
+        Toast.makeText(getContext(), "dwadawdwadwad", Toast.LENGTH_SHORT).show();
     }
 
     /**
