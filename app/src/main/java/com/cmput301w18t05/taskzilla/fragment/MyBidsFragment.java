@@ -36,7 +36,12 @@ import com.cmput301w18t05.taskzilla.request.command.RemoveBidRequest;
 
 import java.util.ArrayList;
 
-
+/**
+ * screen for listing the current user's bids
+ * @author myapplestory
+ * @version 1
+ * @see GetBidByUserIdController
+ */
 public class MyBidsFragment extends Fragment {
 
     private ArrayList<Bid> bidList;

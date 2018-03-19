@@ -19,6 +19,7 @@ import io.searchbox.annotations.JestId;
 
 /**
  * Represents a bid object in the app
+ * @author myapplestory
  */
 public class Bid implements Comparable<Bid> {
 
@@ -35,9 +36,9 @@ public class Bid implements Comparable<Bid> {
     /**
      * Constructs a bid object using the given parameters
      *
-     * @param userId
-     * @param taskId
-     * @param bidAmount
+     * @param userId user id of the bidder
+     * @param taskId task id of the task being bidded to
+     * @param bidAmount amount of the bid
      */
     public Bid(String userId, String taskId, float bidAmount) {
         this.userId = userId;
@@ -47,23 +48,15 @@ public class Bid implements Comparable<Bid> {
 
     /**
      * Returns the id of the user
-     * @return
+     * @return this.userId
      */
     public String getUserId() {
         return userId;
     }
 
     /**
-     * Sets the id of the user
-     * @param userId
-     */
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    /**
      * Returns the price of the bid
-     * @return
+     * @return this.bidAmount
      */
     public float getBidAmount() {
         return this.bidAmount;
@@ -71,7 +64,7 @@ public class Bid implements Comparable<Bid> {
 
     /**
      * Returns the id of the bid
-     * @return
+     * @return the bidId
      */
     public String getId() {
         return id;
@@ -79,7 +72,7 @@ public class Bid implements Comparable<Bid> {
 
     /**
      * return the id of the task being bidded on
-     * @return
+     * @return the taskId
      */
     public String getTaskId() {
         return taskId;
@@ -87,26 +80,10 @@ public class Bid implements Comparable<Bid> {
 
     /**
      * set the id of the bid
-     * @param id
+     * @param id the id to set this bid to
      */
     public void setId(String id) {
         this.id = id;
-    }
-
-    /**
-     * set the price of the bid
-     * @param bidAmount
-     */
-    public void setBidAmount(float bidAmount) {
-        this.bidAmount = bidAmount;
-    }
-
-    /**
-     * set the id of the task being bidded on
-     * @param taskId
-     */
-    public void setTaskId(String taskId) {
-        this.taskId = taskId;
     }
 
     /**
@@ -125,7 +102,7 @@ public class Bid implements Comparable<Bid> {
 
     /**
      * Returns a string with the bid details
-     * @return
+     * @return the string which is with the details of the bid
      */
     public String toString() {
         GetTaskRequest taskRequest = new GetTaskRequest(this.taskId);

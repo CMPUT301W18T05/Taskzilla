@@ -33,7 +33,8 @@ import java.util.Locale;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * the fragment that represents the current user's profile
+ * @author Colin
  */
 public class ProfileFragment extends Fragment {
 
