@@ -45,16 +45,16 @@ import java.util.List;
  * TODO: my bids returns a list of tasks
  */
 
-public class ElasticsearchController {
+public class ElasticSearchController {
 
-    private static final ElasticsearchController inst = new ElasticsearchController();
+    private static final ElasticSearchController inst = new ElasticSearchController();
 
     private static JestDroidClient client;
 
     /**
      * Constructor
      */
-    private ElasticsearchController() {
+    private ElasticSearchController() {
     }
 
     /**
@@ -62,7 +62,7 @@ public class ElasticsearchController {
      * @return instance of the elastic search controller
      */
 
-    public static ElasticsearchController getInstance() {
+    public static ElasticSearchController getInstance() {
         return inst;
     }
 
