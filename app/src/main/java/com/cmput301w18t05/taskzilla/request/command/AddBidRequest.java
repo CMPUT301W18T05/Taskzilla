@@ -12,7 +12,7 @@
 package com.cmput301w18t05.taskzilla.request.command;
 
 import com.cmput301w18t05.taskzilla.Bid;
-import com.cmput301w18t05.taskzilla.controller.ElasticSearchController;
+import com.cmput301w18t05.taskzilla.controller.ElasticsearchController;
 import com.cmput301w18t05.taskzilla.request.InsertionRequest;
 
 /**
@@ -20,7 +20,7 @@ import com.cmput301w18t05.taskzilla.request.InsertionRequest;
  */
 
 public class AddBidRequest extends InsertionRequest {
-    ElasticSearchController.AddBid task;
+    ElasticsearchController.AddBid task;
     Bid bid;
 
     public AddBidRequest(Bid bid) {
@@ -28,7 +28,7 @@ public class AddBidRequest extends InsertionRequest {
     }
 
     public void execute() {
-        task = new ElasticSearchController.AddBid();
+        task = new ElasticsearchController.AddBid();
         task.execute(bid);
     }
 

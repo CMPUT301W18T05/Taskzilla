@@ -27,8 +27,9 @@ import com.cmput301w18t05.taskzilla.controller.ProfileController;
 import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.User;
 import com.cmput301w18t05.taskzilla.activity.EditProfileActivity;
-import com.cmput301w18t05.taskzilla.activity.MainActivity;
 import com.cmput301w18t05.taskzilla.currentUser;
+
+import java.util.Locale;
 
 
 /**
@@ -64,17 +65,15 @@ public class ProfileFragment extends Fragment {
         final RelativeLayout mRelativeLayout = (RelativeLayout) inflater.inflate(R.layout.fragment_profile,
                 container, false);
 
-        ImageButton mButton = (ImageButton) mRelativeLayout.findViewById(R.id.EditButton);
+        ImageButton mButton = mRelativeLayout.findViewById(R.id.EditButton);
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 editProfile();
             }
         });
-
         return mRelativeLayout;
     }
-
 
     /**
      * Set fields in the fragment_profile.xml
@@ -114,27 +113,24 @@ public class ProfileFragment extends Fragment {
                 logOutClicked();
             }
         });
-
     }
     /**
      * Switch to EditProfile Activity
      * Send users information to the activity
      */
     public void editProfile(){
-
         Intent intent = new Intent(getActivity(), EditProfileActivity.class);
         intent.putExtra("name","Name goes here" );
         startActivity(intent);
     }
 
     public void logOutClicked(){
-        Intent intent = new Intent(getActivity(), MainActivity.class);
         //Delete User from gson
-        startActivity(intent);
+        getActivity().finish();
     }
     public void notifyChange() {
         // update fields
-        providerRatingField.setText(user.getProviderRating().toString());
+        providerRatingField.setText(String.format(Locale.CANADA,"%f", user.getProviderRating()));
     }
 
     public void setUser(User user) {

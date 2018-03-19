@@ -12,7 +12,7 @@
 package com.cmput301w18t05.taskzilla.request.command;
 
 import com.cmput301w18t05.taskzilla.Bid;
-import com.cmput301w18t05.taskzilla.controller.ElasticSearchController;
+import com.cmput301w18t05.taskzilla.controller.ElasticsearchController;
 import com.cmput301w18t05.taskzilla.request.Request;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ import java.util.ArrayList;
  */
 
 public class GetBidsByTaskIdRequest extends Request {
-    ElasticSearchController.GetBidsByTaskID task;
+    ElasticsearchController.GetBidsByTaskID task;
     private ArrayList<Bid> result;
     private String taskId;
 
@@ -32,7 +32,7 @@ public class GetBidsByTaskIdRequest extends Request {
     }
 
     public void execute() {
-        task = new ElasticSearchController.GetBidsByTaskID();
+        task = new ElasticsearchController.GetBidsByTaskID();
         task.execute(this.taskId);
     }
 
