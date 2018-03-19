@@ -123,20 +123,12 @@ public class MyBidsFragment extends Fragment {
 
     /**
      * whenever the user switches to this fragment
-     * fetch all current user's bids and display them on the page
+     * fetch all current user's bids and updates listview
      * @author myapplestory
      */
     @Override
     public void onStart() {
         super.onStart();
-        getUpdatedBids();
-    }
-
-    /**
-     * updates the listView with the updates bids
-     * @author myapplestory
-     */
-    public void getUpdatedBids(){
         bidList.clear();
         bidController.doTaskRequest();
         bidList.addAll(bidController.getResultBidList());

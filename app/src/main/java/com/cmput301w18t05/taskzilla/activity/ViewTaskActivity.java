@@ -13,6 +13,7 @@ package com.cmput301w18t05.taskzilla.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.SystemClock;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -122,6 +123,7 @@ public class ViewTaskActivity extends AppCompatActivity {
 
         if (currentUserId.equals(taskUserId)) {
             DeleteButton.setVisibility(View.VISIBLE);
+            PinkButton.setVisibility(View.INVISIBLE);
             if (taskStatus.equals("requested") || taskStatus.equals("bidded")) {
                 EditButton.setVisibility(View.VISIBLE);
             } else {
@@ -129,7 +131,7 @@ public class ViewTaskActivity extends AppCompatActivity {
             }
         } else {
             DeleteButton.setVisibility(View.INVISIBLE);
-            PinkButton.setVisibility(View.INVISIBLE);
+            EditButton.setVisibility(View.INVISIBLE);
         }
 
         if (taskStatus.equals("assigned")) {
