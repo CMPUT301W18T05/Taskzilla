@@ -37,9 +37,6 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2{
         solo = new Solo(getInstrumentation(), getActivity());
     }
 
-
-
-
     public void testSignUp(){
         MainActivity activity = (MainActivity)solo.getCurrentActivity();
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);

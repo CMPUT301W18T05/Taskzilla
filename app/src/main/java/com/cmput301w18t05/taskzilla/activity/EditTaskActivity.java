@@ -21,10 +21,17 @@ import android.widget.EditText;
 import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.Task;
 
+/**
+ * Activity for editing a task
+ */
 public class EditTaskActivity extends AppCompatActivity {
     private Task task;
     private Context ctx;
 
+    /**
+     * Activity uses the activity_edit_task.xml layout
+     * Initialize a task with edited fields
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         task = new Task();
