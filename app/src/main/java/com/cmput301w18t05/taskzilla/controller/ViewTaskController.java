@@ -20,26 +20,42 @@ import com.cmput301w18t05.taskzilla.request.command.AddTaskRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetTaskRequest;
 import com.cmput301w18t05.taskzilla.request.command.RemoveTaskRequest;
 
-/**
- * Created by Andy on 3/16/2018.
- */
 
+/**
+ * Controller for ViewTaskActivity
+ * @author Andy
+ * @see com.cmput301w18t05.taskzilla.activity.ViewTaskActivity
+ * @version 1.0
+ */
 public class ViewTaskController {
     private Context ctx;
     private View view;
     private String taskID;
     private Task task;
 
+    /**
+     * Takes in the view and the context of the activity
+     * @param v
+     * @param context
+     */
     public ViewTaskController(View v, Context context) {
         this.ctx = context;
         this.view = v;
         this.taskID = new String();
     }
 
+    /**
+     * Sets the task id to be viewed
+     * @param id
+     */
     public void setTaskID(String id) {
         this.taskID = id;
     }
 
+    /**
+     * Returns the id of the task being viewed
+     * @return
+     */
     public Task getTask() {
         return this.task;
     }

@@ -15,9 +15,11 @@ import com.cmput301w18t05.taskzilla.controller.ElasticSearchController;
 import com.cmput301w18t05.taskzilla.request.DeletionRequest;
 
 /**
- * Created by Andy on 3/16/2018.
+ * Request for removing a task object from Elastic Search using a task id
+ * @author Andy
+ * @see ElasticSearchController
+ * @version 1.0
  */
-
 public class RemoveTaskRequest extends DeletionRequest {
     private String taskId;
 

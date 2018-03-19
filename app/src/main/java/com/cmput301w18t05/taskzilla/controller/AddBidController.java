@@ -16,9 +16,11 @@ import android.content.Context;
 import java.util.ArrayList;
 
 /**
- * Created by James on 3/16/2018.
+ * Add Bid Controller
+ * @author james
+ * @see com.cmput301w18t05.taskzilla.fragment.MyBidsFragment
+ * @version 1.0
  */
-
 public class AddBidController {
 
     private Context ctx;

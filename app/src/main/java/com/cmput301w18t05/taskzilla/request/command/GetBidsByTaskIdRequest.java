@@ -18,9 +18,12 @@ import com.cmput301w18t05.taskzilla.request.Request;
 import java.util.ArrayList;
 
 /**
- * Created by wyatt
+ * Request for getting a bid object from Elastic Search using a task id
+ * @author Wyatt
+ * @see ElasticSearchController
+ * @version 1.0
+ *
  */
-
 public class GetBidsByTaskIdRequest extends Request {
     ElasticSearchController.GetBidsByTaskID task;
     private ArrayList<Bid> result;

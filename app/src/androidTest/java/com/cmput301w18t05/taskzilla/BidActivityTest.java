@@ -12,26 +12,25 @@
 package com.cmput301w18t05.taskzilla;
 
 import android.test.ActivityInstrumentationTestCase2;
+import android.view.View;
 import android.widget.EditText;
-import android.widget.SearchView;
 
 import com.cmput301w18t05.taskzilla.activity.MainActivity;
+import com.cmput301w18t05.taskzilla.activity.NewTaskActivity;
 import com.cmput301w18t05.taskzilla.activity.SignUpActivity;
 import com.cmput301w18t05.taskzilla.activity.WelcomeActivity;
 import com.cmput301w18t05.taskzilla.fragment.TasksRequesterFragment;
 import com.robotium.solo.Solo;
 
-import io.searchbox.params.SearchType;
-
 /**
  * Created by Colin on 2018-03-19.
  */
-public class SearchActivityTest extends ActivityInstrumentationTestCase2 {
+public class BidActivityTest extends ActivityInstrumentationTestCase2 {
     private Solo solo;
     private TasksRequesterFragment fragment;
 
 
-    public SearchActivityTest(){
+    public BidActivityTest(){
         super(MainActivity.class);
     }
 
@@ -40,8 +39,7 @@ public class SearchActivityTest extends ActivityInstrumentationTestCase2 {
     }
 
 
-    public void testSearch(){
-
+    public void testBid(){
         //Set up for Test
         MainActivity activity = (MainActivity)solo.getCurrentActivity();
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
@@ -59,14 +57,55 @@ public class SearchActivityTest extends ActivityInstrumentationTestCase2 {
         solo.clickOnButton("Log In");
         solo.assertCurrentActivity("Wrong Activity", WelcomeActivity.class);
 
+        solo.waitForText("Tasks");
+        View fab = solo.getCurrentActivity().findViewById(R.id.fab);
+        solo.clickOnView(fab);
+        solo.waitForActivity(NewTaskActivity.class);
+        solo.assertCurrentActivity("Wrong Activity", NewTaskActivity.class);
+
+        //Valid Information
+        solo.clearEditText((EditText) solo.getView(R.id.Description));
+        solo.enterText((EditText) solo.getView(R.id.TaskName), "Test Task Name");
+        solo.clearEditText((EditText) solo.getView(R.id.Description));
+        solo.enterText((EditText) solo.getView(R.id.Description), "Test Description");
+        solo.clickOnButton("Add Task");
+        solo.waitForActivity(WelcomeActivity.class);
+        solo.assertCurrentActivity("Wrong Activity", WelcomeActivity.class);
+        View fab2 = solo.getCurrentActivity().findViewById(R.id.fab2);
+        solo.clickOnView(fab2);
+        assertTrue(solo.waitForText("Test Task Name"));
+
+
+        solo.waitForText("Profile");
+        solo.clickOnText("Profile");
+
+        solo.clickOnView(solo.getView(R.id.LogOutButton));
+        solo.waitForActivity(MainActivity.class);
+        solo.assertCurrentActivity("Wrong Activity",MainActivity.class);
+
+
+        solo.clickOnText("Sign Up");
+        solo.assertCurrentActivity("Wrong Activity", SignUpActivity.class);
+        solo.enterText((EditText) solo.getView(R.id.usernameField), "TestUserOne");
+        solo.enterText((EditText) solo.getView(R.id.nameField), "TestNameOne");
+        solo.enterText((EditText) solo.getView(R.id.emailField), "Test1@Email.com");
+        solo.enterText((EditText) solo.getView(R.id.phoneField), "1234567890");
+        solo.clickOnButton("Sign Up");
+
+        //Correct Log in Info
+        solo.clearEditText((EditText) solo.getView(R.id.usernameText));
+        solo.enterText((EditText) solo.getView(R.id.usernameText), "TestUserOne");
+        solo.clickOnButton("Log In");
+        solo.assertCurrentActivity("Wrong Activity", WelcomeActivity.class);
+
         solo.waitForText("Search");
         solo.clickOnText("Search");
 
+        solo.clickOnText("Status: ");
 
-        solo.clickOnView((SearchView) solo.getView(R.id.searchView));
-        solo.sleep(9000);
-        //solo.enterText((EditText) solo.getView(R.id.searchView),"Task");
-        //solo.text
+
+
 
     }
+
 }

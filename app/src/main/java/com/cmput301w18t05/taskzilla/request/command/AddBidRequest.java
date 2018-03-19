@@ -16,9 +16,11 @@ import com.cmput301w18t05.taskzilla.controller.ElasticSearchController;
 import com.cmput301w18t05.taskzilla.request.InsertionRequest;
 
 /**
- * Created by wyatt on 07/03/18.
+ * Request for adding bids to elastic search
+ * @author Wyatt
+ * @see ElasticSearchController
+ * @version 1.0
  */
-
 public class AddBidRequest extends InsertionRequest {
     ElasticSearchController.AddBid task;
     Bid bid;

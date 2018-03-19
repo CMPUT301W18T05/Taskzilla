@@ -19,10 +19,13 @@ import com.cmput301w18t05.taskzilla.request.Request;
 
 import java.util.ArrayList;
 
-/**
- * Created by wyatt on 07/03/18.
- */
 
+/**
+ * Request for getting a task object from Elastic Search using the username of the provider
+ * @author Wyatt
+ * @see ElasticSearchController
+ * @version 1.0
+ */
 public class GetTasksByProviderUsernameRequest extends Request {
     ElasticSearchController.GetTasksByProviderUsername task;
     ArrayList<Task> result;

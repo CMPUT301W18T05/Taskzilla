@@ -21,10 +21,11 @@ import com.cmput301w18t05.taskzilla.request.command.GetBidsByUserIdRequest;
 import java.util.ArrayList;
 
 /**
- * Created by James on 3/16/2018.
- *
+ * Get bids by user id controller
+ * @author James
+ * @see com.cmput301w18t05.taskzilla.fragment.MyBidsFragment
+ * @version 1.0
  */
-
 public class GetBidByUserIdController {
 
     private ArrayList<Bid> resultBidList;

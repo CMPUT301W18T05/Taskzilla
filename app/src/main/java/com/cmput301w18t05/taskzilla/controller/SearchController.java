@@ -30,7 +30,7 @@ import java.util.ArrayList;
  *
  * @author Andy
  * @see    SearchFragment
- * @version 1
+ * @version 1.0
  */
 
 public class SearchController {
@@ -40,6 +40,11 @@ public class SearchController {
     private SearchFragment view;
     private Context ctx;
 
+    /**
+     * The view and context of the activity is passed into this controller
+     * @param v
+     * @param context
+     */
     public SearchController(SearchFragment v, Context context) {
         this.searchKeywords = new ArrayList<String>();
         this.searchResults = new ArrayList<Task>();
