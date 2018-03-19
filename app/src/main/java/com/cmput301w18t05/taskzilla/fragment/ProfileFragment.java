@@ -64,17 +64,15 @@ public class ProfileFragment extends Fragment {
         final RelativeLayout mRelativeLayout = (RelativeLayout) inflater.inflate(R.layout.fragment_profile,
                 container, false);
 
-        ImageButton mButton = (ImageButton) mRelativeLayout.findViewById(R.id.EditButton);
+        ImageButton mButton = mRelativeLayout.findViewById(R.id.EditButton);
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 editProfile();
             }
         });
-
         return mRelativeLayout;
     }
-
 
     /**
      * Set fields in the fragment_profile.xml
@@ -114,7 +112,6 @@ public class ProfileFragment extends Fragment {
                 logOutClicked();
             }
         });
-
     }
     /**
      * Switch to EditProfile Activity
@@ -128,9 +125,8 @@ public class ProfileFragment extends Fragment {
     }
 
     public void logOutClicked(){
-        Intent intent = new Intent(getActivity(), MainActivity.class);
         //Delete User from gson
-        startActivity(intent);
+        getActivity().finish();
     }
     public void notifyChange() {
         // update fields

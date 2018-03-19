@@ -11,12 +11,14 @@
 
 package com.cmput301w18t05.taskzilla.activity;
 
+import android.content.Context;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -80,6 +82,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 /* TODO: implement username checking */
+
+                InputMethodManager imm = (InputMethodManager)getSystemService(
+                        Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(loginButton.getWindowToken(), 0);
+
+
 
                 /* check if user exists */
                 User foundUser = getUser(usernameView.getText().toString());

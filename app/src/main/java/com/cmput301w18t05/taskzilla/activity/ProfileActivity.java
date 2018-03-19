@@ -70,17 +70,16 @@ public class ProfileActivity extends AppCompatActivity {
         numRequests = "99";
         numTasksDone = "29";
 
-        nameField = (TextView) findViewById(R.id.NameField);
-        emailField = (TextView) findViewById(R.id.EmailField);
-        phoneField = (TextView) findViewById(R.id.PhoneField);
-        numRequestsField = (TextView) findViewById(R.id.NumRequestsField);
-        numTasksDoneField = (TextView) findViewById(R.id.NumTasksDoneField);
+        nameField = findViewById(R.id.NameField);
+        emailField = findViewById(R.id.EmailField);
+        phoneField = findViewById(R.id.PhoneField);
+        numRequestsField = findViewById(R.id.NumRequestsField);
+        numTasksDoneField = findViewById(R.id.NumTasksDoneField);
 
         nameField.setText(name);
         emailField.setText(email);
         phoneField.setText(phone);
         numRequestsField.setText(numRequests);
         numTasksDoneField.setText(numTasksDone);
-
     }
 }
