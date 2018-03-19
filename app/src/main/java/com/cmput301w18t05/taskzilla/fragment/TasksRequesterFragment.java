@@ -37,14 +37,17 @@ import java.util.ArrayList;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * Child fragment of TasksFragment
+ * Tasks that the user is requesting appear here
+ *
+ * @author Colin
+ * @version 1.0
  */
 public class TasksRequesterFragment extends Fragment {
     private User cUser = currentUser.getInstance();
     private ArrayList<Task> taskList;
     private ListView taskListView;
     private ArrayAdapter<Task> adapter;
-
     private View view;
     private GetTasksByRequesterUsernameRequest requestTasks;
 
@@ -109,12 +112,20 @@ public class TasksRequesterFragment extends Fragment {
         });
     }
 
+    /**
+     * Switches to ViewTaskActivity
+     * @param id id of the task to be view is passed in as a String
+     */
     public void viewTask(String id) {
         Intent intent = new Intent(getActivity(), ViewTaskActivity.class);
         intent.putExtra("TaskId",id);
         startActivity(intent);
     }
 
+    /**
+     * Switches to NewTaskActitivy.
+     * This is used to create new Tasks
+     */
     public void newTask() {
         Intent intent = new Intent(getActivity(), NewTaskActivity.class);
         startActivity(intent);

@@ -135,6 +135,34 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2{
     }
 
 
+    public void testSearch(){
+
+        //Set up for Test
+        MainActivity activity = (MainActivity)solo.getCurrentActivity();
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+        solo.clickOnText("Sign Up");
+        solo.assertCurrentActivity("Wrong Activity", SignUpActivity.class);
+        solo.enterText((EditText) solo.getView(R.id.usernameField), "TestUser");
+        solo.enterText((EditText) solo.getView(R.id.nameField), "TestName");
+        solo.enterText((EditText) solo.getView(R.id.emailField), "Test@Email.com");
+        solo.enterText((EditText) solo.getView(R.id.phoneField), "1234567890");
+        solo.clickOnButton("Sign Up");
+
+        //No Log in Info
+        solo.clickOnButton("Log In");
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+
+        //Incorrect Log in Info
+        solo.enterText((EditText) solo.getView(R.id.usernameText), "123456789101112131415161718192021222324252627282930");
+        solo.clickOnButton("Log In");
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+
+        //Correct Log in Info
+        solo.clearEditText((EditText) solo.getView(R.id.usernameText));
+        solo.enterText((EditText) solo.getView(R.id.usernameText), "TestUser");
+        solo.clickOnButton("Log In");
+        solo.assertCurrentActivity("Wrong Activity", WelcomeActivity.class);
+    }
 
 
 }

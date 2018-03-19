@@ -16,10 +16,11 @@ import java.util.ArrayList;
 import io.searchbox.annotations.JestId;
 
 /**
- * Created by wyatt on 22/02/18.
+ * Represents a user object in the app
  *
+ * @author wyatt
+ * @version 1.0
  */
-
 public class User {
 
     protected String name;
@@ -39,6 +40,19 @@ public class User {
     public User() {
     }
 
+    /**
+     * Constructs a user instance using the given parameters
+     * @param name Name of the user
+     * @param username Unique username of the user
+     * @param id Unique id of the user
+     * @param phone Phone number of the user
+     * @param email Email address of the user
+     * @param providerRating The provider rating of the user
+     * @param requesterRating The requester rating of the user
+     * @param numRequests The total number of request made by the user
+     * @param numCompleteTasks
+     * @param photos
+     */
     public User(String name, String username, String id,
                 PhoneNumber phone, EmailAddress email,
                 double providerRating, double requesterRating,
