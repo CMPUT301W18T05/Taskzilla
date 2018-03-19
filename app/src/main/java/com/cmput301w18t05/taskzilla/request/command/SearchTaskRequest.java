@@ -13,7 +13,7 @@ package com.cmput301w18t05.taskzilla.request.command;
 
 import android.util.Log;
 
-import com.cmput301w18t05.taskzilla.controller.ElasticsearchController;
+import com.cmput301w18t05.taskzilla.controller.ElasticSearchController;
 import com.cmput301w18t05.taskzilla.Task;
 import com.cmput301w18t05.taskzilla.request.SearchRequest;
 
@@ -26,7 +26,7 @@ import java.util.ArrayList;
 public class SearchTaskRequest extends SearchRequest {
     private String searchKeywords;
     private ArrayList<Task> results;
-    private ElasticsearchController.SearchForTasks search;
+    private ElasticSearchController.SearchForTasks search;
     private int from = 0;
     private int size = 10;
 
@@ -36,7 +36,7 @@ public class SearchTaskRequest extends SearchRequest {
 
     @Override
     public void execute() {
-        search = new ElasticsearchController.SearchForTasks(from,size);
+        search = new ElasticSearchController.SearchForTasks(from,size);
         search.execute(searchKeywords);
 
         try {

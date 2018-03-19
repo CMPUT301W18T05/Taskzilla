@@ -39,24 +39,24 @@ import java.util.List;
  * @Author Jeremy
  */
 
-public class ElasticsearchController {
+public class ElasticSearchController {
 
-    private static final ElasticsearchController inst = new ElasticsearchController();
+    private static final ElasticSearchController inst = new ElasticSearchController();
 
     private static JestDroidClient client;
 
     /**
      * Constructor
      */
-    private ElasticsearchController() {
+    private ElasticSearchController() {
     }
 
     /**
      * Get an instance of ElasticSearchController
      *
-     * @return ElasticsearchController
+     * @return ElasticSearchController
      */
-    public static ElasticsearchController getInstance() {
+    public static ElasticSearchController getInstance() {
         return inst;
     }
 
@@ -192,7 +192,7 @@ public class ElasticsearchController {
             return task;
         }
     }
-    
+
     public static class GetAllTasks extends AsyncTask<Void, Void, ArrayList<Task>> {
         int from;
         int size;
