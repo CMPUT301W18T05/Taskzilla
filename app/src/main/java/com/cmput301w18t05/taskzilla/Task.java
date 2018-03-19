@@ -207,7 +207,7 @@ public class Task {
      */
     public void setStatus(String newStatus) {
         if ((this.status.equals("requested") && newStatus.equals("bidded")) ||
-                (this.status.equals("bidded") && newStatus.equals("requested") && this.retrieveBids().isEmpty())) {
+                (this.status.equals("bidded") && newStatus.equals("requested")) && this.getBids().size() == 1) {
             this.status = newStatus;
             AddTaskRequest request = new AddTaskRequest(this);
             RequestManager.getInstance().invokeRequest(request);

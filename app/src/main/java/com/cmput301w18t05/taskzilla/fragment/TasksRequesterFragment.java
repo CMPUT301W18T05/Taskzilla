@@ -132,8 +132,7 @@ public class TasksRequesterFragment extends Fragment {
         if(reqCode == 2)
             if(resultCode == RESULT_OK) {
                 String result = data.getStringExtra("result");
-
-                Log.i("Fuck this shit", "goksodks");
+                
 
                 GetTaskRequest request = new GetTaskRequest(result);
                 RequestManager.getInstance().invokeRequest(getContext(), request);

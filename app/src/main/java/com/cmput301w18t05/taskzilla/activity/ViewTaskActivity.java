@@ -19,6 +19,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -27,11 +29,14 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.cmput301w18t05.taskzilla.Bid;
+import com.cmput301w18t05.taskzilla.ExpandableBidListAdapter;
 import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.Task;
 import com.cmput301w18t05.taskzilla.User;
 import com.cmput301w18t05.taskzilla.controller.ViewTaskController;
 import com.cmput301w18t05.taskzilla.currentUser;
+import com.cmput301w18t05.taskzilla.request.RequestManager;
+import com.cmput301w18t05.taskzilla.request.command.GetBidsByTaskIdRequest;
 
 import java.util.ArrayList;
 
@@ -47,6 +52,7 @@ public class ViewTaskActivity extends AppCompatActivity {
     private User TaskRequester;
     private User TaskProvider;
     private String taskName;
+    private ArrayList<Bid> BidList;
 
     private TextView ProviderName;
     private TextView DescriptionView;
@@ -59,6 +65,7 @@ public class ViewTaskActivity extends AppCompatActivity {
     private ImageButton ProviderPicture;
     private ImageButton RequesterPicture;
 
+    private ExpandableListView BidslistView;
     private Button PinkButton;
 
     /**onCreate
@@ -85,6 +92,7 @@ public class ViewTaskActivity extends AppCompatActivity {
         RequesterName = findViewById(R.id.RequesterName);
         TaskName = findViewById(R.id.TaskName);
         TaskStatus = findViewById(R.id.TaskStatus);
+        BidslistView = findViewById(R.id.BidsListView);
         PinkButton = findViewById(R.id.PinkButton);
 
         this.viewTaskController = new ViewTaskController(this.findViewById(android.R.id.content),this);
@@ -216,20 +224,20 @@ public class ViewTaskActivity extends AppCompatActivity {
             }
         });
 
-        ArrayList<Bid> bidsList = new ArrayList<>();
-
-        /*
-        bidsList.add(new Bid(new User(), 1.0f, ));
-        bidsList.add(new Bid(new User(), 1.0f, ));
-        bidsList.add(new Bid(new User(), 1.0f, ));
-        bidsList.add(new Bid(new User(), 1.0f, ));
-        bidsList.add(new Bid(new User(), 1.0f, ));
-        */
-
+        // get all of this task's bids and pass it into expandable list to display
+        // @author myapplestory
+        BidList = new ArrayList<>();
+        GetBidsByTaskIdRequest getBidsByTaskIdRequest = new GetBidsByTaskIdRequest(this.taskID);
+        RequestManager.getInstance().invokeRequest(getBidsByTaskIdRequest);
+        BidList.addAll(getBidsByTaskIdRequest.getResult());
+        ExpandableListAdapter expandableListAdapter= new ExpandableBidListAdapter(this, BidList);
+        BidslistView.setAdapter(expandableListAdapter);
     }
 
 
     /**
+     *@param view pretty much the page it's on
+     * @author myapplestory
      * thePinkButton
      * upon pressing place button on task page
      * prompts user to enter in a bid amount
@@ -237,8 +245,6 @@ public class ViewTaskActivity extends AppCompatActivity {
      *
      * notes
      * can probably add more stuff to dialog
-     *
-     * @author myapplestory
      */
     public void thePinkButton(android.view.View view) {
         final AlertDialog mBuilder = new AlertDialog.Builder(ViewTaskActivity.this).create();
@@ -260,7 +266,6 @@ public class ViewTaskActivity extends AppCompatActivity {
                 }
                 // do stuff here to actually add bid
                 task.addBid(new Bid(currentUserId, taskID, incomingBidFloat));
-
                 task.setStatus("bidded");
                 TaskStatus.setText("bidded");
 
