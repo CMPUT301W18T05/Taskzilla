@@ -1,0 +1,7 @@
+<component name="CopyrightManager">
+  <settings default="Taskzilla Copyright Notice">
+    <module2copyright>
+      <element module="All" copyright="Taskzilla Copyright Notice" />
+    </module2copyright>
+  </settings>
+</component>
