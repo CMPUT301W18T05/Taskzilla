@@ -15,6 +15,11 @@ package com.cmput301w18t05.taskzilla;
  * Created by wyatt on
  */
 
+/**
+ * PhoneNumber
+ *
+ * phone number class to handle phone number types
+ */
 public class PhoneNumber {
 
     private String phone;

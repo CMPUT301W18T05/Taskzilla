@@ -19,6 +19,12 @@ import java.util.ArrayList;
  * Created by Colin
  */
 
+/**
+ * currentUser
+ *
+ * Singleton object to hold the currently logged
+ * in user.
+ */
 public class currentUser extends User {
     private static currentUser instance = new currentUser();
     private static User current = null;
