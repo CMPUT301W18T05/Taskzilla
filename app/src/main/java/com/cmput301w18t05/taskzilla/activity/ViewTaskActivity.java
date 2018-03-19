@@ -123,6 +123,8 @@ public class ViewTaskActivity extends AppCompatActivity {
         TaskName.setText(taskName);
         TaskStatus.setText(taskStatus);
 
+        // taken from https://stackoverflow.com/questions/3465841/how-to-change-visibility-of-layout-programmatically
+        // 2018-03-14
         if (currentUserId.equals(taskUserId)) {
             DeleteButton.setVisibility(View.VISIBLE);
             PinkButton.setVisibility(View.INVISIBLE);
@@ -150,7 +152,7 @@ public class ViewTaskActivity extends AppCompatActivity {
 
         }
 
-        /**
+        /*
          * ProviderPicture and RequesterPicture
          * when provider or requester picture clicked in
          * activity_view_task.xml pass user id through intent
@@ -194,7 +196,7 @@ public class ViewTaskActivity extends AppCompatActivity {
             }
         });
 
-        /**
+        /*
          * DeleteButton
          * in the activity_view_taskxml, when the delete button is pressed
          * prompt user with a confirmation dialog.
@@ -206,9 +208,13 @@ public class ViewTaskActivity extends AppCompatActivity {
         DeleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                // taken from https://stackoverflow.com/questions/2115758/how-do-i-display-an-alert-dialog-on-android
+                // 2018-03-16
                 AlertDialog.Builder alert = new AlertDialog.Builder(ViewTaskActivity.this);
                 alert.setTitle("Delete");
                 alert.setMessage("Are you sure you want to delete?");
+
                 //DELETE CODE
                 alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override

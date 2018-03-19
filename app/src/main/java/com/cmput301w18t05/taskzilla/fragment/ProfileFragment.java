@@ -99,8 +99,8 @@ public class ProfileFragment extends Fragment {
         name = user.getName();
         email = user.getEmail().toString();
         phone = user.getPhone().toString();
-        numRequests = "69";
-        numTasksDone = "69";
+        numRequests = "99";
+        numTasksDone = "99";
 
         nameField.setText(name);
         emailField.setText(email);

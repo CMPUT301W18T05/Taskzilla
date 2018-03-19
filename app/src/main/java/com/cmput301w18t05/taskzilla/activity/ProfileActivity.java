@@ -71,7 +71,7 @@ public class ProfileActivity extends AppCompatActivity {
             phone = "No Number";
         }
         numRequests = "99";
-        numTasksDone = "29";
+        numTasksDone = "99";
 
         nameField = findViewById(R.id.NameField);
         emailField = findViewById(R.id.EmailField);
