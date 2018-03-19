@@ -74,7 +74,7 @@ public class UserTaskActivityTest extends ActivityInstrumentationTestCase2 {
 
         // taken from https://stackoverflow.com/questions/33125017/how-to-access-floatingactionmenu-and-floating-action-button-in-robotium
         // 2018-3-17
-       // View v = inflater.inflate(R.layout.fragment_tasks_requester, container, false);
+        // View v = inflater.inflate(R.layout.fragment_tasks_requester, container, false);
         solo.waitForText("Tasks");
         View fab = solo.getCurrentActivity().findViewById(R.id.fab);
         solo.clickOnView(fab);
@@ -124,6 +124,8 @@ public class UserTaskActivityTest extends ActivityInstrumentationTestCase2 {
     public void testEditTask(){
         MainActivity activity = (MainActivity)solo.getCurrentActivity();
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+
+
         solo.clickOnText("Sign Up");
         solo.assertCurrentActivity("Wrong Activity", SignUpActivity.class);
         solo.enterText((EditText) solo.getView(R.id.usernameField), "TestUser");
@@ -135,8 +137,11 @@ public class UserTaskActivityTest extends ActivityInstrumentationTestCase2 {
         solo.enterText((EditText) solo.getView(R.id.usernameText), "TestUser");
         solo.clickOnButton("Log In");
         solo.assertCurrentActivity("Wrong Activity", WelcomeActivity.class);
-        solo.waitForText("Tasks");
 
+        // taken from https://stackoverflow.com/questions/33125017/how-to-access-floatingactionmenu-and-floating-action-button-in-robotium
+        // 2018-3-17
+        // View v = inflater.inflate(R.layout.fragment_tasks_requester, container, false);
+        solo.waitForText("Tasks");
         View fab = solo.getCurrentActivity().findViewById(R.id.fab);
         solo.clickOnView(fab);
         solo.assertCurrentActivity("Wrong Activity", NewTaskActivity.class);
@@ -157,12 +162,84 @@ public class UserTaskActivityTest extends ActivityInstrumentationTestCase2 {
         //Click Edit Button
         View editButton = solo.getCurrentActivity().findViewById(R.id.EditButton);
         solo.clickOnView(editButton);
+        solo.waitForActivity(EditTaskActivity.class);
         solo.assertCurrentActivity("Wrong Activity", EditTaskActivity.class);
 
 
         //No Task Name
+        solo.clearEditText((EditText) solo.getCurrentActivity().findViewById(R.id.TaskName));
+        solo.clickOnButton("Save");
+        solo.assertCurrentActivity("Wrong Activity", EditTaskActivity.class);
+
+        //Task Name Too Long
+        solo.enterText((EditText) solo.getCurrentActivity().findViewById(R.id.TaskName), "Task Name Task Name Task Name Task Name Task Name Task Name Task Name Task Name Task Name Task Name Task Name");
+        solo.clickOnButton("Save");
+        solo.assertCurrentActivity("Wrong Activity", EditTaskActivity.class);
+
+        //Task Description Too Long
+        solo.clearEditText((EditText) solo.getCurrentActivity().findViewById(R.id.TaskName));
+        solo.enterText((EditText) solo.getCurrentActivity().findViewById(R.id.TaskName), "Task Name Edited");
+        solo.enterText((EditText) solo.getCurrentActivity().findViewById(R.id.Description), "Task Description Task Description Task Description Task Description Task Description Task Description Task Description Task Description Task Description Task Description" +
+                "Task Description Task Description Task Description Task Description Task Description Task Description Task Description Task Description Task Description Task Description Task Description Task Description Task Description" +
+                "Task Description Task Description Task Description Task Description Task Description Task Description Task Description Task Description Task Description Task Description Task Description Task Description Task Description Task Description Task Description" +
+                "Task Description Task Description Task Description Task Description Task Description");
+        solo.clickOnButton("Save");
+        solo.assertCurrentActivity("Wrong Activity", EditTaskActivity.class);
+
+        //Valid Information
+        solo.clearEditText((EditText) solo.getCurrentActivity().findViewById(R.id.Description));
+        solo.enterText((EditText) solo.getCurrentActivity().findViewById(R.id.Description), "Task Description Edited");
+        solo.clickOnButton("Save");
+
+        solo.waitForActivity(ViewTaskActivity.class);
+        solo.assertCurrentActivity("Wrong Activity", ViewTaskActivity.class);
+        assertTrue(solo.waitForText("Task Name Edited"));
+        assertTrue(solo.waitForText("Task Description Edited"));
+    }
+
+    public void testDeleteTask(){
+        MainActivity activity = (MainActivity)solo.getCurrentActivity();
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
 
 
+        solo.clickOnText("Sign Up");
+        solo.assertCurrentActivity("Wrong Activity", SignUpActivity.class);
+        solo.enterText((EditText) solo.getView(R.id.usernameField), "TestUser");
+        solo.enterText((EditText) solo.getView(R.id.nameField), "TestName");
+        solo.enterText((EditText) solo.getView(R.id.emailField), "Test@Email.com");
+        solo.enterText((EditText) solo.getView(R.id.phoneField), "1234567890");
+        solo.clickOnButton("Sign Up");
+
+        solo.enterText((EditText) solo.getView(R.id.usernameText), "TestUser");
+        solo.clickOnButton("Log In");
+        solo.assertCurrentActivity("Wrong Activity", WelcomeActivity.class);
+
+        // taken from https://stackoverflow.com/questions/33125017/how-to-access-floatingactionmenu-and-floating-action-button-in-robotium
+        // 2018-3-17
+        // View v = inflater.inflate(R.layout.fragment_tasks_requester, container, false);
+        solo.waitForText("Tasks");
+        View fab = solo.getCurrentActivity().findViewById(R.id.fab);
+        solo.clickOnView(fab);
+        solo.assertCurrentActivity("Wrong Activity", NewTaskActivity.class);
+
+        solo.enterText((EditText) solo.getView(R.id.TaskName), "Test Task To Be Deleted");
+        solo.enterText((EditText) solo.getView(R.id.Description), "Test Description");
+        solo.clickOnButton("Add Task");
+        solo.waitForActivity(WelcomeActivity.class);
+        solo.assertCurrentActivity("Wrong Activity", WelcomeActivity.class);
+        View fab2 = solo.getCurrentActivity().findViewById(R.id.fab2);
+        solo.clickOnView(fab2);
+        assertTrue(solo.waitForText("Test Task To Be Deleted"));
+
+        solo.clickOnText("Test Task To Be Deleted");
+        solo.assertCurrentActivity("Wrong Activity", ViewTaskActivity.class);
+        solo.waitForText("Test Task to Be Deleted");
+
+        View DeleteButton = solo.getCurrentActivity().findViewById(R.id.DeleteButton);
+        solo.clickOnView(DeleteButton);
+        solo.clickOnText(("Yes"));
+        solo.waitForActivity(WelcomeActivity.class);
+        solo.assertCurrentActivity("Wrong Activity", WelcomeActivity.class);
 
 
 
