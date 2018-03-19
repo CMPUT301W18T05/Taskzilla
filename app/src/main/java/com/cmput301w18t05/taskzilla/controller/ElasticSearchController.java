@@ -36,9 +36,16 @@ import java.util.List;
 /**
  * Created by Jeremy
  *
+ * ElasticSearchController,
+ *
+ * Controller for packaging all the functions dealing with
+ * elastic search.
+ *
+ * Most common use will be with RequestManager
+ *
+ * @author Jeremy Wyatt
  * TODO: my bids returns a list of tasks
  */
-
 public class ElasticSearchController {
 
     private static final ElasticSearchController inst = new ElasticSearchController();
@@ -48,6 +55,10 @@ public class ElasticSearchController {
     private ElasticSearchController() {
     }
 
+    /**
+     * Singleton class
+     * @return instance of the elastic search controller
+     */
     public static ElasticSearchController getInstance() {
         return inst;
     }
@@ -196,6 +207,12 @@ public class ElasticSearchController {
         }
     }
 
+    /**
+     * GeTaskByProviderUsername
+     *
+     * Get a task that matches the username provided,
+     * return null otherwise
+     */
     public static class GetTasksByProviderUsername extends AsyncTask<String, Void, ArrayList<Task>> {
         @Override
         protected ArrayList<Task> doInBackground(String... usernames) {
@@ -226,6 +243,12 @@ public class ElasticSearchController {
         }
     }
 
+    /**
+     * GetTasksByRequesterUsername
+     *
+     * get a task that matches the requester username
+     * return null otherwise.
+     */
     public static class GetTasksByRequesterUsername extends AsyncTask<String, Void, ArrayList<Task>> {
         @Override
         protected ArrayList<Task> doInBackground(String... usernames) {
@@ -256,6 +279,13 @@ public class ElasticSearchController {
         }
     }
 
+    /**
+     * SearchForTasks
+     *
+     * Search for tasks that match a given keyword in the description
+     * return null if failed and return an empty array if no results.
+     * return a array with matching tasks if found.
+     */
     public static class SearchForTasks extends AsyncTask<String, Void, ArrayList<Task>> {
         int from,size;
 
@@ -307,6 +337,12 @@ public class ElasticSearchController {
         }
     }
 
+    /**
+     * AddUser
+     *
+     * add a user into the elastic search database by passing
+     * in a user object.
+     */
     public static class AddUser extends AsyncTask<User, Void, Boolean> {
         @Override
         protected Boolean doInBackground(User... users) {
@@ -335,6 +371,11 @@ public class ElasticSearchController {
         }
     }
 
+    /**
+     * UpdateUser
+     *
+     * todo: current implementation does not work.
+     */
     public static class UpdateUser extends AsyncTask<User, Void, Void> {
         @Override
         protected Void doInBackground(User... users) {
@@ -351,6 +392,12 @@ public class ElasticSearchController {
         }
     }
 
+    /**
+     * RemoveUser
+     *
+     * remove a user that matches a user id
+     * todo: fix this to take in a user id
+     */
     public static class RemoveUser extends AsyncTask<User, Void, Void> {
         @Override
         protected Void doInBackground(User... users) {
@@ -366,6 +413,11 @@ public class ElasticSearchController {
         }
     }
 
+    /**
+     * GetUser
+     *
+     * remove a user by user id
+     */
     public static class GetUser extends AsyncTask<String, Void, User> {
         @Override
         protected User doInBackground(String... userIds) {
@@ -387,6 +439,11 @@ public class ElasticSearchController {
         }
     }
 
+    /**
+     * GetUserByUsername
+     *
+     * Get a user class by username
+     */
     public static class GetUserByUsername extends AsyncTask<String, Void, User> {
         @Override
         protected User doInBackground(String... userIds) {
@@ -422,6 +479,12 @@ public class ElasticSearchController {
         }
     }
 
+    /**
+     * AddBid
+     *
+     * add the provided bid object to the elastic search
+     * bid index
+     */
     public static class AddBid extends AsyncTask<Bid, Void, Boolean> {
         @Override
         protected Boolean doInBackground(Bid... bids) {
@@ -443,6 +506,12 @@ public class ElasticSearchController {
         }
     }
 
+    /**
+     * GetBidsByUserID
+     *
+     * get all the bids that match a given user id
+     * todo: take in size and from integer to allow pagination
+     */
     public static class GetBidsByUserID extends AsyncTask<String, Void, ArrayList<Bid>> {
         @Override
         protected ArrayList<Bid> doInBackground(String... userIds) {
@@ -477,6 +546,11 @@ public class ElasticSearchController {
         }
     }
 
+    /**
+     * GetBidsByTaskID
+     *
+     * Get all bids that match a given task id
+     */
     public static class GetBidsByTaskID extends AsyncTask<String, Void, ArrayList<Bid>> {
         @Override
         protected ArrayList<Bid> doInBackground(String... taskIds) {
@@ -511,6 +585,12 @@ public class ElasticSearchController {
         }
     }
 
+    /**
+     * RemoveBid
+     *
+     * remove a bid given a bid id
+     * todo: make this take in a bid id
+     */
     public static class RemoveBid extends AsyncTask<Bid, Void, Void> {
         @Override
         protected Void doInBackground(Bid... bids) {
@@ -526,6 +606,11 @@ public class ElasticSearchController {
         }
     }
 
+    /**
+     * verifySettings
+     *
+     * connect to the elastic search server
+     */
     private static void verifySettings() {
         if (client == null) {
             DroidClientConfig.Builder builder = new DroidClientConfig.Builder("http://cmput301.softwareprocess.es:8080/"); // do not put the index here yet

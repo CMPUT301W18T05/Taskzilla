@@ -33,6 +33,11 @@ import io.searchbox.annotations.JestId;
  * @// TODO: 23/02/18 AddPhoto implementation
  */
 
+/**
+ * Task
+ *
+ * task object to represent a task
+ */
 public class Task {
 
     private String name;
@@ -162,6 +167,11 @@ public class Task {
         this.name = name;
     }
 
+    /**
+     * contact elastic search and return a user object matching
+     * the requester id
+     * @return User
+     */
     public User getTaskRequester() {
         return userRequest(this.requesterId);
     }
@@ -187,6 +197,11 @@ public class Task {
         this.requesterId = requesterId;
     }
 
+    /**
+     * contact elastic search and return a user object matching
+     * the provider id
+     * @return User
+     */
     public User getTaskProvider() {
         return userRequest(this.requesterId);
     }
