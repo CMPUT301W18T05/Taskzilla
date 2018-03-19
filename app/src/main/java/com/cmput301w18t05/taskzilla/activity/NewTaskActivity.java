@@ -22,11 +22,18 @@ import com.cmput301w18t05.taskzilla.controller.NewTaskController;
 import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.currentUser;
 
-
+/**
+ * Activity for creating a new task
+ */
 public class NewTaskActivity extends AppCompatActivity {
 
     private NewTaskController newTaskController;
     private User cUser = currentUser.getInstance();
+
+    /**
+     * Activity uses the activity_new_task.xml layout
+     * New tasks are created through NewTaskController
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTitle("Add a Task");
@@ -39,6 +46,7 @@ public class NewTaskActivity extends AppCompatActivity {
         final EditText taskName = findViewById(R.id.TaskName);
         final EditText taskDescription = findViewById(R.id.Description);
 
+        /* cancel button */
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -46,6 +54,7 @@ public class NewTaskActivity extends AppCompatActivity {
             }
         });
 
+        /* add task button */
         addTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -40,6 +40,10 @@ public class WelcomeActivity extends AppCompatActivity {
 
     private ListView test;
 
+    /**
+     * Activity uses the activity_welcome.xml layout
+     * Initializes the navigation tabs on the bottom of the screen
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,11 +59,19 @@ public class WelcomeActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Manages the navigation tabs
+     */
     public class TabsManager extends FragmentPagerAdapter {
         TabsManager(FragmentManager fm) {
             super(fm);
         }
 
+        /**
+         * Return new fragments based on tab position
+         * @param position The position of the tab
+         * @return Fragment
+         */
         @Override
         public Fragment getItem(int position) {
             switch (position) {
@@ -76,11 +88,20 @@ public class WelcomeActivity extends AppCompatActivity {
             }
         }
 
+        /**
+         * Get the number of tabs
+         * @return int
+         */
         @Override
         public int getCount() {
             return 4;
         }
 
+        /**
+         * Get the name of the tab base on the tab position
+         * @param position The position of the tab
+         * @return CharSequence
+         */
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {

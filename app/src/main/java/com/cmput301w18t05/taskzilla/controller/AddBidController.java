@@ -27,15 +27,4 @@ public class AddBidController {
 
     }
 
-
-
-
-
-
-
-
-
-
-
-
 }
