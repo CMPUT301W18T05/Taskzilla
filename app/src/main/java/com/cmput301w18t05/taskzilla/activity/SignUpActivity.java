@@ -27,7 +27,7 @@ import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.AddUserRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetUserByUsernameRequest;
 
-import org.w3c.dom.Text;
+
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

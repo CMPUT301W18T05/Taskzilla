@@ -18,7 +18,6 @@ import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.AddTaskRequest;
 import com.cmput301w18t05.taskzilla.request.command.AddUserRequest;
 
-import java.util.ArrayList;
 
 /**
  * Created by Jeremy

@@ -40,7 +40,7 @@ import java.util.ArrayList;
  * Child fragment of TasksFragment
  * Tasks that the user is requesting appear here
  *
- * @author Colin
+ * @author Colin, myapplestory
  * @version 1.0
  */
 public class TasksRequesterFragment extends Fragment {
@@ -48,13 +48,18 @@ public class TasksRequesterFragment extends Fragment {
     private ArrayList<Task> taskList;
     private ListView taskListView;
     private ArrayAdapter<Task> adapter;
-    private View view;
     private GetTasksByRequesterUsernameRequest requestTasks;
 
     public TasksRequesterFragment() {
         // Required empty public constructor
     }
 
+    /**
+     * oncreate initialize task list and request and adapter for listview
+     * as well as fetch the current user's tasks and putting it in listview
+     * @param savedInstanceState the state of every fragment on the parent activity
+     * @author myapplestory
+     */
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,23 +74,33 @@ public class TasksRequesterFragment extends Fragment {
         taskList.addAll(requestTasks.getResult());
     }
 
+    /**
+     * @param inflater the layout
+     * @param container the container that houses the view
+     * @param savedInstanceState the state of every fragment on the parent activity
+     * @return returns the fragment view to display
+     * @author myapplestory
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_tasks_requester, container, false);
-        this.view = v;
-        return v;
+        return inflater.inflate(R.layout.fragment_tasks_requester, container, false);
     }
 
+    /**
+     * @param view the fragment that is displayed
+     * @param savedInstanceState the state of every fragment on the parent activity
+     * @author myapplestory
+     */
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        taskListView = this.view.findViewById(R.id.RequesterTasksListView);
+        taskListView = view.findViewById(R.id.RequesterTasksListView);
         taskListView.setAdapter(adapter);
 
-        FloatingActionButton floatingActionButton = this.view.findViewById(R.id.fab);
+        FloatingActionButton floatingActionButton = view.findViewById(R.id.fab);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -93,7 +108,7 @@ public class TasksRequesterFragment extends Fragment {
             }
         });
 
-        FloatingActionButton floatingActionButton2 = this.view.findViewById(R.id.fab2);
+        FloatingActionButton floatingActionButton2 = view.findViewById(R.id.fab2);
         floatingActionButton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -113,8 +128,9 @@ public class TasksRequesterFragment extends Fragment {
     }
 
     /**
-     * Switches to ViewTaskActivity
+     * upon pressing a task on the listview, switches to ViewTaskActivity
      * @param id id of the task to be view is passed in as a String
+     * @author Colin
      */
     public void viewTask(String id) {
         Intent intent = new Intent(getActivity(), ViewTaskActivity.class);
@@ -125,6 +141,7 @@ public class TasksRequesterFragment extends Fragment {
     /**
      * Switches to NewTaskActitivy.
      * This is used to create new Tasks
+     * @author Colin
      */
     public void newTask() {
         Intent intent = new Intent(getActivity(), NewTaskActivity.class);

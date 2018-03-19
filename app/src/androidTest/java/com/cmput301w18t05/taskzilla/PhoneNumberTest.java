@@ -15,9 +15,9 @@ package com.cmput301w18t05.taskzilla;
  * Created by Micheal-Nguyen on 2018-02-23.
  */
 
-import android.app.Activity;
+
 import android.test.ActivityInstrumentationTestCase2;
-import junit.framework.TestCase;
+
 
 public class PhoneNumberTest extends ActivityInstrumentationTestCase2{
     public PhoneNumberTest(){

@@ -24,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:text="TaskZilla"
+        android:text="Taskzilla"
         android:textColor="@android:color/black"
         android:textSize="36sp"
         app:layout_constraintLeft_toLeftOf="parent"

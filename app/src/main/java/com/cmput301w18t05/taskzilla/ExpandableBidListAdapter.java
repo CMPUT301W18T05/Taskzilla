@@ -14,6 +14,8 @@ import com.cmput301w18t05.taskzilla.request.command.GetUserRequest;
 
 import java.util.ArrayList;
 
+import javax.crypto.SecretKeyFactory;
+
 /**
  * Created by myapplestory on 3/18/2018.
  *
@@ -119,7 +121,7 @@ public class ExpandableBidListAdapter extends BaseExpandableListAdapter {
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "Hello World!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Secret developer settings enabled", Toast.LENGTH_SHORT).show();
             }
         });
         return textView;

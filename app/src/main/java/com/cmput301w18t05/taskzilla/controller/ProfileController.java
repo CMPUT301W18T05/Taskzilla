@@ -16,11 +16,7 @@ import android.view.View;
 
 import com.cmput301w18t05.taskzilla.User;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
-import com.cmput301w18t05.taskzilla.request.command.AddTaskRequest;
-import com.cmput301w18t05.taskzilla.request.command.AddUserRequest;
-import com.cmput301w18t05.taskzilla.request.command.GetTaskRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetUserRequest;
-import com.cmput301w18t05.taskzilla.request.command.UpdateTaskRequest;
 
 /**
  * Controller for pro
