@@ -46,7 +46,9 @@ import com.cmput301w18t05.taskzilla.request.command.GetBidsByTaskIdRequest;
 
 import java.util.ArrayList;
 
-
+/**
+ * Activity for viewing a task
+ */
 public class ViewTaskActivity extends AppCompatActivity {
     private String taskID;
     private ViewTaskController viewTaskController;

@@ -56,6 +56,9 @@ public class MainActivity extends AppCompatActivity {
     private MainActivityController mainActivityController;
     private static final String FILENAME = "currentUser.sav";
 
+    /**
+     * Activity uses the activity_main.xml layout
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        /*Sign up button*/
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -127,12 +131,21 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Get the user from the user name
+     * @param username The username of the user
+     * @return User
+     */
     public User getUser(String username) {
         GetUserByUsernameRequest getUserByUsernameRequest = new GetUserByUsernameRequest(username);
         RequestManager.getInstance().invokeRequest(getUserByUsernameRequest);
         return getUserByUsernameRequest.getResult();
     }
 
+    /**
+     * Display an error snackbar
+     * @param err The error
+     */
     public void showError(String err) {
         Snackbar snackbar = Snackbar.make(findViewById(R.id.MainActivityPage), err,Snackbar.LENGTH_LONG);
         snackbar.show();

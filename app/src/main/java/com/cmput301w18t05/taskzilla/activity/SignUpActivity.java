@@ -48,6 +48,9 @@ public class SignUpActivity extends AppCompatActivity {
 
     public User newUser;
 
+    /**
+     * Activity uses the activity_sign_up.xml layout
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +63,9 @@ public class SignUpActivity extends AppCompatActivity {
         phone = findViewById(R.id.phoneField);
         signUp = findViewById(R.id.SignUpButton);
 
+        /**
+         * Check for valid inputs then create a new user
+         */
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

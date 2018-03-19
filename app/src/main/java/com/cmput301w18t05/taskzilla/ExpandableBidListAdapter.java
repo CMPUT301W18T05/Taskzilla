@@ -119,7 +119,7 @@ public class ExpandableBidListAdapter extends BaseExpandableListAdapter {
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "ur mom gay", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Hello World!", Toast.LENGTH_SHORT).show();
             }
         });
         return textView;
