@@ -133,7 +133,7 @@ public class Task {
      * addPhoto
      * Add photo to photo list
      *
-     * @param photo
+     * @param photo photo that is being added onto task
      */
     public void addPhoto(Photo photo) {
 
@@ -143,15 +143,15 @@ public class Task {
      * getPhoto
      * get photo at index i
      *
-     * @param i
-     * @return Photo
+     * @param i index of the photo in list
+     * @return Photo at index i
      */
     public Photo getPhoto(int i) {
         return this.photos.get(i);
     }
 
     /**
-     * Returns a list of all photos
+     * Gets a list of all photos
      * @return List of photos
      */
     public ArrayList<Photo> getPhotos() {
@@ -167,25 +167,25 @@ public class Task {
     }
 
     /**
-     * Returns the number of photos
-     * @return
+     * Gets the number of photos
+     * @return size of photo
      */
     public int numPhotos() {
         return this.photos.size();
     }
 
     /**
-     * returns the number of bids currently on the task
-     * @return
+     * Gets the number of bids currently on the task
+     * @return number of bids
      */
     public int numBids() {
         return bids.size();
     }
 
     /**
-     * Returns the bid at index i
-     * @param i
-     * @return
+     * Gets the bid at index i
+     * @param i index of the bid in bids list
+     * @return Bid
      */
     public Bid getBid(int i) {
         return bids.get(i);
@@ -193,15 +193,15 @@ public class Task {
 
     /**
      * Returns a list of all the bids
-     * @return
+     * @return Bid
      */
     public ArrayList<Bid> getBids() {
         return retrieveBids();
     }
 
     /**
-     * Returns the name of the task
-     * @return
+     * Gets the name of the task
+     * @return name of task
      */
     public String getName() {
         return name;
@@ -209,7 +209,7 @@ public class Task {
 
     /**
      * Sets the name of the task
-     * @param name
+     * @param name that user wants task to be named
      */
     public void setName(String name) {
         this.name = name;
@@ -224,6 +224,11 @@ public class Task {
         return userRequest(this.requesterId);
     }
 
+
+    /**
+     * set the id and username of the taskrequester for the task
+     * @param taskRequester
+     */
     public void setTaskRequester(User taskRequester) {
         this.requesterId = taskRequester.getId();
         this.requesterUsername = taskRequester.getUsername();
@@ -278,10 +283,19 @@ public class Task {
         // if newStatus == "assigned" delete all bids under this task
     }
 
+
+    /**
+     * get description of the task
+     * @return description of task
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * set description of the task
+     * @param description of task
+     */
     public void setDescription(String description) {
         this.description = description;
     }
@@ -294,22 +308,45 @@ public class Task {
         this.location = location;
     }
 
+
+    /**
+     * get the id of the task, which is set by ElasticSearch usually
+     * @return id of the task
+     */
     public String getId() {
         return Id;
     }
 
+    /**
+     * set the id of the task
+     * @param id of the task
+     */
     public void setId(String id) {
         Id = id;
     }
 
+
+    /**
+     * gets the best bid on the task
+     * @return best bid on the task
+     */
     public Bid getBestBid() {
         return bestBid;
     }
 
+
+    /**
+     * converts the task object to a string
+     * @return String form of task
+     */
     public String toString(){
         return "Name: " + name + "\nStatus: " + status;
     }
 
+    /**
+     * @param uid
+     * @return user object
+     */
     private User userRequest(String uid) {
         GetUserRequest getUser = new GetUserRequest(uid);
         RequestManager.getInstance().invokeRequest(getUser);
@@ -319,6 +356,8 @@ public class Task {
 
     /**
      * get bids from elastic search
+     *
+     * @return a list of bids
      */
     private ArrayList<Bid> retrieveBids() {
         GetBidsByTaskIdRequest getBids = new GetBidsByTaskIdRequest(this.getId());

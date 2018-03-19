@@ -125,6 +125,10 @@ public class ProfileFragment extends Fragment {
         startActivity(intent);
     }
 
+
+    /**
+     * When log out is clicked, app goes back to log in screen
+     */
     public void logOutClicked(){
         //Delete User from gson
         getActivity().finish();
@@ -134,6 +138,10 @@ public class ProfileFragment extends Fragment {
         providerRatingField.setText(String.format(Locale.CANADA,"%f", user.getProviderRating()));
     }
 
+    /**
+     * set the user to be the profile fragment, should be the user that is currently logged in
+     * @param user that is currently logged in
+     */
     public void setUser(User user) {
         this.user = user;
     }

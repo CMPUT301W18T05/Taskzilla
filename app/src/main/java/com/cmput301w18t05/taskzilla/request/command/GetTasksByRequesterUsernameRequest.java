@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 /**
  * Request for getting a task object from Elastic Search using the username of the requester
- * @author Wyatt]
+ * @author Wyatt
  * @see ElasticSearchController
  * @version 1.0
  */

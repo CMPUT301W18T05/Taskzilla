@@ -21,6 +21,10 @@ import java.util.regex.Pattern;
  */
 
 /**
+ * EmailAddress
+ *
+ * Represents a email object in the app
+ *
  * @author andy li
  * @version 1
  */
