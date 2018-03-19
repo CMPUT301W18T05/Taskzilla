@@ -44,7 +44,7 @@ public class Review {
 
     /**
      * Gets the title of the review
-     * @return
+     * @return title of the review
      */
     public String getTitle() {
         return title;
@@ -60,7 +60,7 @@ public class Review {
 
     /**
      * Get the rating of the review
-     * @return
+     * @return rating of the user
      */
     public int getRating() {
         return rating;
@@ -76,7 +76,7 @@ public class Review {
 
     /**
      * Get the description of the review
-     * @return
+     * @return the description of the review
      */
     public String getDescription() {
         return description;
@@ -92,7 +92,7 @@ public class Review {
 
     /**
      * Get the ID for the target of the review
-     * @return
+     * @return the ID of the user that is being reviewed
      */
     public int getTargetUserID() {
         return targetUserID;
@@ -108,7 +108,7 @@ public class Review {
 
     /**
      * Get the ID for the Reviewer of the review
-     * @return
+     * @return the ID of the user that created the review
      */
     public int getReviewerID() {
         return reviewerID;

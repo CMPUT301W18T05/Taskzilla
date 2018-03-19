@@ -15,11 +15,12 @@ import com.cmput301w18t05.taskzilla.Bid;
 import com.cmput301w18t05.taskzilla.controller.ElasticSearchController;
 import com.cmput301w18t05.taskzilla.request.DeletionRequest;
 
-/**
- * Created by myapp on 3/17/2018.
- *
- */
-
+ /**
+  * Request for getting a task object from Elastic Search using the username of the provider
+  * @author W
+  * @see ElasticSearchController
+  * @version 1.0
+*/
 public class RemoveBidRequest extends DeletionRequest{
     private Bid bid;
 

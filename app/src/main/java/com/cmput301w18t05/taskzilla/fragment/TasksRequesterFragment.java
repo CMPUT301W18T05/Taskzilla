@@ -29,8 +29,10 @@ import com.cmput301w18t05.taskzilla.Task;
 import com.cmput301w18t05.taskzilla.User;
 import com.cmput301w18t05.taskzilla.activity.NewTaskActivity;
 import com.cmput301w18t05.taskzilla.activity.ViewTaskActivity;
+import com.cmput301w18t05.taskzilla.controller.ViewTaskController;
 import com.cmput301w18t05.taskzilla.currentUser;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
+import com.cmput301w18t05.taskzilla.request.command.GetTaskRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetTasksByRequesterUsernameRequest;
 
 import java.util.ArrayList;
@@ -133,9 +135,26 @@ public class TasksRequesterFragment extends Fragment {
      * @author Colin
      */
     public void viewTask(String id) {
-        Intent intent = new Intent(getActivity(), ViewTaskActivity.class);
-        intent.putExtra("TaskId",id);
-        startActivity(intent);
+        /*
+        try except statement, when task clicked. Attempts to get from elastic search in order to test
+        if the task still exists or not.
+         */
+        try {
+            GetTaskRequest request = new GetTaskRequest(id);
+            RequestManager.getInstance().invokeRequest(getContext(), request);
+            Task testTask = request.getResult();
+            String testTaskId = testTask.getTaskRequester().getId();
+            Intent intent = new Intent(getActivity(), ViewTaskActivity.class);
+            intent.putExtra("TaskId", id);
+            startActivity(intent);
+        }
+        catch (Exception e){
+            RequestManager.getInstance().invokeRequest(getContext(), requestTasks);
+            taskList.clear();
+            taskList.addAll(requestTasks.getResult());
+            adapter.notifyDataSetChanged();
+            Toast.makeText(getActivity(), "Task no longer exists", Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**
