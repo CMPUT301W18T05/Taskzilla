@@ -43,7 +43,7 @@ public class EditTaskActivity extends AppCompatActivity {
 
     }
 
-    public void TaskCancelButton(View view){
+    public void TaskCancelButton(View view) {
         finish();
     }
 
@@ -56,32 +56,26 @@ public class EditTaskActivity extends AppCompatActivity {
      * @param view
      * @author Micheal-Nguyen
      */
-    public void TaskSaveButton(View view){
+    public void TaskSaveButton(View view) {
         EditText TaskNameText = (EditText) findViewById(R.id.TaskName);
         EditText DescriptionText = (EditText) findViewById(R.id.Description);
         String TaskName = TaskNameText.getText().toString();
         String Description = DescriptionText.getText().toString();
 
-        if(TaskName.length() >25){
+        if (TaskName.length() > 25) {
             TaskNameText.requestFocus();
             TaskNameText.setError("Task Name exceeds 25 characters");
-        }
-        else if(TaskName.length() == 0){
+        } else if (TaskName.length() == 0) {
             TaskNameText.requestFocus();
             TaskNameText.setError("Task Name required");
-        }
-        else if(Description.length()>280){
+        } else if (Description.length() > 280) {
             DescriptionText.requestFocus();
             DescriptionText.setError("Description length exceeds 280 characters");
-        }
-
-
-
-         else {
+        } else {
             Intent returnIntent = new Intent();
             returnIntent.putExtra("Task Name", TaskName);
             returnIntent.putExtra("Description", Description);
-            setResult(RESULT_OK,returnIntent);
+            setResult(RESULT_OK, returnIntent);
             finish();
         }
     }
