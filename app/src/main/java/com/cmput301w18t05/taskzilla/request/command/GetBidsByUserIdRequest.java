@@ -17,10 +17,13 @@ import com.cmput301w18t05.taskzilla.request.Request;
 
 import java.util.ArrayList;
 
-/**
- * Created by wyatt on 07/03/18.
- */
 
+/**
+ * Request for getting an user object from elastic search using a user id
+ * @author Wyatt
+ * @see ElasticSearchController
+ * @version 1.0
+ */
 public class GetBidsByUserIdRequest extends Request {
     ElasticSearchController.GetBidsByUserID task;
     private String userId;

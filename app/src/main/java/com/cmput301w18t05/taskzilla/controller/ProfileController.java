@@ -23,25 +23,40 @@ import com.cmput301w18t05.taskzilla.request.command.GetUserRequest;
 import com.cmput301w18t05.taskzilla.request.command.UpdateTaskRequest;
 
 /**
- * Created by Micheal-Nguyen on 3/16/2018.
+ * Controller for pro
+ * @author Micheal
+ * @see com.cmput301w18t05.taskzilla.fragment.ProfileFragment
+ * @version 1.0
  */
-
 public class ProfileController {
     private Context ctx;
     private View view;
     private String userId;
     private User user;
 
+    /**
+     * Context and view of the activity is passed into the controller
+     * @param v
+     * @param context
+     */
     public ProfileController(View v, Context context) {
         this.ctx = context;
         this.view = v;
         this.userId = new String();
     }
 
+    /**
+     * Sets the id of the user
+     * @param id
+     */
     public void setUserID(String id) {
         this.userId = id;
     }
 
+    /**
+     * Returns the id of the user
+     * @return
+     */
     public User getUser() {
         return this.user;
     }

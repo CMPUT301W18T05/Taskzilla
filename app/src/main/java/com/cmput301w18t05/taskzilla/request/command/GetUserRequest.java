@@ -15,10 +15,13 @@ import com.cmput301w18t05.taskzilla.controller.ElasticSearchController;
 import com.cmput301w18t05.taskzilla.User;
 import com.cmput301w18t05.taskzilla.request.Request;
 
-/**
- * Created by wyatt on 07/03/18.
- */
 
+/**
+ * Request for getting an user object from Elastic search using the user' if
+ * @author Wyatt
+ * @see ElasticSearchController
+ * @version 1.0
+ */
 public class GetUserRequest extends Request {
     ElasticSearchController.GetUser user;
     String userId;

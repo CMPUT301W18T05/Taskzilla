@@ -26,20 +26,34 @@ import com.cmput301w18t05.taskzilla.request.command.AddTaskRequest;
 import static android.app.Activity.RESULT_OK;
 
 /**
- * Created by Colin on 2018-03-13.
+ * Controller for creating a new task
+ * @author Colin
+ * @see NewTaskActivity
+ * @version 1.0
  */
-
 public class NewTaskController {
 
     private NewTaskActivity view;
     private Context ctx;
     private String taskId;
 
+    /**
+     * Context and view of the activity is passed into the controller
+     * @param view
+     * @param context
+     */
     public NewTaskController(NewTaskActivity view, Context context) {
         this.view = view;
         this.ctx = context;
     }
 
+    /**
+     * Error checks the task name and description to enforce character limits.
+     * Then the task is added to Elastic Search
+     * @param name Task name
+     * @param user User that is making the task
+     * @param description Description of the task
+     */
     public void addTask(String name, User user, String description){
         //Check field lengths and give error
         EditText taskName = view.findViewById(R.id.TaskName);
@@ -83,6 +97,9 @@ public class NewTaskController {
         }
     }
 
+    /**
+     * Cancels making a task and returns to previous activity
+     */
     public void cancelTask(){
         view.finish();
     }

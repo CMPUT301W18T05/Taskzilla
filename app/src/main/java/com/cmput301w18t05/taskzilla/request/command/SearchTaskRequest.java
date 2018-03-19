@@ -19,10 +19,13 @@ import com.cmput301w18t05.taskzilla.request.SearchRequest;
 
 import java.util.ArrayList;
 
-/**
- * Created by Andy on 3/14/2018.
- */
 
+/**
+ * Request for getting a list for task objects from Elastic Search using keywords
+ * @author Andy
+ * @see ElasticSearchController
+ * @version 1.0
+ */
 public class SearchTaskRequest extends SearchRequest {
     private String searchKeywords;
     private ArrayList<Task> results;

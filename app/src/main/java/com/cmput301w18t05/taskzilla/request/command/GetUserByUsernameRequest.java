@@ -16,9 +16,11 @@ import com.cmput301w18t05.taskzilla.User;
 import com.cmput301w18t05.taskzilla.request.Request;
 
 /**
- * Created by wyatt on 07/03/18.
+ * Request for getting a user object from Elastic Search using a username
+ * @author Wyatt
+ * @see ElasticSearchController
+ * @version 1.0
  */
-
 public class GetUserByUsernameRequest extends Request {
     ElasticSearchController.GetUserByUsername task;
     String username;

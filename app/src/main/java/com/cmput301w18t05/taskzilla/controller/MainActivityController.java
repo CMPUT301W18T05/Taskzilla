@@ -21,25 +21,44 @@ import com.cmput301w18t05.taskzilla.activity.WelcomeActivity;
 
 
 /**
- * Created by Colin on 2018-03-14.
+ * Controller that handles login and signup functionality in the main activity
+ * @author Colin
+ * @version 1.0
  */
-
 public class MainActivityController {
     private MainActivity view;
 
+    /**
+     * The view of the activity is passed into this controller
+     * @param view
+     */
     public MainActivityController(MainActivity view) {
         this.view = view;
     }
 
+    /**
+     * Switches to SignUpActivity.
+     * This is where new accounts are made
+     */
     public void signUp(){
         Intent signupIntent = new Intent(view, SignUpActivity.class);
         view.startActivity(signupIntent);
     }
+
+    /**
+     * Switches to WelcomeActivity.
+     * This is how the users login to the app
+     */
     public void logIn(){
         Intent loginIntent = new Intent(view, WelcomeActivity.class);
         view.startActivity(loginIntent);
     }
 
+    /**
+     * Check if the user was logged in.
+     * This is used to implement automatic login
+     * @return
+     */
     public boolean checkLoggedIn(){
         return false;
     }

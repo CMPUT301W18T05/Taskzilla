@@ -16,10 +16,11 @@ import com.cmput301w18t05.taskzilla.Task;
 import com.cmput301w18t05.taskzilla.request.Request;
 
 /**
- * Created by wyatt on 07/03/18.
- *
+ * Request for getting a task object from Elastic Search using the task id
+ * @author Wyatt
+ * @see ElasticSearchController
+ * @version 1.0
  */
-
 public class GetTaskRequest extends Request {
     ElasticSearchController.GetTask task;
     String taskId;

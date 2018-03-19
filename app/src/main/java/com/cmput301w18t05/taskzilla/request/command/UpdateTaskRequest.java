@@ -16,9 +16,11 @@ import com.cmput301w18t05.taskzilla.Task;
 import com.cmput301w18t05.taskzilla.request.Request;
 
 /**
- * Created by Micheal-Nguyen on 2018-03-16.
+ * Request for updating a task object in Elastic Search. Inserts a new updated task overwriting the old one
+ * @author Micheal
+ * @see ElasticSearchController
+ * @version 1.0
  */
-
 public class UpdateTaskRequest extends Request {
     ElasticSearchController.UpdateTask updateRequest;
     private Task taskData;

@@ -16,9 +16,11 @@ import com.cmput301w18t05.taskzilla.User;
 import com.cmput301w18t05.taskzilla.request.InsertionRequest;
 
 /**
- * Created by wyatt on 07/03/18.
+ * Request for adding a user to Elastic Search
+ * @author Wyatt
+ * @see ElasticSearchController
+ * @version 1.0
  */
-
 public class AddUserRequest extends InsertionRequest {
     User user;
     ElasticSearchController.AddUser task;
