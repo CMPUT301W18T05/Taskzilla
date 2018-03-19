@@ -11,22 +11,17 @@
 
 package com.cmput301w18t05.taskzilla;
 
-import android.app.ActionBar;
-import android.provider.ContactsContract;
-import android.support.design.widget.TabLayout;
 import android.test.ActivityInstrumentationTestCase2;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
-import com.cmput301w18t05.taskzilla.activity.EditProfileActivity;
 import com.cmput301w18t05.taskzilla.activity.MainActivity;
 import com.cmput301w18t05.taskzilla.activity.NewTaskActivity;
+import com.cmput301w18t05.taskzilla.activity.ProfileActivity;
 import com.cmput301w18t05.taskzilla.activity.SignUpActivity;
+import com.cmput301w18t05.taskzilla.activity.ViewTaskActivity;
 import com.cmput301w18t05.taskzilla.activity.WelcomeActivity;
-import com.cmput301w18t05.taskzilla.controller.ProfileController;
-import com.cmput301w18t05.taskzilla.fragment.ProfileFragment;
 import com.robotium.solo.Solo;
 
 /**
@@ -44,7 +39,6 @@ public class UserProfileActivityTest extends ActivityInstrumentationTestCase2 {
         solo = new Solo(getInstrumentation(), getActivity());
     }
 
-/*
     public void testLogIn(){
 
         //Set up for Test
@@ -73,9 +67,47 @@ public class UserProfileActivityTest extends ActivityInstrumentationTestCase2 {
         solo.clickOnButton("Log In");
         solo.assertCurrentActivity("Wrong Activity", WelcomeActivity.class);
     }
-*/
-    public void testProfile() {
 
+    public void testNewTaskProfile() {
+        //valid login
+        solo.enterText((EditText) solo.getView(R.id.usernameText), "TestUser");
+        solo.clickOnButton("Log In");
+        solo.assertCurrentActivity("Wrong Activity", WelcomeActivity.class);
+
+        //create new task
+        solo.waitForText("Tasks");
+        View fab = solo.getCurrentActivity().findViewById(R.id.fab);
+        solo.clickOnView(fab);
+        solo.assertCurrentActivity("Wrong Activity", NewTaskActivity.class);
+
+        //validate info
+        solo.enterText((EditText) solo.getView(R.id.TaskName), "Test Task Name");
+        solo.enterText((EditText) solo.getView(R.id.Description), "Test Description");
+        solo.clickOnButton("Add Task");
+        assertTrue(solo.waitForText("Test Task Name"));
+
+        //check intent of other user profile
+        solo.clickInList(0);
+        solo.assertCurrentActivity("Wrong Activity", ViewTaskActivity.class);
+        solo.waitForText("Test Task Name");
+
+        ImageButton editButton = (ImageButton) solo.getView(R.id.RequesterPicture);
+        solo.clickOnView(editButton);
+        solo.sleep(500);
+        solo.assertCurrentActivity("Wrong Activity", ProfileActivity.class);
+
+        //checks if name of user matches name in profile
+        assertTrue(solo.waitForText(currentUser.getInstance().getName()));
+
+        //checks if email of user matches email in profile
+        assertTrue(solo.waitForText(currentUser.getInstance().getEmail().toString()));
+
+        //checks if phone of user matches phone in profile
+        assertTrue(solo.waitForText(currentUser.getInstance().getPhone().toString()));
+    }
+
+    public void testProfile() {
+        //valid login
         solo.enterText((EditText) solo.getView(R.id.usernameText), "TestUser");
         solo.clickOnButton("Log In");
         solo.assertCurrentActivity("Wrong Activity", WelcomeActivity.class);
@@ -99,7 +131,14 @@ public class UserProfileActivityTest extends ActivityInstrumentationTestCase2 {
 
         //checks if phone of user matches phone in profile
         assertTrue(solo.waitForText(currentUser.getInstance().getPhone().toString()));
+
+        String userName = currentUser.getInstance().getUsername();
+
+        //checks if logout button brings the user back to the home screen
+        View logoutButton = solo.getCurrentActivity().findViewById(R.id.LogOutButton);
+        solo.clickOnView(logoutButton);
+        solo.waitForActivity(MainActivity.class);
+        solo.assertCurrentActivity("Wrong Acvitivy", MainActivity.class);
+        assertTrue(solo.waitForText(userName));
     }
-
-
 }
