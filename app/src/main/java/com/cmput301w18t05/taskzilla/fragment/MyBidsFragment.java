@@ -104,6 +104,7 @@ public class MyBidsFragment extends Fragment {
                     //temptask.setStatus("requested");
 
                     adapter.notifyDataSetChanged();
+                    getUpdatedBids();
                     dialogInterface.dismiss();
                 }
             });
