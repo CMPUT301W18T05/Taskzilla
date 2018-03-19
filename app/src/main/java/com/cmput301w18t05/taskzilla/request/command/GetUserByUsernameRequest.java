@@ -11,7 +11,7 @@
 
 package com.cmput301w18t05.taskzilla.request.command;
 
-import com.cmput301w18t05.taskzilla.controller.ElasticSearchController;
+import com.cmput301w18t05.taskzilla.controller.ElasticsearchController;
 import com.cmput301w18t05.taskzilla.User;
 import com.cmput301w18t05.taskzilla.request.Request;
 
@@ -20,7 +20,7 @@ import com.cmput301w18t05.taskzilla.request.Request;
  */
 
 public class GetUserByUsernameRequest extends Request {
-    ElasticSearchController.GetUserByUsername task;
+    ElasticsearchController.GetUserByUsername task;
     String username;
     User result;
 
@@ -29,7 +29,7 @@ public class GetUserByUsernameRequest extends Request {
     }
 
     public void execute() {
-        task = new ElasticSearchController.GetUserByUsername();
+        task = new ElasticsearchController.GetUserByUsername();
         task.execute(this.username);
     }
 

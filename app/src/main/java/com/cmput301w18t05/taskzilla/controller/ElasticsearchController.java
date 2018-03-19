@@ -34,25 +34,41 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Jeremy
+ * Handles all Elasticsearch commands necessary for Taskzilla
  *
- * TODO: my bids returns a list of tasks
+ * @Author Jeremy
  */
 
-public class ElasticSearchController {
+public class ElasticsearchController {
 
-    private static final ElasticSearchController inst = new ElasticSearchController();
+    private static final ElasticsearchController inst = new ElasticsearchController();
 
     private static JestDroidClient client;
 
-    private ElasticSearchController() {
+    /**
+     * Constructor
+     */
+    private ElasticsearchController() {
     }
 
-    public static ElasticSearchController getInstance() {
+    /**
+     * Get an instance of ElasticSearchController
+     *
+     * @return ElasticsearchController
+     */
+    public static ElasticsearchController getInstance() {
         return inst;
     }
 
+    /**
+     * Asynchronous task for adding a task to Elasticsearch
+     */
     public static class AddTask extends AsyncTask<Task, Void, Boolean> {
+        /**
+         * Handles adding a task to Elasticsearch
+         * @param tasks The task to be added
+         * @return Boolean
+         */
         @Override
         protected Boolean doInBackground(Task... tasks) {
             verifySettings();
@@ -75,7 +91,15 @@ public class ElasticSearchController {
         }
     }
 
+    /**
+     * Asynchronous task for updating a task in Elasticsearch
+     */
     public static class UpdateTask extends AsyncTask<Task, Void, Boolean> {
+        /**
+         * Handles updating a task already in Elasticsearch
+         * @param tasks The task to be updated
+         * @return Boolean
+         */
         @Override
         protected Boolean doInBackground(Task... tasks) {
             verifySettings();
@@ -92,7 +116,15 @@ public class ElasticSearchController {
         }
     }
 
+    /**
+     * Asynchronous task for removing a task from Elasticsearch
+     */
     public static class RemoveTask extends AsyncTask<String, Void, Boolean> {
+        /**
+         * Handles removing a task from Elasticsearch
+         * @param taskIds The id of task to be removed
+         * @return Boolean
+         */
         @Override
         protected Boolean doInBackground(String... taskIds) {
             verifySettings();
@@ -135,7 +167,15 @@ public class ElasticSearchController {
         }
     }
 
+    /**
+     * Asynchronous task for retrieving a task from Elasticsearch
+     */
     public static class GetTask extends AsyncTask<String, Void, Task> {
+        /**
+         * Handles retrieving a task from Elasticsearch
+         * @param taskId The id of the task to be retrieved
+         * @return Task
+         */
         @Override
         protected Task doInBackground(String... taskId) {
             verifySettings();
@@ -152,7 +192,7 @@ public class ElasticSearchController {
             return task;
         }
     }
-
+    
     public static class GetAllTasks extends AsyncTask<Void, Void, ArrayList<Task>> {
         int from;
         int size;

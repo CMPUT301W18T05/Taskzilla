@@ -13,7 +13,7 @@ package com.cmput301w18t05.taskzilla.request.command;
 
 import android.util.Log;
 
-import com.cmput301w18t05.taskzilla.controller.ElasticSearchController;
+import com.cmput301w18t05.taskzilla.controller.ElasticsearchController;
 import com.cmput301w18t05.taskzilla.Task;
 import com.cmput301w18t05.taskzilla.request.Request;
 
@@ -24,7 +24,7 @@ import java.util.ArrayList;
  */
 
 public class GetTasksByProviderUsernameRequest extends Request {
-    ElasticSearchController.GetTasksByProviderUsername task;
+    ElasticsearchController.GetTasksByProviderUsername task;
     ArrayList<Task> result;
     String user;
 
@@ -33,7 +33,7 @@ public class GetTasksByProviderUsernameRequest extends Request {
     }
 
     public void execute() {
-        task = new ElasticSearchController.GetTasksByProviderUsername();
+        task = new ElasticsearchController.GetTasksByProviderUsername();
         task.execute(user);
     }
 

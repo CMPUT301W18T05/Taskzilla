@@ -11,7 +11,7 @@
 
 package com.cmput301w18t05.taskzilla.request.command;
 
-import com.cmput301w18t05.taskzilla.controller.ElasticSearchController;
+import com.cmput301w18t05.taskzilla.controller.ElasticsearchController;
 import com.cmput301w18t05.taskzilla.Task;
 import com.cmput301w18t05.taskzilla.request.Request;
 
@@ -20,7 +20,7 @@ import com.cmput301w18t05.taskzilla.request.Request;
  */
 
 public class UpdateTaskRequest extends Request {
-    ElasticSearchController.UpdateTask updateRequest;
+    ElasticsearchController.UpdateTask updateRequest;
     private Task taskData;
 
     public UpdateTaskRequest(Task task) {
@@ -28,7 +28,7 @@ public class UpdateTaskRequest extends Request {
     }
 
     public void execute() {
-        updateRequest = new ElasticSearchController.UpdateTask();
+        updateRequest = new ElasticsearchController.UpdateTask();
         updateRequest.execute(taskData);
     }
 

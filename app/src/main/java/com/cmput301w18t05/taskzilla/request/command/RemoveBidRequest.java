@@ -12,7 +12,7 @@
 package com.cmput301w18t05.taskzilla.request.command;
 
 import com.cmput301w18t05.taskzilla.Bid;
-import com.cmput301w18t05.taskzilla.controller.ElasticSearchController;
+import com.cmput301w18t05.taskzilla.controller.ElasticsearchController;
 import com.cmput301w18t05.taskzilla.request.DeletionRequest;
 
 /**
@@ -28,7 +28,7 @@ public class RemoveBidRequest extends DeletionRequest{
     }
 
     public void execute(){
-        ElasticSearchController.RemoveBid deleteRequest = new ElasticSearchController.RemoveBid();
+        ElasticsearchController.RemoveBid deleteRequest = new ElasticsearchController.RemoveBid();
         deleteRequest.execute(this.bid);
     }
 
