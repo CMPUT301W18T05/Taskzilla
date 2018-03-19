@@ -64,11 +64,11 @@ public class EditTaskActivity extends AppCompatActivity {
 
         if(TaskName.length() >25){
             TaskNameText.requestFocus();
-            TaskNameText.setError("Title length exceeds 25 characters");
+            TaskNameText.setError("Task Name exceeds 25 characters");
         }
         else if(TaskName.length() == 0){
             TaskNameText.requestFocus();
-            TaskNameText.setError("Title required");
+            TaskNameText.setError("Task Name required");
         }
         else if(Description.length()>280){
             DescriptionText.requestFocus();

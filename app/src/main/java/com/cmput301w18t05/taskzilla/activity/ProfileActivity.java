@@ -19,6 +19,9 @@ import com.cmput301w18t05.taskzilla.controller.ProfileController;
 import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.User;
 
+/**
+ * Activity for viewing user profile
+ */
 public class ProfileActivity extends AppCompatActivity {
     private ProfileController profileController;
     private String userID;

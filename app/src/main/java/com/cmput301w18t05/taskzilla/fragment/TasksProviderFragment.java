@@ -35,7 +35,11 @@ import java.util.ArrayList;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * Child fragment of TasksFragment
+ * Tasks that the user is providing for appear here
+ *
+ * @author Colin
+ * @version 1.0
  */
 public class TasksProviderFragment extends Fragment {
 
@@ -53,10 +57,10 @@ public class TasksProviderFragment extends Fragment {
         // Required empty public constructor
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
 
         //Set up listview and adapter
         View v = inflater.inflate(R.layout.fragment_tasks_provider, container, false);
@@ -81,6 +85,10 @@ public class TasksProviderFragment extends Fragment {
         return v;
     }
 
+    /**
+     * Switches to ViewTaskActivity
+     * @param id id of the task to be view is passed in as a String
+     */
     public void viewTask(String id){
         Intent intent = new Intent(getActivity(), ViewTaskActivity.class);
         intent.putExtra("TaskId",id);

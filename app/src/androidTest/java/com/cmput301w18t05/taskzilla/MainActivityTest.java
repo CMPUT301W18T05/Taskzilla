@@ -129,8 +129,8 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2{
         solo.enterText((EditText) solo.getView(R.id.usernameText), "TestUser");
         solo.clickOnButton("Log In");
         solo.assertCurrentActivity("Wrong Activity", WelcomeActivity.class);
+        assertTrue(solo.waitForText("Tasks"));
     }
-
 
 
 
