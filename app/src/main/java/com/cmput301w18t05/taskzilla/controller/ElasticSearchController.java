@@ -34,9 +34,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Jeremy
+ * Handles all Elasticsearch commands necessary for Taskzilla
  *
- * TODO: my bids returns a list of tasks
+ * Controller for packaging all the functions dealing with
+ * elastic search.
+ *
+ * Most common use will be with RequestManager
+ *
+ * @author Jeremy Wyatt
  */
 
 public class ElasticSearchController {
@@ -45,14 +50,29 @@ public class ElasticSearchController {
 
     private static JestDroidClient client;
 
+    /**
+     * Constructor
+     */
     private ElasticSearchController() {
     }
 
+    /**
+     * Singleton class
+     * @return instance of the elastic search controller
+     */
     public static ElasticSearchController getInstance() {
         return inst;
     }
 
+    /**
+     * Asynchronous task for adding a task
+     */
     public static class AddTask extends AsyncTask<Task, Void, Boolean> {
+        /**
+         * Handles adding a task
+         * @param tasks The task to be added
+         * @return Boolean
+         */
         @Override
         protected Boolean doInBackground(Task... tasks) {
             verifySettings();
@@ -75,7 +95,15 @@ public class ElasticSearchController {
         }
     }
 
+    /**
+     * Asynchronous task for updating a task
+     */
     public static class UpdateTask extends AsyncTask<Task, Void, Boolean> {
+        /**
+         * Handles updating a task
+         * @param tasks The task to be updated
+         * @return Boolean
+         */
         @Override
         protected Boolean doInBackground(Task... tasks) {
             verifySettings();
@@ -92,7 +120,15 @@ public class ElasticSearchController {
         }
     }
 
+    /**
+     * Asynchronous task for removing a task
+     */
     public static class RemoveTask extends AsyncTask<String, Void, Boolean> {
+        /**
+         * Handles removing a task
+         * @param taskIds The id of task to be removed
+         * @return Boolean
+         */
         @Override
         protected Boolean doInBackground(String... taskIds) {
             verifySettings();
@@ -135,7 +171,15 @@ public class ElasticSearchController {
         }
     }
 
+    /**
+     * Asynchronous task for retrieving a specific task
+     */
     public static class GetTask extends AsyncTask<String, Void, Task> {
+        /**
+         * Handles retrieving a specific task
+         * @param taskId The id of the task to be retrieved
+         * @return Task
+         */
         @Override
         protected Task doInBackground(String... taskId) {
             verifySettings();
@@ -153,15 +197,27 @@ public class ElasticSearchController {
         }
     }
 
+    /**
+     * Asynchronous task for retrieving a certain number of tasks from a certain offset
+     */
     public static class GetAllTasks extends AsyncTask<Void, Void, ArrayList<Task>> {
         int from;
         int size;
 
+        /**
+         * Constructor
+         * @param from The offset
+         * @param size The amount of hits to be returned
+         */
         public GetAllTasks(int from, int size) {
             this.from = from;
             this.size = size;
         }
 
+        /**
+         * Handles retrieving a certain number of tasks from a certain offset
+         * @return ArrayList<Task>
+         */
         @Override
         protected ArrayList<Task> doInBackground(Void... voids) {
             verifySettings();
@@ -196,7 +252,15 @@ public class ElasticSearchController {
         }
     }
 
+    /**
+     * Asynchronous task that retrieves tasks from a provider username
+     */
     public static class GetTasksByProviderUsername extends AsyncTask<String, Void, ArrayList<Task>> {
+        /**
+         * Handles retrieving tasks from a provider username
+         * @param usernames The provider's username
+         * @return ArrayList<Task>
+         */
         @Override
         protected ArrayList<Task> doInBackground(String... usernames) {
             verifySettings();
@@ -226,7 +290,15 @@ public class ElasticSearchController {
         }
     }
 
+    /**
+     * Asynchronous task that retrieves tasks from a requester username
+     */
     public static class GetTasksByRequesterUsername extends AsyncTask<String, Void, ArrayList<Task>> {
+        /**
+         * Handles retrieving tasks from a requester username
+         * @param usernames The requester's username
+         * @return ArrayList<Task>
+         */
         @Override
         protected ArrayList<Task> doInBackground(String... usernames) {
             verifySettings();
@@ -256,14 +328,27 @@ public class ElasticSearchController {
         }
     }
 
+    /**
+     * Asynchronous task that searches for a certain number of tasks from a certain offset that match a given keyword in the description
+     */
     public static class SearchForTasks extends AsyncTask<String, Void, ArrayList<Task>> {
         int from,size;
 
+        /**
+         * Constructor
+         * @param from The offset
+         * @param size The number of hits to be returned
+         */
         public SearchForTasks(int from, int size) {
             this.from = from;
             this.size = size;
         }
 
+        /**
+         * Handles searching for a certain number of tasks from a certain offset that match a given keyword in the description
+         * @param keywords The search keywords
+         * @return ArrayList<Task>
+         */
         @Override
         protected ArrayList<Task> doInBackground(String... keywords) {
             verifySettings();
@@ -307,7 +392,15 @@ public class ElasticSearchController {
         }
     }
 
+    /**
+     * Asynchronous task for adding a user
+     */
     public static class AddUser extends AsyncTask<User, Void, Boolean> {
+        /**
+         * Handles adding a user
+         * @param users The user to add
+         * @return Boolean
+         */
         @Override
         protected Boolean doInBackground(User... users) {
             verifySettings();
@@ -335,7 +428,17 @@ public class ElasticSearchController {
         }
     }
 
+    /**
+     * Asynchronous task for updating a user
+     *
+     * todo: current implementation does not work.
+     */
     public static class UpdateUser extends AsyncTask<User, Void, Void> {
+        /**
+         * Handles updating a user
+         * @param users The user to be updated
+         * @return Void
+         */
         @Override
         protected Void doInBackground(User... users) {
             verifySettings();
@@ -351,7 +454,17 @@ public class ElasticSearchController {
         }
     }
 
+    /**
+     * Asynchronous task for removing a user
+     *
+     * todo: fix this to take in a user id
+     */
     public static class RemoveUser extends AsyncTask<User, Void, Void> {
+        /**
+         * Handles removing a user
+         * @param users The user to be removed
+         * @return Void
+         */
         @Override
         protected Void doInBackground(User... users) {
             verifySettings();
@@ -366,7 +479,15 @@ public class ElasticSearchController {
         }
     }
 
+    /**
+     * Asynchronous task for retrieving a user
+     */
     public static class GetUser extends AsyncTask<String, Void, User> {
+        /**
+         * Handles retrieving a user
+         * @param userIds The id of the user
+         * @return User
+         */
         @Override
         protected User doInBackground(String... userIds) {
             verifySettings();
@@ -387,7 +508,15 @@ public class ElasticSearchController {
         }
     }
 
+    /**
+     * Asynchronous task for retrieving a user by username
+     */
     public static class GetUserByUsername extends AsyncTask<String, Void, User> {
+        /**
+         * Handles retrieving a user by username
+         * @param userIds The id of the user
+         * @return User
+         */
         @Override
         protected User doInBackground(String... userIds) {
             verifySettings();
@@ -422,7 +551,15 @@ public class ElasticSearchController {
         }
     }
 
+    /**
+     * Asynchronous task for adding a bid
+     */
     public static class AddBid extends AsyncTask<Bid, Void, Boolean> {
+        /**
+         * Handles adding a bid
+         * @param bids The bid to be added
+         * @return Boolean
+         */
         @Override
         protected Boolean doInBackground(Bid... bids) {
             verifySettings();
@@ -443,7 +580,16 @@ public class ElasticSearchController {
         }
     }
 
+    /**
+     * Asynchronous task for retrieving all bids from a user id
+     * todo: take in size and from integer to allow pagination
+     */
     public static class GetBidsByUserID extends AsyncTask<String, Void, ArrayList<Bid>> {
+        /**
+         * Handles retrieving all bids from a user id
+         * @param userIds The user id
+         * @return ArrayList<Bid>
+         */
         @Override
         protected ArrayList<Bid> doInBackground(String... userIds) {
             verifySettings();
@@ -477,7 +623,15 @@ public class ElasticSearchController {
         }
     }
 
+    /**
+     * Asynchronous task that retrieves all bids from a task id
+     */
     public static class GetBidsByTaskID extends AsyncTask<String, Void, ArrayList<Bid>> {
+        /**
+         * Handles retrieving all bids from a task id
+         * @param taskIds The task id
+         * @return ArrayList<Bid>
+         */
         @Override
         protected ArrayList<Bid> doInBackground(String... taskIds) {
             verifySettings();
@@ -511,7 +665,16 @@ public class ElasticSearchController {
         }
     }
 
+    /**
+     * Asynchronous task that removes a bid
+     * todo: make this take in a bid id
+     */
     public static class RemoveBid extends AsyncTask<Bid, Void, Void> {
+        /**
+         * Handles removing a bid
+         * @param bids The bid to be removed
+         * @return Void
+         */
         @Override
         protected Void doInBackground(Bid... bids) {
             verifySettings();
@@ -526,6 +689,9 @@ public class ElasticSearchController {
         }
     }
 
+    /**
+     * Verify that there is a connection to the Elasticsearch server
+     */
     private static void verifySettings() {
         if (client == null) {
             DroidClientConfig.Builder builder = new DroidClientConfig.Builder("http://cmput301.softwareprocess.es:8080/"); // do not put the index here yet

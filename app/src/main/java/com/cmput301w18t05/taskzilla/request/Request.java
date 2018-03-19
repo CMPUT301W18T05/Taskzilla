@@ -20,7 +20,6 @@ package com.cmput301w18t05.taskzilla.request;
  *
  * Abstracts the request object
  */
-
 public abstract class Request {
     private boolean serverRequired;
 

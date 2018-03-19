@@ -23,7 +23,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.cmput301w18t05.taskzilla.Bid;
 import com.cmput301w18t05.taskzilla.R;

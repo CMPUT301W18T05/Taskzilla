@@ -16,8 +16,14 @@ import android.os.Bundle;
 
 import com.cmput301w18t05.taskzilla.R;
 
+/**
+ * Activity for editing user profile
+ */
 public class EditProfileActivity extends AppCompatActivity {
 
+    /**
+     * Activity uses the activity_edit_profile.xml layout
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

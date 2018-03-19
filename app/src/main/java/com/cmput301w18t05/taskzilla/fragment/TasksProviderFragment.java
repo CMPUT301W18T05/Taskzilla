@@ -35,7 +35,11 @@ import java.util.ArrayList;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * Child fragment of TasksFragment
+ * Tasks that the user is providing for appear here
+ *
+ * @author Colin
+ * @version 1.0
  */
 public class TasksProviderFragment extends Fragment {
 
@@ -44,7 +48,6 @@ public class TasksProviderFragment extends Fragment {
     private ListView taskListView;
     private ArrayAdapter<Task> adapter;
 
-    private RequestManager requestManager;
     private GetTasksByProviderUsernameRequest requestTasks;
     private SearchTaskRequest newRequest;
     private User cUser = currentUser.getInstance();
@@ -58,22 +61,18 @@ public class TasksProviderFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
 
         //Set up listview and adapter
         View v = inflater.inflate(R.layout.fragment_tasks_provider, container, false);
-        taskList = new ArrayList<Task>();
-        taskListView = (ListView)v.findViewById(R.id.ProviderTasksListView);
-        adapter = new ArrayAdapter<Task>(getActivity(), android.R.layout.simple_list_item_1, taskList);
+        taskList = new ArrayList<>();
+        taskListView = v.findViewById(R.id.ProviderTasksListView);
+        adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, taskList);
         taskListView.setAdapter(adapter);
 
-
         requestTasks = new GetTasksByProviderUsernameRequest(currentUser.getInstance().getUsername());
-        requestManager.getInstance().invokeRequest(getContext(), requestTasks);
+        RequestManager.getInstance().invokeRequest(getContext(), requestTasks);
 
-        for (Task t : requestTasks.getResult()) {
-            taskList.add(t);
-        }
+            taskList.addAll(requestTasks.getResult());
 
         adapter.notifyDataSetChanged();
 
@@ -83,15 +82,16 @@ public class TasksProviderFragment extends Fragment {
                 viewTask(taskList.get(position).getId());
             }
         });
-
         return v;
     }
 
-
+    /**
+     * Switches to ViewTaskActivity
+     * @param id id of the task to be view is passed in as a String
+     */
     public void viewTask(String id){
         Intent intent = new Intent(getActivity(), ViewTaskActivity.class);
         intent.putExtra("TaskId",id);
         startActivity(intent);
     }
-
 }

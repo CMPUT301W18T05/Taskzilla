@@ -27,12 +27,13 @@ import java.util.ArrayList;
 
 import io.searchbox.annotations.JestId;
 
-/**
- * Created by wyatt on 22/02/18.
- *
- * @// TODO: 23/02/18 AddPhoto implementation
- */
 
+/**
+ * Task
+ *
+ * Represents a task object in the app
+ * @author wyatt
+ */
 public class Task {
 
     private String name;
@@ -58,6 +59,12 @@ public class Task {
         //retrieveBids();
     }
 
+    /**
+     * Constructs a Task instance using the given parameters
+     * @param name Name of the task
+     * @param TaskRequester Name of the user requesting the task
+     * @param description Description of the task
+     */
     public Task(String name, User TaskRequester, String description) {
         photos = new ArrayList<>();
         this.name = name;
@@ -67,6 +74,13 @@ public class Task {
         this.description = description;
     }
 
+    /**
+     * Constructs a Task instance using the given parameters
+     * @param name Name of the task
+     * @param TaskRequester Name of the user requesting the task
+     * @param description Description of the task
+     * @param location Location of the task
+     */
     public Task(String name, User TaskRequester, String description, Location location) {
         photos = new ArrayList<>();
         this.name = name;
@@ -76,6 +90,15 @@ public class Task {
         this.description = description;
         this.location = location;
     }
+
+    /**
+     * Constructs a Task instance using the given parameters
+     * @param name Name of the task
+     * @param TaskRequester Name of the user requesting the task
+     * @param description Description of the task
+     * @param location Location of the task
+     * @param photos List of photos realated to the task
+     */
     public Task(String name, User TaskRequester, String description, Location location, ArrayList<Photo> photos) {
         photos = new ArrayList<>();
         this.name = name;
@@ -130,38 +153,76 @@ public class Task {
         return this.photos.get(i);
     }
 
+    /**
+     * Returns a list of all photos
+     * @return List of photos
+     */
     public ArrayList<Photo> getPhotos() {
         return photos;
     }
 
+    /**
+     * Removes a photo at index i
+     * @param i position of photo in the list
+     */
     public void removePhoto(int i) {
         this.photos.remove(i);
     }
 
+    /**
+     * Returns the number of photos
+     * @return
+     */
     public int numPhotos() {
         return this.photos.size();
     }
 
+    /**
+     * returns the number of bids currently on the task
+     * @return
+     */
     public int numBids() {
         return bids.size();
     }
 
+    /**
+     * Returns the bid at index i
+     * @param i
+     * @return
+     */
     public Bid getBid(int i) {
         return bids.get(i);
     }
 
+    /**
+     * Returns a list of all the bids
+     * @return
+     */
     public ArrayList<Bid> getBids() {
         return retrieveBids();
     }
 
+    /**
+     * Returns the name of the task
+     * @return
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Sets the name of the task
+     * @param name
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * contact elastic search and return a user object matching
+     * the requester id
+     * @return User
+     */
     public User getTaskRequester() {
         return userRequest(this.requesterId);
     }
@@ -187,6 +248,11 @@ public class Task {
         this.requesterId = requesterId;
     }
 
+    /**
+     * contact elastic search and return a user object matching
+     * the provider id
+     * @return User
+     */
     public User getTaskProvider() {
         return userRequest(this.requesterId);
     }

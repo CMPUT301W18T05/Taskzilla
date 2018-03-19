@@ -14,6 +14,11 @@ package com.cmput301w18t05.taskzilla;
 import android.test.ActivityInstrumentationTestCase2;
 
 import com.cmput301w18t05.taskzilla.activity.MainActivity;
+import com.cmput301w18t05.taskzilla.request.RequestManager;
+import com.cmput301w18t05.taskzilla.request.command.AddTaskRequest;
+import com.cmput301w18t05.taskzilla.request.command.AddUserRequest;
+
+import java.util.ArrayList;
 
 /**
  * Created by Jeremy
@@ -28,8 +33,18 @@ public class BidTest extends ActivityInstrumentationTestCase2 {
      * Test for setting the bid
      */
     public void testSetBid() {
+
         User user = new User();
         Task task = new Task();
+
+        AddUserRequest userRequest = new AddUserRequest(user);
+        RequestManager.getInstance().invokeRequest(userRequest);
+        userRequest.getResult();
+
+        AddTaskRequest request = new AddTaskRequest(task);
+        RequestManager.getInstance().invokeRequest(request);
+        request.getResult();
+
         float bidAmount = 10.00f;
         Bid bid = new Bid(user.getId(), task.getId(), 10.00f);
         assertEquals(bid.getBidAmount(), bidAmount);
