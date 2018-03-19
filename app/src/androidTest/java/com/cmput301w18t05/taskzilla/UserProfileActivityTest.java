@@ -26,6 +26,7 @@ public class UserProfileActivityTest extends ActivityInstrumentationTestCase2 {
         super(MainActivity.class);
     }
 
+
     public void testProviderRatingUpdate() {
         //ProfileFragment profileFragment = new ProfileFragment();
         //User user = new User();
@@ -33,5 +34,7 @@ public class UserProfileActivityTest extends ActivityInstrumentationTestCase2 {
         //profileController.updateProviderRating(10.0);
         //assertEquals("10.0", profileFragment.getProviderRatingField().getText());
     }
+
+
 
 }
