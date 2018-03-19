@@ -11,6 +11,7 @@
 
 package com.cmput301w18t05.taskzilla;
 
+import android.app.AlertDialog;
 import android.test.ActivityInstrumentationTestCase2;
 import android.view.View;
 import android.widget.EditText;
@@ -18,6 +19,7 @@ import android.widget.EditText;
 import com.cmput301w18t05.taskzilla.activity.MainActivity;
 import com.cmput301w18t05.taskzilla.activity.NewTaskActivity;
 import com.cmput301w18t05.taskzilla.activity.SignUpActivity;
+import com.cmput301w18t05.taskzilla.activity.ViewTaskActivity;
 import com.cmput301w18t05.taskzilla.activity.WelcomeActivity;
 import com.cmput301w18t05.taskzilla.fragment.TasksRequesterFragment;
 import com.robotium.solo.Solo;
@@ -40,6 +42,7 @@ public class BidActivityTest extends ActivityInstrumentationTestCase2 {
 
 
     public void testBid(){
+
         //Set up for Test
         MainActivity activity = (MainActivity)solo.getCurrentActivity();
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
@@ -98,10 +101,38 @@ public class BidActivityTest extends ActivityInstrumentationTestCase2 {
         solo.clickOnButton("Log In");
         solo.assertCurrentActivity("Wrong Activity", WelcomeActivity.class);
 
+        //Test Bid on task
         solo.waitForText("Search");
         solo.clickOnText("Search");
-
         solo.clickOnText("Status: ");
+        solo.assertCurrentActivity("Wrong Activity", ViewTaskActivity.class);
+        solo.clickOnButton("PLACE BID");
+        solo.enterText((EditText) solo.getView(R.id.place_bid_edittext),"25.22");
+        solo.clickOnButton("Place Bid");
+        solo.goBack();
+
+        //Test Bid in bid list
+        solo.waitForText("My Bids");
+        solo.assertCurrentActivity("Wrong Activity", WelcomeActivity.class);
+        solo.clickOnText("My Bids");
+        solo.waitForText("Bid amount: ");
+        solo.clickOnText("25.22");
+        solo.assertCurrentActivity("Wrong Activity", ViewTaskActivity.class);
+
+        //Test update bid
+        solo.clickOnButton("PLACE BID");
+        solo.enterText((EditText) solo.getView(R.id.place_bid_edittext),"29.22");
+        solo.clickOnButton("Place Bid");
+        solo.goBack();
+        solo.clickLongOnText("29.22");
+
+        //Test Delete bid
+        solo.sleep(1000);
+        solo.clickOnButton("Yes");
+        assertFalse(solo.waitForText("25.22",1,1000));
+
+
+
 
 
 
