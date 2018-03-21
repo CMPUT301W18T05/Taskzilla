@@ -20,18 +20,6 @@
     <!-- TODO: Update blank fragment layout -->
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="100dp"
-        android:layout_marginRight="25dp"
-        android:clickable="true"
-        android:src="@android:drawable/ic_popup_sync"
-        app:backgroundTint="@color/colorAccent" />
-
-    <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -43,11 +31,20 @@
         android:src="@android:drawable/ic_input_add"
         app:backgroundTint="@android:color/background_dark" />
 
-    <ListView
-        android:id="@+id/RequesterTasksListView"
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swiperefresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-         />
+        android:layout_height="match_parent">
+
+        <ListView
+            android:id="@+id/RequesterTasksListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
 </RelativeLayout>
 
 

@@ -13,9 +13,11 @@ package com.cmput301w18t05.taskzilla.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,7 +53,7 @@ public class TasksRequesterFragment extends Fragment {
     private ListView taskListView;
     private ArrayAdapter<Task> adapter;
     private GetTasksByRequesterUsernameRequest requestTasks;
-
+    private SwipeRefreshLayout mySwipeRefreshLayout;
     public TasksRequesterFragment() {
         // Required empty public constructor
     }
@@ -101,6 +103,7 @@ public class TasksRequesterFragment extends Fragment {
 
         taskListView = view.findViewById(R.id.RequesterTasksListView);
         taskListView.setAdapter(adapter);
+        mySwipeRefreshLayout = view.findViewById(R.id.swiperefresh);
 
         FloatingActionButton floatingActionButton = view.findViewById(R.id.fab);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -110,7 +113,7 @@ public class TasksRequesterFragment extends Fragment {
             }
         });
 
-        FloatingActionButton floatingActionButton2 = view.findViewById(R.id.fab2);
+      /*  FloatingActionButton floatingActionButton2 = view.findViewById(R.id.fab2);
         floatingActionButton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -121,12 +124,33 @@ public class TasksRequesterFragment extends Fragment {
                 Toast.makeText(getActivity(), "Task list refreshed", Toast.LENGTH_SHORT).show();
             }
         });
-
+       */
         taskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> a, View v, int position, long id) {
                 viewTask(taskList.get(position).getId());
             }
         });
+
+        mySwipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        RequestManager.getInstance().invokeRequest(getContext(), requestTasks);
+                        taskList.clear();
+                        taskList.addAll(requestTasks.getResult());
+                        adapter.notifyDataSetChanged();
+                        final Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(mySwipeRefreshLayout.isRefreshing()) {
+                                    mySwipeRefreshLayout.setRefreshing(false);
+                                }
+                            }
+                        }, 1000);
+                    }
+                }
+        );
     }
 
     /**
