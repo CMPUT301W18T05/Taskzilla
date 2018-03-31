@@ -16,6 +16,7 @@ import android.view.View;
 
 import com.cmput301w18t05.taskzilla.User;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
+import com.cmput301w18t05.taskzilla.request.command.AddUserRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetUserRequest;
 
 /**
@@ -64,6 +65,12 @@ public class ProfileController {
      *
      * @author Micheal-Nguyen
      */
+
+    public void updateUserRequest(User user) {
+        AddUserRequest request = new AddUserRequest(user);
+        RequestManager.getInstance().invokeRequest(ctx, request);
+    }
+
     public void getUserRequest() {
         GetUserRequest request = new GetUserRequest(userId);
         RequestManager.getInstance().invokeRequest(ctx, request);

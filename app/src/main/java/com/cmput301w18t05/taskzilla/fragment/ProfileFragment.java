@@ -15,6 +15,7 @@ package com.cmput301w18t05.taskzilla.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,9 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.cmput301w18t05.taskzilla.EmailAddress;
+import com.cmput301w18t05.taskzilla.PhoneNumber;
+import com.cmput301w18t05.taskzilla.activity.EditTaskActivity;
 import com.cmput301w18t05.taskzilla.controller.ProfileController;
 import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.User;
@@ -30,6 +34,8 @@ import com.cmput301w18t05.taskzilla.activity.EditProfileActivity;
 import com.cmput301w18t05.taskzilla.currentUser;
 
 import java.util.Locale;
+
+import static android.app.Activity.RESULT_OK;
 
 
 /**
@@ -54,6 +60,7 @@ public class ProfileFragment extends Fragment {
     private Button logOut;
     private User user;
     private ProfileController profileController;
+    private ImageButton editProfile;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -70,7 +77,7 @@ public class ProfileFragment extends Fragment {
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editProfile();
+                editProfileClicked();
             }
         });
         return mRelativeLayout;
@@ -94,6 +101,7 @@ public class ProfileFragment extends Fragment {
         numRequestsField = view.findViewById(R.id.NumRequestsField);
         numTasksDoneField = view.findViewById(R.id.NumTasksDoneField);
         logOut = view.findViewById(R.id.LogOutButton);
+        editProfile = view.findViewById(R.id.EditButton);
         user = currentUser.getInstance();
 
         name = user.getName();
@@ -108,6 +116,13 @@ public class ProfileFragment extends Fragment {
         numRequestsField.setText(numRequests);
         numTasksDoneField.setText(numTasksDone);
 
+        editProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editProfileClicked();
+            }
+        });
+
         logOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,31 +130,36 @@ public class ProfileFragment extends Fragment {
             }
         });
     }
+
     /**
      * Switch to EditProfile Activity
      * Send users information to the activity
      */
-    public void editProfile(){
+    public void editProfileClicked() {
         Intent intent = new Intent(getActivity(), EditProfileActivity.class);
-        intent.putExtra("name","Name goes here" );
-        startActivity(intent);
+        intent.putExtra("Name", name);
+        intent.putExtra("Email", email);
+        intent.putExtra("Phone", phone);
+        startActivityForResult(intent, 1);
     }
 
 
     /**
      * When log out is clicked, app goes back to log in screen
      */
-    public void logOutClicked(){
+    public void logOutClicked() {
         //Delete User from gson
         getActivity().finish();
     }
+
     public void notifyChange() {
         // update fields
-        providerRatingField.setText(String.format(Locale.CANADA,"%f", user.getProviderRating()));
+        providerRatingField.setText(String.format(Locale.CANADA, "%f", user.getProviderRating()));
     }
 
     /**
      * set the user to be the profile fragment, should be the user that is currently logged in
+     *
      * @param user that is currently logged in
      */
     public void setUser(User user) {
@@ -152,5 +172,24 @@ public class ProfileFragment extends Fragment {
 
     public TextView getProviderRatingField() {
         return providerRatingField;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case (1): {
+                //code to add to ESC
+                if (resultCode == RESULT_OK) {
+                    Log.i("test", "hi");
+                    String newName = data.getStringExtra("Name");
+                    String newEmail = data.getStringExtra("Email");
+                    String newPhone = data.getStringExtra("Phone");
+                    nameField.setText(newName);
+                    emailField.setText(newEmail);
+                    phoneField.setText(newPhone);
+                    Log.i("user",user.getName());
+                }
+            }
+        }
     }
 }
