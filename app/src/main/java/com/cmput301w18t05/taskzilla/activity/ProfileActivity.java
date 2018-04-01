@@ -70,8 +70,8 @@ public class ProfileActivity extends AppCompatActivity {
             email = "No Email";
             phone = "No Number";
         }
-        numRequests = "99";
-        numTasksDone = "99";
+        numRequests = profileController.getNumberOfRequests(user.getUsername());
+        numTasksDone = profileController.getNumberOfTasksDone(user.getUsername());
 
         nameField = findViewById(R.id.NameField);
         emailField = findViewById(R.id.EmailField);

@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -26,13 +27,19 @@ import android.widget.TextView;
 
 import com.cmput301w18t05.taskzilla.EmailAddress;
 import com.cmput301w18t05.taskzilla.PhoneNumber;
+import com.cmput301w18t05.taskzilla.Task;
 import com.cmput301w18t05.taskzilla.activity.EditTaskActivity;
 import com.cmput301w18t05.taskzilla.controller.ProfileController;
 import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.User;
 import com.cmput301w18t05.taskzilla.activity.EditProfileActivity;
+import com.cmput301w18t05.taskzilla.controller.SearchController;
 import com.cmput301w18t05.taskzilla.currentUser;
+import com.cmput301w18t05.taskzilla.request.RequestManager;
+import com.cmput301w18t05.taskzilla.request.command.GetTasksByProviderUsernameRequest;
+import com.cmput301w18t05.taskzilla.request.command.GetTasksByRequesterUsernameRequest;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 import static android.app.Activity.RESULT_OK;
@@ -43,6 +50,10 @@ import static android.app.Activity.RESULT_OK;
  * @author Colin
  */
 public class ProfileFragment extends Fragment {
+    private ArrayList<Task> taskList;
+    private GetTasksByRequesterUsernameRequest requestTasksRequester;
+    private GetTasksByProviderUsernameRequest requestTasksProvider;
+    private Integer tasksDone;
 
     private TextView nameField;
     private TextView emailField;
@@ -104,11 +115,28 @@ public class ProfileFragment extends Fragment {
         editProfile = view.findViewById(R.id.EditButton);
         user = currentUser.getInstance();
 
+
+
         name = user.getName();
         email = user.getEmail().toString();
         phone = user.getPhone().toString();
-        numRequests = "99";
-        numTasksDone = "99";
+
+        taskList = new ArrayList<>();
+        //gets all of current user's tasks
+        requestTasksRequester = new GetTasksByRequesterUsernameRequest(user.getUsername());
+        RequestManager.getInstance().invokeRequest(getContext(), requestTasksRequester);
+        numRequests = Integer.toString(requestTasksRequester.getResult().size());
+
+        requestTasksProvider = new GetTasksByProviderUsernameRequest(user.getUsername());
+        RequestManager.getInstance().invokeRequest(getContext(), requestTasksProvider);
+        this.taskList.addAll(requestTasksProvider.getResult());
+        tasksDone = 0;
+        for(Task task: taskList) {
+            if(task.getStatus() == "Done"){
+                tasksDone++;
+            }
+        }
+        numTasksDone = Integer.toString(tasksDone);
 
         nameField.setText(name);
         emailField.setText(email);

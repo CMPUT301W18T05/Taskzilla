@@ -14,10 +14,15 @@ package com.cmput301w18t05.taskzilla.controller;
 import android.content.Context;
 import android.view.View;
 
+import com.cmput301w18t05.taskzilla.Task;
 import com.cmput301w18t05.taskzilla.User;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.AddUserRequest;
+import com.cmput301w18t05.taskzilla.request.command.GetTasksByProviderUsernameRequest;
+import com.cmput301w18t05.taskzilla.request.command.GetTasksByRequesterUsernameRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetUserRequest;
+
+import java.util.ArrayList;
 
 /**
  * Controller for pro
@@ -30,6 +35,10 @@ public class ProfileController {
     private View view;
     private String userId;
     private User user;
+    private ArrayList<Task> taskList;
+    private GetTasksByRequesterUsernameRequest requestTasksRequester;
+    private GetTasksByProviderUsernameRequest requestTasksProvider;
+    private Integer tasksDone;
 
     /**
      * Context and view of the activity is passed into the controller
@@ -76,6 +85,45 @@ public class ProfileController {
         RequestManager.getInstance().invokeRequest(ctx, request);
 
         this.user = request.getResult();
+    }
+
+
+    /**
+     * getNumberOfRequests
+     * get the number of tasks that the user
+     * has requested
+     *
+     * @param username
+     * @return number of tasks requested by user
+     */
+    public String getNumberOfRequests(String username) {
+        requestTasksRequester = new GetTasksByRequesterUsernameRequest(username);
+        RequestManager.getInstance().invokeRequest(ctx, requestTasksRequester);
+
+        return Integer.toString(requestTasksRequester.getResult().size());
+
+    }
+
+    /**
+     * getNumberOfTasksDone
+     * get the number of tasks that the user
+     * has provided and completed for another user
+     *
+     * @param username
+     * @return number of tasks done by the user
+     */
+    public String getNumberOfTasksDone(String username) {
+        requestTasksProvider = new GetTasksByProviderUsernameRequest(username);
+        RequestManager.getInstance().invokeRequest(ctx, requestTasksProvider);
+        taskList = new ArrayList<>();
+        this.taskList.addAll(requestTasksProvider.getResult());
+        tasksDone = 0;
+        for(Task task: taskList) {
+            if(task.getStatus() == "Done"){
+                tasksDone++;
+            }
+        }
+        return Integer.toString(tasksDone);
     }
 
 }
