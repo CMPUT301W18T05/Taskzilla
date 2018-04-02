@@ -36,8 +36,10 @@ import com.cmput301w18t05.taskzilla.activity.EditProfileActivity;
 import com.cmput301w18t05.taskzilla.controller.SearchController;
 import com.cmput301w18t05.taskzilla.currentUser;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
+import com.cmput301w18t05.taskzilla.request.command.AddUserRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetTasksByProviderUsernameRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetTasksByRequesterUsernameRequest;
+import com.cmput301w18t05.taskzilla.request.command.GetUserByUsernameRequest;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -69,9 +71,9 @@ public class ProfileFragment extends Fragment {
     private String numRequests;
     private String numTasksDone;
     private Button logOut;
-    private User user;
-    private ProfileController profileController;
+    private User user  = currentUser.getInstance();
     private ImageButton editProfile;
+    private ProfileController profileController;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -113,36 +115,15 @@ public class ProfileFragment extends Fragment {
         numTasksDoneField = view.findViewById(R.id.NumTasksDoneField);
         logOut = view.findViewById(R.id.LogOutButton);
         editProfile = view.findViewById(R.id.EditButton);
-        user = currentUser.getInstance();
-
-
 
         name = user.getName();
         email = user.getEmail().toString();
         phone = user.getPhone().toString();
 
-        taskList = new ArrayList<>();
-        //gets all of current user's tasks
-        requestTasksRequester = new GetTasksByRequesterUsernameRequest(user.getUsername());
-        RequestManager.getInstance().invokeRequest(getContext(), requestTasksRequester);
-        numRequests = Integer.toString(requestTasksRequester.getResult().size());
-
-        requestTasksProvider = new GetTasksByProviderUsernameRequest(user.getUsername());
-        RequestManager.getInstance().invokeRequest(getContext(), requestTasksProvider);
-        this.taskList.addAll(requestTasksProvider.getResult());
-        tasksDone = 0;
-        for(Task task: taskList) {
-            if(task.getStatus() == "Done"){
-                tasksDone++;
-            }
-        }
-        numTasksDone = Integer.toString(tasksDone);
-
         nameField.setText(name);
         emailField.setText(email);
         phoneField.setText(phone);
-        numRequestsField.setText(numRequests);
-        numTasksDoneField.setText(numTasksDone);
+
 
         editProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,6 +138,36 @@ public class ProfileFragment extends Fragment {
                 logOutClicked();
             }
         });
+    }
+
+    // Taken from https://stackoverflow.com/questions/41655797/refresh-fragment-when-change-between-tabs?noredirect=1&lq=1
+    // 2018-04-01
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+
+            taskList = new ArrayList<>();
+            //gets all of current user's tasks
+            requestTasksRequester = new GetTasksByRequesterUsernameRequest(user.getUsername());
+            RequestManager.getInstance().invokeRequest(getContext(), requestTasksRequester);
+            numRequests = Integer.toString(requestTasksRequester.getResult().size());
+
+            requestTasksProvider = new GetTasksByProviderUsernameRequest(user.getUsername());
+            RequestManager.getInstance().invokeRequest(getContext(), requestTasksProvider);
+            this.taskList.addAll(requestTasksProvider.getResult());
+            tasksDone = 0;
+            for(Task task: taskList) {
+                if(task.getStatus() == "Done"){
+                    tasksDone++;
+                }
+            }
+            numTasksDone = Integer.toString(tasksDone);
+
+            numRequestsField.setText(numRequests);
+            numTasksDoneField.setText(numTasksDone);
+
+        }
     }
 
     /**
@@ -208,14 +219,18 @@ public class ProfileFragment extends Fragment {
             case (1): {
                 //code to add to ESC
                 if (resultCode == RESULT_OK) {
-                    Log.i("test", "hi");
                     String newName = data.getStringExtra("Name");
                     String newEmail = data.getStringExtra("Email");
                     String newPhone = data.getStringExtra("Phone");
+                    user.setName(newName);
+                    user.setEmail(new EmailAddress(newEmail));
+                    user.setPhone(new PhoneNumber(newPhone));
+                    AddUserRequest request = new AddUserRequest(user);
+                    RequestManager.getInstance().invokeRequest(getContext(), request);
                     nameField.setText(newName);
                     emailField.setText(newEmail);
                     phoneField.setText(newPhone);
-                    Log.i("user",user.getName());
+
                 }
             }
         }

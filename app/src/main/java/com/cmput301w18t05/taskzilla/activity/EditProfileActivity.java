@@ -61,6 +61,9 @@ public class EditProfileActivity extends AppCompatActivity {
 
         /**                                         **/
         if(validateInformation()){
+            user.setName(NameText.getText().toString());
+            user.setEmail(new EmailAddress(EmailText.getText().toString()));
+            user.setPhone(new PhoneNumber(PhoneText.getText().toString()));
             Intent returnIntent = new Intent();
             returnIntent.putExtra("Name", user.getName());
             returnIntent.putExtra("Email", user.getEmail().toString());
