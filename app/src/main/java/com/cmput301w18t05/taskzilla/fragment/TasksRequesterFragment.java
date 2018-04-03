@@ -35,6 +35,7 @@ import com.cmput301w18t05.taskzilla.controller.ViewTaskController;
 import com.cmput301w18t05.taskzilla.currentUser;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.GetTaskRequest;
+import com.cmput301w18t05.taskzilla.request.command.GetTasksByProviderUsernameRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetTasksByRequesterUsernameRequest;
 
 import java.util.ArrayList;
@@ -54,6 +55,7 @@ public class TasksRequesterFragment extends Fragment {
     private ArrayAdapter<Task> adapter;
     private GetTasksByRequesterUsernameRequest requestTasks;
     private SwipeRefreshLayout mySwipeRefreshLayout;
+    private boolean created = false;
     public TasksRequesterFragment() {
         // Required empty public constructor
     }
@@ -151,7 +153,23 @@ public class TasksRequesterFragment extends Fragment {
                     }
                 }
         );
+        created = true;
     }
+
+
+    // Taken from https://stackoverflow.com/questions/41655797/refresh-fragment-when-change-between-tabs?noredirect=1&lq=1
+    // 2018-04-01
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && created == true) {
+            RequestManager.getInstance().invokeRequest(getContext(), requestTasks);
+            taskList.clear();
+            taskList.addAll(requestTasks.getResult());
+            adapter.notifyDataSetChanged();
+        }
+    }
+
 
     /**
      * upon pressing a task on the listview, switches to ViewTaskActivity

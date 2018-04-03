@@ -148,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
 
     boolean doubleBackToExitPressedOnce = false;
     // Taken from https://stackoverflow.com/questions/8430805/clicking-the-back-button-twice-to-exit-an-activity
-    // 2018-03-19
+    // 2018-04-03
     // Adds a delay so the app doesn't immediately close when the back button is clicked.
     // Prevents accidentally closing the app
     @Override

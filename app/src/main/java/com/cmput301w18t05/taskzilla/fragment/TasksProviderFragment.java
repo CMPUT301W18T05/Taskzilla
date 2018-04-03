@@ -85,6 +85,18 @@ public class TasksProviderFragment extends Fragment {
         return v;
     }
 
+    // Taken from https://stackoverflow.com/questions/41655797/refresh-fragment-when-change-between-tabs?noredirect=1&lq=1
+    // 2018-04-01
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            RequestManager.getInstance().invokeRequest(getContext(), requestTasks);
+            taskList.clear();
+            taskList.addAll(requestTasks.getResult());
+            adapter.notifyDataSetChanged();
+        }
+    }
     /**
      * Switches to ViewTaskActivity
      * @param id id of the task to be view is passed in as a String
