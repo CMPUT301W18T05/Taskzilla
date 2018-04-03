@@ -20,7 +20,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.widget.EditText;
 
 import com.cmput301w18t05.taskzilla.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -49,7 +48,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         setContentView(R.layout.activity_map);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+                .findFragmentById(R.id.TaskLocation);
         mapFragment.getMapAsync(this);
         locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
     }
@@ -69,7 +68,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         getLocation();
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
+        // Add a marker to your location and move the camera
         LatLng yourLocation = new LatLng(lat, lon);
         mMap.addMarker(new MarkerOptions().position(yourLocation).title("You Location"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(yourLocation));

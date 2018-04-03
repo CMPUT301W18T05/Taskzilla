@@ -14,6 +14,7 @@ package com.cmput301w18t05.taskzilla.activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -41,13 +42,19 @@ import com.cmput301w18t05.taskzilla.controller.ViewTaskController;
 import com.cmput301w18t05.taskzilla.currentUser;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.GetBidsByTaskIdRequest;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 
 /**
  * Activity for viewing a task
  */
-public class ViewTaskActivity extends AppCompatActivity {
+public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCallback {
     private String taskID;
     private ViewTaskController viewTaskController;
     private Task task;
@@ -59,6 +66,8 @@ public class ViewTaskActivity extends AppCompatActivity {
     private User TaskProvider;
     private String taskName;
     private ArrayList<Bid> BidList;
+    private GoogleMap mMap;
+    private LocationManager locationManager;
 
     private TextView ProviderName;
     private TextView DescriptionView;
@@ -88,6 +97,11 @@ public class ViewTaskActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_task);
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.TaskLocation);
+        mapFragment.getMapAsync(this);
+        locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 
         EditButton = findViewById(R.id.EditButton);
         DeleteButton = findViewById(R.id.DeleteButton);
@@ -327,7 +341,28 @@ public class ViewTaskActivity extends AppCompatActivity {
         mBuilder.show();
     }
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
 
+        mMap = googleMap;
+
+        // Add a marker to a location and move the camera
+        LatLng taskLocation = new LatLng(53.631611, -113.323975);
+        mMap.addMarker(new MarkerOptions().position(taskLocation).title("Task Name"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(taskLocation));
+        moveToCurrentLocation(taskLocation);
+
+    }
+
+    private void moveToCurrentLocation(LatLng currentLocation)
+    {
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation,15));
+        // Zoom in, animating the camera.
+        mMap.animateCamera(CameraUpdateFactory.zoomIn());
+        // Zoom out to zoom level 10, animating with a duration of 2 seconds.
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
+
+    }
     /**
      * onActivityResult
      * upon return from EditTaskActivity update
