@@ -14,6 +14,7 @@ package com.cmput301w18t05.taskzilla.activity;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
+import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cmput301w18t05.taskzilla.User;
 import com.cmput301w18t05.taskzilla.controller.MainActivityController;
@@ -141,6 +143,33 @@ public class MainActivity extends AppCompatActivity {
      * @param username The username of the user
      * @return User
      */
+
+
+
+    boolean doubleBackToExitPressedOnce = false;
+    // Taken from https://stackoverflow.com/questions/8430805/clicking-the-back-button-twice-to-exit-an-activity
+    // 2018-03-19
+    // Adds a delay so the app doesn't immediately close when the back button is clicked.
+    // Prevents accidentally closing the app
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
+    }
+
     public User getUser(String username) {
         GetUserByUsernameRequest getUserByUsernameRequest = new GetUserByUsernameRequest(username);
         RequestManager.getInstance().invokeRequest(getUserByUsernameRequest);

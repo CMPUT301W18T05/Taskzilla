@@ -11,6 +11,7 @@
 
 package com.cmput301w18t05.taskzilla.activity;
 
+import android.os.Handler;
 import android.support.v4.app.FragmentManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -19,6 +20,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.cmput301w18t05.taskzilla.fragment.MyBidsFragment;
 import com.cmput301w18t05.taskzilla.fragment.ProfileFragment;
@@ -59,6 +61,29 @@ public class WelcomeActivity extends AppCompatActivity {
 
     }
 
+    boolean doubleBackToExitPressedOnce = false;
+    // Taken from https://stackoverflow.com/questions/8430805/clicking-the-back-button-twice-to-exit-an-activity
+    // 2018-03-19
+    // Adds a delay so the app doesn't immediately close when the back button is clicked.
+    // Prevents accidentally closing the app
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
+    }
     /**
      * Manages the navigation tabs
      */
