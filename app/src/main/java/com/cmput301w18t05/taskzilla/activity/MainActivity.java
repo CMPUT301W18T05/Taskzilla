@@ -28,6 +28,18 @@ import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.currentUser;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.GetUserByUsernameRequest;
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.lang.reflect.Type;
 
 /**
  * main activity includes the login screen
@@ -55,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
     private currentUser user;
     private MainActivityController mainActivityController;
     private static final String FILENAME = "currentUser.sav";
+    private User foundUser;
 
     /**
      * Activity uses the activity_main.xml layout
@@ -92,28 +105,17 @@ public class MainActivity extends AppCompatActivity {
                 imm.hideSoftInputFromWindow(loginButton.getWindowToken(), 0);
 
                 /* check if user exists */
-                User foundUser = getUser(usernameView.getText().toString());
+                foundUser = getUser(usernameView.getText().toString());
                 if (foundUser != null) {
                     currentUser.getRealInstance().setUser(foundUser);
+                    saveLogin();
                     mainActivityController.logIn();
+                    finish();
                 }
                 else {
                     showError("Username does not exist. Please sign up.");
                 }
 
-                /*Save current user info to gson*/
-                /*
-                try {
-                    FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
-                    BufferedWriter out = new BufferedWriter(new OutputStreamWriter(fos));
-                    Gson gson = new Gson();
-                    gson.toJson(new User(), out);
-                    out.flush();
-                } catch (FileNotFoundException e) {
-                    throw new RuntimeException();
-                } catch (IOException e) {
-                    throw new RuntimeException();
-                }*/
             }
         });
 
@@ -125,9 +127,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        /*If you are already logged in, skip screen*/
-        if (mainActivityController.checkLoggedIn()) {
+        /*Auto Login*/
+        loadLogin();
+        if(foundUser!=null){
+            currentUser.getRealInstance().setUser(foundUser);
             mainActivityController.logIn();
+            finish();
         }
     }
 
@@ -149,5 +154,36 @@ public class MainActivity extends AppCompatActivity {
     public void showError(String err) {
         Snackbar snackbar = Snackbar.make(findViewById(R.id.MainActivityPage), err,Snackbar.LENGTH_LONG);
         snackbar.show();
+    }
+
+    private void loadLogin() {
+        try {
+            FileInputStream fis = openFileInput(FILENAME);
+            BufferedReader in = new BufferedReader(new InputStreamReader(fis));
+            Gson gson = new Gson();
+
+            foundUser = gson.fromJson(in, User.class);
+        } catch (FileNotFoundException e) {
+            foundUser = null;
+        } catch (IOException e) {
+            throw new RuntimeException();
+        }
+    }
+
+    /**
+     * Save user Login info
+     */
+    private void saveLogin() {
+        try {
+            FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
+            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(fos));
+            Gson gson = new Gson();
+            gson.toJson(currentUser.getInstance(), out);
+            out.flush();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException();
+        } catch (IOException e) {
+            throw new RuntimeException();
+        }
     }
 }

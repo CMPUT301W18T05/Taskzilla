@@ -12,6 +12,7 @@
 package com.cmput301w18t05.taskzilla.fragment;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -29,6 +30,8 @@ import com.cmput301w18t05.taskzilla.EmailAddress;
 import com.cmput301w18t05.taskzilla.PhoneNumber;
 import com.cmput301w18t05.taskzilla.Task;
 import com.cmput301w18t05.taskzilla.activity.EditTaskActivity;
+import com.cmput301w18t05.taskzilla.activity.MainActivity;
+import com.cmput301w18t05.taskzilla.activity.ViewTaskActivity;
 import com.cmput301w18t05.taskzilla.controller.ProfileController;
 import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.User;
@@ -40,7 +43,13 @@ import com.cmput301w18t05.taskzilla.request.command.AddUserRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetTasksByProviderUsernameRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetTasksByRequesterUsernameRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetUserByUsernameRequest;
+import com.google.gson.Gson;
 
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -52,6 +61,8 @@ import static android.app.Activity.RESULT_OK;
  * @author Colin
  */
 public class ProfileFragment extends Fragment {
+    private static final String FILENAME = "currentUser.sav";
+
     private ArrayList<Task> taskList;
     private GetTasksByRequesterUsernameRequest requestTasksRequester;
     private GetTasksByProviderUsernameRequest requestTasksProvider;
@@ -187,7 +198,20 @@ public class ProfileFragment extends Fragment {
      * When log out is clicked, app goes back to log in screen
      */
     public void logOutClicked() {
-        //Delete User from gson
+        try {
+            FileOutputStream fos = getActivity().openFileOutput(FILENAME, Context.MODE_PRIVATE);
+            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(fos));
+            Gson gson = new Gson();
+            gson.toJson(null, out);
+            out.flush();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException();
+        } catch (IOException e) {
+            throw new RuntimeException();
+        }
+
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+        startActivity(intent);
         getActivity().finish();
     }
 
