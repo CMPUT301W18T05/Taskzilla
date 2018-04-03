@@ -13,13 +13,22 @@ package com.cmput301w18t05.taskzilla.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.Task;
+
+
 
 /**
  * Activity for editing a task
@@ -27,6 +36,9 @@ import com.cmput301w18t05.taskzilla.Task;
 public class EditTaskActivity extends AppCompatActivity {
     private Task task;
     private Context ctx;
+    private Integer PICK_IMAGE = 5;
+    Bitmap thumbnail = null;
+    private ImageView image_view;
 
     /**
      * Activity uses the activity_edit_task.xml layout
@@ -39,6 +51,7 @@ public class EditTaskActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setTitle("Edit Task");
         setContentView(R.layout.activity_edit_task);
+        ImageView image_view = (ImageView) findViewById(R.id.imageView4);
         EditText TaskNameText = (EditText) findViewById(R.id.TaskName);
         EditText DescriptionText = (EditText) findViewById(R.id.Description);
         String taskName = getIntent().getStringExtra("task Name");
@@ -85,5 +98,31 @@ public class EditTaskActivity extends AppCompatActivity {
             setResult(RESULT_OK, returnIntent);
             finish();
         }
+    }
+
+    public void AddPhotoButton(View view){
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+        photoPickerIntent.setType("image/*");
+        startActivityForResult(photoPickerIntent, PICK_IMAGE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+
+        /*if (resultCode == RESULT_OK) {
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+            Cursor cursor = getContentResolver().query(selectedImage,filePathColumn, null, null, null);
+            cursor.moveToFirst();
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String picturePath = cursor.getString(columnIndex);
+            cursor.close();
+            thumbnail = (BitmapFactory.decodeFile(picturePath));
+            image_view.setImageBitmap(thumbnail);
+
+        }*/
+
     }
 }
