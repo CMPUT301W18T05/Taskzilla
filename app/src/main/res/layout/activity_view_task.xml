@@ -160,51 +160,14 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/imageView8"
-                    android:layout_width="75dp"
-                    android:layout_height="75dp"
-                    android:layout_weight="1"
-                    android:scaleType="fitCenter"
-                    app:srcCompat="@android:drawable/btn_star_big_on" />
-
-                <ImageView
-                    android:id="@+id/imageView9"
-                    android:layout_width="75dp"
-                    android:layout_height="75dp"
-                    android:layout_weight="1"
-                    app:srcCompat="@android:drawable/ic_delete" />
-
-                <ImageView
-                    android:id="@+id/imageView14"
-                    android:layout_width="75dp"
-                    android:layout_height="75dp"
-                    android:layout_weight="1"
-                    android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/googleg_standard_color_18" />
-
-                <ImageView
-                    android:id="@+id/imageView13"
-                    android:layout_width="75dp"
-                    android:layout_height="75dp"
-                    android:layout_weight="1"
-                    android:scaleType="fitCenter"
-                    app:srcCompat="@android:drawable/ic_lock_lock" />
-
-                <ImageView
                     android:id="@+id/imageView12"
                     android:layout_width="75dp"
                     android:layout_height="75dp"
                     android:layout_weight="1"
+                    android:background="@android:color/transparent"
                     android:scaleType="fitCenter"
-                    app:srcCompat="@mipmap/ic_launcher_round" />
+                    app:srcCompat="@android:drawable/ic_menu_camera" />
 
-                <ImageView
-                    android:id="@+id/imageView11"
-                    android:layout_width="75dp"
-                    android:layout_height="75dp"
-                    android:layout_weight="1"
-                    android:scaleType="fitCenter"
-                    app:srcCompat="@android:drawable/ic_lock_power_off" />
             </LinearLayout>
         </HorizontalScrollView>
 
@@ -224,26 +187,32 @@
         <ExpandableListView
             android:id="@+id/BidsListView"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="76dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+            app:layout_constraintTop_toBottomOf="@+id/TaskLocation" />
 
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+
+        <fragment
+            android:id="@+id/TaskLocation"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="340dp"
+            android:layout_height="136dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView"
-            app:srcCompat="@android:drawable/ic_menu_mapmode" />
+            tools:context=".MapsActivity" />
 
 
     </android.support.constraint.ConstraintLayout>

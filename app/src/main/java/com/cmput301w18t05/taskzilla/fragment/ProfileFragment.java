@@ -222,6 +222,7 @@ public class ProfileFragment extends Fragment {
 
     /**
      * When log out is clicked, app goes back to log in screen
+     * The gson file is cleared to prevent auto login after logging out
      */
     public void logOutClicked() {
         try {
