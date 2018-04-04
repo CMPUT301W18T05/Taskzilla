@@ -15,6 +15,8 @@ import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.GetTaskRequest;
 
 
+import java.text.DecimalFormat;
+
 import io.searchbox.annotations.JestId;
 
 /**
@@ -107,7 +109,9 @@ public class Bid implements Comparable<Bid> {
     public String toString() {
         GetTaskRequest taskRequest = new GetTaskRequest(this.taskId);
         RequestManager.getInstance().invokeRequest(taskRequest);
+        DecimalFormat cents = new DecimalFormat("#0.00");
+        //return String.format("%-20s \n\n%-45s%s", this.name, this.startDate, ("$" + cents.format(this.price)));
         return "Task: " + taskRequest.getResult().getName() +
-                "\nBid amount: $" + Float.toString(this.bidAmount);
+                "\nBid amount: $"  + cents.format(this.bidAmount);
     }
 }
