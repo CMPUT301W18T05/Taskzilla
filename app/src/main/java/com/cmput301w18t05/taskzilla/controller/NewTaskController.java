@@ -60,9 +60,9 @@ public class NewTaskController {
         EditText taskName = view.findViewById(R.id.TaskName);
         EditText taskDescription = view.findViewById(R.id.Description);
 
-        if(TextUtils.getTrimmedLength(taskName.getText()) <= 25
+        if(TextUtils.getTrimmedLength(taskName.getText()) <= 55
                 && TextUtils.getTrimmedLength(taskName.getText()) >0
-                && TextUtils.getTrimmedLength(taskDescription.getText()) <= 25
+                && TextUtils.getTrimmedLength(taskDescription.getText()) <= 500
                 && TextUtils.getTrimmedLength(taskDescription.getText()) >0){
             Task task = new Task(name, user, description);
 
@@ -79,16 +79,16 @@ public class NewTaskController {
             view.finish();
 
         } else {
-            if (TextUtils.getTrimmedLength(taskName.getText()) > 25) {
-                taskName.setError("Name can not exceed 25 characters");
+            if (TextUtils.getTrimmedLength(taskName.getText()) > 55) {
+                taskName.setError("Name can not exceed 55 characters");
             }
 
             if (TextUtils.getTrimmedLength(taskName.getText()) == 0) {
                 taskName.setError("Name can not empty");
             }
 
-            if (TextUtils.getTrimmedLength(taskDescription.getText()) > 280) {
-                taskDescription.setError("Description can not exceed 280 characters");
+            if (TextUtils.getTrimmedLength(taskDescription.getText()) > 500) {
+                taskDescription.setError("Description can not exceed 500 characters");
             }
 
             if (TextUtils.getTrimmedLength(taskDescription.getText()) == 0) {

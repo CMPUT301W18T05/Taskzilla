@@ -82,15 +82,15 @@ public class EditTaskActivity extends AppCompatActivity {
         String TaskName = TaskNameText.getText().toString();
         String Description = DescriptionText.getText().toString();
 
-        if (TaskName.length() > 25) {
+        if (TaskName.length() > 55) {
             TaskNameText.requestFocus();
-            TaskNameText.setError("Task Name exceeds 25 characters");
+            TaskNameText.setError("Task Name exceeds 55 characters");
         } else if (TaskName.length() == 0) {
             TaskNameText.requestFocus();
             TaskNameText.setError("Task Name required");
-        } else if (Description.length() > 280) {
+        } else if (Description.length() > 500) {
             DescriptionText.requestFocus();
-            DescriptionText.setError("Description length exceeds 280 characters");
+            DescriptionText.setError("Description length exceeds 500 characters");
         } else {
             Intent returnIntent = new Intent();
             returnIntent.putExtra("Task Name", TaskName);

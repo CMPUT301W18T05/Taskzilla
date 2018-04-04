@@ -363,6 +363,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         mMap.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
 
     }
+
     /**
      * onActivityResult
      * upon return from EditTaskActivity update
