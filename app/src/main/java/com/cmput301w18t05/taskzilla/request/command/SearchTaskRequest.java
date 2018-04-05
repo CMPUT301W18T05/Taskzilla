@@ -53,6 +53,7 @@ public class SearchTaskRequest extends SearchRequest {
 
     @Override
     public void executeOffline() {
+        results = null;
     }
 
     @Override

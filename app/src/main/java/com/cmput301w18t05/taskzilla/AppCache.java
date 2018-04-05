@@ -13,6 +13,8 @@ package com.cmput301w18t05.taskzilla;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.TreeSet;
 
 /**
  * Created by wyatt on 04/04/18.
@@ -21,9 +23,9 @@ import java.util.ArrayList;
 public class AppCache {
 
     private static AppCache instance = new AppCache();
-    private ArrayList<Task> cachedTasks = new ArrayList<>();
-    private ArrayList<Bid> cachedBids = new ArrayList<>();
-    private ArrayList<User> cachedUsers = new ArrayList<>();
+    private TreeSet<Task> cachedTasks = new TreeSet<>();
+    private TreeSet<Bid> cachedBids = new TreeSet<>();
+    private TreeSet<User> cachedUsers = new TreeSet<>();
     private int taskIDCounter = 0;
 
     private AppCache() {
@@ -34,15 +36,15 @@ public class AppCache {
     }
 
     public ArrayList<Task> getCachedTasks() {
-        return cachedTasks;
+        return new ArrayList<>(cachedTasks);
     }
 
     public ArrayList<Bid> getCachedBids() {
-        return cachedBids;
+        return new ArrayList<>(cachedBids);
     }
 
     public ArrayList<User> getCachedUsers() {
-        return cachedUsers;
+        return new ArrayList<>(cachedUsers);
     }
 
     // can override these to accept different classes
@@ -54,17 +56,31 @@ public class AppCache {
         taskIDCounter++;
     }
 
+    public void addInCache(Collection<Task> tasks) {
+        cachedTasks.addAll(tasks);
+    }
+
     public void addInCache(Bid bid) {
         cachedBids.add(bid);
+    }
+
+    public void addBidsToCache(Collection<Bid> bids) {
+        cachedBids.addAll(bids);
     }
 
     public void addInCache(User user) {
         cachedUsers.add(user);
     }
 
+    public void removeTaskByTaskid(String taskid) {
+        for (Task t : cachedTasks)
+            if (t.getId().equals(taskid))
+                cachedTasks.remove(t);
+    }
+
     public User findCachedUserByUserid(String userid) {
         System.out.println("Searching for users in cache with userid: "+userid);
-        if (currentUser.getInstance().getId() == userid) {
+        if (currentUser.getInstance().getId().equals(userid)) {
             System.out.println("Found user in usercache: "+currentUser.getInstance()+" with username: "+currentUser.getInstance().getUsername());
             return currentUser.getInstance();
         }
@@ -82,7 +98,7 @@ public class AppCache {
 
         for (Task t : cachedTasks) {
             System.out.println("Looking at task: "+t+" with id: "+t.getId());
-            System.out.println(t.getId() == taskid);
+            System.out.println(t.getId().equals(taskid));
             System.out.println("\""+t.getId()+"\" \""+taskid+"\"");
             if (t.getId().equals(taskid)) {
                 System.out.println("Found task "+t);
@@ -91,6 +107,38 @@ public class AppCache {
         }
         System.out.println("Did not find this task");
         return null;
+    }
+
+    public ArrayList<Bid> findCachedBidsByUserid(String userid) {
+        System.out.println("Searching for bids in cache with userid: "+userid);
+
+        ArrayList<Bid> result = new ArrayList<>();
+        for (Bid b : cachedBids) {
+            if (b.getId().equals(userid)) {
+                System.out.println("Found bid in bidcache: "+b+" matching userid: "+userid);
+                result.add(b);
+            }
+        }
+        return result;
+    }
+
+    public ArrayList<Bid> findCachedBidsByTaskid(String Taskid) {
+        System.out.println("Searching for bids in cache with taskid: "+Taskid);
+
+        ArrayList<Bid> result = new ArrayList<>();
+        for (Bid b : cachedBids) {
+            if (b.getTaskId().equals(Taskid)) {
+                System.out.println("Found bid in bidcache: "+b+" matching taskid: "+Taskid);
+                result.add(b);
+            }
+        }
+        return result;
+    }
+
+    public void emptyCache() {
+        cachedTasks.clear();
+        cachedUsers.clear();
+        cachedBids.clear();
     }
 
 }

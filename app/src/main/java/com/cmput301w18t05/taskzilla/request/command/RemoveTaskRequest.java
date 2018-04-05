@@ -11,6 +11,7 @@
 
 package com.cmput301w18t05.taskzilla.request.command;
 
+import com.cmput301w18t05.taskzilla.AppCache;
 import com.cmput301w18t05.taskzilla.controller.ElasticSearchController;
 import com.cmput301w18t05.taskzilla.request.DeletionRequest;
 
@@ -25,6 +26,7 @@ public class RemoveTaskRequest extends DeletionRequest {
 
     public RemoveTaskRequest(String id) {
         this.taskId = id;
+        queueReady = true;
     }
 
     public void execute(){
@@ -32,5 +34,17 @@ public class RemoveTaskRequest extends DeletionRequest {
         deleteRequest.execute(this.taskId);
     }
 
-    public void executeOffline(){}
+    @Override
+    public void executeOffline(){
+        AppCache.getInstance().removeTaskByTaskid(taskId);
+    }
+
+    @Override
+    public boolean requiresConnection() {
+        return false;
+    }
+
+    public boolean getResult() {
+        return true;
+    }
 }

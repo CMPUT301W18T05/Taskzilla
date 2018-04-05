@@ -12,6 +12,7 @@
 package com.cmput301w18t05.taskzilla.controller;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.cmput301w18t05.taskzilla.Task;
 import com.cmput301w18t05.taskzilla.fragment.SearchFragment;
@@ -106,7 +107,7 @@ public class SearchController {
         ArrayList<Task> temp;
         temp = newRequest.getTasks();
 
-        if(temp.size() != 0) {
+        if(temp != null && temp.size() != 0) {
 
             while (temp.size() > 0) {
 
@@ -116,6 +117,9 @@ public class SearchController {
                 RequestManager.getInstance().invokeRequest(ctx, newRequest);
                 temp = newRequest.getTasks();
             }
+        }
+        else if (temp == null) {
+            Toast.makeText(view.getActivity(), "Unable to search right now.", Toast.LENGTH_SHORT).show();
         }
         else {
             searchResults.clear();

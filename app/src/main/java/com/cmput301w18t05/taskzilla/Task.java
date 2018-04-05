@@ -31,7 +31,7 @@ import io.searchbox.annotations.JestId;
  * Represents a task object in the app
  * @author wyatt
  */
-public class Task {
+public class Task implements Comparable<Task> {
 
     private String name;
 
@@ -351,7 +351,10 @@ public class Task {
         GetUserRequest getUser = new GetUserRequest(uid);
         RequestManager.getInstance().invokeRequest(getUser);
 
-        return getUser.getResult();
+        User user = getUser.getResult();
+        if (user == null) // maybe connection is lost
+            return new User();
+        return user;
     }
 
     /**
@@ -363,5 +366,9 @@ public class Task {
         GetBidsByTaskIdRequest getBids = new GetBidsByTaskIdRequest(this.getId());
         RequestManager.getInstance().invokeRequest(getBids);
         return getBids.getResult();
+    }
+
+    public int compareTo(Task task) {
+        return this.getId().compareTo(task.getId());
     }
 }
