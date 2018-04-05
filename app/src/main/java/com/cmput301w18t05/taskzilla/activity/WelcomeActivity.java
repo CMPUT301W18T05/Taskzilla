@@ -71,26 +71,8 @@ public class WelcomeActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu,menu);
-        return super.onCreateOptionsMenu(menu);
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item){
 
-        if(item.getItemId()==R.id.biddedTasks){
-
-        }
-        if(item.getItemId()==R.id.requestedTasks){
-            sortFilter = 1;
-        }
-        if(item.getItemId()==R.id.completedTasks){
-            sortFilter = 2;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     boolean doubleBackToExitPressedOnce = false;
     // Taken from https://stackoverflow.com/questions/8430805/clicking-the-back-button-twice-to-exit-an-activity
