@@ -26,6 +26,7 @@ public class AddTaskRequest extends InsertionRequest {
     private ElasticSearchController.AddTask task;
     private Task taskData;
     private boolean executedOffline = false;
+    private boolean isUpdate = false;
 
     public AddTaskRequest(Task task) {
         queueReady = true; // put this into queue if needed!
@@ -34,7 +35,9 @@ public class AddTaskRequest extends InsertionRequest {
 
     @Override
     public void execute() {
-        this.taskData.setId(null);
+        if (!isUpdate)
+            this.taskData.setId(null);
+
         task = new ElasticSearchController.AddTask();
         task.execute(taskData); // for now, subject to change.
     }
@@ -58,6 +61,10 @@ public class AddTaskRequest extends InsertionRequest {
         catch (Exception e) {
             return false;
         }
+    }
+
+    public void setUpdate(boolean bool) {
+        isUpdate = bool;
     }
 
 }

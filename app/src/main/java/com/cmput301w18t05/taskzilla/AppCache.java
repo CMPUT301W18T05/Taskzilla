@@ -36,6 +36,10 @@ public class AppCache {
         return instance;
     }
 
+    public int getTaskIDCounter() {
+        return taskIDCounter;
+    }
+
     public ArrayList<Task> getCachedTasks() {
         return new ArrayList<>(cachedTasks);
     }
