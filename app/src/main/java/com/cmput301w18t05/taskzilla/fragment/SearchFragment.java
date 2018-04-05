@@ -202,6 +202,16 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
         });
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            searchController.clearKeywords();
+            searchController.getAllRequest();
+            notifyChange();
+        }
+    }
+
     /**
      * Switch to Map Activity when map button is clicked
      */
