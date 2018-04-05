@@ -33,6 +33,7 @@ public class GetAllTasksRequest extends Request {
 
     private int from = 0;
     private int size = 10;
+    private boolean executedOfflineOnce = false;
 
     public GetAllTasksRequest() {
     }
@@ -55,8 +56,14 @@ public class GetAllTasksRequest extends Request {
     @Override
     public void executeOffline() {
         // return what is in app cache
+        if (executedOfflineOnce) {
+            result = new ArrayList<Task>();
+            return;
+        }
+
         AppCache appCache = AppCache.getInstance();
         result = appCache.getCachedTasks();
+        executedOfflineOnce = true;
     }
 
     @Override
