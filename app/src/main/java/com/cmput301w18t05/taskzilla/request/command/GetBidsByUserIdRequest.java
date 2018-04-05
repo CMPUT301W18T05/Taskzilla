@@ -42,9 +42,9 @@ public class GetBidsByUserIdRequest extends Request {
 
     @Override
     public void executeOffline() {
-        AppCache appCache = AppCache.getInstance();
-        result = appCache.getCachedBids();
         executedOffline = true;
+        AppCache appCache = AppCache.getInstance();
+        result = appCache.findCachedBidsByUserid(userId);
     }
 
     @Override
@@ -56,6 +56,7 @@ public class GetBidsByUserIdRequest extends Request {
         try {
             if (!executedOffline) {
                 result = task.get();
+                AppCache.getInstance().addBidsToCache(result);
             }
             return result;
         }

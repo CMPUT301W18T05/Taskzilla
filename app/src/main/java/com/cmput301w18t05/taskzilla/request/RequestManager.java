@@ -23,6 +23,7 @@ import android.util.Log;
 import android.view.View;
 
 
+import com.cmput301w18t05.taskzilla.AppCache;
 import com.cmput301w18t05.taskzilla.R;
 
 import java.util.ArrayList;
@@ -119,6 +120,8 @@ public class RequestManager extends BroadcastReceiver {
             System.out.println("Network is active.");
             this.isConnected = true;
             if (!requestQueue.isEmpty()) {
+                System.out.println("Emptying app cache");
+                AppCache.getInstance().emptyCache();
                 System.out.println("Job queue is not empty, flushing jobs.");
                 executeLogTask();
             }

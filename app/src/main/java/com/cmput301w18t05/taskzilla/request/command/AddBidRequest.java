@@ -11,6 +11,7 @@
 
 package com.cmput301w18t05.taskzilla.request.command;
 
+import com.cmput301w18t05.taskzilla.AppCache;
 import com.cmput301w18t05.taskzilla.Bid;
 import com.cmput301w18t05.taskzilla.controller.ElasticSearchController;
 import com.cmput301w18t05.taskzilla.request.InsertionRequest;
@@ -27,20 +28,29 @@ public class AddBidRequest extends InsertionRequest {
 
     public AddBidRequest(Bid bid) {
         this.bid = bid;
+        queueReady = true;
     }
 
     @Override
     public void execute() {
+        this.bid.setId(null);
+        System.out.println("Adding bid: " + bid);
+        System.out.println("Bid id: " + bid.getId() + " Task id: " + bid.getTaskId() + " User id: " + bid.getUserId());
         task = new ElasticSearchController.AddBid();
         task.execute(bid);
     }
 
     @Override
     public void executeOffline() {
+        AppCache.getInstance().addInCache(bid);
+    }
+
+    @Override
+    public boolean requiresConnection() {
+        return false;
     }
 
     public void getResult() {
-
     }
 
 }

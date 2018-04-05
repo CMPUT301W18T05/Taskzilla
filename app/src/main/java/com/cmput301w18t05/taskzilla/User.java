@@ -21,7 +21,7 @@ import io.searchbox.annotations.JestId;
  * @author wyatt
  * @version 1.0
  */
-public class User {
+public class User implements Comparable<User> {
 
     protected String name;
     protected String username;
@@ -38,6 +38,13 @@ public class User {
     protected Photo photo;
 
     public User() {
+        username = "Unknown username";
+        name = "Unknown name";
+        email = new EmailAddress("Unknown@email.com");
+        providerRating = 0.0f;
+        requesterRating = 0.0f;
+        numRequests = 0;
+        numCompleteTasks = 0;
     }
 
     /**
@@ -282,5 +289,9 @@ public class User {
      */
     public String toString() {
         return this.name+" "+this.id;
+    }
+
+    public int compareTo(User user) {
+        return this.getUsername().compareTo(user.getUsername());
     }
 }

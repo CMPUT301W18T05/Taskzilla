@@ -11,6 +11,7 @@
 
 package com.cmput301w18t05.taskzilla.request.command;
 
+import com.cmput301w18t05.taskzilla.AppCache;
 import com.cmput301w18t05.taskzilla.controller.ElasticSearchController;
 import com.cmput301w18t05.taskzilla.User;
 import com.cmput301w18t05.taskzilla.request.Request;
@@ -45,6 +46,7 @@ public class GetUserByUsernameRequest extends Request {
         }
         try {
             result = this.task.get();
+            AppCache.getInstance().addInCache(result);
             return result;
         }
         catch (Exception e) {

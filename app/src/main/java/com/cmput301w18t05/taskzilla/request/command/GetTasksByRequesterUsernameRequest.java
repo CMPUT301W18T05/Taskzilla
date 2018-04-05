@@ -51,6 +51,7 @@ public class GetTasksByRequesterUsernameRequest extends Request {
 
         this.result = new ArrayList<>();
         for (Task t : cachedTasks) {
+            System.out.println("Looking at task: "+t);
             System.out.println("Looking at task with taskrequester uname: "+t.getTaskRequester().getUsername());
             if (t.getTaskRequester().getUsername() == user) {
                 System.out.println("Adding this to result");
@@ -68,6 +69,12 @@ public class GetTasksByRequesterUsernameRequest extends Request {
         try {
             if (!executedOffline) {
                 result = this.task.get();
+
+                AppCache.getInstance().addInCache(result);
+
+                // add results to cache
+                for (Task t : result)
+                    System.out.println("returning task: "+t);
             }
 
             for(Task t:result)

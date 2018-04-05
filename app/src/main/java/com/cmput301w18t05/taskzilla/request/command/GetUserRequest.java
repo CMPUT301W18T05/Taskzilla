@@ -53,6 +53,7 @@ public class GetUserRequest extends Request {
         try {
             if (!executedOffline) {
                 result = this.task.get();
+                AppCache.getInstance().addInCache(result);
             }
             return result;
         }

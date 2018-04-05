@@ -46,6 +46,7 @@ public class GetAllTasksRequest extends Request {
         try {
             result = task.get();
             from += size;
+            AppCache.getInstance().addInCache(result);
         }
         catch (Exception e) {
             Log.i("Query", "No more results");
@@ -56,7 +57,7 @@ public class GetAllTasksRequest extends Request {
     @Override
     public void executeOffline() {
         // return what is in app cache
-        if (executedOfflineOnce) {
+        if (executedOfflineOnce) { // prevent infinite loop
             result = new ArrayList<Task>();
             return;
         }
