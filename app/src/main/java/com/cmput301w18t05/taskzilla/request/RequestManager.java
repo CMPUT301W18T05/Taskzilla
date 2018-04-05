@@ -11,16 +11,23 @@
 
 package com.cmput301w18t05.taskzilla.request;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
+import android.view.View;
 
+
+import com.cmput301w18t05.taskzilla.R;
 
 import java.util.ArrayList;
+
+import static java.lang.System.err;
 
 
 /**
@@ -67,7 +74,13 @@ public class RequestManager extends BroadcastReceiver {
         else {
             // todo: implement execute offline here!!
             Log.i("IMPORTANT", "DEVICE IS OFFLINE!!!!");
-            requestQueue.add(request);
+
+            if (!request.requiresConnection()) {
+                request.executeOffline();
+            }
+            if (request.putInQueue()) {
+                requestQueue.add(request);
+            }
         }
     }
     public void invokeRequest(Context ctx, Request request) {
@@ -97,33 +110,30 @@ public class RequestManager extends BroadcastReceiver {
         }
         else if (!ni.isConnected()) {
             System.out.println("Network interface is not connected.");
+            View v = ((Activity) context).getWindow().getDecorView().getRootView();
+            Snackbar snackbar = Snackbar.make(v, "No connection" ,Snackbar.LENGTH_LONG);
+            snackbar.show();
             this.isConnected = false;
         }
         else if (ni.isConnected()) {
             System.out.println("Network is active.");
             this.isConnected = true;
             if (!requestQueue.isEmpty()) {
-                executeLogTask flushJobs = new executeLogTask();
+                System.out.println("Job queue is not empty, flushing jobs.");
+                executeLogTask();
             }
         }
     }
 
-    /**
-     * executeLogTask is a wrapper to execute jobs in the request queue
-     * asynchronously.
-     */
-    public static class executeLogTask extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected Void doInBackground(Void... voids) {
-            while (!requestQueue.isEmpty()) {
-                Request curRequest = popJob();
-                curRequest.execute();
-            }
-            return null;
+    public void executeLogTask() {
+        System.out.println("Flushing job queue...");
+        while (!requestQueue.isEmpty()) {
+            Request curRequest = popJob();
+            curRequest.execute();
         }
     }
 
-    private static Request popJob() {
+    private Request popJob() {
         Request req = requestQueue.get(requestQueue.size()-1);
         requestQueue.remove(requestQueue.size()-1);
         return req;

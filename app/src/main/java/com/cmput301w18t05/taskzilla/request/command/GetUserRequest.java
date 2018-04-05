@@ -11,6 +11,7 @@
 
 package com.cmput301w18t05.taskzilla.request.command;
 
+import com.cmput301w18t05.taskzilla.AppCache;
 import com.cmput301w18t05.taskzilla.controller.ElasticSearchController;
 import com.cmput301w18t05.taskzilla.User;
 import com.cmput301w18t05.taskzilla.request.Request;
@@ -23,7 +24,7 @@ import com.cmput301w18t05.taskzilla.request.Request;
  * @version 1.0
  */
 public class GetUserRequest extends Request {
-    ElasticSearchController.GetUser user;
+    ElasticSearchController.GetUser task;
     String userId;
     User result;
 
@@ -32,17 +33,27 @@ public class GetUserRequest extends Request {
     }
 
     public void execute() {
-        user = new ElasticSearchController.GetUser();
-        user.execute(this.userId);
+        task = new ElasticSearchController.GetUser();
+        task.execute(this.userId);
     }
 
     @Override
     public void executeOffline() {
+        executedOffline = true;
+        AppCache appCache = AppCache.getInstance();
+        result = appCache.findCachedUserByUserid(userId);
+    }
+
+    @Override
+    public boolean requiresConnection() {
+        return false;
     }
 
     public User getResult() {
         try {
-            result = this.user.get();
+            if (!executedOffline) {
+                result = this.task.get();
+            }
             return result;
         }
         catch (Exception e) {

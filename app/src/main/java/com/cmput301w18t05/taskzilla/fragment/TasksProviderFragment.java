@@ -57,7 +57,6 @@ public class TasksProviderFragment extends Fragment {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -72,7 +71,7 @@ public class TasksProviderFragment extends Fragment {
         requestTasks = new GetTasksByProviderUsernameRequest(currentUser.getInstance().getUsername());
         RequestManager.getInstance().invokeRequest(getContext(), requestTasks);
 
-            taskList.addAll(requestTasks.getResult());
+        taskList.addAll(requestTasks.getResult());
 
         adapter.notifyDataSetChanged();
 

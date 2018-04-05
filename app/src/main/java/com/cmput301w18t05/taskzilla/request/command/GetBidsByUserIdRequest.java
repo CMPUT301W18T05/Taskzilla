@@ -11,6 +11,7 @@
 
 package com.cmput301w18t05.taskzilla.request.command;
 
+import com.cmput301w18t05.taskzilla.AppCache;
 import com.cmput301w18t05.taskzilla.Bid;
 import com.cmput301w18t05.taskzilla.controller.ElasticSearchController;
 import com.cmput301w18t05.taskzilla.request.Request;
@@ -28,6 +29,7 @@ public class GetBidsByUserIdRequest extends Request {
     ElasticSearchController.GetBidsByUserID task;
     private String userId;
     private ArrayList<Bid> result;
+    private boolean executedOffline = false;
 
     public GetBidsByUserIdRequest(String userId) {
         this.userId = userId;
@@ -40,12 +42,22 @@ public class GetBidsByUserIdRequest extends Request {
 
     @Override
     public void executeOffline() {
+        AppCache appCache = AppCache.getInstance();
+        result = appCache.getCachedBids();
+        executedOffline = true;
+    }
+
+    @Override
+    public boolean requiresConnection() {
+        return false;
     }
 
     public ArrayList<Bid> getResult() {
         try {
-            this.result = this.task.get();
-            return this.result;
+            if (!executedOffline) {
+                result = task.get();
+            }
+            return result;
         }
         catch (Exception e) {
             return null;

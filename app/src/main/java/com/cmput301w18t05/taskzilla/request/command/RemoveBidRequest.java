@@ -37,6 +37,11 @@ public class RemoveBidRequest extends DeletionRequest{
     public void executeOffline() {
     }
 
+    @Override
+    public boolean requiresConnection() {
+        return false;
+    }
+
     public void getResult() {
 
     }

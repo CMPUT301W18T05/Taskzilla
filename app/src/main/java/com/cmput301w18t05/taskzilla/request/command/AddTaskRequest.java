@@ -11,6 +11,7 @@
 
 package com.cmput301w18t05.taskzilla.request.command;
 
+import com.cmput301w18t05.taskzilla.AppCache;
 import com.cmput301w18t05.taskzilla.controller.ElasticSearchController;
 import com.cmput301w18t05.taskzilla.Task;
 import com.cmput301w18t05.taskzilla.request.InsertionRequest;
@@ -24,8 +25,11 @@ import com.cmput301w18t05.taskzilla.request.InsertionRequest;
 public class AddTaskRequest extends InsertionRequest {
     private ElasticSearchController.AddTask task;
     private Task taskData;
+    private boolean executedOffline = false;
 
     public AddTaskRequest(Task task) {
+        task.setId(null);
+        queueReady = true; // put this into queue if needed!
         this.taskData = task;
     }
 
@@ -37,11 +41,19 @@ public class AddTaskRequest extends InsertionRequest {
 
     @Override
     public void executeOffline() {
+        AppCache appCache = AppCache.getInstance();
+        appCache.addInCache(taskData);
+        executedOffline = true;
+    }
+
+    @Override
+    public boolean requiresConnection() {
+        return false;
     }
 
     public boolean getResult() {
         try {
-            return task.get();
+            return executedOffline || task.get();
         }
         catch (Exception e) {
             return false;

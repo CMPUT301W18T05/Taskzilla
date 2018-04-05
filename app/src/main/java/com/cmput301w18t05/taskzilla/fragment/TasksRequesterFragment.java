@@ -139,6 +139,7 @@ public class TasksRequesterFragment extends Fragment {
                     public void onRefresh() {
                         RequestManager.getInstance().invokeRequest(getContext(), requestTasks);
                         taskList.clear();
+
                         taskList.addAll(requestTasks.getResult());
                         adapter.notifyDataSetChanged();
                         final Handler handler = new Handler();
