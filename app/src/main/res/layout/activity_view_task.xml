@@ -222,7 +222,6 @@
 
         <Button
             android:id="@+id/YellowButton"
-
             android:layout_width="wrap_content"
             android:layout_height="46dp"
             android:layout_marginEnd="16dp"

@@ -21,8 +21,9 @@
 
     <Button
         android:id="@+id/AcceptBidButton"
+        android:theme="@style/AppTheme.YellowButton"
+        android:textColor="@color/buttonYellowComplement"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Button" />
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

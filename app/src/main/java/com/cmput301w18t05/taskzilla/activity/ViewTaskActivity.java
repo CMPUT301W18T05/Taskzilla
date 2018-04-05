@@ -45,10 +45,12 @@ import com.cmput301w18t05.taskzilla.Photo;
 import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.Task;
 import com.cmput301w18t05.taskzilla.User;
+import com.cmput301w18t05.taskzilla.controller.ProfileController;
 import com.cmput301w18t05.taskzilla.controller.ViewTaskController;
 import com.cmput301w18t05.taskzilla.currentUser;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.GetBidsByTaskIdRequest;
+import com.cmput301w18t05.taskzilla.request.command.GetUserRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -74,6 +76,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
     private User TaskProvider;
     private String taskName;
     private ArrayList<Bid> BidList;
+    private Bid selectedBid;
     private GoogleMap mMap;
     private LocationManager locationManager;
 
@@ -92,6 +95,8 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
     private Button PinkButton;
     private Button YellowButton;
     private ScrollView scrollView;
+
+
     /**onCreate
      * Retrieve the task using the task id that was sent using
      * intent into the activity updating the information on the
@@ -143,7 +148,6 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         taskStatus = task.getStatus();
         description = task.getDescription();
         BidList = new ArrayList<>();
-
 
         TaskRequester = task.getTaskRequester();
         try {
@@ -247,7 +251,6 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         DeleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 // taken from https://stackoverflow.com/questions/2115758/how-do-i-display-an-alert-dialog-on-android
                 // 2018-03-16
                 AlertDialog.Builder alert = new AlertDialog.Builder(ViewTaskActivity.this);
@@ -292,7 +295,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
 
 
     /**
-     *@param view pretty much the page it's on
+     * @param view pretty much the page it's on
      * @author myapplestory
      * thePinkButton
      * upon pressing place button on task page
@@ -372,25 +375,51 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         final AlertDialog mBuilder = new AlertDialog.Builder(ViewTaskActivity.this).create();
         final View mView = getLayoutInflater().inflate(R.layout.dialog_accept_bid,null);
         final ListView acceptBidListView = mView.findViewById(R.id.AcceptBidList);
-
+        final Button acceptBidButton = mView.findViewById(R.id.AcceptBidButton);
+        ArrayList<String> tempList = new ArrayList<>();
 
         if (BidList.isEmpty()) {
-            String tempList[] = {"No bids :'("};
+            tempList.add("No bids :'(");
             ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                     android.R.layout.simple_list_item_1, tempList);
             acceptBidListView.setAdapter(adapter);
+            acceptBidButton.setText("SAD");
+
+            acceptBidButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mBuilder.dismiss();
+                }
+            });
         } else {
-            ArrayAdapter<Bid> adapter = new ArrayAdapter<>(this,
-                    android.R.layout.simple_list_item_single_choice, BidList);
+            for (Bid bid : BidList) {
+                ProfileController controller = new ProfileController(mView, getBaseContext());
+                controller.setUserID(bid.getUserId());
+                controller.getUserRequest();
+                tempList.add("Bidder: " + controller.getUser().getName() + "\nBid Amount: " +
+                        bid.getBidAmount());
+            }
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                    android.R.layout.simple_list_item_single_choice, tempList);
             acceptBidListView.setAdapter(adapter);
-
-
             acceptBidListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+            acceptBidButton.setText("ACCEPT BID");
 
+            acceptBidListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    selectedBid = BidList.get(i);
+                }
+            });
+
+            acceptBidButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(ViewTaskActivity.this, selectedBid.toString(), Toast.LENGTH_SHORT).show();
+                }
+            });
 
         }
-
-
 
         mBuilder.setView(mView);
         mBuilder.show();
@@ -420,8 +449,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
 
     }
 
-    private void moveToCurrentLocation(LatLng currentLocation)
-    {
+    private void moveToCurrentLocation(LatLng currentLocation) {
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation,15));
         // Zoom in, animating the camera.
         mMap.animateCamera(CameraUpdateFactory.zoomIn());
