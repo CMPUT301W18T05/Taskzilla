@@ -14,6 +14,9 @@ package com.cmput301w18t05.taskzilla.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -23,8 +26,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cmput301w18t05.taskzilla.EmailAddress;
 import com.cmput301w18t05.taskzilla.PhoneNumber;
@@ -46,9 +51,11 @@ import com.cmput301w18t05.taskzilla.request.command.GetUserByUsernameRequest;
 import com.google.gson.Gson;
 
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -86,6 +93,11 @@ public class ProfileFragment extends Fragment {
     private ImageButton editProfile;
     private ProfileController profileController;
 
+    private Integer PICK_IMAGE = 5;
+    private ImageView image_view;
+
+    private Integer size;
+
     public ProfileFragment() {
         // Required empty public constructor
     }
@@ -117,6 +129,7 @@ public class ProfileFragment extends Fragment {
      */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        image_view = view.findViewById(R.id.profilePictureView);
         nameField = view.findViewById(R.id.NameField);
         emailField = view.findViewById(R.id.EmailField);
         phoneField = view.findViewById(R.id.PhoneField);
@@ -142,6 +155,12 @@ public class ProfileFragment extends Fragment {
                 editProfileClicked();
             }
         });
+        image_view.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+               profilePictureClicked();
+           }
+      });
 
         logOut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -193,6 +212,13 @@ public class ProfileFragment extends Fragment {
         startActivityForResult(intent, 1);
     }
 
+    public void profilePictureClicked() {
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+        photoPickerIntent.setType("image/*");
+        startActivityForResult(photoPickerIntent, PICK_IMAGE);
+    }
+
+
 
     /**
      * When log out is clicked, app goes back to log in screen
@@ -240,24 +266,52 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case (1): {
-                //code to add to ESC
-                if (resultCode == RESULT_OK) {
-                    String newName = data.getStringExtra("Name");
-                    String newEmail = data.getStringExtra("Email");
-                    String newPhone = data.getStringExtra("Phone");
-                    user.setName(newName);
-                    user.setEmail(new EmailAddress(newEmail));
-                    user.setPhone(new PhoneNumber(newPhone));
-                    AddUserRequest request = new AddUserRequest(user);
-                    RequestManager.getInstance().invokeRequest(getContext(), request);
-                    nameField.setText(newName);
-                    emailField.setText(newEmail);
-                    phoneField.setText(newPhone);
-
-                }
+        Log.i("does this work", String.valueOf(requestCode));
+        if(requestCode == 1) {
+            //code to add to ESC
+            if (resultCode == RESULT_OK) {
+                String newName = data.getStringExtra("Name");
+                String newEmail = data.getStringExtra("Email");
+                String newPhone = data.getStringExtra("Phone");
+                user.setName(newName);
+                user.setEmail(new EmailAddress(newEmail));
+                user.setPhone(new PhoneNumber(newPhone));
+                AddUserRequest request = new AddUserRequest(user);
+                RequestManager.getInstance().invokeRequest(getContext(), request);
+                nameField.setText(newName);
+                emailField.setText(newEmail);
+                phoneField.setText(newPhone);
             }
         }
+
+        else if(requestCode == 5) {
+            if (resultCode == RESULT_OK) {
+                try {
+                    final Uri imageUri = data.getData();
+                    final InputStream imageStream = getActivity().getContentResolver().openInputStream(imageUri);
+                    final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                    Log.i("test", selectedImage.toString());
+
+                    // taken from https://stackoverflow.com/questions/2407565/bitmap-byte-size-after-decoding
+                    // 2018-04-03
+                    size = selectedImage.getByteCount();
+                    Log.i("SIZE OF IMAGE", String.valueOf(size));
+                    if(size>65536){
+                        Toast.makeText(getActivity(), "photograph too large", Toast.LENGTH_LONG).show();
+                    }
+                    else{
+                        image_view.setImageBitmap(selectedImage);
+                    }
+
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getActivity(), "Something went wrong", Toast.LENGTH_LONG).show();
+                }
+
+            } else {
+                Toast.makeText(getActivity(), "You haven't picked Image", Toast.LENGTH_LONG).show();
+            }
+        }
+
     }
 }

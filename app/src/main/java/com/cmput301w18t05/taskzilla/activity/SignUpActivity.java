@@ -28,6 +28,7 @@ import com.cmput301w18t05.taskzilla.request.command.AddUserRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetUserByUsernameRequest;
 
 
+import org.apache.commons.lang3.ObjectUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -45,7 +46,7 @@ public class SignUpActivity extends AppCompatActivity {
     public TextView email;
     public TextView phone;
     public Button signUp;
-
+    private User foundUser;
     public User newUser;
 
     /**
@@ -101,6 +102,11 @@ public class SignUpActivity extends AppCompatActivity {
                 showError("Username is already in use.");
                 return false;
             }
+        }
+
+        if(getUser(username.getText().toString())!=null){
+            showError("Username already taken!");
+            return false;
         }
 
         // Taken from https://stackoverflow.com/questions/18463848/how-to-tell-if-a-random-string-is-an-email-address-or-something-else
@@ -209,6 +215,13 @@ public class SignUpActivity extends AppCompatActivity {
             return false;
         }
         return true;
+    }
+
+
+    public User getUser(String username) {
+        GetUserByUsernameRequest getUserByUsernameRequest = new GetUserByUsernameRequest(username);
+        RequestManager.getInstance().invokeRequest(getUserByUsernameRequest);
+        return getUserByUsernameRequest.getResult();
     }
 
     /**

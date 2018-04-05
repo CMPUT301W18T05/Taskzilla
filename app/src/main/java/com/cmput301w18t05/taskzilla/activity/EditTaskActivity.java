@@ -11,6 +11,7 @@
 
 package com.cmput301w18t05.taskzilla.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -24,10 +25,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.Task;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 
 
 /**
@@ -37,7 +42,6 @@ public class EditTaskActivity extends AppCompatActivity {
     private Task task;
     private Context ctx;
     private Integer PICK_IMAGE = 5;
-    Bitmap thumbnail = null;
     private ImageView image_view;
 
     /**
@@ -51,7 +55,7 @@ public class EditTaskActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setTitle("Edit Task");
         setContentView(R.layout.activity_edit_task);
-        ImageView image_view = (ImageView) findViewById(R.id.imageView4);
+        image_view = (ImageView) findViewById(R.id.imageView4);
         EditText TaskNameText = (EditText) findViewById(R.id.TaskName);
         EditText DescriptionText = (EditText) findViewById(R.id.Description);
         String taskName = getIntent().getStringExtra("task Name");
@@ -107,22 +111,25 @@ public class EditTaskActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    protected void onActivityResult(int reqCode, int resultCode, Intent data) {
+        super.onActivityResult(reqCode, resultCode, data);
 
+        // taken from https://stackoverflow.com/questions/38352148/get-image-from-the-gallery-and-show-in-imageview
+        // 2018-04-03
+        if (resultCode == RESULT_OK) {
+            try {
+                final Uri imageUri = data.getData();
+                final InputStream imageStream = getContentResolver().openInputStream(imageUri);
+                final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                Log.i("test",selectedImage.toString());
+                image_view.setImageBitmap(selectedImage);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                Toast.makeText(EditTaskActivity.this, "Something went wrong", Toast.LENGTH_LONG).show();
+            }
 
-        /*if (resultCode == RESULT_OK) {
-            Uri selectedImage = data.getData();
-            String[] filePathColumn = { MediaStore.Images.Media.DATA };
-            Cursor cursor = getContentResolver().query(selectedImage,filePathColumn, null, null, null);
-            cursor.moveToFirst();
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            String picturePath = cursor.getString(columnIndex);
-            cursor.close();
-            thumbnail = (BitmapFactory.decodeFile(picturePath));
-            image_view.setImageBitmap(thumbnail);
-
-        }*/
-
+        }else {
+            Toast.makeText(EditTaskActivity.this, "You haven't picked Image",Toast.LENGTH_LONG).show();
+        }
     }
 }

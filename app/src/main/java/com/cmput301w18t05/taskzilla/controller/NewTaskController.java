@@ -75,7 +75,7 @@ public class NewTaskController {
             Intent intent = new Intent();
             intent.putExtra("result", taskId);
             view.setResult(RESULT_OK, intent);
-            Toast.makeText(view, "New task created, refresh page to see updated list", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(view, "New task created, refresh page to see updated list", Toast.LENGTH_SHORT).show();
             view.finish();
 
         } else {

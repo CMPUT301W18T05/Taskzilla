@@ -14,7 +14,10 @@ package com.cmput301w18t05.taskzilla.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +50,7 @@ public class TasksProviderFragment extends Fragment {
     private ArrayList<Task> taskList;
     private ListView taskListView;
     private ArrayAdapter<Task> adapter;
-
+    private SwipeRefreshLayout mySwipeRefreshLayout;
     private GetTasksByProviderUsernameRequest requestTasks;
     private SearchTaskRequest newRequest;
     private User cUser = currentUser.getInstance();
@@ -84,17 +87,44 @@ public class TasksProviderFragment extends Fragment {
         return v;
     }
 
+
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        mySwipeRefreshLayout = view.findViewById(R.id.swiperefreshProvider);
+        mySwipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        updatePList();
+                        final Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(mySwipeRefreshLayout.isRefreshing()) {
+                                    mySwipeRefreshLayout.setRefreshing(false);
+                                }
+                            }
+                        }, 1000);
+                    }
+                }
+        );
+    }
     // Taken from https://stackoverflow.com/questions/41655797/refresh-fragment-when-change-between-tabs?noredirect=1&lq=1
     // 2018-04-01
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-            RequestManager.getInstance().invokeRequest(getContext(), requestTasks);
-            taskList.clear();
-            taskList.addAll(requestTasks.getResult());
-            adapter.notifyDataSetChanged();
+            updatePList();
         }
+    }
+
+    public void updatePList(){
+        RequestManager.getInstance().invokeRequest(getContext(), requestTasks);
+        taskList.clear();
+        taskList.addAll(requestTasks.getResult());
+        adapter.notifyDataSetChanged();
     }
     /**
      * Switches to ViewTaskActivity

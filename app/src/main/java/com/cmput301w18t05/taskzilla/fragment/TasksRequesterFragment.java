@@ -40,6 +40,8 @@ import com.cmput301w18t05.taskzilla.request.command.GetTasksByRequesterUsernameR
 
 import java.util.ArrayList;
 
+import static android.app.Activity.RESULT_OK;
+
 
 /**
  * Child fragment of TasksFragment
@@ -55,7 +57,6 @@ public class TasksRequesterFragment extends Fragment {
     private ArrayAdapter<Task> adapter;
     private GetTasksByRequesterUsernameRequest requestTasks;
     private SwipeRefreshLayout mySwipeRefreshLayout;
-    private boolean created = false;
     public TasksRequesterFragment() {
         // Required empty public constructor
     }
@@ -137,11 +138,15 @@ public class TasksRequesterFragment extends Fragment {
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
+
                         RequestManager.getInstance().invokeRequest(getContext(), requestTasks);
                         taskList.clear();
 
                         taskList.addAll(requestTasks.getResult());
                         adapter.notifyDataSetChanged();
+
+                        updateRList();
+
                         final Handler handler = new Handler();
                         handler.postDelayed(new Runnable() {
                             @Override
@@ -154,23 +159,35 @@ public class TasksRequesterFragment extends Fragment {
                     }
                 }
         );
-        created = true;
+
     }
 
-
-    // Taken from https://stackoverflow.com/questions/41655797/refresh-fragment-when-change-between-tabs?noredirect=1&lq=1
-    // 2018-04-01
     @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser && created == true) {
-            RequestManager.getInstance().invokeRequest(getContext(), requestTasks);
-            taskList.clear();
-            taskList.addAll(requestTasks.getResult());
-            adapter.notifyDataSetChanged();
-        }
+    public void onActivityResult(int reqCode, int resultCode, Intent data) {
+        //Add a delay for elastic search to update
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                updateRList();
+            }
+        }, 300);
+
+        //Add a longer delay after in case they have bad internet
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                updateRList();
+            }
+        }, 1500);
+
     }
 
+    public void updateRList(){
+        RequestManager.getInstance().invokeRequest(getContext(), requestTasks);
+        taskList.clear();
+        taskList.addAll(requestTasks.getResult());
+        adapter.notifyDataSetChanged();
+    }
 
     /**
      * upon pressing a task on the listview, switches to ViewTaskActivity
@@ -189,7 +206,7 @@ public class TasksRequesterFragment extends Fragment {
             String testTaskId = testTask.getTaskRequester().getId();
             Intent intent = new Intent(getActivity(), ViewTaskActivity.class);
             intent.putExtra("TaskId", id);
-            startActivity(intent);
+            startActivityForResult(intent, 1);
         }
         catch (Exception e){
             RequestManager.getInstance().invokeRequest(getContext(), requestTasks);
@@ -207,6 +224,6 @@ public class TasksRequesterFragment extends Fragment {
      */
     public void newTask() {
         Intent intent = new Intent(getActivity(), NewTaskActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, 1);
     }
 }
