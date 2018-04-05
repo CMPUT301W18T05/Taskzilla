@@ -64,11 +64,11 @@ public class EditProfileActivity extends AppCompatActivity {
         user.setName(userName);
         user.setEmail(new EmailAddress(userEmail));
         user.setPhone(new PhoneNumber(userPhone));
-        user.setPhoto(new Photo(userPicture));
         NameText.setText(user.getName());
         EmailText.setText(user.getEmail().toString());
         PhoneText.setText(user.getPhone().toString());
         try {
+            user.setPhoto(new Photo(userPicture));
             profilePicture.setImageBitmap(user.getPhoto().StringToBitmap());
         }
         catch (Exception e){

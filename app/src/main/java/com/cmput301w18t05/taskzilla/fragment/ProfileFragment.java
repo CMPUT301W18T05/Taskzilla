@@ -200,6 +200,9 @@ public class ProfileFragment extends Fragment {
         intent.putExtra("Name", user.getName());
         intent.putExtra("Email", user.getEmail().toString());
         intent.putExtra("Phone", user.getPhone().toString());
+        if(user.getPhoto() == null){
+            user.setPhoto(new Photo(""));
+        }
         intent.putExtra("Photo", user.getPhoto().toString());
         startActivityForResult(intent, 1);
     }
