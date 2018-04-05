@@ -25,10 +25,13 @@ import android.text.method.DigitsKeyListener;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -54,6 +57,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Activity for viewing a task
@@ -138,6 +142,8 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         taskName = task.getName();
         taskStatus = task.getStatus();
         description = task.getDescription();
+        BidList = new ArrayList<>();
+
 
         TaskRequester = task.getTaskRequester();
         try {
@@ -276,7 +282,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
 
         // get all of this task's bids and pass it into expandable list to display
         // @author myapplestory
-        BidList = new ArrayList<>();
+        BidList.clear();
         GetBidsByTaskIdRequest getBidsByTaskIdRequest = new GetBidsByTaskIdRequest(this.taskID);
         RequestManager.getInstance().invokeRequest(getBidsByTaskIdRequest);
         BidList.addAll(getBidsByTaskIdRequest.getResult());
@@ -363,20 +369,44 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
 
 
     public void theYellowButton(android.view.View view) {
-        Toast.makeText(this, "pink button is dead", Toast.LENGTH_SHORT).show();
+        final AlertDialog mBuilder = new AlertDialog.Builder(ViewTaskActivity.this).create();
+        final View mView = getLayoutInflater().inflate(R.layout.dialog_accept_bid,null);
+        final ListView acceptBidListView = mView.findViewById(R.id.AcceptBidList);
 
+
+        if (BidList.isEmpty()) {
+            String tempList[] = {"No bids :'("};
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                    android.R.layout.simple_list_item_1, tempList);
+            acceptBidListView.setAdapter(adapter);
+        } else {
+            ArrayAdapter<Bid> adapter = new ArrayAdapter<>(this,
+                    android.R.layout.simple_list_item_single_choice, BidList);
+            acceptBidListView.setAdapter(adapter);
+
+
+            acceptBidListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+
+
+        }
+
+
+
+        mBuilder.setView(mView);
+        mBuilder.show();
     }
 
 
 
-        public void updateBidsList(){
-        BidList = new ArrayList<>();
+    public void updateBidsList(){
+        BidList.clear();
         GetBidsByTaskIdRequest getBidsByTaskIdRequest = new GetBidsByTaskIdRequest(this.taskID);
         RequestManager.getInstance().invokeRequest(getBidsByTaskIdRequest);
         BidList.addAll(getBidsByTaskIdRequest.getResult());
         ExpandableListAdapter expandableListAdapter= new ExpandableBidListAdapter(this, BidList);
         BidslistView.setAdapter(expandableListAdapter);
     }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
