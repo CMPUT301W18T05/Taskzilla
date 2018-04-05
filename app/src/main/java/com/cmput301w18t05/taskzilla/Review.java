@@ -28,7 +28,7 @@ public class Review {
 
     /**
      * Constructs a review instance using the given parameters
-     * @param title
+     * @param title title of the review
      * @param rating
      * @param description
      * @param targetUserID
