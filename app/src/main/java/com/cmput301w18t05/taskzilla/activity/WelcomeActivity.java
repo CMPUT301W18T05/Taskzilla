@@ -20,6 +20,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -29,6 +31,8 @@ import com.cmput301w18t05.taskzilla.fragment.ProfileFragment;
 import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.fragment.SearchFragment;
 import com.cmput301w18t05.taskzilla.fragment.TasksFragment;
+import com.cmput301w18t05.taskzilla.fragment.TasksProviderFragment;
+import com.cmput301w18t05.taskzilla.fragment.TasksRequesterFragment;
 
 /**
  * Welcome activity of the app
@@ -37,7 +41,7 @@ import com.cmput301w18t05.taskzilla.fragment.TasksFragment;
  * @version 1.0
  */
 public class WelcomeActivity extends AppCompatActivity {
-
+    private int sortFilter;
     TabLayout tabs;
     ViewPager tabsContent;
     FragmentPagerAdapter tabsAdapter;
@@ -53,6 +57,7 @@ public class WelcomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
+
         tabsAdapter = new TabsManager(this.getSupportFragmentManager());
         tabsContent = findViewById(R.id.welcome_tabs_content);
         tabsContent.setOffscreenPageLimit(5);
@@ -65,6 +70,8 @@ public class WelcomeActivity extends AppCompatActivity {
         tabs.getTabAt(4).setIcon(android.R.drawable.ic_menu_myplaces);
 
     }
+
+
 
 
     boolean doubleBackToExitPressedOnce = false;
@@ -89,6 +96,10 @@ public class WelcomeActivity extends AppCompatActivity {
                 doubleBackToExitPressedOnce=false;
             }
         }, 2000);
+    }
+
+    public int getFilter(){
+        return sortFilter;
     }
     /**
      * Manages the navigation tabs
@@ -154,6 +165,7 @@ public class WelcomeActivity extends AppCompatActivity {
             }
         }
     }
+
 
 
 

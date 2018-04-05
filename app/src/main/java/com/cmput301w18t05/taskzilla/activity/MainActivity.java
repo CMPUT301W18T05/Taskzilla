@@ -71,6 +71,8 @@ public class MainActivity extends AppCompatActivity {
     private MainActivityController mainActivityController;
     private static final String FILENAME = "currentUser.sav";
     private User foundUser;
+    private ConnectivityManager cm;
+    private NetworkInfo ni;
 
     /**
      * Activity uses the activity_main.xml layout
@@ -96,28 +98,36 @@ public class MainActivity extends AppCompatActivity {
         signupButton = findViewById(R.id.SignUp);
         usernameView = findViewById(R.id.usernameText);
 
+
+        cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+
         /* login action */
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /* TODO: implement username checking */
+                ni = cm.getActiveNetworkInfo();
+                if(ni != null && ni.isConnected()){
+                    // hide keyboard upon pressing button
+                    InputMethodManager imm = (InputMethodManager)getSystemService(
+                            Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(loginButton.getWindowToken(), 0);
 
-                // hide keyboard upon pressing button
-                InputMethodManager imm = (InputMethodManager)getSystemService(
-                        Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(loginButton.getWindowToken(), 0);
+                  /* check if user exists */
+                    foundUser = getUser(usernameView.getText().toString());
+                    if (foundUser != null) {
+                        currentUser.getRealInstance().setUser(foundUser);
+                        saveLogin();
+                        mainActivityController.logIn();
+                        finish();
+                    }
+                    else {
+                        showError("Username does not exist. Please sign up.");
+                    }
+                }else{
+                    showError("No internet connection. Try again later");
 
-                /* check if user exists */
-                foundUser = getUser(usernameView.getText().toString());
-                if (foundUser != null) {
-                    currentUser.getRealInstance().setUser(foundUser);
-                    saveLogin();
-                    mainActivityController.logIn();
-                    finish();
                 }
-                else {
-                    showError("Username does not exist. Please sign up.");
-                }
+
 
             }
         });
@@ -131,12 +141,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
         /*Auto Login*/
-        ConnectivityManager cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo ni = cm.getActiveNetworkInfo();
-
-
         loadLogin();
         if(foundUser!=null){
+            ni = cm.getActiveNetworkInfo();
             if (ni != null && ni.isConnected()) {
                 currentUser.getRealInstance().setUser(getUser(foundUser.getUsername()));
             }else{

@@ -18,6 +18,8 @@
     android:orientation="vertical"
     tools:context="com.cmput301w18t05.taskzilla.activity.WelcomeActivity">
 
+
+
     <android.support.v4.view.ViewPager
         android:id="@+id/welcome_tabs_content"
         android:layout_width="match_parent"

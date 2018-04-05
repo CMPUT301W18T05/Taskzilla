@@ -16,172 +16,278 @@
     android:layout_height="match_parent"
     tools:context="com.cmput301w18t05.taskzilla.fragment.ProfileFragment">
 
-    <!-- TODO: Update blank fragment layout -->
 
-    <ImageView
-        android:id="@+id/ProfilePictureView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="33dp"
-        android:layout_marginTop="37dp"
-        android:adjustViewBounds="true"
-        android:maxHeight="75dp"
-        android:maxWidth="75dp"
-        android:scaleType="fitXY"
-        android:src="@mipmap/ic_launcher_round" />
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary">
 
-    <TextView
-        android:id="@+id/NameField"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/ProfilePictureView"
-        android:layout_toEndOf="@+id/ProfilePictureView"
-        android:text="Android"
-        android:textAlignment="textEnd"
-        android:textSize="28sp" />
+        <TextView
+            android:id="@+id/RatingDescriptionTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="8dp"
+            android:text="User Ratings"
+            android:textSize="23sp"
+            app:layout_constraintBottom_toTopOf="@+id/RatingsLayout"
+            app:layout_constraintStart_toStartOf="parent" />
 
-    <ImageButton
-        android:id="@+id/EditButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignTop="@+id/ProfilePictureView"
-        android:layout_marginEnd="29dp"
-        android:background="@android:color/transparent"
-        android:src="@android:drawable/ic_menu_edit" />
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/AcomplishmentsLayout"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="8dp"
+            android:background="@android:color/background_light"
+            android:elevation="1dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ProfileLayout">
 
-    <TextView
-        android:id="@+id/ProviderRating"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/ProfilePictureView"
-        android:layout_below="@+id/ProfilePictureView"
-        android:layout_marginTop="20dp"
-        android:text="Provider Rating:"
-        android:textSize="20sp" />
+            <TextView
+                android:id="@+id/numTasksDoneField"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="998"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="parent" />
 
-    <TextView
-        android:id="@+id/RequesterRating"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/ProviderRating"
-        android:layout_below="@+id/ProviderRating"
-        android:layout_marginTop="20dp"
-        android:text="Requester Rating:"
-        android:textSize="20sp" />
+            <TextView
+                android:id="@+id/numRequestsField"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="8dp"
+                android:text="2"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/numTasksDoneField" />
 
-    <TextView
-        android:id="@+id/NumRequests"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/RequesterRating"
-        android:layout_below="@+id/RequesterRatingField"
-        android:layout_marginTop="20dp"
-        android:text="Number of Requests: "
-        android:textSize="20sp" />
+            <TextView
+                android:id="@+id/numTasksDone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="Number of Tasks Done: "
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/NumTasksDone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/RequesterRating"
-        android:layout_below="@+id/NumRequests"
-        android:layout_marginTop="20dp"
-        android:text="Number of Tasks Done: "
-        android:textSize="20sp" />
+            <TextView
+                android:id="@+id/numRequests"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="Number of Requests: "
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/numTasksDone" />
+        </android.support.constraint.ConstraintLayout>
 
-    <TextView
-        android:id="@+id/Email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/NumTasksDone"
-        android:layout_below="@+id/NumTasksDoneField"
-        android:layout_marginTop="20dp"
-        android:text="Email:"
-        android:textSize="20sp" />
+        <Button
+            android:id="@+id/logOutButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 
-    <TextView
-        android:id="@+id/Phone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/Email"
-        android:layout_below="@+id/Email"
-        android:layout_marginTop="20dp"
-        android:text="Phone:"
-        android:textSize="20sp" />
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@android:color/holo_red_light"
+            android:text="Log out"
+            android:textColor="@android:color/background_light"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/RatingsLayout" />
 
-    <TextView
-        android:id="@+id/ProviderRatingField"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/ProviderRating"
-        android:layout_alignBottom="@+id/ProviderRating"
-        android:layout_alignEnd="@+id/NumRequestsField"
-        android:text="9.8"
-        android:textAlignment="textEnd"
-        android:textSize="24sp" />
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/RatingsLayout"
+            android:layout_width="0dp"
+            android:layout_height="90dp"
+            android:layout_marginTop="50dp"
+            android:background="@android:color/background_light"
+            android:elevation="1dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/InfoLayout">
 
-    <TextView
-        android:id="@+id/RequesterRatingField"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/EditButton"
-        android:layout_alignTop="@+id/RequesterRating"
-        android:text="0.7"
-        android:textAlignment="textEnd"
-        android:textSize="24sp" />
+            <TextView
+                android:id="@+id/providerRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="Provider Rating"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/NumRequestsField"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/NumTasksDoneField"
-        android:layout_alignTop="@+id/NumRequests"
-        android:text="2"
-        android:textAlignment="textEnd"
-        android:textSize="24sp" />
+            <TextView
+                android:id="@+id/requesterRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="8dp"
+                android:text="Requester Rating:"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/NumTasksDoneField"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/EmailField"
-        android:layout_alignTop="@+id/NumTasksDone"
-        android:text="998"
-        android:textAlignment="textEnd"
-        android:textSize="24sp" />
+            <TextView
+                android:id="@+id/providerRatingField"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
 
-    <TextView
-        android:id="@+id/EmailField"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/Phone"
-        android:layout_alignEnd="@+id/RequesterRatingField"
-        android:text="android1@gmail.com"
-        android:textAlignment="textEnd"
-        android:textSize="20sp" />
+                android:layout_marginBottom="8dp"
 
-    <TextView
-        android:id="@+id/PhoneField"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/Phone"
-        android:layout_alignBottom="@+id/Phone"
-        android:layout_alignEnd="@+id/EmailField"
-        android:text="780 123 4567"
-        android:textAlignment="textEnd"
-        android:textSize="20sp" />
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="9.8"
+                android:textAlignment="center"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/providerRating"
+                app:layout_constraintStart_toStartOf="@+id/providerRating"
+                app:layout_constraintTop_toBottomOf="@+id/providerRating" />
 
-    <Button
-        android:id="@+id/LogOutButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="12dp"
-        android:background="@android:color/holo_red_light"
-        android:text="Log out"
-        android:textColor="@android:color/background_light" />
+            <TextView
+                android:id="@+id/requesterRatingField"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="0.7"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/requesterRating"
+                app:layout_constraintStart_toStartOf="@+id/requesterRating"
+                app:layout_constraintTop_toBottomOf="@+id/requesterRating" />
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/InfoLayout"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="8dp"
+            android:background="@android:color/background_light"
+            android:elevation="1dp"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/AcomplishmentsLayout">
+
+            <TextView
+                android:id="@+id/email2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="Email:"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="Phone:"
+                android:textSize="20sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/email2" />
+
+            <TextView
+                android:id="@+id/emailField2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="16dp"
+                android:text="android1@gmail.com"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/email2" />
+
+            <TextView
+                android:id="@+id/phoneField2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="780 123 4567"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/phone" />
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/ProfileLayout"
+            android:layout_width="0dp"
+            android:layout_height="135dp"
+            android:background="@android:color/background_light"
+            android:elevation="1dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/profilePictureView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:adjustViewBounds="true"
+                android:maxHeight="75dp"
+                android:maxWidth="75dp"
+                android:scaleType="fitXY"
+                android:src="@mipmap/ic_launcher_round"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/nameField2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="88dp"
+                android:text="Android"
+                android:textAlignment="center"
+                android:textSize="28sp"
+                app:layout_constraintEnd_toEndOf="@+id/profilePictureView"
+                app:layout_constraintStart_toStartOf="@+id/profilePictureView"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/editButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@android:color/transparent"
+                android:src="@android:drawable/ic_menu_edit"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.constraint.ConstraintLayout>
 </RelativeLayout>

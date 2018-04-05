@@ -99,13 +99,6 @@ public class ProfileFragment extends Fragment {
         final RelativeLayout mRelativeLayout = (RelativeLayout) inflater.inflate(R.layout.fragment_profile,
                 container, false);
 
-        ImageButton mButton = mRelativeLayout.findViewById(R.id.EditButton);
-        mButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editProfileClicked();
-            }
-        });
         return mRelativeLayout;
     }
 
@@ -119,17 +112,17 @@ public class ProfileFragment extends Fragment {
      */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        profilePicture = view.findViewById(R.id.ProfilePictureView);
-        nameField = view.findViewById(R.id.NameField);
-        emailField = view.findViewById(R.id.EmailField);
-        phoneField = view.findViewById(R.id.PhoneField);
-        providerRatingField = view.findViewById(R.id.ProviderRatingField);
-        requesterRatingField = view.findViewById(R.id.RequesterRatingField);
-        numRequestsField = view.findViewById(R.id.NumRequestsField);
-        numTasksDoneField = view.findViewById(R.id.NumTasksDoneField);
-        logOut = view.findViewById(R.id.LogOutButton);
-        editProfile = view.findViewById(R.id.EditButton);
 
+        profilePicture = view.findViewById(R.id.profilePictureView);
+        nameField = view.findViewById(R.id.nameField2);
+        emailField = view.findViewById(R.id.emailField2);
+        phoneField = view.findViewById(R.id.phoneField2);
+        providerRatingField = view.findViewById(R.id.providerRatingField);
+        requesterRatingField = view.findViewById(R.id.requesterRatingField);
+        numRequestsField = view.findViewById(R.id.numRequestsField);
+        numTasksDoneField = view.findViewById(R.id.numTasksDoneField);
+        logOut = view.findViewById(R.id.logOutButton);
+        editProfile = view.findViewById(R.id.editButton);
 
 
         nameField.setText(user.getName());
@@ -159,12 +152,14 @@ public class ProfileFragment extends Fragment {
                 logOutClicked();
             }
         });
+
     }
 
     // Taken from https://stackoverflow.com/questions/41655797/refresh-fragment-when-change-between-tabs?noredirect=1&lq=1
     // 2018-04-01
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
+        /*
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
 
@@ -189,6 +184,7 @@ public class ProfileFragment extends Fragment {
             numTasksDoneField.setText(numTasksDone);
 
         }
+        */
     }
 
     /**
