@@ -348,7 +348,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                 // do stuff here to actually add bid
                 task.addBid(new Bid(currentUserId, taskID, incomingBidFloat));
                 task.setStatus("bidded");
-                TaskStatus.setText("bidded");
+                TaskStatus.setText("Bidded");
 
                 Toast.makeText(ViewTaskActivity.this, "Bid placed", Toast.LENGTH_SHORT).show();
 
@@ -384,7 +384,6 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                     android.R.layout.simple_list_item_1, tempList);
             acceptBidListView.setAdapter(adapter);
             acceptBidButton.setText("SAD");
-
             acceptBidButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -415,12 +414,18 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
             acceptBidButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(ViewTaskActivity.this, selectedBid.toString(), Toast.LENGTH_SHORT).show();
+
+                    task.setStatus("Assigned");
+                    TaskStatus.setText("Assigned");
+
+                    mBuilder.dismiss();
+
+
+
                 }
             });
 
         }
-
         mBuilder.setView(mView);
         mBuilder.show();
     }
