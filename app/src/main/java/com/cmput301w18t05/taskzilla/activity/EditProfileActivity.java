@@ -12,18 +12,30 @@
 package com.cmput301w18t05.taskzilla.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.cmput301w18t05.taskzilla.EmailAddress;
 import com.cmput301w18t05.taskzilla.PhoneNumber;
+import com.cmput301w18t05.taskzilla.Photo;
 import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.User;
+import com.cmput301w18t05.taskzilla.request.RequestManager;
+import com.cmput301w18t05.taskzilla.request.command.AddUserRequest;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -32,6 +44,8 @@ public class EditProfileActivity extends AppCompatActivity {
     private EditText NameText;
     private EditText EmailText;
     private EditText PhoneText;
+    private ImageView profilePicture;
+    private Integer size;
 
     private User user = new User(); //dummy
     @Override
@@ -41,15 +55,40 @@ public class EditProfileActivity extends AppCompatActivity {
         NameText = (EditText) findViewById(R.id.NameField);
         EmailText = (EditText) findViewById(R.id.EmailField);
         PhoneText = (EditText) findViewById(R.id.Phone);
+        profilePicture = findViewById(R.id.ProfilePictureView);
+
         String userName = getIntent().getStringExtra("Name");
         String userEmail = getIntent().getStringExtra("Email");
         String userPhone = getIntent().getStringExtra("Phone");
+        String userPicture = getIntent().getStringExtra("Photo");
         user.setName(userName);
         user.setEmail(new EmailAddress(userEmail));
         user.setPhone(new PhoneNumber(userPhone));
         NameText.setText(user.getName());
         EmailText.setText(user.getEmail().toString());
         PhoneText.setText(user.getPhone().toString());
+        try {
+            user.setPhoto(new Photo(userPicture));
+            profilePicture.setImageBitmap(user.getPhoto().StringToBitmap());
+        }
+        catch (Exception e){
+            Photo defaultPhoto = new Photo("");
+            profilePicture.setImageBitmap(defaultPhoto.StringToBitmap());
+
+        }
+
+        profilePicture.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                profilePictureClicked();
+            }
+        });
+    }
+
+    public void profilePictureClicked() {
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+        photoPickerIntent.setType("image/*");
+        startActivityForResult(photoPickerIntent, 5);
     }
 
     public void ProfileCancelButton(View view){
@@ -68,6 +107,7 @@ public class EditProfileActivity extends AppCompatActivity {
             returnIntent.putExtra("Name", user.getName());
             returnIntent.putExtra("Email", user.getEmail().toString());
             returnIntent.putExtra("Phone",user.getPhone().toString());
+            returnIntent.putExtra("Photo", user.getPhoto().toString());
             setResult(RESULT_OK, returnIntent);
             finish();
         }
@@ -141,7 +181,43 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         }
 
-
         return true; // todo
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            try {
+                final Uri imageUri = data.getData();
+                final InputStream imageStream = this.getContentResolver().openInputStream(imageUri);
+                final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+
+                // taken from https://stackoverflow.com/questions/2407565/bitmap-byte-size-after-decoding
+                // 2018-04-03
+                size = selectedImage.getByteCount();
+                Log.i("SIZE OF IMAGE", String.valueOf(size));
+                if(size>65536){
+                    Toast.makeText(this, "photograph too large", Toast.LENGTH_LONG).show();
+                }
+                else{
+                    profilePicture.setImageBitmap(selectedImage);
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    selectedImage.compress(Bitmap.CompressFormat.JPEG,50,stream);
+                    byte byteImage[];
+                    byteImage = stream.toByteArray();
+                    String image = Base64.encodeToString(byteImage, Base64.DEFAULT);
+                    user.setPhoto(new Photo(image));
+                    Log.i("test",user.getPhoto().toString());
+
+
+                }
+
+            } catch (Exception e) {
+                Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
+            }
+
+        } else {
+            Toast.makeText(this, "You haven't picked a photo", Toast.LENGTH_LONG).show();
+        }
     }
 }

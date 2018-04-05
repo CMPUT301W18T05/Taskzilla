@@ -29,6 +29,7 @@ public class AddBidRequest extends InsertionRequest {
         this.bid = bid;
     }
 
+    @Override
     public void execute() {
         task = new ElasticSearchController.AddBid();
         task.execute(bid);

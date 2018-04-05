@@ -36,6 +36,7 @@ import android.widget.Toast;
 
 import com.cmput301w18t05.taskzilla.Bid;
 import com.cmput301w18t05.taskzilla.ExpandableBidListAdapter;
+import com.cmput301w18t05.taskzilla.Photo;
 import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.Task;
 import com.cmput301w18t05.taskzilla.User;
@@ -140,6 +141,15 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         DescriptionView.setText(description);
         TaskName.setText(taskName);
         TaskStatus.setText(taskStatus);
+
+        try {
+            RequesterPicture.setImageBitmap(TaskRequester.getPhoto().StringToBitmap());
+        }
+        catch (Exception e){
+            Photo defaultPhoto = new Photo("");
+            RequesterPicture.setImageBitmap(defaultPhoto.StringToBitmap());
+
+        }
 
         // taken from https://stackoverflow.com/questions/3465841/how-to-change-visibility-of-layout-programmatically
         // 2018-03-14

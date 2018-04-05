@@ -55,6 +55,11 @@ public class SearchTaskRequest extends SearchRequest {
     public void executeOffline() {
     }
 
+    @Override
+    public boolean requiresConnection() {
+        return true;
+    }
+
     public ArrayList<Task> getTasks() {
         return results;
     }

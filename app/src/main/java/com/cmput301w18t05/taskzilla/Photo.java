@@ -11,6 +11,12 @@
 package com.cmput301w18t05.taskzilla;
 
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
+
+import java.io.ByteArrayOutputStream;
+
 /**
  * Represents a photo object in the app
  *
@@ -20,36 +26,54 @@ package com.cmput301w18t05.taskzilla;
  */
 public class Photo {
 
-    private byte image[];
+    private String photo;
 
     /**
      * Constructs a  photo instance using the given parameters
-     * @param image
+     * @param photo
      */
-    public Photo(byte image[]){
-        this.image = image;
+    public Photo(String photo){
+        // taken from https://stackoverflow.com/questions/4989182/converting-java-bitmap-to-byte-array
+        // 2018-04-04
+        this.photo = photo;
+    }
+
+    /**
+     * Sets the image of the photo
+     * @param photo
+     */
+    public void setPhoto(String photo) {
+        this.photo=photo;
     }
 
     /**
      * Returns the image of the photo
      * @return
      */
-    public byte[] getImage() {
-        return image;
-    }
-
-    /**
-     * Sets the image of the photo
-     * @param image
-     */
-    public void setImage(byte[] image) {
-        this.image = image;
+    public String getPhoto() {
+        return photo;
     }
 
     /**
      * Deletes the current image of the photo
      */
-    public void deleteImage(){
-        image = null;
+    public void deletePhoto(){
+        photo = null;
     }
+
+    public String toString() {
+        return photo;
+    }
+
+    public Bitmap StringToBitmap(){
+        try {
+            byte [] encodeByte=Base64.decode(photo,Base64.DEFAULT);
+            Bitmap bitmap=BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        } catch(Exception e) {
+            e.getMessage();
+            return null;
+        }
+    }
+
 }

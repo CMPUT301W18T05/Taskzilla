@@ -11,6 +11,7 @@
 
 package com.cmput301w18t05.taskzilla.request.command;
 
+import com.cmput301w18t05.taskzilla.AppCache;
 import com.cmput301w18t05.taskzilla.controller.ElasticSearchController;
 import com.cmput301w18t05.taskzilla.Task;
 import com.cmput301w18t05.taskzilla.request.Request;
@@ -37,11 +38,21 @@ public class GetTaskRequest extends Request {
 
     @Override
     public void executeOffline() {
+        executedOffline = false;
+        AppCache appCache = AppCache.getInstance();
+        result = appCache.findCachedTaskById(taskId);
+    }
+
+    @Override
+    public boolean requiresConnection() {
+        return false;
     }
 
     public Task getResult() {
         try {
-            result = this.task.get();
+            if (!executedOffline)
+                result = this.task.get();
+
             return result;
         }
         catch (Exception e) {

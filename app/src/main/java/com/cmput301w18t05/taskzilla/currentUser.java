@@ -37,7 +37,7 @@ public class currentUser extends User {
      * @return
      */
     public static User getInstance() {
-        return currentUser.current;
+        return current;
     }
 
     public static currentUser getRealInstance() {

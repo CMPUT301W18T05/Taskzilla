@@ -35,7 +35,7 @@ public class User {
     protected Float requesterRating;
     protected Integer numRequests;
     protected Integer numCompleteTasks;
-    protected ArrayList<Photo> photos;
+    protected Photo photo;
 
     public User() {
     }
@@ -51,12 +51,12 @@ public class User {
      * @param requesterRating The requester rating of the user
      * @param numRequests The total number of request made by the user
      * @param numCompleteTasks The number of tasks the user has completed for others
-     * @param photos Profile picture of the user
+     * @param photo Profile picture of the user
      */
     public User(String name, String username, String id,
                 PhoneNumber phone, EmailAddress email,
                 double providerRating, double requesterRating,
-                Integer numRequests, Integer numCompleteTasks, ArrayList<Photo> photos){
+                Integer numRequests, Integer numCompleteTasks, Photo photo){
         this.name = name;
         this.username = username;
         this.phone = phone;
@@ -65,7 +65,7 @@ public class User {
         this.requesterRating = (float) requesterRating;
         this.numRequests = numRequests;
         this.numCompleteTasks = numCompleteTasks;
-        this.photos = photos;
+        this.photo = photo;
     }
 
     /**
@@ -264,16 +264,16 @@ public class User {
      * Returns the users profile picture
      * @return profile picture of user
      */
-    public ArrayList<Photo> getPhotos() {
-        return this.photos;
+    public Photo getPhoto() {
+        return this.photo;
     }
 
     /**
      * Sets a profile picture for the user
-     * @param photos
+     * @param photo
      */
-    public void setPhotos(ArrayList<Photo> photos) {
-        this.photos = photos;
+    public void setPhoto(Photo photo) {
+        this.photo = photo;
     }
 
     /**

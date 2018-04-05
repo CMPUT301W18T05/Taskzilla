@@ -13,6 +13,7 @@ package com.cmput301w18t05.taskzilla.request.command;
 
 import android.util.Log;
 
+import com.cmput301w18t05.taskzilla.AppCache;
 import com.cmput301w18t05.taskzilla.controller.ElasticSearchController;
 import com.cmput301w18t05.taskzilla.Task;
 import com.cmput301w18t05.taskzilla.request.Request;
@@ -27,9 +28,9 @@ import java.util.ArrayList;
  * @version 1.0
  */
 public class GetTasksByProviderUsernameRequest extends Request {
-    ElasticSearchController.GetTasksByProviderUsername task;
-    ArrayList<Task> result;
-    String user;
+    private ElasticSearchController.GetTasksByProviderUsername task;
+    private ArrayList<Task> result;
+    private String user;
 
     public GetTasksByProviderUsernameRequest(String username) {
         this.user = username;
@@ -42,11 +43,28 @@ public class GetTasksByProviderUsernameRequest extends Request {
 
     @Override
     public void executeOffline() {
+        executedOffline = true;
+        AppCache appCache = AppCache.getInstance();
+        ArrayList<Task> cachedTasks = appCache.getCachedTasks();
+
+        result = new ArrayList<>();
+        for (Task t : cachedTasks) {
+            if (t.getTaskProvider().getUsername() == user) {
+                result.add(t);
+            }
+        }
+    }
+
+    @Override
+    public boolean requiresConnection() {
+        return false;
     }
 
     public ArrayList<Task> getResult() {
         try {
-            result = this.task.get();
+            if (!executedOffline) {
+                result = this.task.get();
+            }
 
             for(Task t : result)
                 Log.i("Result", t.getId());

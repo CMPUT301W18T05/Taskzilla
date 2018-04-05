@@ -138,7 +138,15 @@ public class TasksRequesterFragment extends Fragment {
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
+
+                        RequestManager.getInstance().invokeRequest(getContext(), requestTasks);
+                        taskList.clear();
+
+                        taskList.addAll(requestTasks.getResult());
+                        adapter.notifyDataSetChanged();
+
                         updateRList();
+
                         final Handler handler = new Handler();
                         handler.postDelayed(new Runnable() {
                             @Override

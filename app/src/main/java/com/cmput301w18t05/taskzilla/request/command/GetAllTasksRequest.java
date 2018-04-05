@@ -11,8 +11,10 @@
 
 package com.cmput301w18t05.taskzilla.request.command;
 
+import android.os.AsyncTask;
 import android.util.Log;
 
+import com.cmput301w18t05.taskzilla.AppCache;
 import com.cmput301w18t05.taskzilla.controller.ElasticSearchController;
 import com.cmput301w18t05.taskzilla.Task;
 import com.cmput301w18t05.taskzilla.request.Request;
@@ -35,6 +37,7 @@ public class GetAllTasksRequest extends Request {
     public GetAllTasksRequest() {
     }
 
+    @Override
     public void execute() {
         task = new ElasticSearchController.GetAllTasks(from,size);
         task.execute();
@@ -51,6 +54,14 @@ public class GetAllTasksRequest extends Request {
 
     @Override
     public void executeOffline() {
+        // return what is in app cache
+        AppCache appCache = AppCache.getInstance();
+        result = appCache.getCachedTasks();
+    }
+
+    @Override
+    public boolean requiresConnection() {
+        return false;
     }
 
     public ArrayList<Task> getResult() {
