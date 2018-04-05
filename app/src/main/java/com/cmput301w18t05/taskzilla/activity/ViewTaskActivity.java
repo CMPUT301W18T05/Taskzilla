@@ -23,11 +23,13 @@ import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.method.DigitsKeyListener;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 
@@ -84,7 +86,8 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
 
     private ExpandableListView BidslistView;
     private Button PinkButton;
-
+    private Button YellowButton;
+    private ScrollView scrollView;
     /**onCreate
      * Retrieve the task using the task id that was sent using
      * intent into the activity updating the information on the
@@ -103,7 +106,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.TaskLocation);
         mapFragment.getMapAsync(this);
-        locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         EditButton = findViewById(R.id.EditButton);
         DeleteButton = findViewById(R.id.DeleteButton);
@@ -116,8 +119,14 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         TaskStatus = findViewById(R.id.TaskStatus);
         BidslistView = findViewById(R.id.BidsListView);
         PinkButton = findViewById(R.id.PinkButton);
+        YellowButton = findViewById(R.id.YellowButton);
 
-        this.viewTaskController = new ViewTaskController(this.findViewById(android.R.id.content),this);
+        // starts the activity at the very top
+        scrollView = findViewById(R.id.ViewTaskScrollView);
+        scrollView.setFocusableInTouchMode(true);
+        scrollView.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
+
+        this.viewTaskController = new ViewTaskController(this.findViewById(android.R.id.content), this);
         taskID = getIntent().getStringExtra("TaskId");
 
         viewTaskController.setTaskID(taskID);
@@ -133,8 +142,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         TaskRequester = task.getTaskRequester();
         try {
             TaskProvider = task.getTaskProvider();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             TaskProvider = new User();
         }
         RequesterName.setText(TaskRequester.getName());
@@ -144,11 +152,9 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
 
         try {
             RequesterPicture.setImageBitmap(TaskRequester.getPhoto().StringToBitmap());
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             Photo defaultPhoto = new Photo("");
             RequesterPicture.setImageBitmap(defaultPhoto.StringToBitmap());
-
         }
 
         // taken from https://stackoverflow.com/questions/3465841/how-to-change-visibility-of-layout-programmatically
@@ -164,6 +170,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         } else {
             DeleteButton.setVisibility(View.INVISIBLE);
             EditButton.setVisibility(View.INVISIBLE);
+            YellowButton.setVisibility(View.INVISIBLE);
         }
 
         if (taskStatus.equals("assigned")) {
@@ -195,8 +202,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                     Intent intent = new Intent(view.getContext(), ProfileActivity.class);
                     intent.putExtra("user id", TaskProvider.getId());
                     startActivity(intent);
-                } catch (Exception e){
-                }
+                } catch (Exception e) {}
             }
 
         });
@@ -208,8 +214,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                     Intent intent = new Intent(view.getContext(), ProfileActivity.class);
                     intent.putExtra("user id", TaskRequester.getId());
                     startActivity(intent);
-                } catch (Exception e){
-                }
+                } catch (Exception e) {}
             }
         });
 
@@ -252,7 +257,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
 
                         Intent intent = new Intent();
                         intent.putExtra("result", true);
-                        setResult(RESULT_OK,intent);
+                        setResult(RESULT_OK, intent);
 
                         finish();
                     }
@@ -275,7 +280,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         GetBidsByTaskIdRequest getBidsByTaskIdRequest = new GetBidsByTaskIdRequest(this.taskID);
         RequestManager.getInstance().invokeRequest(getBidsByTaskIdRequest);
         BidList.addAll(getBidsByTaskIdRequest.getResult());
-        ExpandableListAdapter expandableListAdapter= new ExpandableBidListAdapter(this, BidList);
+        ExpandableListAdapter expandableListAdapter = new ExpandableBidListAdapter(this, BidList);
         BidslistView.setAdapter(expandableListAdapter);
     }
 
@@ -299,21 +304,19 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         // 2018-03-19
         // Limits the number of decimals allowed in input
         incomingBidText.setFilters(new InputFilter[] {
-                new DigitsKeyListener(Boolean.FALSE, Boolean.TRUE) {
-                    @Override
-                    public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-                        StringBuilder builder = new StringBuilder(dest);
-                        builder.insert(dstart, source);
-                        String temp=builder.toString();
-                        if (temp.contains(".")) {
-                            temp = temp.substring(temp.indexOf(".") + 1);
-                            if (temp.length() > 2) {
-                                return "";
-                            }
-                        }
-                        return super.filter(source, start, end, dest, dstart, dend);
+            new DigitsKeyListener(Boolean.FALSE, Boolean.TRUE) {
+                @Override
+                public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                    StringBuilder builder = new StringBuilder(dest);
+                    builder.insert(dstart, source);
+                    String temp=builder.toString();
+                    if (temp.contains(".")) {
+                        temp = temp.substring(temp.indexOf(".") + 1);
+                        if (temp.length() > 2) {return "";}
                     }
+                    return super.filter(source, start, end, dest, dstart, dend);
                 }
+            }
         });
 
         //bring up keyboard when user taps place bid
@@ -358,7 +361,15 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         mBuilder.show();
     }
 
-    public void updateBidsList(){
+
+    public void theYellowButton(android.view.View view) {
+        Toast.makeText(this, "pink button is dead", Toast.LENGTH_SHORT).show();
+
+    }
+
+
+
+        public void updateBidsList(){
         BidList = new ArrayList<>();
         GetBidsByTaskIdRequest getBidsByTaskIdRequest = new GetBidsByTaskIdRequest(this.taskID);
         RequestManager.getInstance().invokeRequest(getBidsByTaskIdRequest);
