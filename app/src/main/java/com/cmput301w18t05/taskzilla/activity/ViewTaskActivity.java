@@ -15,6 +15,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.LocationManager;
+import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -335,12 +336,26 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                 imm.hideSoftInputFromWindow(submitBidButton.getWindowToken(), 0);
 
                 mBuilder.dismiss();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        updateBidsList();
+                    }
+                }, 1500);
             }
         });
         mBuilder.setView(mView);
         mBuilder.show();
     }
 
+    public void updateBidsList(){
+        BidList = new ArrayList<>();
+        GetBidsByTaskIdRequest getBidsByTaskIdRequest = new GetBidsByTaskIdRequest(this.taskID);
+        RequestManager.getInstance().invokeRequest(getBidsByTaskIdRequest);
+        BidList.addAll(getBidsByTaskIdRequest.getResult());
+        ExpandableListAdapter expandableListAdapter= new ExpandableBidListAdapter(this, BidList);
+        BidslistView.setAdapter(expandableListAdapter);
+    }
     @Override
     public void onMapReady(GoogleMap googleMap) {
 

@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
         /*Auto Login*/
         loadLogin();
         if(foundUser!=null){
-            currentUser.getRealInstance().setUser(foundUser);
+            currentUser.getRealInstance().setUser(getUser(foundUser.getUsername()));
             mainActivityController.logIn();
             finish();
         }

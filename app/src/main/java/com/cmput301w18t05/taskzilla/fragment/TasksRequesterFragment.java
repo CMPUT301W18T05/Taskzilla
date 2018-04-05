@@ -175,6 +175,7 @@ public class TasksRequesterFragment extends Fragment {
     }
 
     public void updateRList(){
+        requestTasks = new GetTasksByRequesterUsernameRequest(cUser.getUsername());
         RequestManager.getInstance().invokeRequest(getContext(), requestTasks);
         taskList.clear();
         taskList.addAll(requestTasks.getResult());
@@ -201,10 +202,7 @@ public class TasksRequesterFragment extends Fragment {
             startActivityForResult(intent, 1);
         }
         catch (Exception e){
-            RequestManager.getInstance().invokeRequest(getContext(), requestTasks);
-            taskList.clear();
-            taskList.addAll(requestTasks.getResult());
-            adapter.notifyDataSetChanged();
+            updateRList();
             Toast.makeText(getActivity(), "Task no longer exists", Toast.LENGTH_SHORT).show();
         }
     }
