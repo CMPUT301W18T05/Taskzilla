@@ -35,4 +35,8 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="AppTheme.YellowButton" parent="Base.Widget.AppCompat.Button">
+        <item name="colorButtonNormal">@color/buttonYellow</item>
+    </style>
+
 </resources>

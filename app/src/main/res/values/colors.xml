@@ -15,4 +15,6 @@
     <color name="colorPrimaryDark">#e0e0e0</color>
     <color name="colorAccent">#ff4081</color>
     <color name="tabSelectorColor">#dfdfdf</color>
+    <color name="buttonYellow">#effd5f</color>
+    <color name="buttonYellowComplement">#00e5ee</color>
 </resources>

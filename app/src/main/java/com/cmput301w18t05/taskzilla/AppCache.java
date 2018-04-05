@@ -27,6 +27,7 @@ public class AppCache {
     private TreeSet<Bid> cachedBids = new TreeSet<>();
     private TreeSet<User> cachedUsers = new TreeSet<>();
     private int taskIDCounter = 0;
+    private int bidIDCounter = 0;
 
     private AppCache() {
     }
@@ -61,7 +62,9 @@ public class AppCache {
     }
 
     public void addInCache(Bid bid) {
+        bid.setId(String.valueOf(bidIDCounter));
         cachedBids.add(bid);
+        bidIDCounter++;
     }
 
     public void addBidsToCache(Collection<Bid> bids) {
@@ -128,7 +131,7 @@ public class AppCache {
         ArrayList<Bid> result = new ArrayList<>();
         for (Bid b : cachedBids) {
             if (b.getTaskId().equals(Taskid)) {
-                System.out.println("Found bid in bidcache: "+b+" matching taskid: "+Taskid);
+                System.out.println("Found bid in bidcache: "+b.getId()+" matching taskid: "+Taskid);
                 result.add(b);
             }
         }

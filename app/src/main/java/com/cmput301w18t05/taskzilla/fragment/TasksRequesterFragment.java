@@ -71,7 +71,7 @@ public class TasksRequesterFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //Set up listview and adapter
+        //Set up listView and adapter
         taskList = new ArrayList<>();
         adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, taskList);
 
