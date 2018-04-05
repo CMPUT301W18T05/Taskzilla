@@ -192,7 +192,7 @@
         <ExpandableListView
             android:id="@+id/BidsListView"
             android:layout_width="0dp"
-            android:layout_height="76dp"
+            android:layout_height="127dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="16dp"
             android:layout_marginStart="8dp"

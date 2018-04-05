@@ -14,6 +14,7 @@ package com.cmput301w18t05.taskzilla.activity;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -130,9 +131,17 @@ public class MainActivity extends AppCompatActivity {
         });
 
         /*Auto Login*/
+        ConnectivityManager cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo ni = cm.getActiveNetworkInfo();
+
+
         loadLogin();
         if(foundUser!=null){
-            currentUser.getRealInstance().setUser(foundUser);
+            if (ni != null && ni.isConnected()) {
+                currentUser.getRealInstance().setUser(getUser(foundUser.getUsername()));
+            }else{
+                currentUser.getRealInstance().setUser(foundUser);
+            }
             mainActivityController.logIn();
             finish();
         }

@@ -46,7 +46,6 @@ public class SignUpActivity extends AppCompatActivity {
     public TextView email;
     public TextView phone;
     public Button signUp;
-    private User foundUser;
     public User newUser;
 
     /**
