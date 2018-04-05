@@ -140,8 +140,9 @@ public class SearchController {
 
         ArrayList<Task> temp;
         temp = request.getResult();
+        System.out.println("Search result is: " + temp);
 
-        while (temp.size() > 0) {
+        while (temp != null && temp.size() > 0) {
 
             for (Task t : temp)
                 this.searchResults.add(t);

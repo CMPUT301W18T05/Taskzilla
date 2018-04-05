@@ -13,6 +13,7 @@ package com.cmput301w18t05.taskzilla.request.command;
 
 import android.util.Log;
 
+import com.cmput301w18t05.taskzilla.AppCache;
 import com.cmput301w18t05.taskzilla.controller.ElasticSearchController;
 import com.cmput301w18t05.taskzilla.Task;
 import com.cmput301w18t05.taskzilla.request.Request;
@@ -27,9 +28,10 @@ import java.util.ArrayList;
  * @version 1.0
  */
 public class GetTasksByRequesterUsernameRequest extends Request {
-    ElasticSearchController.GetTasksByRequesterUsername task;
-    ArrayList<Task> result;
-    String user;
+    private ElasticSearchController.GetTasksByRequesterUsername task;
+    private ArrayList<Task> result;
+    private String user;
+    private boolean executedOffline = false;
 
     public GetTasksByRequesterUsernameRequest(String username) {
         this.user = username;
@@ -42,14 +44,34 @@ public class GetTasksByRequesterUsernameRequest extends Request {
 
     @Override
     public void executeOffline() {
+        System.out.println("Searching for tasks by requester username with username: "+user);
+        executedOffline = true;
+        AppCache appCache = AppCache.getInstance();
+        ArrayList<Task> cachedTasks = appCache.getCachedTasks();
+
+        this.result = new ArrayList<>();
+        for (Task t : cachedTasks) {
+            System.out.println("Looking at task with taskrequester uname: "+t.getTaskRequester().getUsername());
+            if (t.getTaskRequester().getUsername() == user) {
+                System.out.println("Adding this to result");
+                result.add(t);
+            }
+        }
+    }
+
+    @Override
+    public boolean requiresConnection() {
+        return false;
     }
 
     public ArrayList<Task> getResult() {
         try {
-            result = this.task.get();
+            if (!executedOffline) {
+                result = this.task.get();
+            }
 
             for(Task t:result)
-                Log.i("Result",t.getId());
+                System.out.println("GetTasksByRequesterUsername result: "+t);
 
             return result;
         }

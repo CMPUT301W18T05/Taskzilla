@@ -21,14 +21,20 @@ package com.cmput301w18t05.taskzilla.request;
  * Abstracts the request object
  */
 public abstract class Request {
-    private boolean serverRequired;
+
+    protected boolean executedOffline = false;
+    protected boolean queueReady = false;
 
     public abstract void execute();
 
     public abstract void executeOffline();
 
     public boolean requiresConnection() {
-        return serverRequired;
+        return true; // default requires connection, override this if this is not true
+    }
+
+    public boolean putInQueue() {
+        return queueReady;
     }
 
 }

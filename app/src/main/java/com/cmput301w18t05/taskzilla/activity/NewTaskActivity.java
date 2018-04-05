@@ -58,7 +58,7 @@ public class NewTaskActivity extends AppCompatActivity {
         addTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                newTaskController.addTask(taskName.getText().toString(),cUser, taskDescription.getText().toString());
+                newTaskController.addTask(taskName.getText().toString(), cUser, taskDescription.getText().toString());
             }
         });
 

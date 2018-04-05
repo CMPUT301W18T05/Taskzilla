@@ -28,6 +28,7 @@ import com.cmput301w18t05.taskzilla.request.command.AddUserRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetUserByUsernameRequest;
 
 
+import org.apache.commons.lang3.ObjectUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -45,7 +46,7 @@ public class SignUpActivity extends AppCompatActivity {
     public TextView email;
     public TextView phone;
     public Button signUp;
-
+    private User foundUser;
     public User newUser;
 
     /**
@@ -91,12 +92,21 @@ public class SignUpActivity extends AppCompatActivity {
             return false;
         } else {
             String usernameTemp = username.getText().toString();
-            Pattern usernameConstraint = Pattern.compile("[^a-zA-Z0-9_]");
+            Pattern usernameConstraint = Pattern.compile("[^a-zA-Z0-9_]"); // this should not be here, should be in user class
             boolean hasChar = usernameConstraint.matcher(usernameTemp).find();
             if(hasChar == true) {
                 showError("Username contains illegal character!");
                 return false;
             }
+            if (userExists(usernameTemp)) {
+                showError("Username is already in use.");
+                return false;
+            }
+        }
+
+        if(getUser(username.getText().toString())!=null){
+            showError("Username already taken!");
+            return false;
         }
 
         // Taken from https://stackoverflow.com/questions/18463848/how-to-tell-if-a-random-string-is-an-email-address-or-something-else
@@ -111,7 +121,7 @@ public class SignUpActivity extends AppCompatActivity {
         } else {
             String emailTemp = email.getText().toString();
 
-            Pattern p = Pattern.compile("[a-zA-z0-9._%+-]{1,}+@[a-zA-Z0-9.-]+\\.[a-zA-Z0-9]{1,}");
+            Pattern p = Pattern.compile("[a-zA-z0-9._%+-]{1,}+@[a-zA-Z0-9.-]+\\.[a-zA-Z0-9]{1,}"); // this is already in user class
             Matcher m = p.matcher(emailTemp);
 
             boolean matchFound = m.matches();
@@ -191,21 +201,27 @@ public class SignUpActivity extends AppCompatActivity {
 
     public boolean addUserToDB() {
         RequestManager requestManager = RequestManager.getInstance();
-
         AddUserRequest addUserRequest = new AddUserRequest(newUser);
 
-        // check if user exists
-        GetUserByUsernameRequest getUserByUsernameRequest = new GetUserByUsernameRequest(newUser.getUsername());
-        requestManager.invokeRequest(getUserByUsernameRequest);
+        requestManager.invokeRequest(addUserRequest);
+        return addUserRequest.getResult();
+    }
+
+    public boolean userExists(String username) {
+        GetUserByUsernameRequest getUserByUsernameRequest = new GetUserByUsernameRequest(username);
+        RequestManager.getInstance().invokeRequest(getUserByUsernameRequest);
 
         if (getUserByUsernameRequest.getResult() == null) {
-            requestManager.invokeRequest(addUserRequest);
-            return addUserRequest.getResult();
-        }
-        else {
-            showError("This username is already is use. Please try another.");
             return false;
         }
+        return true;
+    }
+
+
+    public User getUser(String username) {
+        GetUserByUsernameRequest getUserByUsernameRequest = new GetUserByUsernameRequest(username);
+        RequestManager.getInstance().invokeRequest(getUserByUsernameRequest);
+        return getUserByUsernameRequest.getResult();
     }
 
     /**
