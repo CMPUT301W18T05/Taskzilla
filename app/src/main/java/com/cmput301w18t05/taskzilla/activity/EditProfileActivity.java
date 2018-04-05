@@ -35,6 +35,7 @@ import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.AddUserRequest;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.InputStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -45,7 +46,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private EditText EmailText;
     private EditText PhoneText;
     private ImageView profilePicture;
-    private Integer size;
+    private Long size;
 
     private User user = new User(); //dummy
     @Override
@@ -191,10 +192,11 @@ public class EditProfileActivity extends AppCompatActivity {
                 final Uri imageUri = data.getData();
                 final InputStream imageStream = this.getContentResolver().openInputStream(imageUri);
                 final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                File file = new File(imageUri.getPath());
 
                 // taken from https://stackoverflow.com/questions/2407565/bitmap-byte-size-after-decoding
                 // 2018-04-03
-                size = selectedImage.getByteCount();
+                size = file.length();
                 Log.i("SIZE OF IMAGE", String.valueOf(size));
                 if(size>65536){
                     Toast.makeText(this, "photograph too large", Toast.LENGTH_LONG).show();
