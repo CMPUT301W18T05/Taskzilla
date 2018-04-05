@@ -13,8 +13,10 @@ package com.cmput301w18t05.taskzilla.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.cmput301w18t05.taskzilla.Photo;
 import com.cmput301w18t05.taskzilla.controller.ProfileController;
 import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.User;
@@ -34,6 +36,7 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView numTasksDoneField;
     private TextView providerRatingField;
     private TextView requesterRatingField;
+    private ImageView profilePicture;
 
     private String name;
     private String email;
@@ -78,11 +81,22 @@ public class ProfileActivity extends AppCompatActivity {
         phoneField = findViewById(R.id.PhoneField);
         numRequestsField = findViewById(R.id.NumRequestsField);
         numTasksDoneField = findViewById(R.id.NumTasksDoneField);
+        profilePicture = findViewById(R.id.ProfilePictureView);
+
 
         nameField.setText(name);
         emailField.setText(email);
         phoneField.setText(phone);
         numRequestsField.setText(numRequests);
         numTasksDoneField.setText(numTasksDone);
+
+        try {
+            profilePicture.setImageBitmap(user.getPhoto().StringToBitmap());
+        }
+        catch (Exception e){
+            Photo defaultPhoto = new Photo("");
+            profilePicture.setImageBitmap(defaultPhoto.StringToBitmap());
+
+        }
     }
 }

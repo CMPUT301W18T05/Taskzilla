@@ -19,11 +19,11 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -33,21 +33,18 @@ import android.widget.Toast;
 
 import com.cmput301w18t05.taskzilla.EmailAddress;
 import com.cmput301w18t05.taskzilla.PhoneNumber;
+import com.cmput301w18t05.taskzilla.Photo;
 import com.cmput301w18t05.taskzilla.Task;
-import com.cmput301w18t05.taskzilla.activity.EditTaskActivity;
 import com.cmput301w18t05.taskzilla.activity.MainActivity;
-import com.cmput301w18t05.taskzilla.activity.ViewTaskActivity;
 import com.cmput301w18t05.taskzilla.controller.ProfileController;
 import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.User;
 import com.cmput301w18t05.taskzilla.activity.EditProfileActivity;
-import com.cmput301w18t05.taskzilla.controller.SearchController;
 import com.cmput301w18t05.taskzilla.currentUser;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.AddUserRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetTasksByProviderUsernameRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetTasksByRequesterUsernameRequest;
-import com.cmput301w18t05.taskzilla.request.command.GetUserByUsernameRequest;
 import com.google.gson.Gson;
 
 import java.io.BufferedWriter;
@@ -83,20 +80,13 @@ public class ProfileFragment extends Fragment {
     private TextView providerRatingField;
     private TextView requesterRatingField;
 
-    private String name;
-    private String email;
-    private String phone;
     private String numRequests;
     private String numTasksDone;
     private Button logOut;
     private User user  = currentUser.getInstance();
     private ImageButton editProfile;
     private ProfileController profileController;
-
-    private Integer PICK_IMAGE = 5;
-    private ImageView image_view;
-
-    private Integer size;
+    private ImageView profilePicture;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -129,7 +119,7 @@ public class ProfileFragment extends Fragment {
      */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        image_view = view.findViewById(R.id.profilePictureView);
+        profilePicture = view.findViewById(R.id.ProfilePictureView);
         nameField = view.findViewById(R.id.NameField);
         emailField = view.findViewById(R.id.EmailField);
         phoneField = view.findViewById(R.id.PhoneField);
@@ -140,13 +130,19 @@ public class ProfileFragment extends Fragment {
         logOut = view.findViewById(R.id.LogOutButton);
         editProfile = view.findViewById(R.id.EditButton);
 
-        name = user.getName();
-        email = user.getEmail().toString();
-        phone = user.getPhone().toString();
 
-        nameField.setText(name);
-        emailField.setText(email);
-        phoneField.setText(phone);
+
+        nameField.setText(user.getName());
+        emailField.setText(user.getEmail().toString());
+        phoneField.setText(user.getPhone().toString());
+        try {
+            profilePicture.setImageBitmap(user.getPhoto().StringToBitmap());
+        }
+        catch (Exception e){
+            Photo defaultPhoto = new Photo("");
+            profilePicture.setImageBitmap(defaultPhoto.StringToBitmap());
+
+        }
 
 
         editProfile.setOnClickListener(new View.OnClickListener() {
@@ -155,12 +151,7 @@ public class ProfileFragment extends Fragment {
                 editProfileClicked();
             }
         });
-        image_view.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-               profilePictureClicked();
-           }
-      });
+
 
         logOut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -206,17 +197,13 @@ public class ProfileFragment extends Fragment {
      */
     public void editProfileClicked() {
         Intent intent = new Intent(getActivity(), EditProfileActivity.class);
-        intent.putExtra("Name", name);
-        intent.putExtra("Email", email);
-        intent.putExtra("Phone", phone);
+        intent.putExtra("Name", user.getName());
+        intent.putExtra("Email", user.getEmail().toString());
+        intent.putExtra("Phone", user.getPhone().toString());
+        intent.putExtra("Photo", user.getPhoto().toString());
         startActivityForResult(intent, 1);
     }
 
-    public void profilePictureClicked() {
-        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-        photoPickerIntent.setType("image/*");
-        startActivityForResult(photoPickerIntent, PICK_IMAGE);
-    }
 
 
 
@@ -273,45 +260,21 @@ public class ProfileFragment extends Fragment {
                 String newName = data.getStringExtra("Name");
                 String newEmail = data.getStringExtra("Email");
                 String newPhone = data.getStringExtra("Phone");
+                String newPhoto = data.getStringExtra("Photo");
                 user.setName(newName);
                 user.setEmail(new EmailAddress(newEmail));
                 user.setPhone(new PhoneNumber(newPhone));
+                user.setPhoto(new Photo(newPhoto));
                 AddUserRequest request = new AddUserRequest(user);
                 RequestManager.getInstance().invokeRequest(getContext(), request);
                 nameField.setText(newName);
                 emailField.setText(newEmail);
                 phoneField.setText(newPhone);
+                profilePicture.setImageBitmap(user.getPhoto().StringToBitmap());
             }
         }
 
-        else if(requestCode == 5) {
-            if (resultCode == RESULT_OK) {
-                try {
-                    final Uri imageUri = data.getData();
-                    final InputStream imageStream = getActivity().getContentResolver().openInputStream(imageUri);
-                    final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                    Log.i("test", selectedImage.toString());
 
-                    // taken from https://stackoverflow.com/questions/2407565/bitmap-byte-size-after-decoding
-                    // 2018-04-03
-                    size = selectedImage.getByteCount();
-                    Log.i("SIZE OF IMAGE", String.valueOf(size));
-                    if(size>65536){
-                        Toast.makeText(getActivity(), "photograph too large", Toast.LENGTH_LONG).show();
-                    }
-                    else{
-                        image_view.setImageBitmap(selectedImage);
-                    }
-
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                    Toast.makeText(getActivity(), "Something went wrong", Toast.LENGTH_LONG).show();
-                }
-
-            } else {
-                Toast.makeText(getActivity(), "You haven't picked Image", Toast.LENGTH_LONG).show();
-            }
-        }
 
     }
 }
