@@ -100,6 +100,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
     private ExpandableListView BidslistView;
     private Button BlueButton;
     private Button YellowButton;
+    private Button PinkButton;
     private ScrollView scrollView;
 
 
@@ -155,8 +156,12 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
             DeleteButton.setVisibility(View.INVISIBLE);
             EditButton.setVisibility(View.INVISIBLE);
             YellowButton.setVisibility(View.INVISIBLE);
+            PinkButton.setVisibility(View.INVISIBLE);
         }
-
+        if (task.getStatus().equals("assigned")) {
+            YellowButton.setVisibility(View.INVISIBLE);
+            PinkButton.setVisibility(View.INVISIBLE);
+        }
 
 //            LinearLayout.LayoutParams detailsLayout =
 //            new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -319,6 +324,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                     return;
                 }
                 // do stuff here to actually add bid
+                task.addBid(new Bid(currentUserId, taskID, incomingBidFloat));
                 if (task.getBestBid() > incomingBidFloat || task.getBestBid() == -1.0f) {
                     task.setBestBidder(currentUserId);
                     task.setBestBid(incomingBidFloat);
@@ -327,8 +333,11 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                             "A similar bid already exists. Please bid another value",
                             Toast.LENGTH_SHORT).show();
                     return;
+                } else if (task.getBestBid() < incomingBidFloat && task.getBestBidder().equals(currentUserId)) {
+                    task.updateBestBid();
+                    task.setBestBidder(currentUserId);
+                    task.setBestBid(incomingBidFloat);
                 }
-                task.addBid(new Bid(currentUserId, taskID, incomingBidFloat));
                 task.setStatus("bidded");
                 TaskStatus.setText("Bidded");
                 setProviderField();
@@ -419,8 +428,12 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
     }
 
 
+    public void thePinkButton(android.view.View view) {
+        Toast.makeText(this, "dawdwadwwadwad", Toast.LENGTH_SHORT).show();
+    }
+
     public void setRequesterField() {
-        String text = "Provider: " + TaskRequester.getName();
+        String text = "Requester: " + TaskRequester.getName();
         RequesterName.setText(text);
         try {
             RequesterPicture.setImageBitmap(TaskRequester.getPhoto().StringToBitmap());
@@ -472,9 +485,10 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         TaskName = findViewById(R.id.TaskName);
         TaskStatus = findViewById(R.id.TaskStatus);
         BidslistView = findViewById(R.id.BidsListView);
+        scrollView = findViewById(R.id.ViewTaskScrollView);
         BlueButton = findViewById(R.id.BlueButton);
         YellowButton = findViewById(R.id.YellowButton);
-        scrollView = findViewById(R.id.ViewTaskScrollView);
+        PinkButton = findViewById(R.id.PinkButton);
     }
 
     public void setValues(){
