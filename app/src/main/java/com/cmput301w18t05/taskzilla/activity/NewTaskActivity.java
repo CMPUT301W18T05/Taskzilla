@@ -13,6 +13,7 @@ package com.cmput301w18t05.taskzilla.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,6 +23,11 @@ import com.cmput301w18t05.taskzilla.User;
 import com.cmput301w18t05.taskzilla.controller.NewTaskController;
 import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.currentUser;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.google.android.gms.maps.model.LatLng;
 
 /**
  * Activity for creating a new task
@@ -30,7 +36,7 @@ public class NewTaskActivity extends AppCompatActivity {
 
     private NewTaskController newTaskController;
     private User cUser = currentUser.getInstance();
-    private EditText locationText;
+    private LatLng taskLocation;
     /**
      * Activity uses the activity_new_task.xml layout
      * New tasks are created through NewTaskController
@@ -46,8 +52,31 @@ public class NewTaskActivity extends AppCompatActivity {
         Button addTask = findViewById(R.id.addTaskButton);
         final EditText taskName = findViewById(R.id.TaskName);
         final EditText taskDescription = findViewById(R.id.Description);
-        locationText = findViewById(R.id.LocationTextView);
 
+
+
+        final PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+
+            @Override
+            public void onPlaceSelected(Place place) {
+                // TODO: Get info about the selected place.
+                Log.i("yolo", "Place: " + place.getName());
+                autocompleteFragment.setHint(place.getName());
+                taskLocation=place.getLatLng();
+            }
+
+            @Override
+            public void onError(Status status) {
+                // TODO: Handle the error.
+                taskLocation = null;
+                Log.i("err", "An error occurred: " + status);
+            }
+        });
+
+        autocompleteFragment.setHint("Task Location");
         /* cancel button */
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,17 +89,10 @@ public class NewTaskActivity extends AppCompatActivity {
         addTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                newTaskController.addTask(taskName.getText().toString(), cUser, taskDescription.getText().toString());
+                newTaskController.addTask(taskName.getText().toString(), cUser, taskDescription.getText().toString(),taskLocation);
             }
         });
 
-        /* Location */
-        locationText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
 
     }
 

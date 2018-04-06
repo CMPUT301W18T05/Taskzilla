@@ -13,8 +13,10 @@ package com.cmput301w18t05.taskzilla.controller;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cmput301w18t05.taskzilla.R;
@@ -23,6 +25,8 @@ import com.cmput301w18t05.taskzilla.User;
 import com.cmput301w18t05.taskzilla.activity.NewTaskActivity;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.AddTaskRequest;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.maps.model.LatLng;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -55,7 +59,7 @@ public class NewTaskController {
      * @param user User that is making the task
      * @param description Description of the task
      */
-    public void addTask(String name, User user, String description){
+    public void addTask(String name, User user, String description, LatLng taskLocation){
         //Check field lengths and give error
         EditText taskName = view.findViewById(R.id.TaskName);
         EditText taskDescription = view.findViewById(R.id.Description);
@@ -63,8 +67,8 @@ public class NewTaskController {
         if(TextUtils.getTrimmedLength(taskName.getText()) <= 55
                 && TextUtils.getTrimmedLength(taskName.getText()) >0
                 && TextUtils.getTrimmedLength(taskDescription.getText()) <= 500
-                && TextUtils.getTrimmedLength(taskDescription.getText()) >0){
-            Task task = new Task(name, user, description);
+                && TextUtils.getTrimmedLength(taskDescription.getText()) >0 && taskLocation!=null){
+            Task task = new Task(name, user, description,taskLocation);
 
             AddTaskRequest request = new AddTaskRequest(task);
             RequestManager.getInstance().invokeRequest(ctx, request);
@@ -93,6 +97,10 @@ public class NewTaskController {
 
             if (TextUtils.getTrimmedLength(taskDescription.getText()) == 0) {
                 taskDescription.setError("Description can not be empty");
+            }
+            if (taskLocation==null) {
+                Toast.makeText(view, "Add a location to your task",
+                        Toast.LENGTH_LONG).show();
             }
         }
     }

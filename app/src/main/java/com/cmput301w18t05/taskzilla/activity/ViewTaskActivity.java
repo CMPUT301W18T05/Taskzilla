@@ -521,7 +521,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         mMap = googleMap;
 
         // Add a marker to a location and move the camera
-        LatLng taskLocation = new LatLng(53.631611, -113.323975);
+        LatLng taskLocation = task.getLocation();
         mMap.addMarker(new MarkerOptions().position(taskLocation).title("Task Name"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(taskLocation));
         moveToCurrentLocation(taskLocation);

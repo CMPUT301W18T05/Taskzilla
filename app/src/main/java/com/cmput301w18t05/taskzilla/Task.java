@@ -21,6 +21,7 @@ import com.cmput301w18t05.taskzilla.request.command.AddTaskRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetBidsByTaskIdRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetUserRequest;
 import com.cmput301w18t05.taskzilla.request.command.RemoveBidRequest;
+import com.google.android.gms.maps.model.LatLng;
 
 import org.apache.commons.lang3.ObjectUtils;
 
@@ -50,7 +51,7 @@ public class Task implements Comparable<Task> {
 
     private String status;
     private String description;
-    private Location location;
+    private LatLng location;
     private Float bestBid;
     private ArrayList<Bid> bids;
     private ArrayList<Photo> photos;
@@ -84,7 +85,7 @@ public class Task implements Comparable<Task> {
      * @param description Description of the task
      * @param location Location of the task
      */
-    public Task(String name, User TaskRequester, String description, Location location) {
+    public Task(String name, User TaskRequester, String description, LatLng location) {
         photos = new ArrayList<>();
         this.name = name;
         this.requesterId = TaskRequester.getId();
@@ -104,7 +105,7 @@ public class Task implements Comparable<Task> {
      * @param location Location of the task
      * @param photos List of photos realated to the task
      */
-    public Task(String name, User TaskRequester, String description, Location location, ArrayList<Photo> photos) {
+    public Task(String name, User TaskRequester, String description, LatLng location, ArrayList<Photo> photos) {
         photos = new ArrayList<>();
         this.name = name;
         this.requesterId = TaskRequester.getId();
@@ -337,11 +338,11 @@ public class Task implements Comparable<Task> {
         this.description = description;
     }
 
-    public Location getLocation() {
+    public LatLng getLocation() {
         return this.location;
     }
 
-    public void setLocation(Location location) {
+    public void setLocation(LatLng location) {
         this.location = location;
     }
 
