@@ -76,12 +76,12 @@ public class ProfileActivity extends AppCompatActivity {
         numRequests = profileController.getNumberOfRequests(user.getUsername());
         numTasksDone = profileController.getNumberOfTasksDone(user.getUsername());
 
-        nameField = findViewById(R.id.NameField);
-        emailField = findViewById(R.id.EmailField);
-        phoneField = findViewById(R.id.PhoneField);
-        numRequestsField = findViewById(R.id.NumRequestsField);
-        numTasksDoneField = findViewById(R.id.NumTasksDoneField);
-        profilePicture = findViewById(R.id.ProfilePictureView);
+        nameField = findViewById(R.id.nameField2);
+        emailField = findViewById(R.id.emailField2);
+        phoneField = findViewById(R.id.phoneField2);
+        numRequestsField = findViewById(R.id.numRequestsField);
+        numTasksDoneField = findViewById(R.id.numTasksDoneField);
+        profilePicture = findViewById(R.id.profilePictureView);
 
 
         nameField.setText(name);
