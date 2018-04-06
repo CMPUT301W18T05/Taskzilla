@@ -73,7 +73,7 @@ public class TasksRequesterFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
+
         //Set up listView and adapter
         taskList = new ArrayList<>();
         adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, taskList);
@@ -218,32 +218,8 @@ public class TasksRequesterFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu,menu);
-        super.onCreateOptionsMenu(menu,inflater);
-    }
-/*
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu,menu);
-        return super.onCreateOptionsMenu(menu);
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item){
 
-        if(item.getItemId()==R.id.biddedTasks){
-
-        }
-        if(item.getItemId()==R.id.requestedTasks){
-            sortFilter = 1;
-        }
-        if(item.getItemId()==R.id.completedTasks){
-            sortFilter = 2;
-        }
-        return super.onOptionsItemSelected(item);
-    }*/
 
     /**
      * Switches to NewTaskActitivy.

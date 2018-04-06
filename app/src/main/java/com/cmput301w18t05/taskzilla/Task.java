@@ -294,6 +294,7 @@ public class Task implements Comparable<Task> {
                 (this.status.equals("bidded") && newStatus.equals("assigned"))) {
             this.status = newStatus;
             AddTaskRequest request = new AddTaskRequest(this);
+            request.setUpdate(true);
             RequestManager.getInstance().invokeRequest(request);
         }
         // if newStatus is assigned delete all bids under this task

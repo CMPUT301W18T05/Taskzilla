@@ -159,7 +159,7 @@ public class ProfileFragment extends Fragment {
     // 2018-04-01
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
-        /*
+
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
 
@@ -184,7 +184,7 @@ public class ProfileFragment extends Fragment {
             numTasksDoneField.setText(numTasksDone);
 
         }
-        */
+
     }
 
     /**
