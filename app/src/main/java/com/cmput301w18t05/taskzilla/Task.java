@@ -14,6 +14,7 @@ package com.cmput301w18t05.taskzilla;
 import android.location.Location;
 import android.widget.Toast;
 
+import com.cmput301w18t05.taskzilla.controller.ElasticSearchController;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.AddBidRequest;
 import com.cmput301w18t05.taskzilla.request.command.AddTaskRequest;
@@ -157,7 +158,6 @@ public class Task implements Comparable<Task> {
         this.bestBid = -1.0f;
         this.highestBidder = "";
     }
-
 
     /**
      * addPhoto
@@ -416,5 +416,10 @@ public class Task implements Comparable<Task> {
 
     public int compareTo(Task task) {
         return this.getId().compareTo(task.getId());
+    }
+
+    public void updateThis() {
+        AddTaskRequest req = new AddTaskRequest(this);
+        RequestManager.getInstance().invokeRequest(req);
     }
 }

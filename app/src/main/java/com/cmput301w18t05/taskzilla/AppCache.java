@@ -123,7 +123,8 @@ public class AppCache {
 
         ArrayList<Bid> result = new ArrayList<>();
         for (Bid b : cachedBids) {
-            if (b.getId().equals(userid)) {
+            System.out.println("Looking at bid with userid: "+b.getUserId()+" and taskid: "+b.getTaskId());
+            if (b.getUserId().equals(userid)) {
                 System.out.println("Found bid in bidcache: "+b+" matching userid: "+userid);
                 result.add(b);
             }

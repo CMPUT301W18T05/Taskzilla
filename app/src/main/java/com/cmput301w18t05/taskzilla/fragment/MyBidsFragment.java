@@ -134,6 +134,8 @@ public class MyBidsFragment extends Fragment {
     public void onStart() {
         super.onStart();
         bidList.clear();
+
+        System.out.println("MyBidsFragment: Getting updated bids list");
         bidController.doTaskRequest();
         bidList.addAll(bidController.getResultBidList());
         adapter.notifyDataSetChanged();

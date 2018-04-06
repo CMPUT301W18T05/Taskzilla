@@ -566,7 +566,7 @@ public class ElasticSearchController {
             verifySettings();
 
             for (Bid bid : bids) {
-                String searchQuery = "{ \"query\" : {\"match_all\" : {}} }";
+                String searchQuery = "{\"query\": {\"bool\": {\"must\": [{\"match\": { \"taskId\": \"a\" }},{\"match\": {\"userId\": \"c\"}}]}}}";
                 Search search = new Search.Builder(searchQuery)
                         .addIndex("cmput301w18t05")
                         .addType("bid").build();
