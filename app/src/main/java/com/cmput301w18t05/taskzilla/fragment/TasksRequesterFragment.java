@@ -188,8 +188,6 @@ public class TasksRequesterFragment extends Fragment {
                 if(selectedItem.equals("Completed")) {
                     updateCompleted();
                 }
-
-
             } // to close the onItemSelected
             public void onNothingSelected(AdapterView<?> parent) {
 
@@ -245,7 +243,6 @@ public class TasksRequesterFragment extends Fragment {
                 }
             }
         }, 1500);
-
     }
 
     public void updateRList(){
@@ -265,7 +262,6 @@ public class TasksRequesterFragment extends Fragment {
                 taskList.add(t);
             }
         }
-
         adapter.notifyDataSetChanged();
     }
 
@@ -328,9 +324,6 @@ public class TasksRequesterFragment extends Fragment {
             Toast.makeText(getActivity(), "Task no longer exists", Toast.LENGTH_SHORT).show();
         }
     }
-
-
-
 
     /**
      * Switches to NewTaskActitivy.

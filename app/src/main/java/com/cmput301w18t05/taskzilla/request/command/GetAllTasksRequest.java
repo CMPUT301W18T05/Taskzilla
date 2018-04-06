@@ -51,7 +51,6 @@ public class GetAllTasksRequest extends Request {
         catch (Exception e) {
             Log.i("Query", "No more results");
         }
-
     }
 
     @Override
@@ -61,7 +60,6 @@ public class GetAllTasksRequest extends Request {
             result = new ArrayList<Task>();
             return;
         }
-
         AppCache appCache = AppCache.getInstance();
         result = appCache.getCachedTasks();
         executedOfflineOnce = true;

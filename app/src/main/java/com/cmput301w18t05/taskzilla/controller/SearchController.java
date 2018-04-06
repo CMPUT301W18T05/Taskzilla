@@ -157,5 +157,4 @@ public class SearchController {
 
         view.notifyChange();
     }
-
 }

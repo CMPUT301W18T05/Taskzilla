@@ -88,7 +88,6 @@ public class EditTaskActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(recyclerViewLayoutManager);
         recyclerViewAdapter = new RecyclerViewAdapter(ctx, photos);
         recyclerView.setAdapter(recyclerViewAdapter);
-
     }
 
     public void TaskCancelButton(View view) {

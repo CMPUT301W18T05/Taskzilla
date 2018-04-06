@@ -98,7 +98,6 @@ public class MainActivity extends AppCompatActivity {
         signupButton = findViewById(R.id.SignUp);
         usernameView = findViewById(R.id.usernameText);
 
-
         cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         /* login action */
@@ -127,8 +126,6 @@ public class MainActivity extends AppCompatActivity {
                     showError("No internet connection. Try again later");
 
                 }
-
-
             }
         });
 
@@ -159,8 +156,6 @@ public class MainActivity extends AppCompatActivity {
      * @param username The username of the user
      * @return User
      */
-
-
 
     boolean doubleBackToExitPressedOnce = false;
     // Taken from https://stackoverflow.com/questions/8430805/clicking-the-back-button-twice-to-exit-an-activity

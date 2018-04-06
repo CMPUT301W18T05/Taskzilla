@@ -53,7 +53,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
     }
 
-
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -113,7 +112,5 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         mMap.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
 
     }
-
-
 }
 
