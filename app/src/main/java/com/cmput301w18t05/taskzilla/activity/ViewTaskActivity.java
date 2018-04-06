@@ -335,8 +335,6 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                     return;
                 } else if (task.getBestBid() < incomingBidFloat && task.getBestBidder().equals(currentUserId)) {
                     task.updateBestBid();
-                    task.setBestBidder(currentUserId);
-                    task.setBestBid(incomingBidFloat);
                 }
                 task.setStatus("bidded");
                 TaskStatus.setText("Bidded");
@@ -454,7 +452,8 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
             profileController.setUserID(task.getBestBidder());
             profileController.getUserRequest();
             User tempUser = profileController.getUser();
-            ProviderName.setText("Best bidder: " + tempUser.getName() + "\nBid amount: " + Float.toString(task.getBestBid()));
+            String text = "Best bidder: " + tempUser.getName() + "\nBid amount: " + Float.toString(task.getBestBid());
+            ProviderName.setText(text);
             try {
                 ProviderPicture.setImageBitmap(tempUser.getPhoto().StringToBitmap());
             } catch (Exception e) {
