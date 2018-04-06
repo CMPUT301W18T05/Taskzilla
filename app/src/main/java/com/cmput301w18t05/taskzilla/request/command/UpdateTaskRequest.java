@@ -35,5 +35,4 @@ public class UpdateTaskRequest extends Request {
     }
 
     public void executeOffline() {}
-
 }

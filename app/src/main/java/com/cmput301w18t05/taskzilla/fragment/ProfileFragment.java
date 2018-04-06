@@ -124,7 +124,6 @@ public class ProfileFragment extends Fragment {
         logOut = view.findViewById(R.id.logOutButton);
         editProfile = view.findViewById(R.id.editButton);
 
-
         nameField.setText(user.getName());
         emailField.setText(user.getEmail().toString());
         phoneField.setText(user.getPhone().toString());
@@ -137,14 +136,12 @@ public class ProfileFragment extends Fragment {
 
         }
 
-
         editProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 editProfileClicked();
             }
         });
-
 
         logOut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -202,9 +199,6 @@ public class ProfileFragment extends Fragment {
         intent.putExtra("Photo", user.getPhoto().toString());
         startActivityForResult(intent, 1);
     }
-
-
-
 
     /**
      * When log out is clicked, app goes back to log in screen

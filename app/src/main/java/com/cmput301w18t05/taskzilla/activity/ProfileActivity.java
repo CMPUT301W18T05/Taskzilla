@@ -48,8 +48,6 @@ public class ProfileActivity extends AppCompatActivity {
     private String numRequests;
     private String numTasksDone;
 
-
-
     /**
      * onCreate
      * Set fields in the activity_profile.xml
@@ -91,7 +89,6 @@ public class ProfileActivity extends AppCompatActivity {
         numRequestsField = findViewById(R.id.numRequestsField);
         numTasksDoneField = findViewById(R.id.numTasksDoneField);
         profilePicture = findViewById(R.id.profilePictureView);
-
 
         nameField.setText(name);
         emailField.setText(email);

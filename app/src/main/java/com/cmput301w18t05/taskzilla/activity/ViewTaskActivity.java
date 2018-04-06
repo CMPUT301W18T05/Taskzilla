@@ -105,7 +105,6 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
     private Button PinkButton;
     private ScrollView scrollView;
 
-
     /**onCreate
      * Retrieve the task using the task id that was sent using
      * intent into the activity updating the information on the
@@ -170,8 +169,6 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
 //            LinearLayout.LayoutParams.WRAP_CONTENT);
 //            detailsLayout.setMargins(0,999,0,0);
 //            DescriptionView.setLayoutParams(detailsLayout);
-
-
 
         /*
          * ProviderPicture and RequesterPicture
@@ -273,7 +270,6 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         BidslistView.setAdapter(expandableListAdapter);
     }
 
-
     /**
      * @param view pretty much the page it's on
      * @author myapplestory
@@ -342,12 +338,10 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                 TaskStatus.setText("Bidded");
                 setProviderField();
 
-
                 Notification notification = new Notification("bidded", "hi", getIntent(), currentUser.getInstance().getId(), task.getRequesterId());
                 //AddNotificationRequest request = new AddNotificationRequest(notification);
                 //RequestManager.getInstance().invokeRequest(getApplicationContext(), request);
                 NotificationManager.getInstance().createNotification(notification);
-
 
                 Toast.makeText(ViewTaskActivity.this, "Bid placed", Toast.LENGTH_SHORT).show();
 
@@ -368,7 +362,6 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         mBuilder.setView(mView);
         mBuilder.show();
     }
-
 
     public void theYellowButton(android.view.View view) {
         final AlertDialog mBuilder = new AlertDialog.Builder(ViewTaskActivity.this).create();
@@ -447,7 +440,6 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         }
     }
 
-
     public void setProviderField() {
         if (task.getStatus().equals("requested")) {
             Photo defaultPhoto = new Photo("");
@@ -477,7 +469,6 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
             }
         }
     }
-
 
     public void findViews(){
         EditButton = findViewById(R.id.EditButton);

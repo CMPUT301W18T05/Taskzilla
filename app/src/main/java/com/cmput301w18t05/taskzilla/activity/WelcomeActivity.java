@@ -86,9 +86,6 @@ public class WelcomeActivity extends AppCompatActivity {
 
     }
 
-
-
-
     boolean doubleBackToExitPressedOnce = false;
     // Taken from https://stackoverflow.com/questions/8430805/clicking-the-back-button-twice-to-exit-an-activity
     // 2018-04-03
@@ -156,7 +153,6 @@ public class WelcomeActivity extends AppCompatActivity {
             return 5;
         }
 
-
         /**
          * Get the name of the tab base on the tab position
          * @param position The position of the tab
@@ -180,8 +176,4 @@ public class WelcomeActivity extends AppCompatActivity {
             }
         }
     }
-
-
-
-
 }

@@ -20,7 +20,6 @@ import com.cmput301w18t05.taskzilla.request.Request;
 
 import java.util.ArrayList;
 
-
 /**
  * Request for getting a task object from Elastic Search using the username of the provider
  * @author Wyatt

@@ -162,7 +162,6 @@ public class SignUpActivity extends AppCompatActivity {
                 return false;
             }
         }
-
         return true; // todo
     }
 
@@ -215,7 +214,6 @@ public class SignUpActivity extends AppCompatActivity {
         }
         return true;
     }
-
 
     public User getUser(String username) {
         GetUserByUsernameRequest getUserByUsernameRequest = new GetUserByUsernameRequest(username);

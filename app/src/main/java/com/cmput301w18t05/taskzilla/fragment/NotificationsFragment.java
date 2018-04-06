@@ -44,7 +44,6 @@ public class NotificationsFragment extends Fragment {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -66,13 +65,9 @@ public class NotificationsFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-
-
         //Add dummy notifications
         //notificationList.add("Notification Test 1");
         //notificationList.add("Notification Test 2");
-
-
     }
 
     public void notifyChange() {
@@ -85,6 +80,4 @@ public class NotificationsFragment extends Fragment {
         super.onResume();
         adapter.notifyDataSetChanged();
     }
-
-
 }

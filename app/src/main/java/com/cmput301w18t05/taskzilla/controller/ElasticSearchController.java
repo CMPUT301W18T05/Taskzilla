@@ -505,7 +505,6 @@ public class ElasticSearchController {
                     Log.i("Error", "Get task failed");
                 }
             }
-
             return user; // will return null if no user found
         }
     }
@@ -794,7 +793,6 @@ public class ElasticSearchController {
                         .addIndex("cmput301w18t05")
                         .addType("notification")
                         .build();
-
                 try {
                     result = client.execute(search);
                     if (result.isSucceeded()) {
@@ -812,7 +810,6 @@ public class ElasticSearchController {
             return foundNotifications;
         }
     }
-
 
     /**
      * Verify that there is a connection to the Elasticsearch server

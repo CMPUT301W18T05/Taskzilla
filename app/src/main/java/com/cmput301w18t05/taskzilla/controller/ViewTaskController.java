@@ -20,7 +20,6 @@ import com.cmput301w18t05.taskzilla.request.command.AddTaskRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetTaskRequest;
 import com.cmput301w18t05.taskzilla.request.command.RemoveTaskRequest;
 
-
 /**
  * Controller for ViewTaskActivity
  * @author Andy
@@ -59,7 +58,6 @@ public class ViewTaskController {
     public Task getTask() {
         return this.task;
     }
-
 
     /**
      * getTaskRequest

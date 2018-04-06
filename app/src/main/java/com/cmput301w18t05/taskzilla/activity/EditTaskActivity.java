@@ -64,7 +64,6 @@ public class EditTaskActivity extends AppCompatActivity {
         task.setDescription(taskDescription); //Dummy
         TaskNameText.setText(task.getName());
         DescriptionText.setText(task.getDescription());
-
     }
 
     public void TaskCancelButton(View view) {

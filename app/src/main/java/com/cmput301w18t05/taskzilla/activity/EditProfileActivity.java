@@ -75,7 +75,6 @@ public class EditProfileActivity extends AppCompatActivity {
         catch (Exception e){
             Photo defaultPhoto = new Photo("");
             profilePicture.setImageBitmap(defaultPhoto.StringToBitmap());
-
         }
 
         profilePicture.setOnClickListener(new View.OnClickListener(){
@@ -97,9 +96,8 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     public void ProfileSaveButton(View view){
-        /** Add Save Code when ESC and controllers get figured out **/
+        /** Add Save Code when ESC and controllers get figured out */
 
-        /**                                         **/
         if(validateInformation()){
             user.setName(NameText.getText().toString());
             user.setEmail(new EmailAddress(EmailText.getText().toString()));
@@ -115,10 +113,8 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     public boolean validateInformation() {
-
         // Taken from https://stackoverflow.com/questions/18463848/how-to-tell-if-a-random-string-is-an-email-address-or-something-else
         // 2018/03/18
-
 
         if(TextUtils.isEmpty(NameText.getText())) {
             NameText.requestFocus();
@@ -219,9 +215,6 @@ public class EditProfileActivity extends AppCompatActivity {
                 user.setPhoto(new Photo(image));
                 profilePicture.setImageBitmap(user.getPhoto().StringToBitmap());
                 Log.i("test",user.getPhoto().toString());
-
-
-
 
             } catch (Exception e) {
                 Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
