@@ -173,6 +173,30 @@ public class TasksRequesterFragment extends Fragment {
                 }
         );
 
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedItem = parent.getItemAtPosition(position).toString();
+                if(selectedItem.equals("All")) {
+                    updateRList();
+                }
+                if(selectedItem.equals("Requested")) {
+                    updateRequested();
+                }
+                if(selectedItem.equals("Bidded")) {
+                    updateBidded();
+                }
+                if(selectedItem.equals("Completed")) {
+                    updateCompleted();
+                }
+                if(selectedItem.equals("By")) {
+                    updateRList();
+                }
+
+            } // to close the onItemSelected
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     @Override
@@ -200,6 +224,43 @@ public class TasksRequesterFragment extends Fragment {
         RequestManager.getInstance().invokeRequest(getContext(), requestTasks);
         taskList.clear();
         taskList.addAll(requestTasks.getResult());
+        adapter.notifyDataSetChanged();
+    }
+
+    public void updateRequested(){
+        requestTasks = new GetTasksByRequesterUsernameRequest(cUser.getUsername());
+        RequestManager.getInstance().invokeRequest(getContext(), requestTasks);
+        taskList.clear();
+        for(Task t:requestTasks.getResult()){
+            if(t.getStatus().equalsIgnoreCase("requested")) {
+                taskList.add(t);
+            }
+        }
+
+        adapter.notifyDataSetChanged();
+    }
+
+    public void updateBidded(){
+        requestTasks = new GetTasksByRequesterUsernameRequest(cUser.getUsername());
+        RequestManager.getInstance().invokeRequest(getContext(), requestTasks);
+        taskList.clear();
+        for(Task t:requestTasks.getResult()){
+            if(t.getStatus().equalsIgnoreCase("bidded")) {
+                taskList.add(t);
+            }
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    public void updateCompleted(){
+        requestTasks = new GetTasksByRequesterUsernameRequest(cUser.getUsername());
+        RequestManager.getInstance().invokeRequest(getContext(), requestTasks);
+        taskList.clear();
+        for(Task t:requestTasks.getResult()){
+            if(t.getStatus().equalsIgnoreCase("completed")) {
+                taskList.add(t);
+            }
+        }
         adapter.notifyDataSetChanged();
     }
 
