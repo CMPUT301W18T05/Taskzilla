@@ -31,6 +31,7 @@ import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
 import io.searchbox.core.Update;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -268,7 +269,7 @@ public class ElasticSearchController {
             ArrayList<Task> foundTasks = new ArrayList<>();
 
             for (String username : usernames) {
-                String query = "{ \"query\" : { \"common\" : \"TaskProvider.username\" : \"" + username + "\" }}";
+                String query = "{ \"query\" : { \"common\" : \"providerUsername\" : \"" + username + "\" }}";
                 Log.i("Query:", query);
 
                 Search search = new Search.Builder(query)
@@ -566,6 +567,23 @@ public class ElasticSearchController {
             verifySettings();
 
             for (Bid bid : bids) {
+                String searchQuery = "{\"query\": {\"bool\": {\"must\": [{\"match\": { \"taskId\": \"a\" }},{\"match\": {\"userId\": \"c\"}}]}}}";
+                Search search = new Search.Builder(searchQuery)
+                        .addIndex("cmput301w18t05")
+                        .addType("bid").build();
+
+                try {
+                    SearchResult otherBids = client.execute(search);
+                    List<Bid> foundBids = otherBids.getSourceAsObjectList(Bid.class);
+                    ArrayList<Bid> realRes = new ArrayList<>();
+                    realRes.addAll(foundBids);
+                    for (Bid b : realRes) {
+                        Delete delete = new Delete.Builder(b.getId()).index("cmput301w18t05").type("bid").build();
+                        client.execute(delete);
+                    }
+                } catch (Exception e) {
+                }
+
                 Index index = new Index.Builder(bid).index("cmput301w18t05").type("bid").build();
                 try {
                     DocumentResult result = client.execute(index);

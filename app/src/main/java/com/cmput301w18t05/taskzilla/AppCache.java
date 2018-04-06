@@ -16,10 +16,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.TreeSet;
 
-/**
- * Created by wyatt on 04/04/18.
- */
 
+/**
+ * AppCache class
+ *
+ * Stores information used in case device drops connection.
+ */
 public class AppCache {
 
     private static AppCache instance = new AppCache();
@@ -122,7 +124,8 @@ public class AppCache {
 
         ArrayList<Bid> result = new ArrayList<>();
         for (Bid b : cachedBids) {
-            if (b.getId().equals(userid)) {
+            System.out.println("Looking at bid with userid: "+b.getUserId()+" and taskid: "+b.getTaskId());
+            if (b.getUserId().equals(userid)) {
                 System.out.println("Found bid in bidcache: "+b+" matching userid: "+userid);
                 result.add(b);
             }
@@ -143,7 +146,20 @@ public class AppCache {
         return result;
     }
 
+    public void removeBidByBidid(String id) {
+        System.out.println("Trying to remove bid: "+id);
+        for (Bid b : cachedBids) {
+            if (b.getId().equals(id)) {
+                System.out.println("Found bid with this id");
+                cachedBids.remove(b);
+                return;
+            }
+        }
+        System.out.println("Could not find bid with id: "+id);
+    }
+
     public void emptyCache() {
+        System.out.println("Clearing local cache.");
         cachedTasks.clear();
         cachedUsers.clear();
         cachedBids.clear();

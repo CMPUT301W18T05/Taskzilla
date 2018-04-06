@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.cmput301w18t05.taskzilla.User;
 import com.cmput301w18t05.taskzilla.controller.NewTaskController;
@@ -29,7 +30,7 @@ public class NewTaskActivity extends AppCompatActivity {
 
     private NewTaskController newTaskController;
     private User cUser = currentUser.getInstance();
-
+    private EditText locationText;
     /**
      * Activity uses the activity_new_task.xml layout
      * New tasks are created through NewTaskController
@@ -45,6 +46,7 @@ public class NewTaskActivity extends AppCompatActivity {
         Button addTask = findViewById(R.id.addTaskButton);
         final EditText taskName = findViewById(R.id.TaskName);
         final EditText taskDescription = findViewById(R.id.Description);
+        locationText = findViewById(R.id.LocationTextView);
 
         /* cancel button */
         cancel.setOnClickListener(new View.OnClickListener() {
@@ -62,5 +64,15 @@ public class NewTaskActivity extends AppCompatActivity {
             }
         });
 
+        /* Location */
+        locationText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
     }
+
+
 }

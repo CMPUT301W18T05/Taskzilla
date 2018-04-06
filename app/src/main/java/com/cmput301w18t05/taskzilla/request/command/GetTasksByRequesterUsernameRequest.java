@@ -53,7 +53,7 @@ public class GetTasksByRequesterUsernameRequest extends Request {
         for (Task t : cachedTasks) {
             System.out.println("Looking at task: "+t);
             System.out.println("Looking at task with taskrequester uname: "+t.getTaskRequester().getUsername());
-            if (t.getTaskRequester().getUsername() == user) {
+            if (t.getTaskRequester().getUsername().equals(user)) {
                 System.out.println("Adding this to result");
                 result.add(t);
             }

@@ -14,11 +14,15 @@ package com.cmput301w18t05.taskzilla.activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.LocationManager;
 import android.os.Handler;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.method.DigitsKeyListener;
@@ -69,20 +73,22 @@ import java.util.List;
  * Activity for viewing a task
  */
 public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCallback {
-    private String taskID;
-    private ViewTaskController viewTaskController;
+
     private Task task;
+    private String taskName;
     private String taskStatus;
+    private String taskID;
     private String currentUserId;
     private String taskUserId;
     private String description;
     private User TaskRequester;
     private User TaskProvider;
-    private String taskName;
+    private String HighestBidder;
     private ArrayList<Bid> BidList;
     private Bid selectedBid;
     private GoogleMap mMap;
     private LocationManager locationManager;
+    private ViewTaskController viewTaskController;
 
     private TextView ProviderName;
     private TextView DescriptionView;
@@ -116,67 +122,35 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_task);
 
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#000000")));
+        actionBar.setTitle(Html.fromHtml("<font color='#00e5ee'>Taskzilla</font>"));
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.TaskLocation);
         mapFragment.getMapAsync(this);
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-        EditButton = findViewById(R.id.EditButton);
-        DeleteButton = findViewById(R.id.DeleteButton);
-        ProviderPicture = findViewById(R.id.ProviderPicture);
-        RequesterPicture = findViewById(R.id.RequesterPicture);
-        ProviderName = findViewById(R.id.ProviderName);
-        DescriptionView = findViewById(R.id.Description);
-        RequesterName = findViewById(R.id.RequesterName);
-        TaskName = findViewById(R.id.TaskName);
-        TaskStatus = findViewById(R.id.TaskStatus);
-        BidslistView = findViewById(R.id.BidsListView);
-        PinkButton = findViewById(R.id.PinkButton);
-        YellowButton = findViewById(R.id.YellowButton);
+        findViews();
 
         // starts the activity at the very top
-        scrollView = findViewById(R.id.ViewTaskScrollView);
         scrollView.setFocusableInTouchMode(true);
         scrollView.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
 
+        // gets the task id
         this.viewTaskController = new ViewTaskController(this.findViewById(android.R.id.content), this);
         taskID = getIntent().getStringExtra("TaskId");
 
-        viewTaskController.setTaskID(taskID);
-        viewTaskController.getTaskRequest();
-        task = viewTaskController.getTask();
-        currentUserId = currentUser.getInstance().getId();
-        taskUserId = task.getTaskRequester().getId();
-
-        taskName = task.getName();
-        taskStatus = task.getStatus();
-        description = task.getDescription();
-        BidList = new ArrayList<>();
-
-        TaskRequester = task.getTaskRequester();
-        try {
-            TaskProvider = task.getTaskProvider();
-        } catch (Exception e) {
-            TaskProvider = new User();
-        }
-        RequesterName.setText(TaskRequester.getName());
-        DescriptionView.setText(description);
-        TaskName.setText(taskName);
-        TaskStatus.setText(taskStatus);
-
-        try {
-            RequesterPicture.setImageBitmap(TaskRequester.getPhoto().StringToBitmap());
-        } catch (Exception e) {
-            Photo defaultPhoto = new Photo("");
-            RequesterPicture.setImageBitmap(defaultPhoto.StringToBitmap());
-        }
+        setValues();
+        setRequesterField();
+        setProviderField();
 
         // taken from https://stackoverflow.com/questions/3465841/how-to-change-visibility-of-layout-programmatically
         // 2018-03-14
         if (currentUserId.equals(taskUserId)) {
             DeleteButton.setVisibility(View.VISIBLE);
             PinkButton.setVisibility(View.INVISIBLE);
-            if (taskStatus.equals("requested") || taskStatus.equals("bidded")) {
+            if (taskStatus.equals("requested")) {
                 EditButton.setVisibility(View.VISIBLE);
             } else {
                 EditButton.setVisibility(View.INVISIBLE);
@@ -187,11 +161,6 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
             YellowButton.setVisibility(View.INVISIBLE);
         }
 
-        if (taskStatus.equals("assigned")) {
-            ProviderPicture.setVisibility(View.VISIBLE);
-            ProviderName.setVisibility(View.VISIBLE);
-            ProviderName.setText(TaskProvider.getName());
-
 
 //            LinearLayout.LayoutParams detailsLayout =
 //            new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -199,7 +168,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
 //            detailsLayout.setMargins(0,999,0,0);
 //            DescriptionView.setLayoutParams(detailsLayout);
 
-        }
+
 
         /*
          * ProviderPicture and RequesterPicture
@@ -350,9 +319,19 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                     return;
                 }
                 // do stuff here to actually add bid
+                if (task.getBestBid() < incomingBidFloat || task.getBestBid() == -1.0f) {
+                    task.setHighestBidder(currentUserId);
+                    task.setBestBid(incomingBidFloat);
+                } else if (task.getBestBid().equals(incomingBidFloat)) {
+                    Toast.makeText(ViewTaskActivity.this,
+                            "A similar bid already exists. Please bid another value",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 task.addBid(new Bid(currentUserId, taskID, incomingBidFloat));
                 task.setStatus("bidded");
                 TaskStatus.setText("Bidded");
+                setProviderField();
 
 
                 Notification notification = new Notification("bidded", "hi", getIntent(), currentUser.getInstance().getId(), task.getRequesterId());
@@ -406,7 +385,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                 ProfileController controller = new ProfileController(mView, getBaseContext());
                 controller.setUserID(bid.getUserId());
                 controller.getUserRequest();
-                tempList.add("Bidder: " + controller.getUser().getName() + "\nBid Amount: " +
+                tempList.add("Highest bidder: " + controller.getUser().getName() + "\nBid Amount: " +
                         bid.getBidAmount());
             }
             ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
@@ -425,12 +404,17 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
             acceptBidButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    ProfileController controller = new ProfileController(mView, getBaseContext());
+                    controller.setUserID(selectedBid.getUserId());
+                    controller.getUserRequest();
+                    TaskProvider = controller.getUser();
+                    Toast.makeText(ViewTaskActivity.this, TaskProvider.toString(), Toast.LENGTH_SHORT).show();
+                    task.setTaskProvider(TaskProvider);
                     task.setStatus("assigned");
                     TaskStatus.setText("Assigned");
                     updateBidsList();
                     EditButton.setVisibility(View.INVISIBLE);
-                    ProviderPicture.setVisibility(View.VISIBLE);
-                    ProviderName.setVisibility(View.VISIBLE);
+                    setProviderField();
                     mBuilder.dismiss();
                 }
             });
@@ -440,6 +424,79 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
     }
 
 
+    public void setRequesterField() {
+        RequesterName.setText(TaskRequester.getName());
+        try {
+            RequesterPicture.setImageBitmap(TaskRequester.getPhoto().StringToBitmap());
+        } catch (Exception e) {
+            Photo defaultPhoto = new Photo("");
+            RequesterPicture.setImageBitmap(defaultPhoto.StringToBitmap());
+        }
+    }
+
+
+    public void setProviderField() {
+        if (task.getStatus().equals("requested")) {
+            Photo defaultPhoto = new Photo("");
+            ProviderPicture.setImageBitmap(defaultPhoto.StringToBitmap());
+            ProviderName.setText("No bidders :'(");
+        } else if (task.getStatus().equals("bidded")) {
+            ProfileController profileController = new ProfileController(this.findViewById(android.R.id.content),this);
+            profileController.setUserID(task.getHighestBidder());
+            profileController.getUserRequest();
+            User tempUser = profileController.getUser();
+            ProviderName.setText("Highest bidder: " + tempUser.getName() + "\nBid amount: " + Float.toString(task.getBestBid()));
+            try {
+                ProviderPicture.setImageBitmap(tempUser.getPhoto().StringToBitmap());
+            } catch (Exception e) {
+                Photo defaultPhoto = new Photo("");
+                ProviderPicture.setImageBitmap(defaultPhoto.StringToBitmap());
+            }
+        } else if (task.getStatus().equals("assigned")) {
+            ProviderName.setText(TaskProvider.getName());
+            try {
+                ProviderPicture.setImageBitmap(TaskProvider.getPhoto().StringToBitmap());
+            } catch (Exception e) {
+                Photo defaultPhoto = new Photo("");
+                ProviderPicture.setImageBitmap(defaultPhoto.StringToBitmap());
+            }
+        }
+    }
+
+
+    public void findViews(){
+        EditButton = findViewById(R.id.EditButton);
+        DeleteButton = findViewById(R.id.DeleteButton);
+        ProviderPicture = findViewById(R.id.ProviderPicture);
+        RequesterPicture = findViewById(R.id.RequesterPicture);
+        ProviderName = findViewById(R.id.ProviderName);
+        DescriptionView = findViewById(R.id.Description);
+        RequesterName = findViewById(R.id.RequesterName);
+        TaskName = findViewById(R.id.TaskName);
+        TaskStatus = findViewById(R.id.TaskStatus);
+        BidslistView = findViewById(R.id.BidsListView);
+        PinkButton = findViewById(R.id.PinkButton);
+        YellowButton = findViewById(R.id.YellowButton);
+        scrollView = findViewById(R.id.ViewTaskScrollView);
+    }
+
+    public void setValues(){
+        viewTaskController.setTaskID(taskID);
+        viewTaskController.getTaskRequest();
+        task = viewTaskController.getTask();
+        currentUserId = currentUser.getInstance().getId();
+        taskUserId = task.getTaskRequester().getId();
+        taskName = task.getName();
+        taskStatus = task.getStatus();
+        description = task.getDescription();
+        TaskRequester = task.getTaskRequester();
+        TaskProvider = task.getTaskProvider();
+        HighestBidder = task.getHighestBidder();
+        BidList = new ArrayList<>();
+        TaskName.setText(taskName);
+        TaskStatus.setText(taskStatus);
+        DescriptionView.setText(description);
+    }
 
     public void updateBidsList(){
         BidList.clear();

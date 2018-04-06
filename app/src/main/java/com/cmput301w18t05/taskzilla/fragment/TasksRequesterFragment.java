@@ -27,6 +27,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.cmput301w18t05.taskzilla.R;
@@ -60,6 +61,7 @@ public class TasksRequesterFragment extends Fragment {
     private ArrayAdapter<Task> adapter;
     private GetTasksByRequesterUsernameRequest requestTasks;
     private SwipeRefreshLayout mySwipeRefreshLayout;
+    private Spinner spinner;
     public TasksRequesterFragment() {
         // Required empty public constructor
     }
@@ -73,7 +75,7 @@ public class TasksRequesterFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
+
         //Set up listView and adapter
         taskList = new ArrayList<>();
         adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, taskList);
@@ -107,6 +109,15 @@ public class TasksRequesterFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        spinner = (Spinner) view.findViewById(R.id.spinner);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapterS = ArrayAdapter.createFromResource(getActivity(),
+                R.array.sort_options, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapterS.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinner.setAdapter(adapterS);
+
         taskListView = view.findViewById(R.id.RequesterTasksListView);
         taskListView.setAdapter(adapter);
         mySwipeRefreshLayout = view.findViewById(R.id.swiperefresh);
@@ -119,18 +130,6 @@ public class TasksRequesterFragment extends Fragment {
             }
         });
 
-      /*  FloatingActionButton floatingActionButton2 = view.findViewById(R.id.fab2);
-        floatingActionButton2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                RequestManager.getInstance().invokeRequest(getContext(), requestTasks);
-                taskList.clear();
-                taskList.addAll(requestTasks.getResult());
-                adapter.notifyDataSetChanged();
-                Toast.makeText(getActivity(), "Task list refreshed", Toast.LENGTH_SHORT).show();
-            }
-        });
-       */
         taskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> a, View v, int position, long id) {
                 viewTask(taskList.get(position).getId());
@@ -141,14 +140,22 @@ public class TasksRequesterFragment extends Fragment {
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
-
-                        RequestManager.getInstance().invokeRequest(getContext(), requestTasks);
-                        taskList.clear();
-
-                        taskList.addAll(requestTasks.getResult());
-                        adapter.notifyDataSetChanged();
-
-                        updateRList();
+                        String spinnerItem = spinner.getSelectedItem().toString();
+                        if(spinnerItem.equalsIgnoreCase("All")){
+                            updateRList();
+                        }
+                        if(spinnerItem.equalsIgnoreCase("Requested")){
+                            updateRequested();
+                        }
+                        if(spinnerItem.equalsIgnoreCase("Bidded")){
+                            updateBidded();
+                        }
+                        if(spinnerItem.equalsIgnoreCase("Assigned")){
+                            updateAssigned();
+                        }
+                        if(spinnerItem.equalsIgnoreCase("Completed")){
+                            updateCompleted();
+                        }
 
                         final Handler handler = new Handler();
                         handler.postDelayed(new Runnable() {
@@ -163,6 +170,31 @@ public class TasksRequesterFragment extends Fragment {
                 }
         );
 
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedItem = parent.getItemAtPosition(position).toString();
+                if(selectedItem.equals("All")) {
+                    updateRList();
+                }
+                if(selectedItem.equals("Requested")) {
+                    updateRequested();
+                }
+                if(selectedItem.equals("Bidded")) {
+                    updateBidded();
+                }
+                if(selectedItem.equals("Assigned")) {
+                    updateAssigned();
+                }
+                if(selectedItem.equals("Completed")) {
+                    updateCompleted();
+                }
+
+
+            } // to close the onItemSelected
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     @Override
@@ -171,7 +203,22 @@ public class TasksRequesterFragment extends Fragment {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                updateRList();
+                String spinnerItem = spinner.getSelectedItem().toString();
+                if(spinnerItem.equalsIgnoreCase("All")){
+                    updateRList();
+                }
+                if(spinnerItem.equalsIgnoreCase("Requested")){
+                    updateRequested();
+                }
+                if(spinnerItem.equalsIgnoreCase("Bidded")){
+                    updateBidded();
+                }
+                if(spinnerItem.equalsIgnoreCase("Assigned")){
+                    updateAssigned();
+                }
+                if(spinnerItem.equalsIgnoreCase("Completed")){
+                    updateCompleted();
+                }
             }
         }, 300);
 
@@ -179,7 +226,23 @@ public class TasksRequesterFragment extends Fragment {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                updateRList();
+
+                String spinnerItem = spinner.getSelectedItem().toString();
+                if(spinnerItem.equalsIgnoreCase("All")){
+                    updateRList();
+                }
+                if(spinnerItem.equalsIgnoreCase("Requested")){
+                    updateRequested();
+                }
+                if(spinnerItem.equalsIgnoreCase("Bidded")){
+                    updateBidded();
+                }
+                if(spinnerItem.equalsIgnoreCase("Assigned")){
+                    updateAssigned();
+                }
+                if(spinnerItem.equalsIgnoreCase("Completed")){
+                    updateCompleted();
+                }
             }
         }, 1500);
 
@@ -190,6 +253,54 @@ public class TasksRequesterFragment extends Fragment {
         RequestManager.getInstance().invokeRequest(getContext(), requestTasks);
         taskList.clear();
         taskList.addAll(requestTasks.getResult());
+        adapter.notifyDataSetChanged();
+    }
+
+    public void updateRequested(){
+        requestTasks = new GetTasksByRequesterUsernameRequest(cUser.getUsername());
+        RequestManager.getInstance().invokeRequest(getContext(), requestTasks);
+        taskList.clear();
+        for(Task t:requestTasks.getResult()){
+            if(t.getStatus().equalsIgnoreCase("requested")) {
+                taskList.add(t);
+            }
+        }
+
+        adapter.notifyDataSetChanged();
+    }
+
+    public void updateBidded(){
+        requestTasks = new GetTasksByRequesterUsernameRequest(cUser.getUsername());
+        RequestManager.getInstance().invokeRequest(getContext(), requestTasks);
+        taskList.clear();
+        for(Task t:requestTasks.getResult()){
+            if(t.getStatus().equalsIgnoreCase("bidded")) {
+                taskList.add(t);
+            }
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    public void updateAssigned(){
+        requestTasks = new GetTasksByRequesterUsernameRequest(cUser.getUsername());
+        RequestManager.getInstance().invokeRequest(getContext(), requestTasks);
+        taskList.clear();
+        for(Task t:requestTasks.getResult()){
+            if(t.getStatus().equalsIgnoreCase("assigned")) {
+                taskList.add(t);
+            }
+        }
+        adapter.notifyDataSetChanged();
+    }
+    public void updateCompleted(){
+        requestTasks = new GetTasksByRequesterUsernameRequest(cUser.getUsername());
+        RequestManager.getInstance().invokeRequest(getContext(), requestTasks);
+        taskList.clear();
+        for(Task t:requestTasks.getResult()){
+            if(t.getStatus().equalsIgnoreCase("completed")) {
+                taskList.add(t);
+            }
+        }
         adapter.notifyDataSetChanged();
     }
 
@@ -218,32 +329,8 @@ public class TasksRequesterFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu,menu);
-        super.onCreateOptionsMenu(menu,inflater);
-    }
-/*
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu,menu);
-        return super.onCreateOptionsMenu(menu);
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item){
 
-        if(item.getItemId()==R.id.biddedTasks){
-
-        }
-        if(item.getItemId()==R.id.requestedTasks){
-            sortFilter = 1;
-        }
-        if(item.getItemId()==R.id.completedTasks){
-            sortFilter = 2;
-        }
-        return super.onOptionsItemSelected(item);
-    }*/
 
     /**
      * Switches to NewTaskActitivy.

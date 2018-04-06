@@ -52,5 +52,4 @@ public class AddBidRequest extends InsertionRequest {
 
     public void getResult() {
     }
-
 }

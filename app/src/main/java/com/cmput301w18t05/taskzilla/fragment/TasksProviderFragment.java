@@ -123,6 +123,7 @@ public class TasksProviderFragment extends Fragment {
     }
 
     public void updatePList(){
+        requestTasks = new GetTasksByProviderUsernameRequest(currentUser.getInstance().getUsername());
         RequestManager.getInstance().invokeRequest(getContext(), requestTasks);
         taskList.clear();
         taskList.addAll(requestTasks.getResult());
