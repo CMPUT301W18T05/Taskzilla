@@ -12,6 +12,7 @@
 package com.cmput301w18t05.taskzilla;
 
 import android.location.Location;
+import android.widget.Toast;
 
 import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.AddBidRequest;
@@ -106,6 +107,7 @@ public class Task implements Comparable<Task> {
         this.location = location;
         this.photos = photos;
     }
+
     /**
      * addBid
      * Insert into sorted bid list
@@ -124,9 +126,23 @@ public class Task implements Comparable<Task> {
                 break;
             }
         }
-
         AddBidRequest addBidRequest = new AddBidRequest(newbid);
         RequestManager.getInstance().invokeRequest(addBidRequest);
+    }
+
+    /**
+     * removeAllBids
+     * remove all bids under this task
+     * @author myapplestory
+     */
+    public void removeAllBids(){
+        GetBidsByTaskIdRequest getbidrequest = new GetBidsByTaskIdRequest(this.Id);
+        RequestManager.getInstance().invokeRequest(getbidrequest);
+        ArrayList<Bid> bidlist = getbidrequest.getResult();
+        for (Bid bid : bidlist) {
+            RemoveBidRequest removerequest = new RemoveBidRequest(bid);
+            RequestManager.getInstance().invokeRequest(removerequest);
+        }
     }
 
     /**
@@ -224,7 +240,6 @@ public class Task implements Comparable<Task> {
         return userRequest(this.requesterId);
     }
 
-
     /**
      * set the id and username of the taskrequester for the task
      * @param taskRequester
@@ -281,9 +296,11 @@ public class Task implements Comparable<Task> {
             AddTaskRequest request = new AddTaskRequest(this);
             RequestManager.getInstance().invokeRequest(request);
         }
-        // if newStatus == "assigned" delete all bids under this task
+        // if newStatus is assigned delete all bids under this task
+        if (this.status.equals("bidded") && newStatus.equals("assigned")) {
+            removeAllBids();
+        }
     }
-
 
     /**
      * get description of the task
@@ -309,7 +326,6 @@ public class Task implements Comparable<Task> {
         this.location = location;
     }
 
-
     /**
      * get the id of the task, which is set by ElasticSearch usually
      * @return id of the task
@@ -326,7 +342,6 @@ public class Task implements Comparable<Task> {
         Id = id;
     }
 
-
     /**
      * gets the best bid on the task
      * @return best bid on the task
@@ -334,7 +349,6 @@ public class Task implements Comparable<Task> {
     public Bid getBestBid() {
         return bestBid;
     }
-
 
     /**
      * converts the task object to a string

@@ -414,17 +414,15 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
             acceptBidButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
-                    task.setStatus("Assigned");
+                    task.setStatus("assigned");
                     TaskStatus.setText("Assigned");
-
+                    updateBidsList();
+                    EditButton.setVisibility(View.INVISIBLE);
+                    ProviderPicture.setVisibility(View.VISIBLE);
+                    ProviderName.setVisibility(View.VISIBLE);
                     mBuilder.dismiss();
-
-
-
                 }
             });
-
         }
         mBuilder.setView(mView);
         mBuilder.show();
