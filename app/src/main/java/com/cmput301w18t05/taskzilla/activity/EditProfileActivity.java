@@ -46,7 +46,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private EditText EmailText;
     private EditText PhoneText;
     private ImageView profilePicture;
-    private Long size;
+    private Integer maxSize;
 
     private User user = new User(); //dummy
     @Override
@@ -196,23 +196,32 @@ public class EditProfileActivity extends AppCompatActivity {
 
                 // taken from https://stackoverflow.com/questions/2407565/bitmap-byte-size-after-decoding
                 // 2018-04-03
-                size = file.length();
-                Log.i("SIZE OF IMAGE", String.valueOf(size));
-                if(size>65536){
-                    Toast.makeText(this, "photograph too large", Toast.LENGTH_LONG).show();
+                maxSize = 65536;
+                Log.i("ACTUAL SIZE", String.valueOf(selectedImage.getByteCount()));
+                Integer width = 1200;
+                Integer height = 1200;
+                Bitmap resizedImage;
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                selectedImage.compress(Bitmap.CompressFormat.JPEG,50,stream);
+                Log.i("size",String.valueOf(stream.size()));
+                while(stream.size()>maxSize){
+                    width = width - 200;
+                    height = height - 200;
+                    stream = new ByteArrayOutputStream();
+                    resizedImage = Bitmap.createScaledBitmap(selectedImage, width, height, false);
+                    resizedImage.compress(Bitmap.CompressFormat.JPEG,50,stream);
+                    Log.i("size",String.valueOf(stream.size()));
                 }
-                else{
-                    profilePicture.setImageBitmap(selectedImage);
-                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    selectedImage.compress(Bitmap.CompressFormat.JPEG,50,stream);
-                    byte byteImage[];
-                    byteImage = stream.toByteArray();
-                    String image = Base64.encodeToString(byteImage, Base64.DEFAULT);
-                    user.setPhoto(new Photo(image));
-                    Log.i("test",user.getPhoto().toString());
+
+                byte byteImage[];
+                byteImage = stream.toByteArray();
+                String image = Base64.encodeToString(byteImage, Base64.DEFAULT);
+                user.setPhoto(new Photo(image));
+                profilePicture.setImageBitmap(user.getPhoto().StringToBitmap());
+                Log.i("test",user.getPhoto().toString());
 
 
-                }
+
 
             } catch (Exception e) {
                 Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();

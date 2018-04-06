@@ -10,12 +10,6 @@
  */
 
 package com.cmput301w18t05.taskzilla;
-
-
-
-
-
-
 /**
  * currentUser
  *
