@@ -41,6 +41,8 @@ import android.widget.Toast;
 
 import com.cmput301w18t05.taskzilla.Bid;
 import com.cmput301w18t05.taskzilla.ExpandableBidListAdapter;
+import com.cmput301w18t05.taskzilla.Notification;
+import com.cmput301w18t05.taskzilla.NotificationManager;
 import com.cmput301w18t05.taskzilla.Photo;
 import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.Task;
@@ -349,6 +351,9 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                 task.addBid(new Bid(currentUserId, taskID, incomingBidFloat));
                 task.setStatus("bidded");
                 TaskStatus.setText("Bidded");
+
+                //Notification notification = new Notification("bidded", "hi", getIntent(), currentUser.getInstance().getId(), task.getRequesterId());
+                //NotificationManager.getInstance().createNotification(notification);
 
                 Toast.makeText(ViewTaskActivity.this, "Bid placed", Toast.LENGTH_SHORT).show();
 
