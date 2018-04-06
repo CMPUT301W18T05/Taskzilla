@@ -47,7 +47,7 @@ public class Task implements Comparable<Task> {
     private String providerUsername;
     private String requesterId;
     private String requesterUsername;
-    private String highestBidder;
+    private String bestBidder;
 
     private String status;
     private String description;
@@ -75,7 +75,7 @@ public class Task implements Comparable<Task> {
         this.status = "requested";
         this.description = description;
         this.bestBid = -1.0f;
-        this.highestBidder = "";
+        this.bestBidder = "";
     }
 
     /**
@@ -94,7 +94,7 @@ public class Task implements Comparable<Task> {
         this.description = description;
         this.location = location;
         this.bestBid = -1.0f;
-        this.highestBidder = "";
+        this.bestBidder = "";
     }
 
     /**
@@ -115,7 +115,7 @@ public class Task implements Comparable<Task> {
         this.location = location;
         this.photos = photos;
         this.bestBid = -1.0f;
-        this.highestBidder = "";
+        this.bestBidder = "";
     }
 
     /**
@@ -157,7 +157,7 @@ public class Task implements Comparable<Task> {
 
     public void removeHighestBid(){
         this.bestBid = -1.0f;
-        this.highestBidder = "";
+        this.bestBidder = "";
     }
 
     /**
@@ -286,7 +286,7 @@ public class Task implements Comparable<Task> {
      * @return User
      */
     public User getTaskProvider() {
-        return userRequest(this.requesterId);
+        return userRequest(this.providerId);
     }
 
     public void setTaskProvider(User taskProvider) {
@@ -374,12 +374,12 @@ public class Task implements Comparable<Task> {
         this.bestBid = bid;
     }
 
-    public String getHighestBidder() {
-        return highestBidder;
+    public String getBestBidder() {
+        return bestBidder;
     }
 
-    public void setHighestBidder(String highestBidder) {
-        this.highestBidder = highestBidder;
+    public void setBestBidder(String bestBidder) {
+        this.bestBidder = bestBidder;
     }
 
     /**
@@ -422,5 +422,24 @@ public class Task implements Comparable<Task> {
     public void updateThis() {
         AddTaskRequest req = new AddTaskRequest(this);
         RequestManager.getInstance().invokeRequest(req);
+    }
+
+    public void updateBestBid(){
+        ArrayList<Bid> bidslist = retrieveBids();
+        Bid minbid = null;
+        for (Bid bid : bidslist) {
+            if (minbid == null) {
+                minbid = bid;
+            } else if (bid.getBidAmount() < minbid.getBidAmount()) {
+                minbid = bid;
+            }
+        }
+        if (minbid == null) {
+            bestBid = -1.0f;
+            bestBidder = "";
+        } else {
+            bestBid = minbid.getBidAmount();
+            bestBidder = minbid.getId();
+        }
     }
 }

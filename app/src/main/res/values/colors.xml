@@ -17,4 +17,7 @@
     <color name="tabSelectorColor">#000000</color>
     <color name="buttonYellow">#effd5f</color>
     <color name="buttonYellowComplement">#00e5ee</color>
+    <color name="buttonPink">#FF69B4</color>
+    <color name="buttonPinkComplement">#efefef</color>
+
 </resources>
