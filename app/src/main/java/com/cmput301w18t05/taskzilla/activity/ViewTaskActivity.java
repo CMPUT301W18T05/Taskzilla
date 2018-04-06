@@ -67,20 +67,22 @@ import java.util.List;
  * Activity for viewing a task
  */
 public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCallback {
-    private String taskID;
-    private ViewTaskController viewTaskController;
+
     private Task task;
+    private String taskName;
     private String taskStatus;
+    private String taskID;
     private String currentUserId;
     private String taskUserId;
     private String description;
     private User TaskRequester;
     private User TaskProvider;
-    private String taskName;
+    private String HighestBidder;
     private ArrayList<Bid> BidList;
     private Bid selectedBid;
     private GoogleMap mMap;
     private LocationManager locationManager;
+    private ViewTaskController viewTaskController;
 
     private TextView ProviderName;
     private TextView DescriptionView;
@@ -149,25 +151,20 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         taskName = task.getName();
         taskStatus = task.getStatus();
         description = task.getDescription();
-        BidList = new ArrayList<>();
-
         TaskRequester = task.getTaskRequester();
-        try {
-            TaskProvider = task.getTaskProvider();
-        } catch (Exception e) {
-            TaskProvider = new User();
-        }
-        RequesterName.setText(TaskRequester.getName());
-        DescriptionView.setText(description);
+        TaskProvider = task.getTaskProvider();
+        HighestBidder = task.getHighestBidder();
+        BidList = new ArrayList<>();
         TaskName.setText(taskName);
         TaskStatus.setText(taskStatus);
+        DescriptionView.setText(description);
 
-        try {
-            RequesterPicture.setImageBitmap(TaskRequester.getPhoto().StringToBitmap());
-        } catch (Exception e) {
-            Photo defaultPhoto = new Photo("");
-            RequesterPicture.setImageBitmap(defaultPhoto.StringToBitmap());
-        }
+        setRequesterField();
+        setProviderField();
+
+
+
+
 
         // taken from https://stackoverflow.com/questions/3465841/how-to-change-visibility-of-layout-programmatically
         // 2018-03-14
@@ -185,11 +182,6 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
             YellowButton.setVisibility(View.INVISIBLE);
         }
 
-        if (taskStatus.equals("assigned")) {
-            ProviderPicture.setVisibility(View.VISIBLE);
-            ProviderName.setVisibility(View.VISIBLE);
-            ProviderName.setText(TaskProvider.getName());
-
 
 //            LinearLayout.LayoutParams detailsLayout =
 //            new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -197,7 +189,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
 //            detailsLayout.setMargins(0,999,0,0);
 //            DescriptionView.setLayoutParams(detailsLayout);
 
-        }
+
 
         /*
          * ProviderPicture and RequesterPicture
@@ -348,9 +340,19 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                     return;
                 }
                 // do stuff here to actually add bid
+                if (task.getBestBid() < incomingBidFloat || task.getBestBid() == -1.0f) {
+                    task.setHighestBidder(currentUserId);
+                    task.setBestBid(incomingBidFloat);
+                } else if (task.getBestBid().equals(incomingBidFloat)) {
+                    Toast.makeText(ViewTaskActivity.this,
+                            "A similar bid already exists. Please bid another value",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 task.addBid(new Bid(currentUserId, taskID, incomingBidFloat));
                 task.setStatus("bidded");
                 TaskStatus.setText("Bidded");
+                setProviderField();
 
                 //Notification notification = new Notification("bidded", "hi", getIntent(), currentUser.getInstance().getId(), task.getRequesterId());
                 //NotificationManager.getInstance().createNotification(notification);
@@ -400,7 +402,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                 ProfileController controller = new ProfileController(mView, getBaseContext());
                 controller.setUserID(bid.getUserId());
                 controller.getUserRequest();
-                tempList.add("Bidder: " + controller.getUser().getName() + "\nBid Amount: " +
+                tempList.add("Highest bidder: " + controller.getUser().getName() + "\nBid Amount: " +
                         bid.getBidAmount());
             }
             ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
@@ -419,12 +421,17 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
             acceptBidButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    ProfileController controller = new ProfileController(mView, getBaseContext());
+                    controller.setUserID(selectedBid.getUserId());
+                    controller.getUserRequest();
+                    TaskProvider = controller.getUser();
+                    Toast.makeText(ViewTaskActivity.this, TaskProvider.toString(), Toast.LENGTH_SHORT).show();
+                    task.setTaskProvider(TaskProvider);
                     task.setStatus("assigned");
                     TaskStatus.setText("Assigned");
                     updateBidsList();
                     EditButton.setVisibility(View.INVISIBLE);
-                    ProviderPicture.setVisibility(View.VISIBLE);
-                    ProviderName.setVisibility(View.VISIBLE);
+                    setProviderField();
                     mBuilder.dismiss();
                 }
             });
@@ -432,6 +439,49 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         mBuilder.setView(mView);
         mBuilder.show();
     }
+
+
+    public void setRequesterField() {
+        RequesterName.setText(TaskRequester.getName());
+        try {
+            RequesterPicture.setImageBitmap(TaskRequester.getPhoto().StringToBitmap());
+        } catch (Exception e) {
+            Photo defaultPhoto = new Photo("");
+            RequesterPicture.setImageBitmap(defaultPhoto.StringToBitmap());
+        }
+    }
+
+
+    public void setProviderField() {
+        if (task.getStatus().equals("requested")) {
+            Photo defaultPhoto = new Photo("");
+            ProviderPicture.setImageBitmap(defaultPhoto.StringToBitmap());
+            ProviderName.setText("No bidders :'(");
+        } else if (task.getStatus().equals("bidded")) {
+            ProfileController profileController = new ProfileController(this.findViewById(android.R.id.content),this);
+            profileController.setUserID(task.getHighestBidder());
+            profileController.getUserRequest();
+            User tempUser = profileController.getUser();
+            ProviderName.setText("Highest bidder: " + tempUser.getName() + "\nBid amount: " + Float.toString(task.getBestBid()));
+            try {
+                ProviderPicture.setImageBitmap(tempUser.getPhoto().StringToBitmap());
+            } catch (Exception e) {
+                Photo defaultPhoto = new Photo("");
+                ProviderPicture.setImageBitmap(defaultPhoto.StringToBitmap());
+            }
+        } else if (task.getStatus().equals("assigned")) {
+            ProviderName.setText(TaskProvider.getName());
+            try {
+                ProviderPicture.setImageBitmap(TaskProvider.getPhoto().StringToBitmap());
+            } catch (Exception e) {
+                Photo defaultPhoto = new Photo("");
+                ProviderPicture.setImageBitmap(defaultPhoto.StringToBitmap());
+            }
+        }
+    }
+
+
+
 
 
 

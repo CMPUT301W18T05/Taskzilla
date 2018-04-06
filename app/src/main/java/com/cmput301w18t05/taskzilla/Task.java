@@ -21,6 +21,8 @@ import com.cmput301w18t05.taskzilla.request.command.GetBidsByTaskIdRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetUserRequest;
 import com.cmput301w18t05.taskzilla.request.command.RemoveBidRequest;
 
+import org.apache.commons.lang3.ObjectUtils;
+
 import java.util.ArrayList;
 
 import io.searchbox.annotations.JestId;
@@ -43,18 +45,18 @@ public class Task implements Comparable<Task> {
     private String providerUsername;
     private String requesterId;
     private String requesterUsername;
+    private String highestBidder;
 
     private String status;
     private String description;
     private Location location;
-    private Bid bestBid;
+    private Float bestBid;
     private ArrayList<Bid> bids;
     private ArrayList<Photo> photos;
 
     public Task() {
         photos = new ArrayList<>();
         name = "TEST TASK";
-        //retrieveBids();
     }
 
     /**
@@ -70,6 +72,8 @@ public class Task implements Comparable<Task> {
         this.requesterUsername = TaskRequester.getUsername();
         this.status = "requested";
         this.description = description;
+        this.bestBid = -1.0f;
+        this.highestBidder = "";
     }
 
     /**
@@ -87,6 +91,8 @@ public class Task implements Comparable<Task> {
         this.status = "requested";
         this.description = description;
         this.location = location;
+        this.bestBid = -1.0f;
+        this.highestBidder = "";
     }
 
     /**
@@ -106,6 +112,8 @@ public class Task implements Comparable<Task> {
         this.description = description;
         this.location = location;
         this.photos = photos;
+        this.bestBid = -1.0f;
+        this.highestBidder = "";
     }
 
     /**
@@ -144,6 +152,12 @@ public class Task implements Comparable<Task> {
             RequestManager.getInstance().invokeRequest(removerequest);
         }
     }
+
+    public void removeHighestBid(){
+        this.bestBid = -1.0f;
+        this.highestBidder = "";
+    }
+
 
     /**
      * addPhoto
@@ -298,8 +312,12 @@ public class Task implements Comparable<Task> {
             RequestManager.getInstance().invokeRequest(request);
         }
         // if newStatus is assigned delete all bids under this task
-        if (this.status.equals("bidded") && newStatus.equals("assigned")) {
+        if (newStatus.equals("assigned")) {
             removeAllBids();
+            removeHighestBid();
+            AddTaskRequest request = new AddTaskRequest(this);
+            request.setUpdate(true);
+            RequestManager.getInstance().invokeRequest(request);
         }
     }
 
@@ -347,8 +365,20 @@ public class Task implements Comparable<Task> {
      * gets the best bid on the task
      * @return best bid on the task
      */
-    public Bid getBestBid() {
+    public Float getBestBid() {
         return bestBid;
+    }
+
+    public void setBestBid(Float bid) {
+        this.bestBid = bid;
+    }
+
+    public String getHighestBidder() {
+        return highestBidder;
+    }
+
+    public void setHighestBidder(String highestBidder) {
+        this.highestBidder = highestBidder;
     }
 
     /**
