@@ -21,4 +21,11 @@
     <string name="Edit_Button">Edit</string>
     <string name="title_activity_testing">TEST</string>
     <string name="title_activity_maps33333">Map</string>
+
+    <string-array name="sort_options">
+        <item>Requested</item>
+        <item>Bidded</item>
+        <item>Completed</item>
+        <item>By Date</item>
+    </string-array>
 </resources>

@@ -27,6 +27,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.cmput301w18t05.taskzilla.R;
@@ -106,6 +107,15 @@ public class TasksRequesterFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        Spinner spinner = (Spinner) view.findViewById(R.id.spinner);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapterS = ArrayAdapter.createFromResource(getActivity(),
+                R.array.sort_options, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapterS.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinner.setAdapter(adapterS);
 
         taskListView = view.findViewById(R.id.RequesterTasksListView);
         taskListView.setAdapter(adapter);
