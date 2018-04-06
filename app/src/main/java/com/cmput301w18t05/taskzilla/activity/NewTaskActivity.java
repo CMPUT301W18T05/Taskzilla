@@ -11,6 +11,13 @@
 
 package com.cmput301w18t05.taskzilla.activity;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,6 +35,7 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 
 /**
  * Activity for creating a new task
@@ -37,6 +45,9 @@ public class NewTaskActivity extends AppCompatActivity {
     private NewTaskController newTaskController;
     private User cUser = currentUser.getInstance();
     private LatLng taskLocation;
+    private LocationManager locationManager;
+    private double lon;
+    private double lat;
     /**
      * Activity uses the activity_new_task.xml layout
      * New tasks are created through NewTaskController
@@ -46,6 +57,8 @@ public class NewTaskActivity extends AppCompatActivity {
         setTitle("Add a Task");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_task);
+
+        locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 
         newTaskController =  new NewTaskController(this, getApplicationContext());
         Button cancel =  findViewById(R.id.CancelButton);
@@ -77,6 +90,10 @@ public class NewTaskActivity extends AppCompatActivity {
         });
 
         autocompleteFragment.setHint("Task Location");
+        getLocation();
+        autocompleteFragment.setBoundsBias(new LatLngBounds(
+                new LatLng(lat-0.5, lon-0.5),
+                new LatLng(lat+0.5, lon+0.5)));
         /* cancel button */
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,6 +101,8 @@ public class NewTaskActivity extends AppCompatActivity {
                 newTaskController.cancelTask();
             }
         });
+
+
 
         /* add task button */
         addTask.setOnClickListener(new View.OnClickListener() {
@@ -97,4 +116,29 @@ public class NewTaskActivity extends AppCompatActivity {
     }
 
 
+
+    void getLocation() {
+        if( ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        } else {
+            Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            if (location != null){
+                lat = location.getLatitude();
+                lon = location.getLongitude();
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        switch (requestCode) {
+            case 1:
+                getLocation();
+                break;
+        }
+    }
 }
