@@ -77,6 +77,7 @@ public class ViewTaskController {
 
     public void updateTaskRequest(Task task) {
         AddTaskRequest request = new AddTaskRequest(task);
+        request.setUpdate(true);
         RequestManager.getInstance().invokeRequest(ctx, request);
     }
 
