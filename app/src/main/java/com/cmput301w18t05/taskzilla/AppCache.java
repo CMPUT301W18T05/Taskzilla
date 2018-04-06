@@ -16,10 +16,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.TreeSet;
 
-/**
- * Created by wyatt on 04/04/18.
- */
 
+/**
+ * AppCache class
+ *
+ * Stores information used in case device drops connection.
+ */
 public class AppCache {
 
     private static AppCache instance = new AppCache();
