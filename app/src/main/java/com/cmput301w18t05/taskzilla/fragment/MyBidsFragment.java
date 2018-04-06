@@ -18,7 +18,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -52,7 +51,6 @@ public class MyBidsFragment extends Fragment {
 
     public MyBidsFragment() {}
 
-
     /**
      * Inflate the layout for this fragment
      * @param inflater idk what this does
@@ -78,7 +76,6 @@ public class MyBidsFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         bidList = new ArrayList<>();
         bidController = new GetBidByUserIdController(getContext(), currentUser.getInstance());
         adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, bidList);
@@ -141,7 +138,6 @@ public class MyBidsFragment extends Fragment {
         bidList.addAll(bidController.getResultBidList());
         adapter.notifyDataSetChanged();
     }
-
 
     /**
      * Switch activity to ViewTaskActivity when a task is clicked

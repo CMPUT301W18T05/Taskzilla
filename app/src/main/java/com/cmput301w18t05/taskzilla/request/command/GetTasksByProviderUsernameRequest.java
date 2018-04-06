@@ -44,12 +44,13 @@ public class GetTasksByProviderUsernameRequest extends Request {
     @Override
     public void executeOffline() {
         executedOffline = true;
+
         AppCache appCache = AppCache.getInstance();
         ArrayList<Task> cachedTasks = appCache.getCachedTasks();
 
         result = new ArrayList<>();
         for (Task t : cachedTasks) {
-            if (t.getTaskProvider().getUsername() == user) {
+            if (t.getTaskProvider().getUsername() != null && t.getTaskProvider().equals(user)) {
                 result.add(t);
             }
         }

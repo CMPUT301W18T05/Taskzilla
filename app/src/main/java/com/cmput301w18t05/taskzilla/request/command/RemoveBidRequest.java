@@ -11,6 +11,9 @@
 
 package com.cmput301w18t05.taskzilla.request.command;
 
+import android.support.v7.app.AppCompatActivity;
+
+import com.cmput301w18t05.taskzilla.AppCache;
 import com.cmput301w18t05.taskzilla.Bid;
 import com.cmput301w18t05.taskzilla.controller.ElasticSearchController;
 import com.cmput301w18t05.taskzilla.request.DeletionRequest;
@@ -26,6 +29,7 @@ public class RemoveBidRequest extends DeletionRequest{
 
     public RemoveBidRequest(Bid bid) {
         this.bid = bid;
+        queueReady = true;
     }
 
     public void execute(){
@@ -35,6 +39,7 @@ public class RemoveBidRequest extends DeletionRequest{
 
     @Override
     public void executeOffline() {
+        AppCache.getInstance().removeBidByBidid(bid.getId());
     }
 
     @Override
@@ -43,7 +48,6 @@ public class RemoveBidRequest extends DeletionRequest{
     }
 
     public void getResult() {
-
     }
 
 }

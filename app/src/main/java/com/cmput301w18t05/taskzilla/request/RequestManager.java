@@ -137,8 +137,8 @@ public class RequestManager extends BroadcastReceiver {
     }
 
     private Request popJob() {
-        Request req = requestQueue.get(requestQueue.size()-1);
-        requestQueue.remove(requestQueue.size()-1);
+        Request req = requestQueue.get(0);
+        requestQueue.remove(0);
         return req;
     }
 
