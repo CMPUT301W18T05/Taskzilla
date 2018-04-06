@@ -25,6 +25,7 @@ import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.cmput301w18t05.taskzilla.NotificationManager;
 import com.cmput301w18t05.taskzilla.fragment.MyBidsFragment;
 import com.cmput301w18t05.taskzilla.fragment.NotificationsFragment;
 import com.cmput301w18t05.taskzilla.fragment.ProfileFragment;
@@ -56,6 +57,7 @@ public class WelcomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
+        NotificationManager.getInstance(this.getApplicationContext());
 
 
         tabsAdapter = new TabsManager(this.getSupportFragmentManager());
