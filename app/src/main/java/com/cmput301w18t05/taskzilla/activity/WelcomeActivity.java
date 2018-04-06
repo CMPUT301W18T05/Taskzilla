@@ -11,18 +11,26 @@
 
 package com.cmput301w18t05.taskzilla.activity;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
 import com.cmput301w18t05.taskzilla.NotificationManager;
@@ -59,6 +67,9 @@ public class WelcomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_welcome);
         NotificationManager.getInstance(this.getApplicationContext());
 
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#000000")));
+        actionBar.setTitle(Html.fromHtml("<font color='#00e5ee'>Taskzilla</font>"));
 
         tabsAdapter = new TabsManager(this.getSupportFragmentManager());
         tabsContent = findViewById(R.id.welcome_tabs_content);
@@ -67,6 +78,8 @@ public class WelcomeActivity extends AppCompatActivity {
 
         tabs = findViewById(R.id.tabs_bar);
         tabs.setupWithViewPager(tabsContent);
+        tabs.getTabAt(0).setIcon(android.R.drawable.ic_menu_my_calendar);
+        tabs.getTabAt(1).setIcon(android.R.drawable.ic_menu_agenda);
         tabs.getTabAt(2).setIcon(android.R.drawable.ic_search_category_default);
         tabs.getTabAt(3).setIcon(android.R.drawable.ic_popup_reminder);
         tabs.getTabAt(4).setIcon(android.R.drawable.ic_menu_myplaces);
@@ -153,9 +166,9 @@ public class WelcomeActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "Tasks";
+                    return "";
                 case 1:
-                    return "My Bids";
+                    return "";
                 case 2:
                     return "";
                 case 3:
