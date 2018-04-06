@@ -61,6 +61,7 @@ public class TasksRequesterFragment extends Fragment {
     private ArrayAdapter<Task> adapter;
     private GetTasksByRequesterUsernameRequest requestTasks;
     private SwipeRefreshLayout mySwipeRefreshLayout;
+    private Spinner spinner;
     public TasksRequesterFragment() {
         // Required empty public constructor
     }
@@ -108,7 +109,7 @@ public class TasksRequesterFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Spinner spinner = (Spinner) view.findViewById(R.id.spinner);
+        spinner = (Spinner) view.findViewById(R.id.spinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapterS = ArrayAdapter.createFromResource(getActivity(),
                 R.array.sort_options, android.R.layout.simple_spinner_item);
@@ -129,18 +130,6 @@ public class TasksRequesterFragment extends Fragment {
             }
         });
 
-      /*  FloatingActionButton floatingActionButton2 = view.findViewById(R.id.fab2);
-        floatingActionButton2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                RequestManager.getInstance().invokeRequest(getContext(), requestTasks);
-                taskList.clear();
-                taskList.addAll(requestTasks.getResult());
-                adapter.notifyDataSetChanged();
-                Toast.makeText(getActivity(), "Task list refreshed", Toast.LENGTH_SHORT).show();
-            }
-        });
-       */
         taskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> a, View v, int position, long id) {
                 viewTask(taskList.get(position).getId());
@@ -151,14 +140,22 @@ public class TasksRequesterFragment extends Fragment {
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
-
-                        RequestManager.getInstance().invokeRequest(getContext(), requestTasks);
-                        taskList.clear();
-
-                        taskList.addAll(requestTasks.getResult());
-                        adapter.notifyDataSetChanged();
-
-                        updateRList();
+                        String spinnerItem = spinner.getSelectedItem().toString();
+                        if(spinnerItem.equalsIgnoreCase("All")){
+                            updateRList();
+                        }
+                        if(spinnerItem.equalsIgnoreCase("Requested")){
+                            updateRequested();
+                        }
+                        if(spinnerItem.equalsIgnoreCase("Bidded")){
+                            updateBidded();
+                        }
+                        if(spinnerItem.equalsIgnoreCase("Assigned")){
+                            updateAssigned();
+                        }
+                        if(spinnerItem.equalsIgnoreCase("Completed")){
+                            updateCompleted();
+                        }
 
                         final Handler handler = new Handler();
                         handler.postDelayed(new Runnable() {
@@ -185,12 +182,13 @@ public class TasksRequesterFragment extends Fragment {
                 if(selectedItem.equals("Bidded")) {
                     updateBidded();
                 }
+                if(selectedItem.equals("Assigned")) {
+                    updateAssigned();
+                }
                 if(selectedItem.equals("Completed")) {
                     updateCompleted();
                 }
-                if(selectedItem.equals("By")) {
-                    updateRList();
-                }
+
 
             } // to close the onItemSelected
             public void onNothingSelected(AdapterView<?> parent) {
@@ -205,7 +203,22 @@ public class TasksRequesterFragment extends Fragment {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                updateRList();
+                String spinnerItem = spinner.getSelectedItem().toString();
+                if(spinnerItem.equalsIgnoreCase("All")){
+                    updateRList();
+                }
+                if(spinnerItem.equalsIgnoreCase("Requested")){
+                    updateRequested();
+                }
+                if(spinnerItem.equalsIgnoreCase("Bidded")){
+                    updateBidded();
+                }
+                if(spinnerItem.equalsIgnoreCase("Assigned")){
+                    updateAssigned();
+                }
+                if(spinnerItem.equalsIgnoreCase("Completed")){
+                    updateCompleted();
+                }
             }
         }, 300);
 
@@ -213,7 +226,23 @@ public class TasksRequesterFragment extends Fragment {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                updateRList();
+
+                String spinnerItem = spinner.getSelectedItem().toString();
+                if(spinnerItem.equalsIgnoreCase("All")){
+                    updateRList();
+                }
+                if(spinnerItem.equalsIgnoreCase("Requested")){
+                    updateRequested();
+                }
+                if(spinnerItem.equalsIgnoreCase("Bidded")){
+                    updateBidded();
+                }
+                if(spinnerItem.equalsIgnoreCase("Assigned")){
+                    updateAssigned();
+                }
+                if(spinnerItem.equalsIgnoreCase("Completed")){
+                    updateCompleted();
+                }
             }
         }, 1500);
 
@@ -252,6 +281,17 @@ public class TasksRequesterFragment extends Fragment {
         adapter.notifyDataSetChanged();
     }
 
+    public void updateAssigned(){
+        requestTasks = new GetTasksByRequesterUsernameRequest(cUser.getUsername());
+        RequestManager.getInstance().invokeRequest(getContext(), requestTasks);
+        taskList.clear();
+        for(Task t:requestTasks.getResult()){
+            if(t.getStatus().equalsIgnoreCase("assigned")) {
+                taskList.add(t);
+            }
+        }
+        adapter.notifyDataSetChanged();
+    }
     public void updateCompleted(){
         requestTasks = new GetTasksByRequesterUsernameRequest(cUser.getUsername());
         RequestManager.getInstance().invokeRequest(getContext(), requestTasks);

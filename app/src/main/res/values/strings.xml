@@ -26,7 +26,7 @@
         <item>All</item>
         <item>Requested</item>
         <item>Bidded</item>
+        <item>Assigned</item>
         <item>Completed</item>
-        <item>By Date</item>
     </string-array>
 </resources>
