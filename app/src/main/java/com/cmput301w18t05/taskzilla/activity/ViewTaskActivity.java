@@ -76,14 +76,12 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
 
     private Task task;
     private String taskName;
-    private String taskStatus;
     private String taskID;
     private String currentUserId;
     private String taskUserId;
     private String description;
     private User TaskRequester;
     private User TaskProvider;
-    private String HighestBidder;
     private ArrayList<Bid> BidList;
     private Bid selectedBid;
     private GoogleMap mMap;
@@ -102,8 +100,9 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
     private ImageButton RequesterPicture;
 
     private ExpandableListView BidslistView;
-    private Button PinkButton;
+    private Button BlueButton;
     private Button YellowButton;
+    private Button PinkButton;
     private ScrollView scrollView;
 
 
@@ -149,8 +148,8 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         // 2018-03-14
         if (currentUserId.equals(taskUserId)) {
             DeleteButton.setVisibility(View.VISIBLE);
-            PinkButton.setVisibility(View.INVISIBLE);
-            if (taskStatus.equals("requested")) {
+            BlueButton.setVisibility(View.INVISIBLE);
+            if (task.getStatus().equals("requested")) {
                 EditButton.setVisibility(View.VISIBLE);
             } else {
                 EditButton.setVisibility(View.INVISIBLE);
@@ -159,8 +158,12 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
             DeleteButton.setVisibility(View.INVISIBLE);
             EditButton.setVisibility(View.INVISIBLE);
             YellowButton.setVisibility(View.INVISIBLE);
+            PinkButton.setVisibility(View.INVISIBLE);
         }
-
+        if (task.getStatus().equals("assigned")) {
+            YellowButton.setVisibility(View.INVISIBLE);
+            PinkButton.setVisibility(View.INVISIBLE);
+        }
 
 //            LinearLayout.LayoutParams detailsLayout =
 //            new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -183,7 +186,11 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
             public void onClick(View view) {
                 try {
                     Intent intent = new Intent(view.getContext(), ProfileActivity.class);
-                    intent.putExtra("user id", TaskProvider.getId());
+                    if (task.getStatus().equals("bidded")) {
+                        intent.putExtra("user id", task.getBestBidder());
+                    } else {
+                        intent.putExtra("user id", TaskProvider.getId());
+                    }
                     startActivity(intent);
                 } catch (Exception e) {}
             }
@@ -270,7 +277,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
     /**
      * @param view pretty much the page it's on
      * @author myapplestory
-     * thePinkButton
+     * theBlueButton
      * upon pressing place button on task page
      * prompts user to enter in a bid amount
      * if valid input, will add bid to task
@@ -278,7 +285,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
      * notes
      * can probably add more stuff to dialog
      */
-    public void thePinkButton(android.view.View view) {
+    public void theBlueButton(android.view.View view) {
         final AlertDialog mBuilder = new AlertDialog.Builder(ViewTaskActivity.this).create();
         final View mView = getLayoutInflater().inflate(R.layout.dialog_place_bid,null);
         final EditText incomingBidText = mView.findViewById(R.id.place_bid_edittext);
@@ -319,16 +326,18 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                     return;
                 }
                 // do stuff here to actually add bid
-                if (task.getBestBid() < incomingBidFloat || task.getBestBid() == -1.0f) {
-                    task.setHighestBidder(currentUserId);
+                task.addBid(new Bid(currentUserId, taskID, incomingBidFloat));
+                if (task.getBestBid() > incomingBidFloat || task.getBestBid() == -1.0f) {
+                    task.setBestBidder(currentUserId);
                     task.setBestBid(incomingBidFloat);
                 } else if (task.getBestBid().equals(incomingBidFloat)) {
                     Toast.makeText(ViewTaskActivity.this,
                             "A similar bid already exists. Please bid another value",
                             Toast.LENGTH_SHORT).show();
                     return;
+                } else if (task.getBestBid() < incomingBidFloat && task.getBestBidder().equals(currentUserId)) {
+                    task.updateBestBid();
                 }
-                task.addBid(new Bid(currentUserId, taskID, incomingBidFloat));
                 task.setStatus("bidded");
                 TaskStatus.setText("Bidded");
                 setProviderField();
@@ -385,7 +394,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                 ProfileController controller = new ProfileController(mView, getBaseContext());
                 controller.setUserID(bid.getUserId());
                 controller.getUserRequest();
-                tempList.add("Highest bidder: " + controller.getUser().getName() + "\nBid Amount: " +
+                tempList.add("Best bidder: " + controller.getUser().getName() + "\nBid Amount: " +
                         bid.getBidAmount());
             }
             ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
@@ -408,7 +417,6 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                     controller.setUserID(selectedBid.getUserId());
                     controller.getUserRequest();
                     TaskProvider = controller.getUser();
-                    Toast.makeText(ViewTaskActivity.this, TaskProvider.toString(), Toast.LENGTH_SHORT).show();
                     task.setTaskProvider(TaskProvider);
                     task.setStatus("assigned");
                     TaskStatus.setText("Assigned");
@@ -424,8 +432,13 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
     }
 
 
+    public void thePinkButton(android.view.View view) {
+        Toast.makeText(this, "dawdwadwwadwad", Toast.LENGTH_SHORT).show();
+    }
+
     public void setRequesterField() {
-        RequesterName.setText(TaskRequester.getName());
+        String text = "Requester: " + TaskRequester.getName();
+        RequesterName.setText(text);
         try {
             RequesterPicture.setImageBitmap(TaskRequester.getPhoto().StringToBitmap());
         } catch (Exception e) {
@@ -442,10 +455,11 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
             ProviderName.setText("No bidders :'(");
         } else if (task.getStatus().equals("bidded")) {
             ProfileController profileController = new ProfileController(this.findViewById(android.R.id.content),this);
-            profileController.setUserID(task.getHighestBidder());
+            profileController.setUserID(task.getBestBidder());
             profileController.getUserRequest();
             User tempUser = profileController.getUser();
-            ProviderName.setText("Highest bidder: " + tempUser.getName() + "\nBid amount: " + Float.toString(task.getBestBid()));
+            String text = "Best bidder: " + tempUser.getName() + "\nBid amount: " + Float.toString(task.getBestBid());
+            ProviderName.setText(text);
             try {
                 ProviderPicture.setImageBitmap(tempUser.getPhoto().StringToBitmap());
             } catch (Exception e) {
@@ -453,7 +467,8 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                 ProviderPicture.setImageBitmap(defaultPhoto.StringToBitmap());
             }
         } else if (task.getStatus().equals("assigned")) {
-            ProviderName.setText(TaskProvider.getName());
+            String text = "Provider: " + TaskProvider.getName();
+            ProviderName.setText(text);
             try {
                 ProviderPicture.setImageBitmap(TaskProvider.getPhoto().StringToBitmap());
             } catch (Exception e) {
@@ -475,9 +490,10 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         TaskName = findViewById(R.id.TaskName);
         TaskStatus = findViewById(R.id.TaskStatus);
         BidslistView = findViewById(R.id.BidsListView);
-        PinkButton = findViewById(R.id.PinkButton);
-        YellowButton = findViewById(R.id.YellowButton);
         scrollView = findViewById(R.id.ViewTaskScrollView);
+        BlueButton = findViewById(R.id.BlueButton);
+        YellowButton = findViewById(R.id.YellowButton);
+        PinkButton = findViewById(R.id.PinkButton);
     }
 
     public void setValues(){
@@ -487,14 +503,12 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         currentUserId = currentUser.getInstance().getId();
         taskUserId = task.getTaskRequester().getId();
         taskName = task.getName();
-        taskStatus = task.getStatus();
         description = task.getDescription();
         TaskRequester = task.getTaskRequester();
         TaskProvider = task.getTaskProvider();
-        HighestBidder = task.getHighestBidder();
         BidList = new ArrayList<>();
         TaskName.setText(taskName);
-        TaskStatus.setText(taskStatus);
+        TaskStatus.setText(task.getStatus());
         DescriptionView.setText(description);
     }
 
@@ -513,7 +527,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         mMap = googleMap;
 
         // Add a marker to a location and move the camera
-        LatLng taskLocation = new LatLng(53.631611, -113.323975);
+        LatLng taskLocation = task.getLocation();
         mMap.addMarker(new MarkerOptions().position(taskLocation).title("Task Name"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(taskLocation));
         moveToCurrentLocation(taskLocation);

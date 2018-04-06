@@ -21,6 +21,7 @@ import com.cmput301w18t05.taskzilla.request.command.AddTaskRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetBidsByTaskIdRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetUserRequest;
 import com.cmput301w18t05.taskzilla.request.command.RemoveBidRequest;
+import com.google.android.gms.maps.model.LatLng;
 
 import org.apache.commons.lang3.ObjectUtils;
 
@@ -46,11 +47,11 @@ public class Task implements Comparable<Task> {
     private String providerUsername;
     private String requesterId;
     private String requesterUsername;
-    private String highestBidder;
+    private String bestBidder;
 
     private String status;
     private String description;
-    private Location location;
+    private LatLng location;
     private Float bestBid;
     private ArrayList<Bid> bids;
     private ArrayList<Photo> photos;
@@ -76,7 +77,7 @@ public class Task implements Comparable<Task> {
         this.status = "requested";
         this.description = description;
         this.bestBid = -1.0f;
-        this.highestBidder = "";
+        this.bestBidder = "";
     }
 
     /**
@@ -86,7 +87,7 @@ public class Task implements Comparable<Task> {
      * @param description Description of the task
      * @param location Location of the task
      */
-    public Task(String name, User TaskRequester, String description, Location location) {
+    public Task(String name, User TaskRequester, String description, LatLng location) {
         photos = new ArrayList<>();
         this.name = name;
         this.requesterId = TaskRequester.getId();
@@ -95,7 +96,7 @@ public class Task implements Comparable<Task> {
         this.description = description;
         this.location = location;
         this.bestBid = -1.0f;
-        this.highestBidder = "";
+        this.bestBidder = "";
     }
 
     /**
@@ -106,7 +107,7 @@ public class Task implements Comparable<Task> {
      * @param location Location of the task
      * @param photos List of photos realated to the task
      */
-    public Task(String name, User TaskRequester, String description, Location location, ArrayList<Photo> photos) {
+    public Task(String name, User TaskRequester, String description, LatLng location, ArrayList<Photo> photos) {
         photos = new ArrayList<>();
         this.name = name;
         this.requesterId = TaskRequester.getId();
@@ -116,7 +117,7 @@ public class Task implements Comparable<Task> {
         this.location = location;
         this.photos = photos;
         this.bestBid = -1.0f;
-        this.highestBidder = "";
+        this.bestBidder = "";
     }
 
     /**
@@ -158,7 +159,7 @@ public class Task implements Comparable<Task> {
 
     public void removeHighestBid(){
         this.bestBid = -1.0f;
-        this.highestBidder = "";
+        this.bestBidder = "";
     }
 
     /**
@@ -287,7 +288,7 @@ public class Task implements Comparable<Task> {
      * @return User
      */
     public User getTaskProvider() {
-        return userRequest(this.requesterId);
+        return userRequest(this.providerId);
     }
 
     public void setTaskProvider(User taskProvider) {
@@ -339,11 +340,11 @@ public class Task implements Comparable<Task> {
         this.description = description;
     }
 
-    public Location getLocation() {
+    public LatLng getLocation() {
         return this.location;
     }
 
-    public void setLocation(Location location) {
+    public void setLocation(LatLng location) {
         this.location = location;
     }
 
@@ -375,12 +376,12 @@ public class Task implements Comparable<Task> {
         this.bestBid = bid;
     }
 
-    public String getHighestBidder() {
-        return highestBidder;
+    public String getBestBidder() {
+        return bestBidder;
     }
 
-    public void setHighestBidder(String highestBidder) {
-        this.highestBidder = highestBidder;
+    public void setBestBidder(String bestBidder) {
+        this.bestBidder = bestBidder;
     }
 
     /**
@@ -423,5 +424,24 @@ public class Task implements Comparable<Task> {
     public void updateThis() {
         AddTaskRequest req = new AddTaskRequest(this);
         RequestManager.getInstance().invokeRequest(req);
+    }
+
+    public void updateBestBid(){
+        ArrayList<Bid> bidslist = retrieveBids();
+        Bid minbid = null;
+        for (Bid bid : bidslist) {
+            if (minbid == null) {
+                minbid = bid;
+            } else if (bid.getBidAmount() < minbid.getBidAmount()) {
+                minbid = bid;
+            }
+        }
+        if (minbid == null) {
+            bestBid = -1.0f;
+            bestBidder = "";
+        } else {
+            bestBid = minbid.getBidAmount();
+            bestBidder = minbid.getId();
+        }
     }
 }

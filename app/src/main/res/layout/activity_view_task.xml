@@ -23,7 +23,6 @@
         android:layout_height="wrap_content"
         tools:context="com.cmput301w18t05.taskzilla.activity.ViewTaskActivity">
 
-
         <TextView
             android:id="@+id/TaskName"
             android:layout_width="0dp"
@@ -47,6 +46,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:background="@android:color/transparent"
+            android:focusable="auto"
             android:scaleType="fitXY"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -63,7 +63,7 @@
             android:text="Requester"
             android:textAlignment="textStart"
             android:textSize="14sp"
-            app:layout_constraintEnd_toStartOf="@+id/YellowButton"
+            app:layout_constraintEnd_toStartOf="@+id/PinkButton"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintStart_toEndOf="@+id/RequesterPicture"
             app:layout_constraintTop_toBottomOf="@+id/TaskStatus" />
@@ -75,7 +75,6 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:background="@android:color/transparent"
-            android:onClick="viewProfile"
             android:scaleType="fitXY"
             android:visibility="visible"
             app:layout_constraintStart_toStartOf="parent"
@@ -86,16 +85,15 @@
             android:id="@+id/ProviderName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="24dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="28dp"
-            android:clickable="true"
-            android:onClick="viewProfile"
+            android:clickable="false"
             android:text="Provider Name"
             android:textAlignment="textStart"
             android:textSize="14sp"
             android:visibility="visible"
-            app:layout_constraintEnd_toStartOf="@+id/YellowButton"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintStart_toEndOf="@+id/ProviderPicture"
             app:layout_constraintTop_toBottomOf="@+id/RequesterPicture" />
@@ -179,13 +177,13 @@
         </HorizontalScrollView>
 
         <Button
-            android:id="@+id/PinkButton"
+            android:id="@+id/BlueButton"
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="46dp"
             android:layout_marginEnd="16dp"
             android:layout_marginTop="16dp"
-            android:onClick="thePinkButton"
+            android:onClick="theBlueButton"
             android:text="PLACE BID"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -234,6 +232,19 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/EditButton" />
 
+        <Button
+            android:id="@+id/PinkButton"
+            android:layout_width="116dp"
+            android:layout_height="46dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="8dp"
+            android:onClick="thePinkButton"
+            android:text="Decline a bid"
+            android:textColor="@color/buttonPinkComplement"
+            android:textSize="13.5sp"
+            android:theme="@style/AppTheme.PinkButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/YellowButton" />
 
     </android.support.constraint.ConstraintLayout>
 

@@ -19,6 +19,41 @@
     tools:layout_editor_absoluteY="81dp">
 
 
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/LocationSearchLayout"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:background="@android:color/background_light"
+        android:elevation="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/LocationDescriptionTextView">
+
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@android:drawable/ic_menu_mylocation" />
+
+        <fragment
+            android:id="@+id/place_autocomplete_fragment"
+            android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+            android:layout_width="0dp"
+            android:layout_height="47dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imageButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+
     <android.support.design.widget.TextInputLayout
         android:id="@+id/TaskNameLayout"
         android:layout_width="match_parent"
@@ -74,7 +109,7 @@
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Photo"
+        android:text="Add Photo"
         android:textAlignment="viewStart"
         android:textColor="@android:color/darker_gray"
         android:textSize="8sp"
@@ -82,24 +117,11 @@
         app:layout_constraintStart_toStartOf="@+id/imageButton2"
         app:layout_constraintTop_toBottomOf="@+id/imageButton2" />
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:text="Location"
-        android:textAlignment="center"
-        android:textColor="@android:color/darker_gray"
-        android:textSize="8sp"
-        app:layout_constraintEnd_toEndOf="@+id/imageButton"
-        app:layout_constraintStart_toStartOf="@+id/imageButton"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton" />
-
     <ImageButton
         android:id="@+id/imageButton2"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginTop="1dp"
         android:background="@android:color/transparent"
         android:backgroundTint="@android:color/holo_blue_bright"
         android:scaleType="fitCenter"
@@ -107,18 +129,6 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Photos"
         app:srcCompat="@android:drawable/ic_menu_camera" />
-
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="1dp"
-        android:background="@android:color/transparent"
-        android:scaleType="fitCenter"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton2"
-        app:layout_constraintTop_toBottomOf="@+id/Photos"
-        app:srcCompat="@android:drawable/ic_menu_mylocation" />
 
     <HorizontalScrollView
         android:id="@+id/Photos"
@@ -195,19 +205,17 @@
             app:layout_constraintTop_toTopOf="parent" />
     </android.support.constraint.ConstraintLayout>
 
-
-    <EditText
-        android:id="@+id/LocationTextView"
+    <TextView
+        android:id="@+id/LocationDescriptionTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="8dp"
-        android:ems="10"
-        android:hint="Location"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:text="Location"
+        android:textSize="22sp"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Photos" />
 
 </android.support.constraint.ConstraintLayout>
