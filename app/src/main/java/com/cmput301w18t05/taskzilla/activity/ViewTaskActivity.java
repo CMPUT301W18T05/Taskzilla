@@ -129,57 +129,26 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         mapFragment.getMapAsync(this);
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-        EditButton = findViewById(R.id.EditButton);
-        DeleteButton = findViewById(R.id.DeleteButton);
-        ProviderPicture = findViewById(R.id.ProviderPicture);
-        RequesterPicture = findViewById(R.id.RequesterPicture);
-        ProviderName = findViewById(R.id.ProviderName);
-        DescriptionView = findViewById(R.id.Description);
-        RequesterName = findViewById(R.id.RequesterName);
-        TaskName = findViewById(R.id.TaskName);
-        TaskStatus = findViewById(R.id.TaskStatus);
-        BidslistView = findViewById(R.id.BidsListView);
-        PinkButton = findViewById(R.id.PinkButton);
-        YellowButton = findViewById(R.id.YellowButton);
+        findViews();
 
         // starts the activity at the very top
-        scrollView = findViewById(R.id.ViewTaskScrollView);
         scrollView.setFocusableInTouchMode(true);
         scrollView.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
 
+        // gets the task id
         this.viewTaskController = new ViewTaskController(this.findViewById(android.R.id.content), this);
         taskID = getIntent().getStringExtra("TaskId");
 
-        viewTaskController.setTaskID(taskID);
-        viewTaskController.getTaskRequest();
-        task = viewTaskController.getTask();
-        currentUserId = currentUser.getInstance().getId();
-        taskUserId = task.getTaskRequester().getId();
-
-        taskName = task.getName();
-        taskStatus = task.getStatus();
-        description = task.getDescription();
-        TaskRequester = task.getTaskRequester();
-        TaskProvider = task.getTaskProvider();
-        HighestBidder = task.getHighestBidder();
-        BidList = new ArrayList<>();
-        TaskName.setText(taskName);
-        TaskStatus.setText(taskStatus);
-        DescriptionView.setText(description);
-
+        setValues();
         setRequesterField();
         setProviderField();
-
-
-
-
 
         // taken from https://stackoverflow.com/questions/3465841/how-to-change-visibility-of-layout-programmatically
         // 2018-03-14
         if (currentUserId.equals(taskUserId)) {
             DeleteButton.setVisibility(View.VISIBLE);
             PinkButton.setVisibility(View.INVISIBLE);
-            if (taskStatus.equals("requested") || taskStatus.equals("bidded")) {
+            if (taskStatus.equals("requested")) {
                 EditButton.setVisibility(View.VISIBLE);
             } else {
                 EditButton.setVisibility(View.INVISIBLE);
@@ -489,9 +458,39 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
     }
 
 
+    public void findViews(){
+        EditButton = findViewById(R.id.EditButton);
+        DeleteButton = findViewById(R.id.DeleteButton);
+        ProviderPicture = findViewById(R.id.ProviderPicture);
+        RequesterPicture = findViewById(R.id.RequesterPicture);
+        ProviderName = findViewById(R.id.ProviderName);
+        DescriptionView = findViewById(R.id.Description);
+        RequesterName = findViewById(R.id.RequesterName);
+        TaskName = findViewById(R.id.TaskName);
+        TaskStatus = findViewById(R.id.TaskStatus);
+        BidslistView = findViewById(R.id.BidsListView);
+        PinkButton = findViewById(R.id.PinkButton);
+        YellowButton = findViewById(R.id.YellowButton);
+        scrollView = findViewById(R.id.ViewTaskScrollView);
+    }
 
-
-
+    public void setValues(){
+        viewTaskController.setTaskID(taskID);
+        viewTaskController.getTaskRequest();
+        task = viewTaskController.getTask();
+        currentUserId = currentUser.getInstance().getId();
+        taskUserId = task.getTaskRequester().getId();
+        taskName = task.getName();
+        taskStatus = task.getStatus();
+        description = task.getDescription();
+        TaskRequester = task.getTaskRequester();
+        TaskProvider = task.getTaskProvider();
+        HighestBidder = task.getHighestBidder();
+        BidList = new ArrayList<>();
+        TaskName.setText(taskName);
+        TaskStatus.setText(taskStatus);
+        DescriptionView.setText(description);
+    }
 
     public void updateBidsList(){
         BidList.clear();
