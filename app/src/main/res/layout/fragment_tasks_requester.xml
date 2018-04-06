@@ -25,9 +25,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:clickable="true"
         android:layout_marginBottom="25dp"
         android:layout_marginRight="25dp"
+        android:clickable="true"
         android:src="@android:drawable/ic_input_add"
         app:backgroundTint="@android:color/background_dark" />
 
