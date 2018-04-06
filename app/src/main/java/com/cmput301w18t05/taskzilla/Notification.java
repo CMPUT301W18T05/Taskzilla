@@ -24,6 +24,8 @@ public class Notification {
     private String providerId;
     private String requesterId;
 
+    private String id;
+
     public Notification(String nTitle, String nContext, Intent nIntent, String nProviderId, String nRequesterId) {
         this.title = nTitle;
         this.context = nContext;
@@ -50,6 +52,22 @@ public class Notification {
 
     public String getRequesterId() {
         return this.requesterId;
+    }
+
+    public String toString() {
+        return "Title: " + this.title + "\nContext: " + this.context + "\nBy: " + this.providerId;
+    }
+
+    public String getId() {
+        return this.id;
+    }
+
+    public void setId(String nid) {
+        this.id = nid;
+    }
+
+    public int compareTo(Notification notification) {
+        return this.getId().compareTo(notification.getId());
     }
 }
 

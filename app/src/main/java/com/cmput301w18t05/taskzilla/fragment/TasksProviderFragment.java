@@ -57,7 +57,6 @@ public class TasksProviderFragment extends Fragment {
     private SearchTaskRequest newRequest;
     private User cUser = currentUser.getInstance();
 
-
     public TasksProviderFragment() {
         // Required empty public constructor
     }
@@ -88,7 +87,6 @@ public class TasksProviderFragment extends Fragment {
         });
         return v;
     }
-
 
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);

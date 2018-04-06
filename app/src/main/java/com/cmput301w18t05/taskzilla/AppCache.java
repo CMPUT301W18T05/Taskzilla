@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.TreeSet;
 
-
 /**
  * AppCache class
  *
@@ -28,6 +27,7 @@ public class AppCache {
     private TreeSet<Task> cachedTasks = new TreeSet<>();
     private TreeSet<Bid> cachedBids = new TreeSet<>();
     private TreeSet<User> cachedUsers = new TreeSet<>();
+    private TreeSet<Notification> cachedNotifications = new TreeSet<>();
     private int taskIDCounter = 0;
     private int bidIDCounter = 0;
 

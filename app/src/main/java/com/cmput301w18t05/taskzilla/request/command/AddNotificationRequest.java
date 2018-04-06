@@ -11,28 +11,47 @@
 
 package com.cmput301w18t05.taskzilla.request.command;
 
+/**
+ * Created by Andy on 4/5/2018.
+ */
+
+
+import com.cmput301w18t05.taskzilla.Notification;
 import com.cmput301w18t05.taskzilla.controller.ElasticSearchController;
-import com.cmput301w18t05.taskzilla.Task;
-import com.cmput301w18t05.taskzilla.request.Request;
+import com.cmput301w18t05.taskzilla.request.InsertionRequest;
 
 /**
- * Request for updating a task object in Elastic Search. Inserts a new updated task overwriting the old one
- * @author Micheal
+ * Request for adding notifications to elastic search
+ * @author Andy
  * @see ElasticSearchController
  * @version 1.0
  */
-public class UpdateTaskRequest extends Request {
-    ElasticSearchController.UpdateTask updateRequest;
-    private Task taskData;
 
-    public UpdateTaskRequest(Task task) {
-        this.taskData = task;
+public class AddNotificationRequest extends InsertionRequest {
+    ElasticSearchController.AddNotification task;
+    Notification notificationData;
+
+    public AddNotificationRequest(Notification notification) {
+        this.notificationData = notification;
+        queueReady = true;
     }
 
+    @Override
     public void execute() {
-        updateRequest = new ElasticSearchController.UpdateTask();
-        updateRequest.execute(taskData);
+        task = new ElasticSearchController.AddNotification();
+        task.execute(notificationData);
     }
 
-    public void executeOffline() {}
+    @Override
+    public void executeOffline() {
+    }
+
+    @Override
+    public boolean requiresConnection() {
+        return true;
+    }
+
+    public void getResult() {
+    }
+
 }

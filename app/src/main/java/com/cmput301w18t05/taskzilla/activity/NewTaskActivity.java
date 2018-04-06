@@ -66,13 +66,10 @@ public class NewTaskActivity extends AppCompatActivity {
         final EditText taskName = findViewById(R.id.TaskName);
         final EditText taskDescription = findViewById(R.id.Description);
 
-
-
         final PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
 
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-
             @Override
             public void onPlaceSelected(Place place) {
                 // TODO: Get info about the selected place.
@@ -80,7 +77,6 @@ public class NewTaskActivity extends AppCompatActivity {
                 autocompleteFragment.setHint(place.getName());
                 taskLocation=place.getLatLng();
             }
-
             @Override
             public void onError(Status status) {
                 // TODO: Handle the error.
@@ -102,8 +98,6 @@ public class NewTaskActivity extends AppCompatActivity {
             }
         });
 
-
-
         /* add task button */
         addTask.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,11 +105,7 @@ public class NewTaskActivity extends AppCompatActivity {
                 newTaskController.addTask(taskName.getText().toString(), cUser, taskDescription.getText().toString(),taskLocation);
             }
         });
-
-
     }
-
-
 
     void getLocation() {
         if( ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)

@@ -12,52 +12,72 @@
 package com.cmput301w18t05.taskzilla.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
+import com.cmput301w18t05.taskzilla.Notification;
 import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.Task;
+import com.cmput301w18t05.taskzilla.controller.NotificationsController;
+import com.cmput301w18t05.taskzilla.currentUser;
 
 import java.util.ArrayList;
+import java.util.zip.Inflater;
 
 public class NotificationsFragment extends Fragment {
 
-    private ArrayList<String> notificationList;
+    private ArrayList<Notification> notificationList;
     private ListView notificationListView;
-    private ArrayAdapter<String> adapter;
+    private ArrayAdapter<Notification> adapter;
+    private NotificationsController notificationsController;
 
     public NotificationsFragment() {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_notifications, container, false);
 
+        // Inflate the layout for this fragment
+        final RelativeLayout relativeLayout = (RelativeLayout) inflater.inflate(R.layout.fragment_notifications, container, false);
+
+        notificationList = new ArrayList<>();
+        notificationListView = relativeLayout.findViewById(R.id.NotificationListView);
+        notificationsController = new NotificationsController(this, getActivity(), currentUser.getInstance());
+
+        adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, notificationList);
+        notificationListView.setAdapter(adapter);
+
+        // get all notifications currently available
+        notificationsController.getNotificationsRequest();
+        return relativeLayout;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        notificationList = new ArrayList<>();
-        notificationListView = view.findViewById(R.id.NotificationListView);
-        adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, notificationList);
-        notificationListView.setAdapter(adapter);
-
         //Add dummy notifications
-        notificationList.add("Notification Test 1");
-        notificationList.add("Notification Test 2");
-
-
+        //notificationList.add("Notification Test 1");
+        //notificationList.add("Notification Test 2");
     }
 
+    public void notifyChange() {
+        notificationList.clear();
+        notificationList.addAll(notificationsController.getResults());
+        adapter.notifyDataSetChanged();
+    }
 
+    public void onResume(){
+        super.onResume();
+        adapter.notifyDataSetChanged();
+    }
 }

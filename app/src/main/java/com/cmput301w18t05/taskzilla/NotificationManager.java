@@ -96,4 +96,11 @@ public class NotificationManager extends ContextWrapper {
 
         mManager.notify(id, mBuilder.build());
     }
+
+    public static class pollNotifications extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            return null;
+        }
+    }
 }

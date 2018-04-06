@@ -231,4 +231,5 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
         super.onResume();
         adapter.notifyDataSetChanged();
     }
+
 }

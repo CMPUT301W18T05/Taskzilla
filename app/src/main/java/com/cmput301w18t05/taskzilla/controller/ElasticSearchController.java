@@ -15,6 +15,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.cmput301w18t05.taskzilla.Bid;
+import com.cmput301w18t05.taskzilla.Notification;
 import com.cmput301w18t05.taskzilla.Task;
 import com.cmput301w18t05.taskzilla.User;
 import com.searchly.jestdroid.DroidClientConfig;
@@ -504,7 +505,6 @@ public class ElasticSearchController {
                     Log.i("Error", "Get task failed");
                 }
             }
-
             return user; // will return null if no user found
         }
     }
@@ -704,6 +704,110 @@ public class ElasticSearchController {
                 }
             }
             return null;
+        }
+    }
+
+    /**
+     * Asynchronous task for adding a notification
+     */
+    public static class AddNotification extends AsyncTask<Notification, Void, Boolean> {
+        /**
+         * Handles adding a notification
+         * @param notifications The notification to add
+         * @return Boolean
+         */
+        @Override
+        protected Boolean doInBackground(Notification... notifications) {
+            verifySettings();
+            for (Notification notification : notifications) {
+                Index index = new Index.Builder(notification).index("cmput301w18t05").type("notification").build();
+                try {
+                    Log.i("Event", "Trying to add notification "+notification.toString());
+
+                    DocumentResult result = client.execute(index);
+
+                    Log.i("Event", "Jest returned with: "+result);
+                    if (result.isSucceeded()) {
+                        notification.setId(result.getId());
+                        Log.i("Event", "Successfully added: "+notification.toString()+" with id: "+notification.getId()+" ... at least we think so.");
+                        return true;
+                    }
+                    else {
+                        Log.i("Event", "Failed to add notification: "+notification.toString());
+                    }
+                }
+                catch (Exception e) {
+                    Log.i("Error", "Notification not added");
+                }
+            }
+            return false;
+        }
+    }
+
+    public static class RemoveNotification extends AsyncTask<String, Void, Boolean> {
+        /**
+         * Handles removing a Notification
+         * @param notificationIds The id of notification to be removed
+         * @return Boolean
+         */
+        @Override
+        protected Boolean doInBackground(String... notificationIds) {
+            verifySettings();
+            DocumentResult result = null;
+            for (String id: notificationIds) {
+
+                // get the bids
+                try {
+                    result = client.execute(new Delete.Builder(id).index("cmput301w18t05").type("notification").build());
+                    Log.i("Success", "Notification deleted");
+                } catch (Exception e) {
+                    Log.i("Error", "Notification not deleted");
+                }
+            }
+
+            return result != null && result.isSucceeded();
+        }
+    }
+
+    /**
+     * Asynchronous task for retrieving all Notifications from a user id
+     * todo: take in size and from integer to allow pagination
+     */
+    public static class GetNotificationsByUserID extends AsyncTask<String, Void, ArrayList<Notification>> {
+        /**
+         * Handles retrieving all notifications from a user id
+         * @param userIds The user id
+         * @return ArrayList<Notification>
+         */
+        @Override
+        protected ArrayList<Notification> doInBackground(String... userIds) {
+            verifySettings();
+            ArrayList<Notification> foundNotifications = new ArrayList<>();
+
+            for (String  userId : userIds) {
+                String query = "{ \"query\" : { \"match\" : { \"userId\" : \""+ userId + "\" } } }";
+                Log.i("Query: ", query);
+
+                SearchResult result;
+                Search search = new Search.Builder(query)
+                        .addIndex("cmput301w18t05")
+                        .addType("notification")
+                        .build();
+                try {
+                    result = client.execute(search);
+                    if (result.isSucceeded()) {
+                        List<Notification> newNotifications = result.getSourceAsObjectList(Notification.class);
+                        foundNotifications.addAll(newNotifications);
+                    }
+                    else {
+                        return null;
+                    }
+                }
+                catch (Exception e) {
+                    return null;
+                }
+            }
+            return foundNotifications;
         }
     }
 

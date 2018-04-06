@@ -69,7 +69,8 @@ public class Photo {
         try {
             byte [] encodeByte=Base64.decode(photo,Base64.DEFAULT);
             Bitmap bitmap=BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            return bitmap;
+            Bitmap resizedImage = Bitmap.createScaledBitmap(bitmap,500,500, false);
+            return resizedImage;
         } catch(Exception e) {
             e.getMessage();
             return null;
