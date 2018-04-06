@@ -142,7 +142,20 @@ public class AppCache {
         return result;
     }
 
+    public void removeBidByBidid(String id) {
+        System.out.println("Trying to remove bid: "+id);
+        for (Bid b : cachedBids) {
+            if (b.getId().equals(id)) {
+                System.out.println("Found bid with this id");
+                cachedBids.remove(b);
+                return;
+            }
+        }
+        System.out.println("Could not find bid with id: "+id);
+    }
+
     public void emptyCache() {
+        System.out.println("Clearing local cache.");
         cachedTasks.clear();
         cachedUsers.clear();
         cachedBids.clear();

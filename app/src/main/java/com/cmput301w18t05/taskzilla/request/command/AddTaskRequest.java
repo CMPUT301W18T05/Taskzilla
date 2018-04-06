@@ -27,17 +27,20 @@ public class AddTaskRequest extends InsertionRequest {
     private Task taskData;
     private boolean executedOffline = false;
     private boolean isUpdate = false;
+    private String originalId;
 
     public AddTaskRequest(Task task) {
         queueReady = true; // put this into queue if needed!
         this.taskData = task;
+        originalId = taskData.getId();
     }
 
     @Override
     public void execute() {
         if (!isUpdate)
             this.taskData.setId(null);
-
+        else
+            taskData.setId(originalId);
         task = new ElasticSearchController.AddTask();
         task.execute(taskData); // for now, subject to change.
     }
