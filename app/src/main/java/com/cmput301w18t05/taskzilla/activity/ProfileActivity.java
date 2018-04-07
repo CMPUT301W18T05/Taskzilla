@@ -11,12 +11,14 @@
 
 package com.cmput301w18t05.taskzilla.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -96,6 +98,7 @@ public class ProfileActivity extends AppCompatActivity {
         numRequestsField.setText(numRequests);
         numTasksDoneField.setText(numTasksDone);
 
+
         try {
             profilePicture.setImageBitmap(user.getPhoto().StringToBitmap());
         }
@@ -104,5 +107,17 @@ public class ProfileActivity extends AppCompatActivity {
             profilePicture.setImageBitmap(defaultPhoto.StringToBitmap());
 
         }
+        profilePicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProfilePictureClicked();
+            }
+        });
+    }
+
+    public void ProfilePictureClicked(){
+        Intent intent = new Intent(this,ZoomImageActivity.class);
+        intent.putExtra("Photo", user.getPhoto().toString());
+        startActivity(intent);
     }
 }
