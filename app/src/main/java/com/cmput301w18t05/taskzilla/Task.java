@@ -426,25 +426,6 @@ public class Task implements Comparable<Task> {
         RequestManager.getInstance().invokeRequest(req);
     }
 
-    public void updateBestBid(){
-        ArrayList<Bid> bidslist = retrieveBids();
-        Bid minbid = null;
-        for (Bid bid : bidslist) {
-            if (minbid == null) {
-                minbid = bid;
-            } else if (bid.getBidAmount() < minbid.getBidAmount()) {
-                minbid = bid;
-            }
-        }
-        if (minbid == null) {
-            bestBid = -1.0f;
-            bestBidder = "";
-        } else {
-            bestBid = minbid.getBidAmount();
-            bestBidder = minbid.getUserId();
-        }
-    }
-
     public void unassignProvider() {
         providerId = null;
         providerUsername = null;
