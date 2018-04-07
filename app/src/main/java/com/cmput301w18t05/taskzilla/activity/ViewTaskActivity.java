@@ -51,6 +51,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.cmput301w18t05.taskzilla.Bid;
+import com.cmput301w18t05.taskzilla.CustomOnItemClick;
 import com.cmput301w18t05.taskzilla.ExpandableBidListAdapter;
 import com.cmput301w18t05.taskzilla.Notification;
 import com.cmput301w18t05.taskzilla.NotificationManager;
@@ -107,12 +108,14 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
     private ExpandableListView BidslistView;
     private Button BlueButton;
     private Button YellowButton;
+    private Button GreenButton;
+    private Button RedButton;
     private Button PinkButton;
     private ScrollView scrollView;
 
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter recyclerViewAdapter;
-    private RecyclerView.LayoutManager recyclerViewLayoutManager;
+    private RecyclerView recyclerPhotosView;
+    private RecyclerView.Adapter recyclerPhotosViewAdapter;
+    private RecyclerView.LayoutManager layoutManager;
     private LinearLayout linearLayout;
     private ArrayList<Photo> photos;
     /**onCreate
@@ -161,16 +164,25 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
 
         photos = task.getPhotos();
         linearLayout = findViewById(R.id.Photos);
-        recyclerView = findViewById(R.id.listOfPhotos);
-        recyclerViewLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
-        recyclerView.setLayoutManager(recyclerViewLayoutManager);
-        recyclerViewAdapter = new RecyclerViewAdapter(getApplicationContext(), photos);
-        recyclerView.setAdapter(recyclerViewAdapter);
+        recyclerPhotosView = findViewById(R.id.listOfPhotos);
+        layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerPhotosView.setLayoutManager(layoutManager);
+        recyclerPhotosViewAdapter = new RecyclerViewAdapter(getApplicationContext(), photos, new CustomOnItemClick() {
+            @Override
+            public void onColumnClicked(int position) {
+                Intent intent = new Intent(getApplicationContext(),ZoomImageActivity.class);
+                intent.putExtra("Photo",photos.get(position).toString());
+                startActivity(intent);
+            }
+        });
+        recyclerPhotosView.setAdapter(recyclerPhotosViewAdapter);
         // taken from https://stackoverflow.com/questions/3465841/how-to-change-visibility-of-layout-programmatically
         // 2018-03-14
         if (currentUserId.equals(taskUserId)) {
             DeleteButton.setVisibility(View.VISIBLE);
             BlueButton.setVisibility(View.INVISIBLE);
+            GreenButton.setVisibility(View.INVISIBLE);
+            RedButton.setVisibility(View.INVISIBLE);
             if (task.getStatus().equals("requested")) {
                 EditButton.setVisibility(View.VISIBLE);
             } else {
@@ -181,8 +193,12 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
             EditButton.setVisibility(View.INVISIBLE);
             YellowButton.setVisibility(View.INVISIBLE);
             PinkButton.setVisibility(View.INVISIBLE);
+            GreenButton.setVisibility(View.INVISIBLE);
+            RedButton.setVisibility(View.INVISIBLE);
         }
         if (task.getStatus().equals("assigned")) {
+            GreenButton.setVisibility(View.VISIBLE);
+            RedButton.setVisibility(View.VISIBLE);
             YellowButton.setVisibility(View.INVISIBLE);
             PinkButton.setVisibility(View.INVISIBLE);
             BlueButton.setVisibility(View.INVISIBLE);
@@ -261,8 +277,8 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                 // taken from https://stackoverflow.com/questions/2115758/how-do-i-display-an-alert-dialog-on-android
                 // 2018-03-16
                 AlertDialog.Builder alert = new AlertDialog.Builder(ViewTaskActivity.this);
-                alert.setTitle("Delete");
-                alert.setMessage("Are you sure you want to delete?");
+                alert.setTitle("Delete Task");
+                alert.setMessage("Are you sure you want to delete this task?");
 
                 //DELETE CODE
                 alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -289,6 +305,21 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                 alert.show();
             }
         });
+
+        RedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        GreenButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
 
         // get all of this task's bids and pass it into expandable list to display
         // @author myapplestory
@@ -528,6 +559,8 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         scrollView = findViewById(R.id.ViewTaskScrollView);
         BlueButton = findViewById(R.id.BlueButton);
         YellowButton = findViewById(R.id.YellowButton);
+        GreenButton = findViewById(R.id.CompleteTaskButton);
+        RedButton = findViewById(R.id.AbortTaskButton);
         PinkButton = findViewById(R.id.PinkButton);
     }
 
@@ -620,7 +653,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                         Log.i("test",photosString.get(i));
                         photos.add(new Photo(photosString.get(i)));
                     }
-                    recyclerViewAdapter.notifyDataSetChanged();
+                    recyclerPhotosViewAdapter.notifyDataSetChanged();
                     task.setName(taskName);
                     task.setDescription(description);
                     viewTaskController.updateTaskRequest(task);

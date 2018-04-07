@@ -19,5 +19,7 @@
     <color name="buttonYellowComplement">#00e5ee</color>
     <color name="buttonPink">#FF69B4</color>
     <color name="buttonPinkComplement">#efefef</color>
+    <color name="buttonGreen">#1c9b2c</color>
+    <color name="buttonRed">#9f0e0e</color>
 
 </resources>

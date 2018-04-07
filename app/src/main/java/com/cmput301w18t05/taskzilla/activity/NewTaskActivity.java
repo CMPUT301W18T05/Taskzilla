@@ -13,6 +13,7 @@ package com.cmput301w18t05.taskzilla.activity;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -22,6 +23,7 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -36,6 +38,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cmput301w18t05.taskzilla.CustomOnItemClick;
 import com.cmput301w18t05.taskzilla.Photo;
 import com.cmput301w18t05.taskzilla.RecyclerViewAdapter;
 import com.cmput301w18t05.taskzilla.User;
@@ -68,9 +71,9 @@ public class NewTaskActivity extends AppCompatActivity {
 
     private ImageButton addPhotoButton;
     private ArrayList<Photo> photos;
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter recyclerViewAdapter;
-    private RecyclerView.LayoutManager recyclerViewLayoutManager;
+    private RecyclerView recyclerPhotosView;
+    private RecyclerView.Adapter recyclerPhotosViewAdapter;
+    private RecyclerView.LayoutManager layoutManager;
     private LinearLayout linearLayout;
     private Integer PICK_IMAGE = 5;
     private int maxSize;
@@ -113,11 +116,40 @@ public class NewTaskActivity extends AppCompatActivity {
 
         photos = new ArrayList<Photo>();
         linearLayout = (LinearLayout) findViewById(R.id.Photos);
-        recyclerView = (RecyclerView) findViewById(R.id.listOfPhotos);
-        recyclerViewLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        recyclerView.setLayoutManager(recyclerViewLayoutManager);
-        recyclerViewAdapter = new RecyclerViewAdapter(this, photos);
-        recyclerView.setAdapter(recyclerViewAdapter);
+        recyclerPhotosView = (RecyclerView) findViewById(R.id.listOfPhotos);
+        layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        recyclerPhotosView.setLayoutManager(layoutManager);
+        recyclerPhotosViewAdapter = new RecyclerViewAdapter(this, photos, new CustomOnItemClick() {
+            @Override
+            public void onColumnClicked(final int position) {
+                // taken from https://stackoverflow.com/questions/2115758/how-do-i-display-an-alert-dialog-on-android
+                // 2018-03-16
+                AlertDialog.Builder alert = new AlertDialog.Builder(NewTaskActivity.this);
+                alert.setTitle("Delete Photo");
+                alert.setMessage("Are you sure you want to delete this photo?");
+
+                //DELETE CODE
+                alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        photos.remove(position);
+                        dialogInterface.dismiss();
+                        recyclerPhotosViewAdapter.notifyDataSetChanged();
+                    }
+                });
+
+                //DELETE CANCEL CODE
+                alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                alert.show();
+
+            }
+        });
+        recyclerPhotosView.setAdapter(recyclerPhotosViewAdapter);
 
 
         autocompleteFragment.setHint("Task Location");
@@ -222,7 +254,7 @@ public class NewTaskActivity extends AppCompatActivity {
                 String image = Base64.encodeToString(byteImage, Base64.DEFAULT);
                 photos.add(new Photo(image));
                 Log.i("hi",String.valueOf(photos.size()));
-                recyclerViewAdapter.notifyDataSetChanged();
+                recyclerPhotosViewAdapter.notifyDataSetChanged();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
                 Toast.makeText(NewTaskActivity.this, "Something went wrong", Toast.LENGTH_LONG).show();
