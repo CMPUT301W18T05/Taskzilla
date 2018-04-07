@@ -185,6 +185,8 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         if (task.getStatus().equals("assigned")) {
             YellowButton.setVisibility(View.INVISIBLE);
             PinkButton.setVisibility(View.INVISIBLE);
+            BlueButton.setVisibility(View.INVISIBLE);
+            BidslistView.setVisibility(View.INVISIBLE);
         }
 
 //            LinearLayout.LayoutParams detailsLayout =
