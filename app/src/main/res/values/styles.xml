@@ -39,9 +39,14 @@
     <style name="AppTheme.YellowButton" parent="Base.Widget.AppCompat.Button">
         <item name="colorButtonNormal">@color/buttonYellow</item>
     </style>
-
     <style name="AppTheme.PinkButton" parent="Base.Widget.AppCompat.Button">
         <item name="colorButtonNormal">@color/buttonPink</item>
+    </style>
+    <style name="AppTheme.GreenButton" parent="Base.Widget.AppCompat.Button">
+        <item name="colorButtonNormal">@color/buttonGreen</item>
+    </style>
+    <style name="AppTheme.RedButton" parent="Base.Widget.AppCompat.Button">
+        <item name="colorButtonNormal">@color/buttonRed</item>
     </style>
 
 </resources>

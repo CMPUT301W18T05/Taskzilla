@@ -294,15 +294,22 @@ public class User implements Comparable<User> {
         return this.name+" "+this.id;
     }
 
+    /**
+     * Get a list of tasks that this user has requested.
+     * @return ArrayList
+     */
     public ArrayList<Task> getTasksRequested() {
         ArrayList<Task> res = new ArrayList<>();
+        ArrayList<Task> temp;
 
         GetTasksByRequesterUsernameRequest requestTasks = new GetTasksByRequesterUsernameRequest(this.getUsername());
         RequestManager.getInstance().invokeRequest(requestTasks);
+        temp = requestTasks.getResult();
 
-        while (!requestTasks.getResult().isEmpty()) {
-            res.addAll(requestTasks.getResult());
+        while (temp != null && !temp.isEmpty()) {
+            res.addAll(temp);
             RequestManager.getInstance().invokeRequest(requestTasks);
+            temp = requestTasks.getResult();
         }
         return res;
     }

@@ -107,6 +107,8 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
     private ExpandableListView BidslistView;
     private Button BlueButton;
     private Button YellowButton;
+    private Button GreenButton;
+    private Button RedButton;
     private Button PinkButton;
     private ScrollView scrollView;
 
@@ -171,6 +173,8 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         if (currentUserId.equals(taskUserId)) {
             DeleteButton.setVisibility(View.VISIBLE);
             BlueButton.setVisibility(View.INVISIBLE);
+            GreenButton.setVisibility(View.INVISIBLE);
+            RedButton.setVisibility(View.INVISIBLE);
             if (task.getStatus().equals("requested")) {
                 EditButton.setVisibility(View.VISIBLE);
             } else {
@@ -181,8 +185,12 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
             EditButton.setVisibility(View.INVISIBLE);
             YellowButton.setVisibility(View.INVISIBLE);
             PinkButton.setVisibility(View.INVISIBLE);
+            GreenButton.setVisibility(View.INVISIBLE);
+            RedButton.setVisibility(View.INVISIBLE);
         }
         if (task.getStatus().equals("assigned")) {
+            GreenButton.setVisibility(View.VISIBLE);
+            RedButton.setVisibility(View.VISIBLE);
             YellowButton.setVisibility(View.INVISIBLE);
             PinkButton.setVisibility(View.INVISIBLE);
             BlueButton.setVisibility(View.INVISIBLE);
@@ -289,6 +297,21 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                 alert.show();
             }
         });
+
+        RedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        GreenButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
 
         // get all of this task's bids and pass it into expandable list to display
         // @author myapplestory
@@ -516,6 +539,8 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         scrollView = findViewById(R.id.ViewTaskScrollView);
         BlueButton = findViewById(R.id.BlueButton);
         YellowButton = findViewById(R.id.YellowButton);
+        GreenButton = findViewById(R.id.CompleteTaskButton);
+        RedButton = findViewById(R.id.AbortTaskButton);
         PinkButton = findViewById(R.id.PinkButton);
     }
 
