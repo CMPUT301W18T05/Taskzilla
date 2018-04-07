@@ -42,6 +42,7 @@ import com.cmput301w18t05.taskzilla.request.command.GetTaskRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetTasksByProviderUsernameRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetTasksByRequesterUsernameRequest;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import static android.app.Activity.RESULT_OK;
@@ -246,17 +247,21 @@ public class TasksRequesterFragment extends Fragment {
     }
 
     public void updateRList(){
-        requestTasks = new GetTasksByRequesterUsernameRequest(cUser.getUsername());
-        RequestManager.getInstance().invokeRequest(getContext(), requestTasks);
+        ArrayList<Task> res;
+        res = cUser.getTasksRequested();
+
         taskList.clear();
-        taskList.addAll(requestTasks.getResult());
+        taskList.addAll(res);
         adapter.notifyDataSetChanged();
     }
 
     public void updateRequested(){
+        ArrayList<Task> res = new ArrayList<>();
         requestTasks = new GetTasksByRequesterUsernameRequest(cUser.getUsername());
         RequestManager.getInstance().invokeRequest(getContext(), requestTasks);
         taskList.clear();
+
+
         for(Task t:requestTasks.getResult()){
             if(t.getStatus().equalsIgnoreCase("requested")) {
                 taskList.add(t);
