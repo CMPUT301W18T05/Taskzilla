@@ -33,10 +33,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     ViewHolder viewHolder1;
     TextView textView;
 
+
     public RecyclerViewAdapter(Context context,ArrayList<Photo> photoList){
 
         this.photoList = photoList;
         this.context = context;
+
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
@@ -55,15 +57,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public RecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
 
         view1 = LayoutInflater.from(context).inflate(R.layout.recyclerview_items,parent,false);
-
         viewHolder1 = new ViewHolder(view1);
-
         return viewHolder1;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position){
         holder.imageView.setImageBitmap(photoList.get(position).StringToBitmap());
+
     }
 
     @Override
