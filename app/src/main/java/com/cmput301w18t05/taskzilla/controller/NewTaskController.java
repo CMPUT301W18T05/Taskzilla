@@ -67,7 +67,7 @@ public class NewTaskController {
         if(TextUtils.getTrimmedLength(taskName.getText()) <= 55
                 && TextUtils.getTrimmedLength(taskName.getText()) >0
                 && TextUtils.getTrimmedLength(taskDescription.getText()) <= 500
-                && TextUtils.getTrimmedLength(taskDescription.getText()) >0 && taskLocation!=null){
+                && TextUtils.getTrimmedLength(taskDescription.getText()) >0 ){
             Task task = new Task(name, user, description,taskLocation);
 
             AddTaskRequest request = new AddTaskRequest(task);
@@ -98,10 +98,7 @@ public class NewTaskController {
             if (TextUtils.getTrimmedLength(taskDescription.getText()) == 0) {
                 taskDescription.setError("Description can not be empty");
             }
-            if (taskLocation==null) {
-                Toast.makeText(view, "Add a location to your task",
-                        Toast.LENGTH_LONG).show();
-            }
+
         }
     }
 

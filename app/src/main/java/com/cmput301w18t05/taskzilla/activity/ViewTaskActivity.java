@@ -11,6 +11,8 @@
 
 package com.cmput301w18t05.taskzilla.activity;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -67,6 +69,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -137,6 +140,12 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.TaskLocation);
         mapFragment.getMapAsync(this);
+        //mapFragment.getView().setVisibility(View.INVISIBLE);
+        //mapFragment.getView().setActivated(false);
+        //mapFragment.getView().setEnabled(false);
+
+
+
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         findViews();
@@ -531,14 +540,24 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
         mMap = googleMap;
 
-        // Add a marker to a location and move the camera
-        LatLng taskLocation = task.getLocation();
-        mMap.addMarker(new MarkerOptions().position(taskLocation).title("Task Name"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(taskLocation));
-        moveToCurrentLocation(taskLocation);
+        if(task.getLocation()!=null) {
+            mMap.getUiSettings().setScrollGesturesEnabled(false);
+            mMap.getUiSettings().setZoomGesturesEnabled(false);
+            //mMap.getUiSettings()
+            // Add a marker to a location and move the camera
+            LatLng taskLocation = task.getLocation();
+            mMap.addMarker(new MarkerOptions().position(taskLocation).title("Task Name"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(taskLocation));
+            moveToCurrentLocation(taskLocation);
+            mMap.addCircle(new CircleOptions()
+                    .center(taskLocation)
+                    .radius(5000).strokeColor(Color.CYAN).strokeWidth((float) 5.0));
+            //mMap.
+        }else{
+
+        }
 
     }
 
