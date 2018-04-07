@@ -20,6 +20,12 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+/**
+ * Custom adapter for displaying tasks
+ * Shows the task title, requester, status, and lowest bid (if any)
+ *
+ * @author Jeremy
+ */
 public class TaskCustomAdapter extends ArrayAdapter<Task> {
 
     public TaskCustomAdapter(Context context, int layoutResource, ArrayList<Task> taskList) {
@@ -36,10 +42,13 @@ public class TaskCustomAdapter extends ArrayAdapter<Task> {
         TextView requesterUsernameView = (TextView) convertView.findViewById(R.id.requesterUsername);
         TextView taskStatusView = (TextView) convertView.findViewById(R.id.taskStatus);
         TextView lowestBidView = (TextView) convertView.findViewById(R.id.lowestBid);
+
+        // Set the values for all the views
         taskTitleView.setText(task.getName());
         requesterUsernameView.setText("Requester: " + task.getRequesterUsername());
         taskStatusView.setText("Status: " + task.getStatus());
 
+        // Check if the best bid is null or <= 0
         try {
             Float bestBid = task.getBestBid();
             if (bestBid <= 0) {
@@ -50,6 +59,7 @@ public class TaskCustomAdapter extends ArrayAdapter<Task> {
         } catch (Exception e){
             lowestBidView.setText("Lowest Bid: None");
         }
+
         return convertView;
     }
 }
