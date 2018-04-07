@@ -434,7 +434,11 @@ public class Task implements Comparable<Task> {
     }
 
     public void completeTask() {
-        this.status = "complete";
+        this.status = "Completed";
         updateThis();
+    }
+
+    public boolean isComplete() {
+        return this.status == "Completed";
     }
 }

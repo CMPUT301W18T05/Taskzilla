@@ -203,7 +203,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
             RedButton.setVisibility(View.INVISIBLE);
         }
 
-        if (task.getStatus().equals("complete")) {
+        if (task.isComplete()) {
             YellowButton.setVisibility(View.INVISIBLE);
             BlueButton.setVisibility(View.INVISIBLE);
             RedButton.setVisibility(View.INVISIBLE);
@@ -539,7 +539,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                 Photo defaultPhoto = new Photo("");
                 ProviderPicture.setImageBitmap(defaultPhoto.StringToBitmap());
             }
-        } else if (task.getStatus().equals("assigned") || task.getStatus().equals("complete")) {
+        } else if (task.getStatus().equals("assigned") || task.isComplete()) {
             String text = "Provider: " + TaskProvider.getName();
             ProviderName.setText(text);
             try {
