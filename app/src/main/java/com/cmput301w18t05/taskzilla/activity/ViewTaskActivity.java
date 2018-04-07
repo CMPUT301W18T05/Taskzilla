@@ -108,6 +108,8 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
     private ExpandableListView BidslistView;
     private Button BlueButton;
     private Button YellowButton;
+    private Button GreenButton;
+    private Button RedButton;
     private Button PinkButton;
     private ScrollView scrollView;
 
@@ -161,8 +163,8 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         setProviderField();
 
         photos = task.getPhotos();
-        linearLayout = (LinearLayout) findViewById(R.id.Photos);
-        recyclerPhotosView = (RecyclerView) findViewById(R.id.listOfPhotos);
+        linearLayout = findViewById(R.id.Photos);
+        recyclerPhotosView = findViewById(R.id.listOfPhotos);
         layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
         recyclerPhotosView.setLayoutManager(layoutManager);
         recyclerPhotosViewAdapter = new RecyclerViewAdapter(getApplicationContext(), photos, new CustomOnItemClick() {
@@ -181,20 +183,32 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
             BlueButton.setVisibility(View.INVISIBLE);
             if (task.getStatus().equals("requested")) {
                 EditButton.setVisibility(View.VISIBLE);
-            } else {
+            }
+            else if (task.getStatus().equals("assigned")) {
+                GreenButton.setVisibility(View.VISIBLE);
+                RedButton.setVisibility(View.VISIBLE);
+                YellowButton.setVisibility(View.INVISIBLE);
+                PinkButton.setVisibility(View.INVISIBLE);
+            }
+            else {
                 EditButton.setVisibility(View.INVISIBLE);
             }
-        } else {
+        }
+        else {
             DeleteButton.setVisibility(View.INVISIBLE);
             EditButton.setVisibility(View.INVISIBLE);
             YellowButton.setVisibility(View.INVISIBLE);
             PinkButton.setVisibility(View.INVISIBLE);
+            GreenButton.setVisibility(View.INVISIBLE);
+            RedButton.setVisibility(View.INVISIBLE);
         }
-        if (task.getStatus().equals("assigned")) {
+
+        if (task.isComplete()) {
             YellowButton.setVisibility(View.INVISIBLE);
-            PinkButton.setVisibility(View.INVISIBLE);
             BlueButton.setVisibility(View.INVISIBLE);
-            BidslistView.setVisibility(View.INVISIBLE);
+            RedButton.setVisibility(View.INVISIBLE);
+            GreenButton.setVisibility(View.INVISIBLE);
+            PinkButton.setVisibility(View.INVISIBLE);
         }
 
 //            LinearLayout.LayoutParams detailsLayout =
@@ -298,6 +312,21 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
             }
         });
 
+        RedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                task.unassignProvider();
+            }
+        });
+
+        GreenButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                task.completeTask();
+            }
+        });
+
+
         // get all of this task's bids and pass it into expandable list to display
         // @author myapplestory
         BidList.clear();
@@ -359,23 +388,14 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                             "Please enter in a valid bid amount", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
                 // do stuff here to actually add bid
-                if (task.getBestBid() > incomingBidFloat || task.getBestBid() == -1.0f) {
-                    task.setBestBidder(currentUserId);
-                    task.setBestBid(incomingBidFloat);
-                    task.updateThis();
-                } else if (task.getBestBid().equals(incomingBidFloat)) {
-                    Toast.makeText(ViewTaskActivity.this,
-                            "A similar bid already exists. Please bid another value",
-                            Toast.LENGTH_SHORT).show();
-                    return;
-                } else if (task.getBestBid() < incomingBidFloat && task.getBestBidder().equals(currentUserId)) {
-                    task.updateBestBid();
-                    task.updateThis();
-                }
                 task.addBid(new Bid(currentUserId, taskID, incomingBidFloat));
                 task.setStatus("bidded");
                 TaskStatus.setText("Bidded");
+                if (updateBestBid(incomingBidFloat) == -1) {
+                    return;
+                }
                 setProviderField();
 
                 Notification notification = new Notification("bidded", "hi", getIntent(), currentUser.getInstance().getId(), task.getRequesterId(), currentUser.getInstance());
@@ -469,6 +489,27 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         Toast.makeText(this, "dawdwadwwadwad", Toast.LENGTH_SHORT).show();
     }
 
+    public Integer updateBestBid(Float incomingBidFloat) {
+        if (task.getBestBid() > incomingBidFloat || task.getBestBid() == -1.0f) {
+            task.setBestBidder(currentUserId);
+            task.setBestBid(incomingBidFloat);
+            task.updateThis();
+        } else if (task.getBestBid().equals(incomingBidFloat)) {
+            Toast.makeText(ViewTaskActivity.this,
+                    "A similar bid already exists. Please bid another value",
+                    Toast.LENGTH_SHORT).show();
+            return -1;
+        } else if (task.getBestBid() < incomingBidFloat && task.getBestBidder().equals(currentUserId)) {
+            Toast.makeText(this,
+                    "You cannot change your bid, you already have the highest bid",
+                    Toast.LENGTH_SHORT).show();
+            return -1;
+        }
+        return 0;
+    }
+
+
+
     public void setRequesterField() {
         String text = "Requester: " + TaskRequester.getName();
         RequesterName.setText(text);
@@ -498,7 +539,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                 Photo defaultPhoto = new Photo("");
                 ProviderPicture.setImageBitmap(defaultPhoto.StringToBitmap());
             }
-        } else if (task.getStatus().equals("assigned")) {
+        } else if (task.getStatus().equals("assigned") || task.isComplete()) {
             String text = "Provider: " + TaskProvider.getName();
             ProviderName.setText(text);
             try {
@@ -524,6 +565,8 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         scrollView = findViewById(R.id.ViewTaskScrollView);
         BlueButton = findViewById(R.id.BlueButton);
         YellowButton = findViewById(R.id.YellowButton);
+        GreenButton = findViewById(R.id.CompleteTaskButton);
+        RedButton = findViewById(R.id.AbortTaskButton);
         PinkButton = findViewById(R.id.PinkButton);
     }
 
