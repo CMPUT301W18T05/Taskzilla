@@ -94,61 +94,74 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
         getLocation();
         mMap = googleMap;
 
-        myLocation = new Location("You");
-        myLocation.setLatitude(lat);
-        myLocation.setLongitude(lon);
-        myLocation.setTime(new Date().getTime());
+        if(getIntent().getStringExtra("lat")!= null){
+            LatLng tLocation = new LatLng(Double.parseDouble(getIntent().getStringExtra("lat")),Double.parseDouble(getIntent().getStringExtra("lon")));
+            mMap.addMarker(new MarkerOptions().position(tLocation).title(getIntent().getStringExtra("TaskName"))
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))).showInfoWindow();
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(tLocation));
+            moveToCurrentLocation(tLocation);
 
-        // Add a marker to your location and move the camera
-        LatLng yourLocation = new LatLng(lat, lon);
-        mMap.addMarker(new MarkerOptions().position(yourLocation).title("Your Location")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN))).showInfoWindow();
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(yourLocation));
-        moveToCurrentLocation(yourLocation);
+            LatLng yourLocation = new LatLng(lat, lon);
+            mMap.addMarker(new MarkerOptions().position(yourLocation).title("Your Location")
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN))).showInfoWindow();
+        }else {
+            myLocation = new Location("You");
+            myLocation.setLatitude(lat);
+            myLocation.setLongitude(lon);
+            myLocation.setTime(new Date().getTime());
 
-        mMap.addCircle(new CircleOptions()
-                .center(yourLocation)
-                .radius(5000).strokeColor(Color.RED).strokeWidth((float) 5.0));
+            // Add a marker to your location and move the camera
+            LatLng yourLocation = new LatLng(lat, lon);
+            mMap.addMarker(new MarkerOptions().position(yourLocation).title("Your Location")
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN))).showInfoWindow();
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(yourLocation));
+            moveToCurrentLocation(yourLocation);
 
-        Location taskLocation;
-        //*Add locations of tasks*//
-        for(Task t : tasks){
+            mMap.addCircle(new CircleOptions()
+                    .center(yourLocation)
+                    .radius(5000).strokeColor(Color.RED).strokeWidth((float) 5.0));
 
-            if (t.getLocation()!=null) {
-                taskLocation = new Location("Task");
-                taskLocation.setLatitude(t.getLocation().latitude);
-                taskLocation.setLongitude(t.getLocation().longitude);
-                taskLocation.setTime(new Date().getTime()); //Set time as current Date
+            Location taskLocation;
+            //*Add locations of tasks*//
+            for (Task t : tasks) {
 
-                if (myLocation.distanceTo(taskLocation) <= 5000) {
-                    LatLng taskslonlat = new LatLng(t.getLocation().latitude, t.getLocation().longitude);
-                    if(t.getStatus().equalsIgnoreCase("requested")) {
-                        mMap.addMarker(new MarkerOptions().position(taskslonlat).title(t.getName()).snippet("No Bids")
-                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))).setTag(t.getId());
-                    }
-                    if(t.getStatus().equalsIgnoreCase("bidded")) {
-                        mMap.addMarker(new MarkerOptions().position(taskslonlat).title(t.getName()).snippet("Best Bid: $"+t.getBestBid().toString())
-                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))).setTag(t.getId());
+                if (t.getLocation() != null) {
+                    taskLocation = new Location("Task");
+                    taskLocation.setLatitude(t.getLocation().latitude);
+                    taskLocation.setLongitude(t.getLocation().longitude);
+                    taskLocation.setTime(new Date().getTime()); //Set time as current Date
+
+                    if (myLocation.distanceTo(taskLocation) <= 5000) {
+                        LatLng taskslonlat = new LatLng(t.getLocation().latitude, t.getLocation().longitude);
+                        if (t.getStatus().equalsIgnoreCase("requested")) {
+                            mMap.addMarker(new MarkerOptions().position(taskslonlat).title(t.getName()).snippet("No Bids")
+                                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))).setTag(t.getId());
+                        }
+                        if (t.getStatus().equalsIgnoreCase("bidded")) {
+                            mMap.addMarker(new MarkerOptions().position(taskslonlat).title(t.getName()).snippet("Best Bid: $" + t.getBestBid().toString())
+                                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))).setTag(t.getId());
+                        }
                     }
                 }
             }
+
+            mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+
+                @Override
+                public void onInfoWindowClick(Marker marker) {
+                    if (marker.getTag() != null) {
+                        Intent intent = new Intent(getApplicationContext(), ViewTaskActivity.class);
+                        intent.putExtra("TaskId", marker.getTag().toString());
+                        startActivity(intent);
+                    }
+
+                }
+            });
         }
-
-        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-
-            @Override
-            public void onInfoWindowClick(Marker marker) {
-                if(marker.getTag()!=null){
-                    Intent intent = new Intent(getApplicationContext(), ViewTaskActivity.class);
-                    intent.putExtra("TaskId",marker.getTag().toString());
-                    startActivity(intent);
-                }
-
-            }
-        });
     }
 
     void getLocation() {

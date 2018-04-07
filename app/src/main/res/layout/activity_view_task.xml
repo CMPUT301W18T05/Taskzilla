@@ -149,26 +149,25 @@
             app:layout_constraintTop_toBottomOf="@+id/TaskName" />
 
 
+        <LinearLayout
+            android:id="@+id/Photos"
+            android:layout_width="0dp"
+            android:layout_height="75dp"
+            android:layout_marginTop="16dp"
+            android:background="@android:color/background_light"
+            android:elevation="1dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Description">
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:id="@+id/Photos"
-                android:layout_width="368dp"
-                android:layout_height="75dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/Description">
-                android:orientation="horizontal">
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/listOfPhotos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scrollbars="horizontal" />
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/listOfPhotos"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:scrollbars="horizontal" />
-
-            </LinearLayout>
+        </LinearLayout>
         <Button
             android:id="@+id/BlueButton"
             style="@style/Widget.AppCompat.Button.Colored"
@@ -201,7 +200,7 @@
             android:id="@+id/TaskLocation"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="340dp"
-            android:layout_height="150dp"
+            android:layout_height="100dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"

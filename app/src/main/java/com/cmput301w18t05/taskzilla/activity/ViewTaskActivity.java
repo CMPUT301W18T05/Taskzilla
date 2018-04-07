@@ -140,10 +140,8 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         //mapFragment.getView().setVisibility(View.INVISIBLE);
         //mapFragment.getView().setActivated(false);
         //mapFragment.getView().setEnabled(false);
-        View view = mapFragment.getView();
-        ConstraintLayout.LayoutParams p = new ConstraintLayout.LayoutParams(1, 1300);
-        view.setLayoutParams(p);
-        view.requestLayout();
+
+
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
@@ -547,7 +545,17 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
 
+            @Override
+            public void onMapClick(LatLng point) {
+                Intent intent = new Intent(getApplicationContext(), MapActivity.class);
+                intent.putExtra("lat",Double.toString(task.getLocation().latitude));
+                intent.putExtra("lon",Double.toString(task.getLocation().longitude));
+                intent.putExtra("TaskName",task.getName());
+                startActivity(intent);
+            }
+        });
         if(task.getLocation()!=null) {
             mMap.getUiSettings().setScrollGesturesEnabled(false);
             mMap.getUiSettings().setZoomGesturesEnabled(false);
