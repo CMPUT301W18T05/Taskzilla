@@ -256,13 +256,10 @@ public class TasksRequesterFragment extends Fragment {
     }
 
     public void updateRequested(){
-        ArrayList<Task> res = new ArrayList<>();
-        requestTasks = new GetTasksByRequesterUsernameRequest(cUser.getUsername());
-        RequestManager.getInstance().invokeRequest(getContext(), requestTasks);
+        ArrayList<Task> res = cUser.getTasksRequested();
         taskList.clear();
 
-
-        for(Task t:requestTasks.getResult()){
+        for(Task t : res){
             if(t.getStatus().equalsIgnoreCase("requested")) {
                 taskList.add(t);
             }
@@ -271,10 +268,10 @@ public class TasksRequesterFragment extends Fragment {
     }
 
     public void updateBidded(){
-        requestTasks = new GetTasksByRequesterUsernameRequest(cUser.getUsername());
-        RequestManager.getInstance().invokeRequest(getContext(), requestTasks);
+        ArrayList<Task> res = cUser.getTasksRequested();
         taskList.clear();
-        for(Task t:requestTasks.getResult()){
+
+        for(Task t : res){
             if(t.getStatus().equalsIgnoreCase("bidded")) {
                 taskList.add(t);
             }
@@ -283,10 +280,10 @@ public class TasksRequesterFragment extends Fragment {
     }
 
     public void updateAssigned(){
-        requestTasks = new GetTasksByRequesterUsernameRequest(cUser.getUsername());
-        RequestManager.getInstance().invokeRequest(getContext(), requestTasks);
+        ArrayList<Task> res = cUser.getTasksRequested();
         taskList.clear();
-        for(Task t:requestTasks.getResult()){
+
+        for(Task t : res){
             if(t.getStatus().equalsIgnoreCase("assigned")) {
                 taskList.add(t);
             }
@@ -294,10 +291,10 @@ public class TasksRequesterFragment extends Fragment {
         adapter.notifyDataSetChanged();
     }
     public void updateCompleted(){
-        requestTasks = new GetTasksByRequesterUsernameRequest(cUser.getUsername());
-        RequestManager.getInstance().invokeRequest(getContext(), requestTasks);
+        ArrayList<Task> res = cUser.getTasksRequested();
         taskList.clear();
-        for(Task t:requestTasks.getResult()){
+
+        for(Task t : res){
             if(t.getStatus().equalsIgnoreCase("completed")) {
                 taskList.add(t);
             }
