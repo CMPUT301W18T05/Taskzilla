@@ -134,8 +134,6 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         //mapFragment.getView().setActivated(false);
         //mapFragment.getView().setEnabled(false);
 
-
-
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         findViews();
@@ -349,10 +347,10 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                 TaskStatus.setText("Bidded");
                 setProviderField();
 
-                //Notification notification = new Notification("bidded", "hi", getIntent(), currentUser.getInstance().getId(), task.getRequesterId());
+                Notification notification = new Notification("bidded", "hi", getIntent(), currentUser.getInstance().getId(), task.getRequesterId(), currentUser.getInstance());
                 //AddNotificationRequest request = new AddNotificationRequest(notification);
                 //RequestManager.getInstance().invokeRequest(getApplicationContext(), request);
-                //NotificationManager.getInstance().createNotification(notification);
+                NotificationManager.getInstance().createNotification(notification);
 
                 //Toast.makeText(ViewTaskActivity.this, "Bid placed", Toast.LENGTH_SHORT).show();
 
