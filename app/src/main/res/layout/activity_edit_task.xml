@@ -77,9 +77,9 @@
         android:textAlignment="viewStart"
         android:textColor="@android:color/darker_gray"
         android:textSize="8sp"
-        app:layout_constraintEnd_toEndOf="@+id/imageButton2"
-        app:layout_constraintStart_toStartOf="@+id/imageButton2"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton2" />
+        app:layout_constraintEnd_toEndOf="@+id/AddPhotoButton"
+        app:layout_constraintStart_toStartOf="@+id/AddPhotoButton"
+        app:layout_constraintTop_toBottomOf="@+id/AddPhotoButton" />
 
     <TextView
         android:id="@+id/textView3"
@@ -89,9 +89,9 @@
         android:textAlignment="center"
         android:textColor="@android:color/darker_gray"
         android:textSize="8sp"
-        app:layout_constraintEnd_toEndOf="@+id/imageButton"
-        app:layout_constraintStart_toStartOf="@+id/imageButton"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton" />
+        app:layout_constraintEnd_toEndOf="@+id/AddLocationButton"
+        app:layout_constraintStart_toStartOf="@+id/AddLocationButton"
+        app:layout_constraintTop_toBottomOf="@+id/AddLocationButton" />
 
     <ImageButton
         android:id="@+id/AddPhotoButton"
@@ -120,75 +120,29 @@
         app:layout_constraintTop_toBottomOf="@+id/Photos"
         app:srcCompat="@android:drawable/ic_menu_mylocation" />
 
-    <HorizontalScrollView
-        android:id="@+id/Photos"
-        android:layout_width="0dp"
-        android:layout_height="120dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="8dp"
-        android:background="@android:color/background_light"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/DescriptionLayout">
+
+
 
         <LinearLayout
-            android:id="@+id/Pictures"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:id="@+id/Photos"
+            android:layout_width="0dp"
+            android:layout_height="120dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="8dp"
+            android:background="@android:color/background_light"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/DescriptionLayout">
 
-            <ImageView
-                android:id="@+id/imageView4"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:layout_weight="1"
-                android:scaleType="fitCenter"
-                app:srcCompat="@android:drawable/btn_star_big_on" />
 
-            <ImageView
-                android:id="@+id/imageView15"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:layout_weight="1"
-                android:scaleType="fitCenter"
-                app:srcCompat="@android:drawable/ic_delete" />
-
-            <ImageView
-                android:id="@+id/imageView14"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:layout_weight="1"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/googleg_standard_color_18" />
-
-            <ImageView
-                android:id="@+id/imageView13"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:layout_weight="1"
-                android:scaleType="fitCenter"
-                app:srcCompat="@android:drawable/ic_lock_lock" />
-
-            <ImageView
-                android:id="@+id/imageView12"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:layout_weight="1"
-                android:scaleType="fitCenter"
-                app:srcCompat="@mipmap/ic_launcher_round" />
-
-            <ImageView
-                android:id="@+id/imageView11"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:layout_weight="1"
-                android:scaleType="fitCenter"
-                app:srcCompat="@android:drawable/ic_lock_power_off" />
-
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/listOfPhotos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scrollbars="horizontal" />
         </LinearLayout>
 
-    </HorizontalScrollView>
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/ButtonLayout"

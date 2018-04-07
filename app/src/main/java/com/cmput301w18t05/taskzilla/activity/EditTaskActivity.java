@@ -21,18 +21,31 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.cmput301w18t05.taskzilla.Photo;
 import com.cmput301w18t05.taskzilla.R;
+import com.cmput301w18t05.taskzilla.RecyclerViewAdapter;
 import com.cmput301w18t05.taskzilla.Task;
+import com.cmput301w18t05.taskzilla.User;
+import com.cmput301w18t05.taskzilla.currentUser;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 
 /**
@@ -42,8 +55,13 @@ public class EditTaskActivity extends AppCompatActivity {
     private Task task;
     private Context ctx;
     private Integer PICK_IMAGE = 5;
-    private ImageView image_view;
-
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter recyclerViewAdapter;
+    private RecyclerView.LayoutManager recyclerViewLayoutManager;
+    private LinearLayout linearLayout;
+    private User CurrentUser = currentUser.getInstance();
+    private Integer maxSize;
+    private ArrayList<Photo> photos;
     /**
      * Activity uses the activity_edit_task.xml layout
      * Initialize a task with edited fields
@@ -55,7 +73,6 @@ public class EditTaskActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setTitle("Edit Task");
         setContentView(R.layout.activity_edit_task);
-        image_view = (ImageView) findViewById(R.id.imageView4);
         EditText TaskNameText = (EditText) findViewById(R.id.TaskName);
         EditText DescriptionText = (EditText) findViewById(R.id.Description);
         String taskName = getIntent().getStringExtra("task Name");
@@ -64,6 +81,13 @@ public class EditTaskActivity extends AppCompatActivity {
         task.setDescription(taskDescription); //Dummy
         TaskNameText.setText(task.getName());
         DescriptionText.setText(task.getDescription());
+        photos = new ArrayList<Photo>();
+        linearLayout = (LinearLayout) findViewById(R.id.Pictures);
+        recyclerView = (RecyclerView) findViewById(R.id.listOfPhotos);
+        recyclerViewLayoutManager = new LinearLayoutManager(ctx, LinearLayoutManager.HORIZONTAL, false);
+        recyclerView.setLayoutManager(recyclerViewLayoutManager);
+        recyclerViewAdapter = new RecyclerViewAdapter(ctx, photos);
+        recyclerView.setAdapter(recyclerViewAdapter);
     }
 
     public void TaskCancelButton(View view) {
@@ -120,8 +144,29 @@ public class EditTaskActivity extends AppCompatActivity {
                 final Uri imageUri = data.getData();
                 final InputStream imageStream = getContentResolver().openInputStream(imageUri);
                 final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                Log.i("test",selectedImage.toString());
-                image_view.setImageBitmap(selectedImage);
+                maxSize = 65536;
+                Log.i("ACTUAL SIZE", String.valueOf(selectedImage.getByteCount()));
+                Integer width = 1200;
+                Integer height = 1200;
+                Bitmap resizedImage;
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                selectedImage.compress(Bitmap.CompressFormat.JPEG,50,stream);
+                Log.i("size",String.valueOf(stream.size()));
+                while(stream.size()>maxSize){
+                    width = width - 200;
+                    height = height - 200;
+                    stream = new ByteArrayOutputStream();
+                    resizedImage = Bitmap.createScaledBitmap(selectedImage, width, height, false);
+                    resizedImage.compress(Bitmap.CompressFormat.JPEG,50,stream);
+                    Log.i("size",String.valueOf(stream.size()));
+                }
+
+                byte byteImage[];
+                byteImage = stream.toByteArray();
+                String image = Base64.encodeToString(byteImage, Base64.DEFAULT);
+                photos.add(new Photo(image));
+                Log.i("hi",String.valueOf(photos.size()));
+                recyclerViewAdapter.notifyDataSetChanged();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
                 Toast.makeText(EditTaskActivity.this, "Something went wrong", Toast.LENGTH_LONG).show();
@@ -130,5 +175,7 @@ public class EditTaskActivity extends AppCompatActivity {
         }else {
             Toast.makeText(EditTaskActivity.this, "You haven't picked Image",Toast.LENGTH_LONG).show();
         }
+
     }
+
 }

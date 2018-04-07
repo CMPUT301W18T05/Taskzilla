@@ -46,6 +46,7 @@ dependencies {
     // for ES
     compile files('src/include/jest-droid-2.0.1-SNAPSHOT.jar')
     compile 'com.jayway.android.robotium:robotium-solo:5.6.3'
+    compile 'com.android.support:recyclerview-v7:26.0.+'
     compile 'com.google.android.gms:play-services-location:12.0.0'
     compile 'com.google.android.gms:play-services-places:12.0.0'
 
