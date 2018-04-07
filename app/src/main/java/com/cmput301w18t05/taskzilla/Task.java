@@ -444,4 +444,16 @@ public class Task implements Comparable<Task> {
             bestBidder = minbid.getUserId();
         }
     }
+
+    public void unassignProvider() {
+        providerId = null;
+        providerUsername = null;
+        this.status = "requested";
+        updateThis();
+    }
+
+    public void completeTask() {
+        this.status = "complete";
+        updateThis();
+    }
 }

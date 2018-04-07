@@ -181,14 +181,20 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         if (currentUserId.equals(taskUserId)) {
             DeleteButton.setVisibility(View.VISIBLE);
             BlueButton.setVisibility(View.INVISIBLE);
-            GreenButton.setVisibility(View.INVISIBLE);
-            RedButton.setVisibility(View.INVISIBLE);
             if (task.getStatus().equals("requested")) {
                 EditButton.setVisibility(View.VISIBLE);
-            } else {
+            }
+            else if (task.getStatus().equals("assigned")) {
+                GreenButton.setVisibility(View.VISIBLE);
+                RedButton.setVisibility(View.VISIBLE);
+                YellowButton.setVisibility(View.INVISIBLE);
+                PinkButton.setVisibility(View.INVISIBLE);
+            }
+            else {
                 EditButton.setVisibility(View.INVISIBLE);
             }
-        } else {
+        }
+        else {
             DeleteButton.setVisibility(View.INVISIBLE);
             EditButton.setVisibility(View.INVISIBLE);
             YellowButton.setVisibility(View.INVISIBLE);
@@ -196,13 +202,13 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
             GreenButton.setVisibility(View.INVISIBLE);
             RedButton.setVisibility(View.INVISIBLE);
         }
-        if (task.getStatus().equals("assigned")) {
-            GreenButton.setVisibility(View.VISIBLE);
-            RedButton.setVisibility(View.VISIBLE);
+
+        if (task.getStatus().equals("complete")) {
             YellowButton.setVisibility(View.INVISIBLE);
-            PinkButton.setVisibility(View.INVISIBLE);
             BlueButton.setVisibility(View.INVISIBLE);
-            BidslistView.setVisibility(View.INVISIBLE);
+            RedButton.setVisibility(View.INVISIBLE);
+            GreenButton.setVisibility(View.INVISIBLE);
+            PinkButton.setVisibility(View.INVISIBLE);
         }
 
 //            LinearLayout.LayoutParams detailsLayout =
@@ -309,14 +315,14 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         RedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                task.unassignProvider();
             }
         });
 
         GreenButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                task.completeTask();
             }
         });
 
@@ -521,7 +527,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                 Photo defaultPhoto = new Photo("");
                 ProviderPicture.setImageBitmap(defaultPhoto.StringToBitmap());
             }
-        } else if (task.getStatus().equals("assigned")) {
+        } else if (task.getStatus().equals("assigned") || task.getStatus().equals("complete")) {
             String text = "Provider: " + TaskProvider.getName();
             ProviderName.setText(text);
             try {
