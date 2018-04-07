@@ -12,6 +12,7 @@
 package com.cmput301w18t05.taskzilla;
 
 import android.annotation.TargetApi;
+import android.app.PendingIntent;
 import android.content.ContextWrapper;
 import android.app.NotificationChannel;
 import android.content.Context;
@@ -44,7 +45,7 @@ public class NotificationManager extends ContextWrapper {
     //public static final String CHANNEL_ID = "com.cmput301w18t05.taskzilla.ANDROID";
     public static final String CHANNEL_ID = "com.cmput301w18t05.taskzilla";
     public static final String ANDROID_CHANNEL_NAME = "Android Channel";
-    private int importance = android.app.NotificationManager.IMPORTANCE_DEFAULT;
+    private int importance = android.app.NotificationManager.IMPORTANCE_HIGH;
     private android.app.NotificationManager mManager;
     private static NotificationManager instance = null;
 
@@ -72,6 +73,7 @@ public class NotificationManager extends ContextWrapper {
         androidChannel.enableLights(true);
         androidChannel.enableVibration(true);
         androidChannel.setLightColor(Color.BLUE);
+        androidChannel.setImportance(android.app.NotificationManager.IMPORTANCE_HIGH);
 
         androidChannel.setLockscreenVisibility(android.app.Notification.VISIBILITY_PRIVATE);
 
@@ -84,11 +86,12 @@ public class NotificationManager extends ContextWrapper {
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.mipmap.ic_launcher)
+                .setLargeIcon(notification.getUser().getPhoto().StringToBitmap())
                 .setContentTitle(notification.getTitle())
                 .setContentText(notification.getContext())
                 .setLights(Color.BLUE, 300, 100)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setAutoCancel(true);
+                .setPriority(NotificationCompat.PRIORITY_MAX)
+                .setDefaults(android.app.Notification.DEFAULT_ALL);
         //.setContentIntent(pendingIntent);
 
         Random rand = new Random();

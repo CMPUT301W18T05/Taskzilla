@@ -11,26 +11,19 @@
 
 package com.cmput301w18t05.taskzilla.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -38,12 +31,9 @@ import com.cmput301w18t05.taskzilla.Photo;
 import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.RecyclerViewAdapter;
 import com.cmput301w18t05.taskzilla.Task;
-import com.cmput301w18t05.taskzilla.User;
-import com.cmput301w18t05.taskzilla.currentUser;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
@@ -59,7 +49,6 @@ public class EditTaskActivity extends AppCompatActivity {
     private RecyclerView.Adapter recyclerViewAdapter;
     private RecyclerView.LayoutManager recyclerViewLayoutManager;
     private LinearLayout linearLayout;
-    private User CurrentUser = currentUser.getInstance();
     private Integer maxSize;
     private ArrayList<Photo> photos;
     /**
@@ -82,12 +71,18 @@ public class EditTaskActivity extends AppCompatActivity {
         TaskNameText.setText(task.getName());
         DescriptionText.setText(task.getDescription());
         photos = new ArrayList<Photo>();
+        ArrayList<String> photosString = getIntent().getStringArrayListExtra("photos");
+        for(int i=0; i<photosString.size(); i++){
+            Log.i("test",photosString.get(i));
+            photos.add(new Photo(photosString.get(i)));
+        }
         linearLayout = (LinearLayout) findViewById(R.id.Pictures);
         recyclerView = (RecyclerView) findViewById(R.id.listOfPhotos);
         recyclerViewLayoutManager = new LinearLayoutManager(ctx, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(recyclerViewLayoutManager);
         recyclerViewAdapter = new RecyclerViewAdapter(ctx, photos);
         recyclerView.setAdapter(recyclerViewAdapter);
+
     }
 
     public void TaskCancelButton(View view) {
@@ -122,6 +117,11 @@ public class EditTaskActivity extends AppCompatActivity {
             Intent returnIntent = new Intent();
             returnIntent.putExtra("Task Name", TaskName);
             returnIntent.putExtra("Description", Description);
+            ArrayList<String> photosString = new ArrayList<String>();
+            for(int i=0;i<photos.size();i++){
+                photosString.add(photos.get(i).toString());
+            }
+            returnIntent.putStringArrayListExtra("photos",photosString);
             setResult(RESULT_OK, returnIntent);
             finish();
         }

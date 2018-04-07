@@ -126,7 +126,7 @@
         <LinearLayout
             android:id="@+id/Photos"
             android:layout_width="0dp"
-            android:layout_height="120dp"
+            android:layout_height="75dp"
             android:layout_marginEnd="1dp"
             android:layout_marginStart="1dp"
             android:layout_marginTop="8dp"
