@@ -11,11 +11,10 @@
 
 package com.cmput301w18t05.taskzilla.activity;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.LocationManager;
@@ -30,6 +29,7 @@ import android.text.Html;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.method.DigitsKeyListener;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -60,11 +60,8 @@ import com.cmput301w18t05.taskzilla.User;
 import com.cmput301w18t05.taskzilla.controller.ProfileController;
 import com.cmput301w18t05.taskzilla.controller.ViewTaskController;
 import com.cmput301w18t05.taskzilla.currentUser;
-import com.cmput301w18t05.taskzilla.fragment.NotificationsFragment;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
-import com.cmput301w18t05.taskzilla.request.command.AddNotificationRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetBidsByTaskIdRequest;
-import com.cmput301w18t05.taskzilla.request.command.GetUserRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -73,9 +70,7 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Activity for viewing a task
@@ -238,6 +233,11 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                 Intent intent = new Intent(view.getContext(), EditTaskActivity.class);
                 intent.putExtra("task Name", taskName);
                 intent.putExtra("Description", description);
+                ArrayList<String> photosString = new ArrayList<String>();
+                for(int i=0;i<photos.size();i++){
+                    photosString.add(photos.get(i).toString());
+                }
+                intent.putStringArrayListExtra("photos",photosString);
                 startActivityForResult(intent, 1);
             }
         });
@@ -589,8 +589,10 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                     taskName = data.getStringExtra("Task Name");
                     description = data.getStringExtra("Description");
                     ArrayList<String> photosString = data.getStringArrayListExtra("photos");
-                    photos = new ArrayList<Photo>();
+                    photos.clear();
+                    Bitmap image;
                     for(int i=0; i<photosString.size(); i++){
+                        Log.i("test",photosString.get(i));
                         photos.add(new Photo(photosString.get(i)));
                     }
                     recyclerViewAdapter.notifyDataSetChanged();
