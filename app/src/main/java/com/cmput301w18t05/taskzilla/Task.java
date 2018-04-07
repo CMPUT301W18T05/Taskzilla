@@ -310,17 +310,13 @@ public class Task implements Comparable<Task> {
             ((this.status.equals("bidded") && newStatus.equals("requested")) && this.getBids().size() == 1) ||
                 (this.status.equals("bidded") && newStatus.equals("assigned"))) {
             this.status = newStatus;
-            AddTaskRequest request = new AddTaskRequest(this);
-            request.setUpdate(true);
-            RequestManager.getInstance().invokeRequest(request);
+            updateThis();
         }
         // if newStatus is assigned delete all bids under this task
         if (newStatus.equals("assigned")) {
             removeAllBids();
             removeHighestBid();
-            AddTaskRequest request = new AddTaskRequest(this);
-            request.setUpdate(true);
-            RequestManager.getInstance().invokeRequest(request);
+            updateThis();
         }
     }
 
@@ -423,6 +419,7 @@ public class Task implements Comparable<Task> {
 
     public void updateThis() {
         AddTaskRequest req = new AddTaskRequest(this);
+        req.setUpdate(true);
         RequestManager.getInstance().invokeRequest(req);
     }
 
@@ -441,7 +438,7 @@ public class Task implements Comparable<Task> {
             bestBidder = "";
         } else {
             bestBid = minbid.getBidAmount();
-            bestBidder = minbid.getId();
+            bestBidder = minbid.getUserId();
         }
     }
 }

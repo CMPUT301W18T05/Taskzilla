@@ -322,10 +322,10 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                     return;
                 }
                 // do stuff here to actually add bid
-                task.addBid(new Bid(currentUserId, taskID, incomingBidFloat));
                 if (task.getBestBid() > incomingBidFloat || task.getBestBid() == -1.0f) {
                     task.setBestBidder(currentUserId);
                     task.setBestBid(incomingBidFloat);
+                    task.updateThis();
                 } else if (task.getBestBid().equals(incomingBidFloat)) {
                     Toast.makeText(ViewTaskActivity.this,
                             "A similar bid already exists. Please bid another value",
@@ -333,17 +333,19 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                     return;
                 } else if (task.getBestBid() < incomingBidFloat && task.getBestBidder().equals(currentUserId)) {
                     task.updateBestBid();
+                    task.updateThis();
                 }
+                task.addBid(new Bid(currentUserId, taskID, incomingBidFloat));
                 task.setStatus("bidded");
                 TaskStatus.setText("Bidded");
                 setProviderField();
 
-                Notification notification = new Notification("bidded", "hi", getIntent(), currentUser.getInstance().getId(), task.getRequesterId());
+                //Notification notification = new Notification("bidded", "hi", getIntent(), currentUser.getInstance().getId(), task.getRequesterId());
                 //AddNotificationRequest request = new AddNotificationRequest(notification);
                 //RequestManager.getInstance().invokeRequest(getApplicationContext(), request);
-                NotificationManager.getInstance().createNotification(notification);
+                //NotificationManager.getInstance().createNotification(notification);
 
-                Toast.makeText(ViewTaskActivity.this, "Bid placed", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(ViewTaskActivity.this, "Bid placed", Toast.LENGTH_SHORT).show();
 
                 // hide keyboard upon pressing button
                 InputMethodManager imm = (InputMethodManager)getSystemService(
