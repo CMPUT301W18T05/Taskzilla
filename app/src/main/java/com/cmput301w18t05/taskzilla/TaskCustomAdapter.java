@@ -54,7 +54,7 @@ public class TaskCustomAdapter extends ArrayAdapter<Task> {
             if (bestBid <= 0) {
                 lowestBidView.setText("Lowest Bid: None");
             } else {
-                lowestBidView.setText("Lowest Bid: " + Float.toString(bestBid));
+                lowestBidView.setText("Lowest Bid: " + String.format("%.2f",bestBid));
             }
         } catch (Exception e){
             lowestBidView.setText("Lowest Bid: None");

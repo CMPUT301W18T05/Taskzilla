@@ -390,11 +390,12 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                 }
 
                 // do stuff here to actually add bid
-                task.addBid(new Bid(currentUserId, taskID, incomingBidFloat));
-                task.setStatus("bidded");
-                TaskStatus.setText("Bidded");
                 if (updateBestBid(incomingBidFloat) == -1) {
                     return;
+                } else {
+                    task.addBid(new Bid(currentUserId, taskID, incomingBidFloat));
+                    task.setStatus("bidded");
+                    TaskStatus.setText("Bidded");
                 }
                 setProviderField();
 
@@ -509,7 +510,6 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
     }
 
 
-
     public void setRequesterField() {
         String text = "Requester: " + TaskRequester.getName();
         RequesterName.setText(text);
@@ -531,7 +531,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
             profileController.setUserID(task.getBestBidder());
             profileController.getUserRequest();
             User tempUser = profileController.getUser();
-            String text = "Best bidder: " + tempUser.getName() + "\nBid amount: " + Float.toString(task.getBestBid());
+            String text = "Best bidder: " + tempUser.getName() + "\nBid amount: " + "$" + String.format("%.2f",task.getBestBid());
             ProviderName.setText(text);
             try {
                 ProviderPicture.setImageBitmap(tempUser.getPhoto().StringToBitmap());
