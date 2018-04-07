@@ -281,6 +281,10 @@ public class Task implements Comparable<Task> {
         this.requesterId = requesterId;
     }
 
+    public String getRequesterUsername() {
+        return requesterUsername;
+    }
+
     /**
      * contact elastic search and return a user object matching
      * the provider id

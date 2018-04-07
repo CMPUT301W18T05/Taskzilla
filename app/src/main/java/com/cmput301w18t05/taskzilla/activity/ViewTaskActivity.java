@@ -19,6 +19,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.LocationManager;
 import android.os.Handler;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -41,6 +42,7 @@ import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -139,6 +141,8 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         //mapFragment.getView().setActivated(false);
         //mapFragment.getView().setEnabled(false);
 
+
+
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         findViews();
@@ -181,6 +185,8 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         if (task.getStatus().equals("assigned")) {
             YellowButton.setVisibility(View.INVISIBLE);
             PinkButton.setVisibility(View.INVISIBLE);
+            BlueButton.setVisibility(View.INVISIBLE);
+            BidslistView.setVisibility(View.INVISIBLE);
         }
 
 //            LinearLayout.LayoutParams detailsLayout =
@@ -541,19 +547,26 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
 
+            @Override
+            public void onMapClick(LatLng point) {
+                Intent intent = new Intent(getApplicationContext(), MapActivity.class);
+                intent.putExtra("lat",Double.toString(task.getLocation().latitude));
+                intent.putExtra("lon",Double.toString(task.getLocation().longitude));
+                intent.putExtra("TaskName",task.getName());
+                startActivity(intent);
+            }
+        });
         if(task.getLocation()!=null) {
             mMap.getUiSettings().setScrollGesturesEnabled(false);
             mMap.getUiSettings().setZoomGesturesEnabled(false);
             //mMap.getUiSettings()
             // Add a marker to a location and move the camera
             LatLng taskLocation = task.getLocation();
-            mMap.addMarker(new MarkerOptions().position(taskLocation).title("Task Name"));
+            mMap.addMarker(new MarkerOptions().position(taskLocation));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(taskLocation));
             moveToCurrentLocation(taskLocation);
-            mMap.addCircle(new CircleOptions()
-                    .center(taskLocation)
-                    .radius(5000).strokeColor(Color.CYAN).strokeWidth((float) 5.0));
             //mMap.
         }else{
 
@@ -566,7 +579,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         // Zoom in, animating the camera.
         mMap.animateCamera(CameraUpdateFactory.zoomIn());
         // Zoom out to zoom level 10, animating with a duration of 2 seconds.
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(13), 2000, null);
 
     }
 

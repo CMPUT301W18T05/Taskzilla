@@ -148,9 +148,12 @@ public class SearchController {
 
         while (temp != null && temp.size() > 0) {
 
-            for (Task t : temp)
-                this.searchResults.add(t);
+            for (Task t : temp) {
+                if (!t.getStatus().equalsIgnoreCase("assigned") && !t.getStatus().equalsIgnoreCase("completed")) {
+                    this.searchResults.add(t);
+                }
 
+            }
             RequestManager.getInstance().invokeRequest(ctx, request);
             temp = request.getResult();
         }
