@@ -108,7 +108,6 @@ public class Task implements Comparable<Task> {
      * @param photos List of photos realated to the task
      */
     public Task(String name, User TaskRequester, String description, LatLng location, ArrayList<Photo> photos) {
-        photos = new ArrayList<>();
         this.name = name;
         this.requesterId = TaskRequester.getId();
         this.requesterUsername = TaskRequester.getUsername();

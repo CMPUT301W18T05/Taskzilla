@@ -156,7 +156,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         setProviderField();
 
         photos = task.getPhotos();
-        linearLayout = (LinearLayout) findViewById(R.id.Pictures);
+        linearLayout = (LinearLayout) findViewById(R.id.Photos);
         recyclerView = (RecyclerView) findViewById(R.id.listOfPhotos);
         recyclerViewLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(recyclerViewLayoutManager);

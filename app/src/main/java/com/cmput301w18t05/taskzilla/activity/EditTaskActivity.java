@@ -76,7 +76,7 @@ public class EditTaskActivity extends AppCompatActivity {
             Log.i("test",photosString.get(i));
             photos.add(new Photo(photosString.get(i)));
         }
-        linearLayout = (LinearLayout) findViewById(R.id.Pictures);
+        linearLayout = (LinearLayout) findViewById(R.id.Photos);
         recyclerView = (RecyclerView) findViewById(R.id.listOfPhotos);
         recyclerViewLayoutManager = new LinearLayoutManager(ctx, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(recyclerViewLayoutManager);
@@ -128,6 +128,10 @@ public class EditTaskActivity extends AppCompatActivity {
     }
 
     public void AddPhotoButton(View view){
+        if(photos.size()==10){
+            Toast.makeText(EditTaskActivity.this,"Photo limited reached",Toast.LENGTH_LONG).show();
+        }
+
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
         photoPickerIntent.setType("image/*");
         startActivityForResult(photoPickerIntent, PICK_IMAGE);
