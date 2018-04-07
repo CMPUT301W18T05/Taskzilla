@@ -160,8 +160,8 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         setProviderField();
 
         photos = task.getPhotos();
-        linearLayout = (LinearLayout) findViewById(R.id.Photos);
-        recyclerView = (RecyclerView) findViewById(R.id.listOfPhotos);
+        linearLayout = findViewById(R.id.Photos);
+        recyclerView = findViewById(R.id.listOfPhotos);
         recyclerViewLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(recyclerViewLayoutManager);
         recyclerViewAdapter = new RecyclerViewAdapter(getApplicationContext(), photos);
@@ -351,23 +351,14 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                             "Please enter in a valid bid amount", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
                 // do stuff here to actually add bid
-                if (task.getBestBid() > incomingBidFloat || task.getBestBid() == -1.0f) {
-                    task.setBestBidder(currentUserId);
-                    task.setBestBid(incomingBidFloat);
-                    task.updateThis();
-                } else if (task.getBestBid().equals(incomingBidFloat)) {
-                    Toast.makeText(ViewTaskActivity.this,
-                            "A similar bid already exists. Please bid another value",
-                            Toast.LENGTH_SHORT).show();
-                    return;
-                } else if (task.getBestBid() < incomingBidFloat && task.getBestBidder().equals(currentUserId)) {
-                    task.updateBestBid();
-                    task.updateThis();
-                }
                 task.addBid(new Bid(currentUserId, taskID, incomingBidFloat));
                 task.setStatus("bidded");
                 TaskStatus.setText("Bidded");
+                if (updateBestBid(incomingBidFloat) == -1) {
+                    return;
+                }
                 setProviderField();
 
                 Notification notification = new Notification("bidded", "hi", getIntent(), currentUser.getInstance().getId(), task.getRequesterId(), currentUser.getInstance());
@@ -460,6 +451,27 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
     public void thePinkButton(android.view.View view) {
         Toast.makeText(this, "dawdwadwwadwad", Toast.LENGTH_SHORT).show();
     }
+
+    public Integer updateBestBid(Float incomingBidFloat) {
+        if (task.getBestBid() > incomingBidFloat || task.getBestBid() == -1.0f) {
+            task.setBestBidder(currentUserId);
+            task.setBestBid(incomingBidFloat);
+            task.updateThis();
+        } else if (task.getBestBid().equals(incomingBidFloat)) {
+            Toast.makeText(ViewTaskActivity.this,
+                    "A similar bid already exists. Please bid another value",
+                    Toast.LENGTH_SHORT).show();
+            return -1;
+        } else if (task.getBestBid() < incomingBidFloat && task.getBestBidder().equals(currentUserId)) {
+            Toast.makeText(this,
+                    "You cannot change your bid, you already have the highest bid",
+                    Toast.LENGTH_SHORT).show();
+            return -1;
+        }
+        return 0;
+    }
+
+
 
     public void setRequesterField() {
         String text = "Requester: " + TaskRequester.getName();
