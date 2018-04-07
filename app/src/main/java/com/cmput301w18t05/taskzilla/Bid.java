@@ -25,7 +25,7 @@ import io.searchbox.annotations.JestId;
  */
 public class Bid implements Comparable<Bid> {
 
-    private float bidAmount;
+    private Float bidAmount;
 
     @JestId
     private String id;
@@ -60,7 +60,7 @@ public class Bid implements Comparable<Bid> {
      * Returns the price of the bid
      * @return this.bidAmount
      */
-    public float getBidAmount() {
+    public Float getBidAmount() {
         return this.bidAmount;
     }
 

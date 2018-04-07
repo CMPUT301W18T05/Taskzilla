@@ -97,7 +97,7 @@ public class NotificationManager extends ContextWrapper {
         Random rand = new Random();
         int id = rand.nextInt(1000)+1;
 
-        mManager.notify(id, mBuilder.build());
+        //mManager.notify(id, mBuilder.build());
     }
 
     public static class pollNotifications extends AsyncTask<Void, Void, Void> {
