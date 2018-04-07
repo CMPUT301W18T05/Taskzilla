@@ -201,7 +201,7 @@
             android:id="@+id/TaskLocation"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="340dp"
-            android:layout_height="136dp"
+            android:layout_height="150dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
