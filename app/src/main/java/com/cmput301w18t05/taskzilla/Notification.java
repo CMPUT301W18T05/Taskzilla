@@ -23,15 +23,17 @@ public class Notification {
     private Intent intent;
     private String providerId;
     private String requesterId;
+    private User user;
 
     private String id;
 
-    public Notification(String nTitle, String nContext, Intent nIntent, String nProviderId, String nRequesterId) {
+    public Notification(String nTitle, String nContext, Intent nIntent, String nProviderId, String nRequesterId, User nUser) {
         this.title = nTitle;
         this.context = nContext;
         this.intent = nIntent;
         this.providerId = nProviderId;
         this.requesterId = nRequesterId;
+        this.user = nUser;
     }
 
     public String getTitle() {
@@ -64,6 +66,10 @@ public class Notification {
 
     public void setId(String nid) {
         this.id = nid;
+    }
+
+    public User getUser() {
+        return this.user;
     }
 
     public int compareTo(Notification notification) {
