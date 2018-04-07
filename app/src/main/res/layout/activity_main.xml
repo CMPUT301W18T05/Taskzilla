@@ -49,7 +49,7 @@
         android:id="@+id/passwordText"
         android:layout_width="274dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="@string/password_string"
         android:inputType="textPassword"
