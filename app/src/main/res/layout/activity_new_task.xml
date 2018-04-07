@@ -113,12 +113,12 @@
         android:textAlignment="viewStart"
         android:textColor="@android:color/darker_gray"
         android:textSize="8sp"
-        app:layout_constraintEnd_toEndOf="@+id/imageButton2"
-        app:layout_constraintStart_toStartOf="@+id/imageButton2"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton2" />
+        app:layout_constraintEnd_toEndOf="@+id/AddPhotoButton"
+        app:layout_constraintStart_toStartOf="@+id/AddPhotoButton"
+        app:layout_constraintTop_toBottomOf="@+id/AddPhotoButton" />
 
     <ImageButton
-        android:id="@+id/imageButton2"
+        android:id="@+id/AddPhotoButton"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginEnd="8dp"
@@ -130,37 +130,25 @@
         app:layout_constraintTop_toBottomOf="@+id/Photos"
         app:srcCompat="@android:drawable/ic_menu_camera" />
 
-    <HorizontalScrollView
+    <LinearLayout
         android:id="@+id/Photos"
         android:layout_width="0dp"
-        android:layout_height="120dp"
+        android:layout_height="75dp"
         android:layout_marginEnd="1dp"
         android:layout_marginStart="1dp"
         android:layout_marginTop="8dp"
         android:background="@android:color/background_light"
-        android:elevation="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/DescriptionLayout">
 
-        <LinearLayout
-            android:id="@+id/Pictures"
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/listOfPhotos"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/imageView4"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:layout_weight="1"
-                android:background="@android:color/transparent"
-                android:scaleType="fitCenter"
-                app:srcCompat="@android:drawable/ic_menu_camera" />
-
-        </LinearLayout>
-
-    </HorizontalScrollView>
+            android:layout_height="wrap_content"
+            android:scrollbars="horizontal" />
+    </LinearLayout>
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/ButtonLayout"
