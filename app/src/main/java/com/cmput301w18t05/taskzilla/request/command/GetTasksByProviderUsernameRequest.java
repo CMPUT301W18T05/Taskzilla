@@ -30,20 +30,33 @@ public class GetTasksByProviderUsernameRequest extends Request {
     private ElasticSearchController.GetTasksByProviderUsername task;
     private ArrayList<Task> result;
     private String user;
+    private int from = 0;
+    private int size = 10;
+    private boolean executedOfflineOnce = false;
 
     public GetTasksByProviderUsernameRequest(String username) {
         this.user = username;
     }
 
     public void execute() {
-        task = new ElasticSearchController.GetTasksByProviderUsername();
+        task = new ElasticSearchController.GetTasksByProviderUsername(from, size);
         task.execute(user);
+
+        try {
+            result = task.get();
+            from += size;
+        } catch (Exception e) {
+            System.out.println("Error when get tasks as provider");
+            result = new ArrayList<>();
+        }
     }
 
     @Override
     public void executeOffline() {
-        executedOffline = true;
+        if (executedOffline)
+            result = new ArrayList<>();
 
+        executedOffline = true;
         AppCache appCache = AppCache.getInstance();
         ArrayList<Task> cachedTasks = appCache.getCachedTasks();
 
@@ -61,18 +74,6 @@ public class GetTasksByProviderUsernameRequest extends Request {
     }
 
     public ArrayList<Task> getResult() {
-        try {
-            if (!executedOffline) {
-                result = this.task.get();
-            }
-
-            for(Task t : result)
-                Log.i("Result", t.getId());
-
-            return result;
-        }
-        catch (Exception e) {
-            return null;
-        }
+        return result;
     }
 }

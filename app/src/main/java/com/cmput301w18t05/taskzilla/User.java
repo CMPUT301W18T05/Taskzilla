@@ -11,6 +11,9 @@
 
 package com.cmput301w18t05.taskzilla;
 
+import com.cmput301w18t05.taskzilla.request.RequestManager;
+import com.cmput301w18t05.taskzilla.request.command.GetTasksByRequesterUsernameRequest;
+
 import java.util.ArrayList;
 
 import io.searchbox.annotations.JestId;
@@ -289,6 +292,19 @@ public class User implements Comparable<User> {
      */
     public String toString() {
         return this.name+" "+this.id;
+    }
+
+    public ArrayList<Task> getTasksRequested() {
+        ArrayList<Task> res = new ArrayList<>();
+
+        GetTasksByRequesterUsernameRequest requestTasks = new GetTasksByRequesterUsernameRequest(this.getUsername());
+        RequestManager.getInstance().invokeRequest(requestTasks);
+
+        while (!requestTasks.getResult().isEmpty()) {
+            res.addAll(requestTasks.getResult());
+            RequestManager.getInstance().invokeRequest(requestTasks);
+        }
+        return res;
     }
 
     public int compareTo(User user) {

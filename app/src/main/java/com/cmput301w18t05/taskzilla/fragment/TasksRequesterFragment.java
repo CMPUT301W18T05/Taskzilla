@@ -42,6 +42,7 @@ import com.cmput301w18t05.taskzilla.request.command.GetTaskRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetTasksByProviderUsernameRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetTasksByRequesterUsernameRequest;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import static android.app.Activity.RESULT_OK;
@@ -246,18 +247,19 @@ public class TasksRequesterFragment extends Fragment {
     }
 
     public void updateRList(){
-        requestTasks = new GetTasksByRequesterUsernameRequest(cUser.getUsername());
-        RequestManager.getInstance().invokeRequest(getContext(), requestTasks);
+        ArrayList<Task> res;
+        res = cUser.getTasksRequested();
+
         taskList.clear();
-        taskList.addAll(requestTasks.getResult());
+        taskList.addAll(res);
         adapter.notifyDataSetChanged();
     }
 
     public void updateRequested(){
-        requestTasks = new GetTasksByRequesterUsernameRequest(cUser.getUsername());
-        RequestManager.getInstance().invokeRequest(getContext(), requestTasks);
+        ArrayList<Task> res = cUser.getTasksRequested();
         taskList.clear();
-        for(Task t:requestTasks.getResult()){
+
+        for(Task t : res){
             if(t.getStatus().equalsIgnoreCase("requested")) {
                 taskList.add(t);
             }
@@ -266,10 +268,10 @@ public class TasksRequesterFragment extends Fragment {
     }
 
     public void updateBidded(){
-        requestTasks = new GetTasksByRequesterUsernameRequest(cUser.getUsername());
-        RequestManager.getInstance().invokeRequest(getContext(), requestTasks);
+        ArrayList<Task> res = cUser.getTasksRequested();
         taskList.clear();
-        for(Task t:requestTasks.getResult()){
+
+        for(Task t : res){
             if(t.getStatus().equalsIgnoreCase("bidded")) {
                 taskList.add(t);
             }
@@ -278,10 +280,10 @@ public class TasksRequesterFragment extends Fragment {
     }
 
     public void updateAssigned(){
-        requestTasks = new GetTasksByRequesterUsernameRequest(cUser.getUsername());
-        RequestManager.getInstance().invokeRequest(getContext(), requestTasks);
+        ArrayList<Task> res = cUser.getTasksRequested();
         taskList.clear();
-        for(Task t:requestTasks.getResult()){
+
+        for(Task t : res){
             if(t.getStatus().equalsIgnoreCase("assigned")) {
                 taskList.add(t);
             }
@@ -289,10 +291,10 @@ public class TasksRequesterFragment extends Fragment {
         adapter.notifyDataSetChanged();
     }
     public void updateCompleted(){
-        requestTasks = new GetTasksByRequesterUsernameRequest(cUser.getUsername());
-        RequestManager.getInstance().invokeRequest(getContext(), requestTasks);
+        ArrayList<Task> res = cUser.getTasksRequested();
         taskList.clear();
-        for(Task t:requestTasks.getResult()){
+
+        for(Task t : res){
             if(t.getStatus().equalsIgnoreCase("completed")) {
                 taskList.add(t);
             }

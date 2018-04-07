@@ -32,18 +32,34 @@ public class GetTasksByRequesterUsernameRequest extends Request {
     private ArrayList<Task> result;
     private String user;
     private boolean executedOffline = false;
+    private boolean executedOfflineOnce = false;
+    private int from = 0;
+    private int size = 10;
 
     public GetTasksByRequesterUsernameRequest(String username) {
         this.user = username;
     }
 
     public void execute() {
-        task = new ElasticSearchController.GetTasksByRequesterUsername();
+        System.out.println("Getting tasks by requester username: " + user + " from: " + from + " with size: " + size);
+        task = new ElasticSearchController.GetTasksByRequesterUsername(from, size);
         task.execute(user);
+
+        try {
+            result = task.get();
+            from += size;
+            // dont have to add into app cache here
+        } catch (Exception e) {
+            result = new ArrayList<>();
+            System.out.println("No more results");
+        }
     }
 
     @Override
     public void executeOffline() {
+        if (executedOfflineOnce)
+            result = new ArrayList<>();
+
         System.out.println("Searching for tasks by requester username with username: "+user);
         executedOffline = true;
         AppCache appCache = AppCache.getInstance();
@@ -58,6 +74,7 @@ public class GetTasksByRequesterUsernameRequest extends Request {
                 result.add(t);
             }
         }
+        executedOfflineOnce = true;
     }
 
     @Override
@@ -66,24 +83,6 @@ public class GetTasksByRequesterUsernameRequest extends Request {
     }
 
     public ArrayList<Task> getResult() {
-        try {
-            if (!executedOffline) {
-                result = this.task.get();
-
-                AppCache.getInstance().addInCache(result);
-
-                // add results to cache
-                for (Task t : result)
-                    System.out.println("returning task: "+t);
-            }
-
-            for(Task t:result)
-                System.out.println("GetTasksByRequesterUsername result: "+t);
-
-            return result;
-        }
-        catch (Exception e) {
-            return null;
-        }
+        return result;
     }
 }
