@@ -11,11 +11,10 @@
 
 package com.cmput301w18t05.taskzilla.activity;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.LocationManager;
@@ -24,10 +23,13 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.method.DigitsKeyListener;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -37,6 +39,7 @@ import android.widget.Button;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -51,16 +54,14 @@ import com.cmput301w18t05.taskzilla.Notification;
 import com.cmput301w18t05.taskzilla.NotificationManager;
 import com.cmput301w18t05.taskzilla.Photo;
 import com.cmput301w18t05.taskzilla.R;
+import com.cmput301w18t05.taskzilla.RecyclerViewAdapter;
 import com.cmput301w18t05.taskzilla.Task;
 import com.cmput301w18t05.taskzilla.User;
 import com.cmput301w18t05.taskzilla.controller.ProfileController;
 import com.cmput301w18t05.taskzilla.controller.ViewTaskController;
 import com.cmput301w18t05.taskzilla.currentUser;
-import com.cmput301w18t05.taskzilla.fragment.NotificationsFragment;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
-import com.cmput301w18t05.taskzilla.request.command.AddNotificationRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetBidsByTaskIdRequest;
-import com.cmput301w18t05.taskzilla.request.command.GetUserRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -70,7 +71,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Activity for viewing a task
@@ -108,6 +108,11 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
     private Button PinkButton;
     private ScrollView scrollView;
 
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter recyclerViewAdapter;
+    private RecyclerView.LayoutManager recyclerViewLayoutManager;
+    private LinearLayout linearLayout;
+    private ArrayList<Photo> photos;
     /**onCreate
      * Retrieve the task using the task id that was sent using
      * intent into the activity updating the information on the
@@ -134,8 +139,6 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         //mapFragment.getView().setActivated(false);
         //mapFragment.getView().setEnabled(false);
 
-
-
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         findViews();
@@ -152,6 +155,13 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         setRequesterField();
         setProviderField();
 
+        photos = task.getPhotos();
+        linearLayout = (LinearLayout) findViewById(R.id.Pictures);
+        recyclerView = (RecyclerView) findViewById(R.id.listOfPhotos);
+        recyclerViewLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerView.setLayoutManager(recyclerViewLayoutManager);
+        recyclerViewAdapter = new RecyclerViewAdapter(getApplicationContext(), photos);
+        recyclerView.setAdapter(recyclerViewAdapter);
         // taken from https://stackoverflow.com/questions/3465841/how-to-change-visibility-of-layout-programmatically
         // 2018-03-14
         if (currentUserId.equals(taskUserId)) {
@@ -221,6 +231,11 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                 Intent intent = new Intent(view.getContext(), EditTaskActivity.class);
                 intent.putExtra("task Name", taskName);
                 intent.putExtra("Description", description);
+                ArrayList<String> photosString = new ArrayList<String>();
+                for(int i=0;i<photos.size();i++){
+                    photosString.add(photos.get(i).toString());
+                }
+                intent.putStringArrayListExtra("photos",photosString);
                 startActivityForResult(intent, 1);
             }
         });
@@ -349,10 +364,10 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                 TaskStatus.setText("Bidded");
                 setProviderField();
 
-                //Notification notification = new Notification("bidded", "hi", getIntent(), currentUser.getInstance().getId(), task.getRequesterId());
+                Notification notification = new Notification("bidded", "hi", getIntent(), currentUser.getInstance().getId(), task.getRequesterId(), currentUser.getInstance());
                 //AddNotificationRequest request = new AddNotificationRequest(notification);
                 //RequestManager.getInstance().invokeRequest(getApplicationContext(), request);
-                //NotificationManager.getInstance().createNotification(notification);
+                NotificationManager.getInstance().createNotification(notification);
 
                 //Toast.makeText(ViewTaskActivity.this, "Bid placed", Toast.LENGTH_SHORT).show();
 
@@ -573,6 +588,14 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                 if (resultCode == RESULT_OK) {
                     taskName = data.getStringExtra("Task Name");
                     description = data.getStringExtra("Description");
+                    ArrayList<String> photosString = data.getStringArrayListExtra("photos");
+                    photos.clear();
+                    Bitmap image;
+                    for(int i=0; i<photosString.size(); i++){
+                        Log.i("test",photosString.get(i));
+                        photos.add(new Photo(photosString.get(i)));
+                    }
+                    recyclerViewAdapter.notifyDataSetChanged();
                     task.setName(taskName);
                     task.setDescription(description);
                     viewTaskController.updateTaskRequest(task);

@@ -15,7 +15,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 
-import java.io.ByteArrayOutputStream;
+
 
 /**
  * Represents a photo object in the app
@@ -69,12 +69,16 @@ public class Photo {
         try {
             byte [] encodeByte=Base64.decode(photo,Base64.DEFAULT);
             Bitmap bitmap=BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            Bitmap resizedImage = Bitmap.createScaledBitmap(bitmap,500,500, false);
+            Bitmap resizedImage = Bitmap.createScaledBitmap(bitmap,350,350, false);
             return resizedImage;
         } catch(Exception e) {
             e.getMessage();
             return null;
         }
     }
+
+
+
+
 
 }
