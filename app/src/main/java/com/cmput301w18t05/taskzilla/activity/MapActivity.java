@@ -12,6 +12,7 @@
 package com.cmput301w18t05.taskzilla.activity;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -20,22 +21,36 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.cmput301w18t05.taskzilla.R;
+import com.cmput301w18t05.taskzilla.Task;
+import com.cmput301w18t05.taskzilla.controller.ElasticSearchController;
+import com.cmput301w18t05.taskzilla.controller.SearchController;
+import com.cmput301w18t05.taskzilla.request.RequestManager;
+import com.cmput301w18t05.taskzilla.request.command.GetAllTasksRequest;
+import com.cmput301w18t05.taskzilla.request.command.SearchTaskRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Activity for viewing maps
  */
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
 
+    private GetAllTasksRequest getAllTasksRequest;
+    private ArrayList<Task> tasks;
     private GoogleMap mMap;
     private LocationManager locationManager;
+    private Location myLocation;
     private double lon;
     private double lat;
     /**
@@ -51,6 +66,14 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                 .findFragmentById(R.id.TaskLocation);
         mapFragment.getMapAsync(this);
         locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+
+        getAllTasksRequest = new GetAllTasksRequest();
+        RequestManager.getInstance().invokeRequest(getApplicationContext(),getAllTasksRequest);
+
+        tasks = new ArrayList<>();
+
+        tasks.addAll(getAllTasksRequest.getResult());
+
     }
 
     /**
@@ -67,15 +90,33 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         getLocation();
         mMap = googleMap;
 
+        myLocation = new Location("You");
+        myLocation.setLatitude(lat);
+        myLocation.setLongitude(lon);
+        myLocation.setTime(new Date().getTime());
+
         // Add a marker to your location and move the camera
         LatLng yourLocation = new LatLng(lat, lon);
         mMap.addMarker(new MarkerOptions().position(yourLocation).title("You Location"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(yourLocation));
         moveToCurrentLocation(yourLocation);
 
+        Location taskLocation;
         //*Add locations of tasks*//
-        LatLng taskLocation = new LatLng(lat-0.3, lon-0.3);
-        mMap.addMarker(new MarkerOptions().position(taskLocation).title("Task Name"));
+        for(Task t : tasks){
+            if (t.getLocation()!=null) {
+                taskLocation = new Location("Task");
+                taskLocation.setLatitude(t.getLocation().latitude);
+                taskLocation.setLongitude(t.getLocation().longitude);
+                taskLocation.setTime(new Date().getTime()); //Set time as current Date
+
+                if (myLocation.distanceTo(taskLocation) <= 5000) {
+                    LatLng taskslonlat = new LatLng(t.getLocation().latitude, t.getLocation().longitude);
+                    mMap.addMarker(new MarkerOptions().position(taskslonlat).title(t.getName()));
+                }
+            }
+        }
+
     }
 
     void getLocation() {
@@ -85,12 +126,16 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         } else {
             Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+
             if (location != null){
                 lat = location.getLatitude();
                 lon = location.getLongitude();
             }
         }
     }
+
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,@NonNull int[] grantResults) {
@@ -101,6 +146,13 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                 getLocation();
                 break;
         }
+    }
+
+
+    public boolean onMarkerClick(final Marker marker) {
+
+        
+        return false;
     }
 
     private void moveToCurrentLocation(LatLng currentLocation)

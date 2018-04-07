@@ -217,6 +217,7 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
      */
     public void viewMap(){
         Intent intent = new Intent(getActivity(), MapActivity.class);
+
         startActivity(intent);
     }
 
