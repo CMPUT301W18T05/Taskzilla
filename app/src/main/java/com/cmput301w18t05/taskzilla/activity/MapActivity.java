@@ -180,13 +180,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         }
     }
 
-
-    public boolean onMarkerClick(final Marker marker) {
-        Log.i("Mrkers","Clicked");
-
-        return false;
-    }
-
     private void moveToCurrentLocation(LatLng currentLocation)
     {
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation,15));
