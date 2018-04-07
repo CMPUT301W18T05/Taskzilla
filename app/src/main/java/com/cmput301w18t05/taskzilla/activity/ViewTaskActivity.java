@@ -490,7 +490,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
             profileController.setUserID(task.getBestBidder());
             profileController.getUserRequest();
             User tempUser = profileController.getUser();
-            String text = "Best bidder: " + tempUser.getName() + "\nBid amount: " + Float.toString(task.getBestBid());
+            String text = "Best bidder: " + tempUser.getName() + "\nBid amount: " + "$" + String.format("%.2f",task.getBestBid());
             ProviderName.setText(text);
             try {
                 ProviderPicture.setImageBitmap(tempUser.getPhoto().StringToBitmap());
