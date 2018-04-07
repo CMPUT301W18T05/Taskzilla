@@ -26,6 +26,7 @@ import android.widget.ListView;
 import android.widget.SearchView;
 
 import com.cmput301w18t05.taskzilla.R;
+import com.cmput301w18t05.taskzilla.TaskCustomAdapter;
 import com.cmput301w18t05.taskzilla.controller.SearchController;
 import com.cmput301w18t05.taskzilla.Task;
 import com.cmput301w18t05.taskzilla.activity.MapActivity;
@@ -77,7 +78,7 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
         availableTasks = mConstraintLayout.findViewById(R.id.ListView2);
         searchController = new SearchController(this, getActivity());
 
-        adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, searchResults);
+        adapter = new TaskCustomAdapter(getActivity(), R.layout.tasks_list_view2, searchResults);
         availableTasks.setAdapter(adapter);
 
         availableTasks.setClickable(true);
