@@ -22,6 +22,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.InputFilter;
 import android.text.Spanned;
@@ -35,6 +37,7 @@ import android.widget.Button;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -49,6 +52,7 @@ import com.cmput301w18t05.taskzilla.Notification;
 import com.cmput301w18t05.taskzilla.NotificationManager;
 import com.cmput301w18t05.taskzilla.Photo;
 import com.cmput301w18t05.taskzilla.R;
+import com.cmput301w18t05.taskzilla.RecyclerViewAdapter;
 import com.cmput301w18t05.taskzilla.Task;
 import com.cmput301w18t05.taskzilla.User;
 import com.cmput301w18t05.taskzilla.controller.ProfileController;
@@ -66,6 +70,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -105,6 +110,11 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
     private Button PinkButton;
     private ScrollView scrollView;
 
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter recyclerViewAdapter;
+    private RecyclerView.LayoutManager recyclerViewLayoutManager;
+    private LinearLayout linearLayout;
+    private ArrayList<Photo> photos;
     /**onCreate
      * Retrieve the task using the task id that was sent using
      * intent into the activity updating the information on the
@@ -143,6 +153,13 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         setRequesterField();
         setProviderField();
 
+        photos = task.getPhotos();
+        linearLayout = (LinearLayout) findViewById(R.id.Pictures);
+        recyclerView = (RecyclerView) findViewById(R.id.listOfPhotos);
+        recyclerViewLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerView.setLayoutManager(recyclerViewLayoutManager);
+        recyclerViewAdapter = new RecyclerViewAdapter(getApplicationContext(), photos);
+        recyclerView.setAdapter(recyclerViewAdapter);
         // taken from https://stackoverflow.com/questions/3465841/how-to-change-visibility-of-layout-programmatically
         // 2018-03-14
         if (currentUserId.equals(taskUserId)) {
@@ -552,6 +569,12 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                 if (resultCode == RESULT_OK) {
                     taskName = data.getStringExtra("Task Name");
                     description = data.getStringExtra("Description");
+                    ArrayList<String> photosString = data.getStringArrayListExtra("photos");
+                    photos = new ArrayList<Photo>();
+                    for(int i=0; i<photosString.size(); i++){
+                        photos.add(new Photo(photosString.get(i)));
+                    }
+                    recyclerViewAdapter.notifyDataSetChanged();
                     task.setName(taskName);
                     task.setDescription(description);
                     viewTaskController.updateTaskRequest(task);

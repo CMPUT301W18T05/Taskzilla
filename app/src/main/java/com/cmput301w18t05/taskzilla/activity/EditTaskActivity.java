@@ -59,7 +59,6 @@ public class EditTaskActivity extends AppCompatActivity {
     private RecyclerView.Adapter recyclerViewAdapter;
     private RecyclerView.LayoutManager recyclerViewLayoutManager;
     private LinearLayout linearLayout;
-    private User CurrentUser = currentUser.getInstance();
     private Integer maxSize;
     private ArrayList<Photo> photos;
     /**
@@ -122,6 +121,11 @@ public class EditTaskActivity extends AppCompatActivity {
             Intent returnIntent = new Intent();
             returnIntent.putExtra("Task Name", TaskName);
             returnIntent.putExtra("Description", Description);
+            ArrayList<String> photosString = new ArrayList<String>();
+            for(int i=0;i<photos.size();i++){
+                photosString.add(photos.get(i).toString());
+            }
+            returnIntent.putStringArrayListExtra("photos",photosString);
             setResult(RESULT_OK, returnIntent);
             finish();
         }
