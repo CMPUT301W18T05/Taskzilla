@@ -15,15 +15,15 @@
     android:layout_height="match_parent">
 
     <ListView
-        android:id="@+id/AcceptBidList"
+        android:id="@+id/DeclineBidList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <Button
-        android:id="@+id/AcceptBidButton"
+        android:id="@+id/DeclineBidButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/buttonYellowComplement"
-        android:theme="@style/AppTheme.YellowButton" />
+        android:textColor="@color/buttonPinkComplement"
+        android:theme="@style/AppTheme.PinkButton" />
 
 </LinearLayout>

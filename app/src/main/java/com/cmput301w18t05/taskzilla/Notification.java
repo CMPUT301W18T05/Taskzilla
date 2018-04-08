@@ -13,6 +13,13 @@ package com.cmput301w18t05.taskzilla;
 
 import android.content.Intent;
 
+import com.cmput301w18t05.taskzilla.controller.ElasticSearchController;
+import com.cmput301w18t05.taskzilla.request.Request;
+import com.cmput301w18t05.taskzilla.request.RequestManager;
+import com.cmput301w18t05.taskzilla.request.command.AddNotificationRequest;
+
+import io.searchbox.annotations.JestId;
+
 /**
  * Created by Andy on 4/4/2018.
  */
@@ -25,15 +32,29 @@ public class Notification {
     private String requesterId;
     private User user;
 
+    private String senderID;
+    private String receiverID;
+    private String event;
+    private String taskID;
+    private boolean awknowledged = false;
+
+    @JestId
     private String id;
 
-    public Notification(String nTitle, String nContext, Intent nIntent, String nProviderId, String nRequesterId, User nUser) {
+    /*public Notification(String nTitle, String nContext, Intent nIntent, String nProviderId, String nRequesterId, User nUser) {
         this.title = nTitle;
         this.context = nContext;
         this.intent = nIntent;
         this.providerId = nProviderId;
         this.requesterId = nRequesterId;
         this.user = nUser;
+    }*/
+
+    public Notification(String event, String senderID, String receiverID, String taskID) {
+        this.event = event;
+        this.senderID = senderID;
+        this.receiverID = receiverID;
+        this.taskID = taskID;
     }
 
     public String getTitle() {
@@ -57,7 +78,7 @@ public class Notification {
     }
 
     public String toString() {
-        return "Title: " + this.title + "\nContext: " + this.context + "\nBy: " + this.providerId;
+        return "ID: " + id + " " + event + " " + senderID + " " + receiverID;
     }
 
     public String getId() {
@@ -70,6 +91,19 @@ public class Notification {
 
     public User getUser() {
         return this.user;
+    }
+
+    public void awknowledge() {
+        if (id == null)
+            return;
+
+        this.awknowledged = true;
+        AddNotificationRequest task = new AddNotificationRequest(this);
+        RequestManager.getInstance().invokeRequest(task);
+    }
+
+    public boolean isAwknowledged() {
+        return awknowledged == true;
     }
 
     public int compareTo(Notification notification) {

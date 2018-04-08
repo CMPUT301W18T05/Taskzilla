@@ -736,25 +736,17 @@ public class ElasticSearchController {
             for (Notification notification : notifications) {
                 Index index = new Index.Builder(notification).index("cmput301w18t05").type("notification").build();
                 try {
-                    Log.i("Event", "Trying to add notification "+notification.toString());
-
-                    DocumentResult result = client.execute(index);
-
-                    Log.i("Event", "Jest returned with: "+result);
-                    if (result.isSucceeded()) {
-                        notification.setId(result.getId());
-                        Log.i("Event", "Successfully added: "+notification.toString()+" with id: "+notification.getId()+" ... at least we think so.");
-                        return true;
+                    DocumentResult res = client.execute(index);
+                    if (res.isSucceeded()) {
+                        notification.setId(res.getId());
+                        System.out.println("Successfully added: "+notification);
                     }
-                    else {
-                        Log.i("Event", "Failed to add notification: "+notification.toString());
-                    }
-                }
-                catch (Exception e) {
-                    Log.i("Error", "Notification not added");
+                } catch (Exception e) {
+                    System.out.println("Error when adding notification");
+                    return false;
                 }
             }
-            return false;
+            return true;
         }
     }
 
@@ -798,8 +790,8 @@ public class ElasticSearchController {
             verifySettings();
             ArrayList<Notification> foundNotifications = new ArrayList<>();
 
-            for (String  userId : userIds) {
-                String query = "{ \"query\" : { \"match\" : { \"userId\" : \""+ userId + "\" } } }";
+            for (String  receiverID : userIds) {
+                String query = "{ \"query\" : { \"match\" : { \"receiverID\" : \""+ receiverID + "\" } } }";
                 Log.i("Query: ", query);
 
                 SearchResult result;
