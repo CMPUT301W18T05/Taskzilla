@@ -128,16 +128,7 @@ public class Task implements Comparable<Task> {
      */
     public void addBid(Bid newbid) {
         System.out.println("Adding bid: "+newbid);
-        GetBidsByTaskIdRequest getbidrequest = new GetBidsByTaskIdRequest(this.Id);
-        RequestManager.getInstance().invokeRequest(getbidrequest);
-        ArrayList<Bid> bidlist = getbidrequest.getResult();
-        for (Bid bid : bidlist) {
-            if (bid.getUserId().equals(newbid.getUserId())) {
-                RemoveBidRequest removerequest = new RemoveBidRequest(bid);
-                RequestManager.getInstance().invokeRequest(removerequest);
-                break;
-            }
-        }
+
         AddBidRequest addBidRequest = new AddBidRequest(newbid);
         RequestManager.getInstance().invokeRequest(addBidRequest);
 
