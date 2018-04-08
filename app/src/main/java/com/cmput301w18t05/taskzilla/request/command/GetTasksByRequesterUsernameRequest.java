@@ -48,6 +48,7 @@ public class GetTasksByRequesterUsernameRequest extends Request {
         try {
             result = task.get();
             from += size;
+            AppCache.getInstance().addInCache(result);
             // dont have to add into app cache here
         } catch (Exception e) {
             result = new ArrayList<>();
