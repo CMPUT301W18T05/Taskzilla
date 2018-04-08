@@ -16,10 +16,12 @@
     <color name="colorAccent">#00e5ee</color>
     <color name="tabSelectorColor">#000000</color>
     <color name="buttonYellow">#effd5f</color>
-    <color name="buttonYellowComplement">#00e5ee</color>
+    <color name="buttonYellowComplement">#00b6ee</color>
     <color name="buttonPink">#FF69B4</color>
     <color name="buttonPinkComplement">#efefef</color>
-    <color name="buttonGreen">#1c9b2c</color>
-    <color name="buttonRed">#9f0e0e</color>
+    <color name="buttonGreen">#53d638</color>
+    <color name="buttonRed">#d81e1e</color>
+    <color name="buttonOrange">#fd6614</color>
+
 
 </resources>

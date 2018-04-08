@@ -96,7 +96,7 @@ public class User implements Comparable<User> {
     public boolean setName(String name) {
         // if name contains illegal characters, or is longer than 25 characters return false
         // otherwise set the user's name
-        if (name.matches("[a-zA-Z_0-9][a-zA-Z0-9 ]") || (name.length() <= 25)) {
+        if (name.matches("[a-zA-Z_0-9][a-zA-Z0-9 ]") || (name.length() <= 30)) {
             this.name = name;
             return true;
         }
@@ -118,7 +118,7 @@ public class User implements Comparable<User> {
      * @return Returns True is username was successfully set. False if the username fails the check
      */
     public boolean setUsername(String username) {
-        if (username.matches("[a-zA-Z_0-9][a-zA-Z_0-9 ]") || (username.length() <= 25)) {
+        if (username.matches("[a-zA-Z_0-9][a-zA-Z_0-9 ]") || (username.length() <= 30)) {
             this.username = username;
             return true;
         }
@@ -132,7 +132,7 @@ public class User implements Comparable<User> {
      * @return boolean
      */
     public boolean setPassword(String password) {
-        if (password.matches("[a-zA-Z_0-9][a-zA-Z_0-9 ]") || (password.length() <= 25)) {
+        if (password.matches("[a-zA-Z_0-9][a-zA-Z_0-9 ]") || (password.length() <= 30)) {
             this.password = password;
             return true;
         }

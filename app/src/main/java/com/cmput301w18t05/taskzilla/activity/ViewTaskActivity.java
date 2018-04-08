@@ -66,6 +66,7 @@ import com.cmput301w18t05.taskzilla.currentUser;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.GetBidsByTaskIdRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetUserRequest;
+import com.cmput301w18t05.taskzilla.request.command.RemoveBidRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -112,6 +113,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
     private Button GreenButton;
     private Button RedButton;
     private Button PinkButton;
+    private Button OrangeButton;
     private ScrollView scrollView;
 
     private RecyclerView recyclerPhotosView;
@@ -119,6 +121,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
     private RecyclerView.LayoutManager layoutManager;
     private LinearLayout linearLayout;
     private ArrayList<Photo> photos;
+
     /**onCreate
      * Retrieve the task using the task id that was sent using
      * intent into the activity updating the information on the
@@ -186,6 +189,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                 EditButton.setVisibility(View.VISIBLE);
             }
             else if (task.getStatus().equals("assigned")) {
+                EditButton.setVisibility(View.INVISIBLE);
                 GreenButton.setVisibility(View.VISIBLE);
                 RedButton.setVisibility(View.VISIBLE);
                 YellowButton.setVisibility(View.INVISIBLE);
@@ -194,8 +198,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
             else {
                 EditButton.setVisibility(View.INVISIBLE);
             }
-        }
-        else {
+        } else {
             DeleteButton.setVisibility(View.INVISIBLE);
             EditButton.setVisibility(View.INVISIBLE);
             YellowButton.setVisibility(View.INVISIBLE);
@@ -210,6 +213,12 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
             RedButton.setVisibility(View.INVISIBLE);
             GreenButton.setVisibility(View.INVISIBLE);
             PinkButton.setVisibility(View.INVISIBLE);
+            OrangeButton.setVisibility(View.VISIBLE);
+            if (currentUserId.equals(task.getRequesterId())) {
+                OrangeButton.setText("REVIEW PROVIDER");
+            } else {
+                OrangeButton.setText("REVIEW REQUESTER");
+            }
         }
 
 //            LinearLayout.LayoutParams detailsLayout =
@@ -301,7 +310,6 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                         finish();
                     }
                 });
-
                 //DELETE CANCEL CODE
                 alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
@@ -317,6 +325,10 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
             @Override
             public void onClick(View view) {
                 task.unassignProvider();
+                RedButton.setVisibility(View.INVISIBLE);
+                GreenButton.setVisibility(View.INVISIBLE);
+                PinkButton.setVisibility(View.VISIBLE);
+                YellowButton.setVisibility(View.VISIBLE);
             }
         });
 
@@ -324,9 +336,12 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
             @Override
             public void onClick(View view) {
                 task.completeTask();
+                RedButton.setVisibility(View.INVISIBLE);
+                GreenButton.setVisibility(View.INVISIBLE);
+                PinkButton.setVisibility(View.VISIBLE);
+                YellowButton.setVisibility(View.VISIBLE);
             }
         });
-
 
         // get all of this task's bids and pass it into expandable list to display
         // @author myapplestory
@@ -400,12 +415,12 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                 }
                 setProviderField();
 
-                Notification notification = new Notification("bidded", "hi", getIntent(), currentUser.getInstance().getId(), task.getRequesterId(), currentUser.getInstance());
+                //Notification notification = new Notification("bidded", "hi", getIntent(), currentUser.getInstance().getId(), task.getRequesterId(), currentUser.getInstance());
                 //AddNotificationRequest request = new AddNotificationRequest(notification);
                 //RequestManager.getInstance().invokeRequest(getApplicationContext(), request);
-                NotificationManager.getInstance().createNotification(notification);
+                //NotificationManager.getInstance().createNotification(notification);
 
-                //Toast.makeText(ViewTaskActivity.this, "Bid placed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ViewTaskActivity.this, "Bid placed", Toast.LENGTH_SHORT).show();
 
                 // hide keyboard upon pressing button
                 InputMethodManager imm = (InputMethodManager)getSystemService(
@@ -479,6 +494,10 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                     EditButton.setVisibility(View.INVISIBLE);
                     setProviderField();
                     mBuilder.dismiss();
+                    RedButton.setVisibility(View.VISIBLE);
+                    GreenButton.setVisibility(View.VISIBLE);
+                    PinkButton.setVisibility(View.INVISIBLE);
+                    YellowButton.setVisibility(View.INVISIBLE);
                 }
             });
         }
@@ -488,7 +507,70 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
 
 
     public void thePinkButton(android.view.View view) {
-        Toast.makeText(this, "dawdwadwwadwad", Toast.LENGTH_SHORT).show();
+        final AlertDialog mBuilder = new AlertDialog.Builder(ViewTaskActivity.this).create();
+        final View mView = getLayoutInflater().inflate(R.layout.dialog_decline_bid,null);
+        final ListView declineBidListView = mView.findViewById(R.id.DeclineBidList);
+        final Button declineBidButton = mView.findViewById(R.id.DeclineBidButton);
+        ArrayList<String> tempList = new ArrayList<>();
+
+        if (BidList.isEmpty()) {
+            tempList.add("No bids :'(");
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                    android.R.layout.simple_list_item_1, tempList);
+            declineBidListView.setAdapter(adapter);
+            declineBidButton.setText("SAD");
+            declineBidButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mBuilder.dismiss();
+                }
+            });
+        } else {
+            for (Bid bid : BidList) {
+                ProfileController controller = new ProfileController(mView, getBaseContext());
+                controller.setUserID(bid.getUserId());
+                controller.getUserRequest();
+                tempList.add("Best bidder: " + controller.getUser().getName() + "\nBid Amount: " +
+                        bid.getBidAmount());
+            }
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                    android.R.layout.simple_list_item_single_choice, tempList);
+            declineBidListView.setAdapter(adapter);
+            declineBidListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+            declineBidButton.setText("DECLINE BID");
+            declineBidListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    selectedBid = BidList.get(i);
+                }
+            });
+
+            declineBidButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    RemoveBidRequest removeRequest = new RemoveBidRequest(selectedBid);
+                    RequestManager.getInstance().invokeRequest(removeRequest);
+                    BidList.remove(selectedBid);
+                    updateBidsList();
+
+                    if (BidList.isEmpty()) {
+                        EditButton.setVisibility(View.VISIBLE);
+                        task.setStatus("requested");
+                        TaskStatus.setText("requested");
+                    } else {
+                        //update best bid field
+                    }
+                    setProviderField();
+                    mBuilder.dismiss();
+                }
+            });
+        }
+        mBuilder.setView(mView);
+        mBuilder.show();
+    }
+
+    public void theOrangeButton(android.view.View view) {
+        Toast.makeText(this, "ddd", Toast.LENGTH_SHORT).show();
     }
 
     public Integer updateBestBid(Float incomingBidFloat) {
@@ -585,6 +667,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         GreenButton = findViewById(R.id.CompleteTaskButton);
         RedButton = findViewById(R.id.AbortTaskButton);
         PinkButton = findViewById(R.id.PinkButton);
+        OrangeButton = findViewById(R.id.orangeButton);
     }
 
     public void setValues(){

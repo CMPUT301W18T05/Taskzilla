@@ -33,11 +33,12 @@ public class AddNotificationRequest extends InsertionRequest {
 
     public AddNotificationRequest(Notification notification) {
         this.notificationData = notification;
-        queueReady = true;
+        //queueReady = true;
     }
 
     @Override
     public void execute() {
+        System.out.println("Trying to add notification");
         task = new ElasticSearchController.AddNotification();
         task.execute(notificationData);
     }

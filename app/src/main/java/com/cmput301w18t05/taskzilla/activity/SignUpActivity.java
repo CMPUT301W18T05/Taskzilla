@@ -116,7 +116,7 @@ public class SignUpActivity extends AppCompatActivity {
         if(TextUtils.isEmpty(email.getText())) {
             showError("Email required!");
             return false;
-        } else if(email.getText().length() > 30) {
+        } else if(email.getText().length() > 254) {
             showError("Email too long!");
             return false;
         } else {
