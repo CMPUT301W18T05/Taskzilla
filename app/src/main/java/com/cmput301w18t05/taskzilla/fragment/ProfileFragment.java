@@ -185,7 +185,14 @@ public class ProfileFragment extends Fragment {
             //gets all of current user's tasks
             requestTasksRequester = new GetTasksByRequesterUsernameRequest(user.getUsername());
             RequestManager.getInstance().invokeRequest(getContext(), requestTasksRequester);
-            numRequests = Integer.toString(requestTasksRequester.getResult().size());
+            Integer tempNumRequests = requestTasksRequester.getResult().size();
+            Integer numRequestsInteger = tempNumRequests;
+            while(tempNumRequests>0){
+                RequestManager.getInstance().invokeRequest(getContext(), requestTasksRequester);
+                tempNumRequests = requestTasksRequester.getResult().size();
+                numRequestsInteger+=tempNumRequests;
+            }
+            numRequests = Integer.toString(numRequestsInteger);
 
             requestTasksProvider = new GetTasksByProviderUsernameRequest(user.getUsername());
             RequestManager.getInstance().invokeRequest(getContext(), requestTasksProvider);
@@ -194,6 +201,16 @@ public class ProfileFragment extends Fragment {
             for(Task task: taskList) {
                 if(task.getStatus().equals("Completed")){
                     tasksDone++;
+                }
+            }
+            while(taskList.size()>0 && taskList != null){
+                taskList.clear();
+                RequestManager.getInstance().invokeRequest(getContext(), requestTasksProvider);
+                this.taskList.addAll(requestTasksProvider.getResult());
+                for(Task task: taskList) {
+                    if(task.getStatus().equals("Completed")){
+                        tasksDone++;
+                    }
                 }
             }
             numTasksDone = Integer.toString(tasksDone);
