@@ -65,6 +65,7 @@ import com.cmput301w18t05.taskzilla.controller.ViewTaskController;
 import com.cmput301w18t05.taskzilla.currentUser;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.GetBidsByTaskIdRequest;
+import com.cmput301w18t05.taskzilla.request.command.GetUserRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -499,11 +500,20 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                     "A similar bid already exists. Please bid another value",
                     Toast.LENGTH_SHORT).show();
             return -1;
-        } else if (task.getBestBid() < incomingBidFloat && task.getBestBidder().equals(currentUserId)) {
-            Toast.makeText(this,
-                    "You cannot change your bid, you already have the highest bid",
-                    Toast.LENGTH_SHORT).show();
-            return -1;
+        } else if (task.getBestBidder().equals(currentUserId)) {
+            task.setBestBid(incomingBidFloat);
+            for(Bid bid: BidList){
+                if(bid.getBidAmount()<task.getBestBid() && !task.getBestBidder().equals(bid.getUserId())){
+                    task.setBestBid(bid.getBidAmount());
+                    GetUserRequest request = new GetUserRequest(bid.getUserId());
+                    Log.i("testBIDID",bid.getUserId());
+                    RequestManager.getInstance().invokeRequest(getApplicationContext(), request);
+                    User tempBidder = request.getResult();
+                    Log.i("TESTBIDDERNAME",tempBidder.getName());
+                    task.setBestBidder(tempBidder.getId());
+                    Log.i("BEST BIDDER",task.getBestBidder());
+                }
+            }
         }
         return 0;
     }
