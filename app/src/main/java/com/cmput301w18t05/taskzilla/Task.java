@@ -140,9 +140,9 @@ public class Task implements Comparable<Task> {
         }
         AddBidRequest addBidRequest = new AddBidRequest(newbid);
         RequestManager.getInstance().invokeRequest(addBidRequest);
-    //    Notification notification = new Notification("bidded", "by: " + currentUser.getInstance().getName(), null, requesterId, providerId, currentUser.getRealInstance());
+        Notification notification = new Notification("bidded", "by: " + currentUser.getInstance().getName(), null, requesterId, providerId, currentUser.getRealInstance());
         //Notification notification = new Notification("NEW NOTIF", newbid.getUserId(), this.requesterId, this.Id);
-      //  NotificationManager.getInstance().sendNotification(notification);
+        NotificationManager.getInstance().sendNotification(notification);
     }
 
     /**

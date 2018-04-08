@@ -144,7 +144,6 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         ActionBar actionBar = getSupportActionBar();
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor(appColors.getActionBarColor())));
         actionBar.setTitle(Html.fromHtml("<font color='"+ appColors.getActionBarTextColor() + "'>Taskzilla</font>"));
-        getWindow().getDecorView().setBackgroundColor(Color.parseColor(appColors.getBackgroundColor()));
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.TaskLocation);
