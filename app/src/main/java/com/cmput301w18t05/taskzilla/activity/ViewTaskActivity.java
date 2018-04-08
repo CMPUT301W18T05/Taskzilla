@@ -492,7 +492,11 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
     }
 
     public Integer updateBestBid(Float incomingBidFloat) {
+        Log.i("CURRENTBESTBIDDER",task.getBestBidder().toString());
+        Log.i("CURRENTUSER",currentUserId);
+
         if (task.getBestBid() > incomingBidFloat || task.getBestBid() == -1.0f) {
+            Log.i("in","1");
             task.setBestBidder(currentUserId);
             task.setBestBid(incomingBidFloat);
             task.updateThis();
@@ -501,20 +505,22 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                     "A similar bid already exists. Please bid another value",
                     Toast.LENGTH_SHORT).show();
             return -1;
-        } if (task.getBestBidder().equals(currentUserId)) {
-            task.setBestBid(incomingBidFloat);
+        } else if (task.getBestBidder().equals(currentUserId)) {
+            Float bestBidTemp = incomingBidFloat;
+            String bestBidderIdTemp = currentUserId;
             for(Bid bid: BidList){
-                if(bid.getBidAmount()<task.getBestBid() && !task.getBestBidder().equals(bid.getUserId())){
-                    task.setBestBid(bid.getBidAmount());
+
+                if(bid.getBidAmount()<bestBidTemp && !task.getBestBidder().equals(bid.getUserId())){
+                    Log.i("CHANGE",bid.getBidAmount().toString());
+                    bestBidTemp = bid.getBidAmount();
                     GetUserRequest request = new GetUserRequest(bid.getUserId());
-                    Log.i("testBIDID",bid.getUserId());
                     RequestManager.getInstance().invokeRequest(getApplicationContext(), request);
                     User tempBidder = request.getResult();
-                    Log.i("TESTBIDDERNAME",tempBidder.getName());
-                    task.setBestBidder(tempBidder.getId());
-                    Log.i("BEST BIDDER",task.getBestBidder());
+                    bestBidderIdTemp = tempBidder.getId();
                 }
             }
+            task.setBestBid(bestBidTemp);
+            task.setBestBidder(bestBidderIdTemp);
         }
         task.updateThis();
         return 0;
