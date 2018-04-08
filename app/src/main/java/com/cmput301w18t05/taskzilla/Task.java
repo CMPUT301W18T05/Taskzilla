@@ -140,8 +140,8 @@ public class Task implements Comparable<Task> {
         }
         AddBidRequest addBidRequest = new AddBidRequest(newbid);
         RequestManager.getInstance().invokeRequest(addBidRequest);
-        Notification notification = new Notification("bidded", "by: " + currentUser.getInstance().getName(), null, requesterId, providerId, currentUser.getRealInstance());
-        //Notification notification = new Notification("NEW NOTIF", newbid.getUserId(), this.requesterId, this.Id);
+        //Notification notification = new Notification("bidded", "by: " + currentUser.getInstance().getName(), null, requesterId, providerId, currentUser.getRealInstance());
+        Notification notification = new Notification("New Bid", newbid.getUserId(), this.requesterId, this.Id, this.name, currentUser.getInstance());
         NotificationManager.getInstance().sendNotification(notification);
     }
 
@@ -324,6 +324,9 @@ public class Task implements Comparable<Task> {
             removeAllBids();
             removeHighestBid();
             updateThis();
+
+            Notification notification = new Notification("Bid Accepted", this.requesterId, this.providerId, this.Id, this.name, currentUser.getInstance());
+            NotificationManager.getInstance().sendNotification(notification);
         }
     }
 
@@ -440,6 +443,9 @@ public class Task implements Comparable<Task> {
     public void completeTask() {
         this.status = "Completed";
         updateThis();
+
+        Notification notification = new Notification("Task Completed", this.requesterId, this.providerId, this.Id, this.name, currentUser.getInstance());
+        NotificationManager.getInstance().sendNotification(notification);
     }
 
     public boolean isComplete() {

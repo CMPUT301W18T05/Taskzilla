@@ -96,7 +96,7 @@ public class NotificationManager extends ContextWrapper {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setLargeIcon(notification.getUser().getPhoto().StringToBitmap())
-                .setContentTitle(notification.getTitle())
+                .setContentTitle(notification.getEvent())
                 .setContentText(notification.getContext())
                 .setLights(Color.BLUE, 300, 100)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
@@ -118,9 +118,11 @@ public class NotificationManager extends ContextWrapper {
         System.out.println("Notification received.");
 
         for (Notification n : newNotifs) {
-            n.acknowledge();
-            createNotification(n);
-            System.out.println("Received: "+n);
+            if(!n.isAcknowledged()) {
+                n.acknowledge();
+                //createNotification(n);
+                System.out.println("Received: "+n);
+            }
         }
     }
 

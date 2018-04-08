@@ -15,11 +15,14 @@ import android.content.Context;
 
 import com.cmput301w18t05.taskzilla.Notification;
 import com.cmput301w18t05.taskzilla.User;
+import com.cmput301w18t05.taskzilla.activity.MainActivity;
 import com.cmput301w18t05.taskzilla.fragment.NotificationsFragment;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.AddNotificationRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetNotificationsByUserIdRequest;
+import com.cmput301w18t05.taskzilla.request.command.GetTaskRequest;
 import com.cmput301w18t05.taskzilla.request.command.RemoveNotificationRequest;
+import com.cmput301w18t05.taskzilla.request.command.SearchTaskRequest;
 
 import java.util.ArrayList;
 
@@ -40,10 +43,6 @@ public class NotificationsController {
         this.view = notificationsFragment;
     }
 
-    public void setNotifications(Notification notification) {
-        this.notificationList.add(notification);
-    }
-
     public void clearNotifications() {
         notificationList.clear();
         view.notifyChange();
@@ -58,32 +57,39 @@ public class NotificationsController {
         RequestManager.getInstance().invokeRequest(ctx, request);
 
         notificationList.clear();
+        notificationList.addAll(request.getResult());
 
-        ArrayList<Notification> temp = new ArrayList<>();
-
-        if (temp != null) {
-            temp = request.getResult();
-
-            for (Notification n : temp)
-                notificationList.add(n);
-
-        }
         view.notifyChange();
     }
 
-    // not sure if needed, since notification fragment only deals with deleting notifications and getting available ones
-    /*
-    public void addNotificationRequest(Notification notification) {
-        AddNotificationRequest request = new AddNotificationRequest(notification);
-        RequestManager.getInstance().invokeRequest(ctx, request);
+    public boolean checkTaskExistRequest(String taskId) {
+        GetTaskRequest getTaskRequest = new GetTaskRequest(taskId);
+        RequestManager.getInstance().invokeRequest(ctx, getTaskRequest);
+
+        if(getTaskRequest.getResult() == null)
+            return false;
+        else
+            return true;
     }
-    */
 
     public void removeNotificationRequest(String id, Integer pos) {
         RemoveNotificationRequest request = new RemoveNotificationRequest(id);
         RequestManager.getInstance().invokeRequest(ctx, request);
 
         notificationList.remove(pos);
+
+        view.notifyChange();
+    }
+
+    public void removeAllNotificationRequest() {
+        GetNotificationsByUserIdRequest request = new GetNotificationsByUserIdRequest(cUser.getId());
+        RequestManager.getInstance().invokeRequest(request);
+
+        for(Notification n : request.getResult()) {
+            RemoveNotificationRequest removeNotificationRequest = new RemoveNotificationRequest(n.getId());
+            RequestManager.getInstance().invokeRequest(removeNotificationRequest);
+        }
+        notificationList.clear();
 
         view.notifyChange();
     }

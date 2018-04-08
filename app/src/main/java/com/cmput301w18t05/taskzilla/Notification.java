@@ -17,6 +17,8 @@ import com.cmput301w18t05.taskzilla.controller.ElasticSearchController;
 import com.cmput301w18t05.taskzilla.request.Request;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.AddNotificationRequest;
+import com.cmput301w18t05.taskzilla.request.command.GetTaskRequest;
+import com.cmput301w18t05.taskzilla.request.command.GetUserRequest;
 
 import io.searchbox.annotations.JestId;
 
@@ -31,6 +33,7 @@ public class Notification {
     //private String providerId;
     //private String requesterId;
     private User user;
+    private String taskName;
 
     private String senderID;
     private String receiverID;
@@ -40,7 +43,7 @@ public class Notification {
 
     @JestId
     private String id;
-
+/*
     public Notification(String nTitle, String nContext, Intent nIntent, String nSenderId, String nRecieverId, User nUser) {
         this.title = nTitle;
         this.context = nContext;
@@ -51,18 +54,25 @@ public class Notification {
         this.taskID = new String();
         this.event = new String();
     }
-
-    public Notification(String event, String senderID, String receiverID, String taskID) {
+*/
+    public Notification(String event, String senderID, String receiverID, String taskID, String taskName, User user) {
         this.event = event;
         this.senderID = senderID;
         this.receiverID = receiverID;
         this.taskID = taskID;
+        this.taskName = taskName;
+        this.user = user;
     }
 
+    public String getEvent() {
+        return this.event;
+    }
+
+    /*
     public String getTitle() {
         return this.title;
     }
-
+*/
     public String getContext() {
         return this.context;
     }
@@ -80,7 +90,9 @@ public class Notification {
     }
 
     public String toString() {
-        return "ID: " + id + " " + event + " " + senderID + " " + receiverID;
+        //return "ID: " + id + " " + event + " " + senderID + " " + receiverID;
+
+        return "Event: " + event + "\nTask: " + taskName + "\nUser: " + user.getUsername();
     }
 
     public String getId() {
@@ -89,6 +101,10 @@ public class Notification {
 
     public void setId(String nid) {
         this.id = nid;
+    }
+
+    public String getTaskID() {
+        return this.taskID;
     }
 
     public User getUser() {
@@ -105,7 +121,7 @@ public class Notification {
     }
 
     public boolean isAcknowledged() {
-        return acknowledged == true;
+        return acknowledged;
     }
 
     public int compareTo(Notification notification) {
