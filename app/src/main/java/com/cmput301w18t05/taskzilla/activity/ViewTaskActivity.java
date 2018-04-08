@@ -399,10 +399,10 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                 }
                 setProviderField();
 
-                Notification notification = new Notification("bidded", "hi", getIntent(), currentUser.getInstance().getId(), task.getRequesterId(), currentUser.getInstance());
+                //Notification notification = new Notification("bidded", "hi", getIntent(), currentUser.getInstance().getId(), task.getRequesterId(), currentUser.getInstance());
                 //AddNotificationRequest request = new AddNotificationRequest(notification);
                 //RequestManager.getInstance().invokeRequest(getApplicationContext(), request);
-                NotificationManager.getInstance().createNotification(notification);
+                //NotificationManager.getInstance().createNotification(notification);
 
                 //Toast.makeText(ViewTaskActivity.this, "Bid placed", Toast.LENGTH_SHORT).show();
 
