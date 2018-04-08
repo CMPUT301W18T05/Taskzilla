@@ -15,6 +15,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -37,6 +38,8 @@ import com.cmput301w18t05.taskzilla.controller.NotificationsController;
 import com.cmput301w18t05.taskzilla.currentUser;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.GetNotificationsByUserIdRequest;
+import com.cmput301w18t05.taskzilla.request.command.GetTasksByProviderUsernameRequest;
+import com.cmput301w18t05.taskzilla.request.command.GetTasksByRequesterUsernameRequest;
 
 import java.util.ArrayList;
 import java.util.zip.Inflater;
@@ -148,6 +151,14 @@ public class NotificationsFragment extends Fragment {
         notificationList.clear();
         notificationList.addAll(notificationsController.getResults());
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            notificationsController.getNotificationsRequest();
+        }
     }
 
     public void onResume(){
