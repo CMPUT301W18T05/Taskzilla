@@ -12,6 +12,7 @@
 package com.cmput301w18t05.taskzilla;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +46,10 @@ public class TaskCustomAdapter extends ArrayAdapter<Task> {
 
         // Set the values for all the views
         taskTitleView.setText(task.getName());
+        taskTitleView.setTextColor(0xff3f3f3f);
+        taskTitleView.setTextSize(20);
         requesterUsernameView.setText("Requester: " + task.getTaskRequester().getName());
+        requesterUsernameView.setTextColor(0xFF323232);
         taskStatusView.setText("Status: " + task.getStatus());
 
         // Check if the best bid is null or <= 0

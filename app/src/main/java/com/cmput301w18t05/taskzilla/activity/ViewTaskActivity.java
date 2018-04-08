@@ -198,6 +198,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                 YellowButton.setVisibility(View.INVISIBLE);
                 PinkButton.setVisibility(View.INVISIBLE);
                 BidslistView.setVisibility(View.INVISIBLE);
+                BidslistView.setVisibility(View.INVISIBLE);
             }
             else {
                 EditButton.setVisibility(View.INVISIBLE);
@@ -218,6 +219,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
             GreenButton.setVisibility(View.INVISIBLE);
             PinkButton.setVisibility(View.INVISIBLE);
             OrangeButton.setVisibility(View.VISIBLE);
+            BidslistView.setVisibility(View.INVISIBLE);
             if (currentUserId.equals(task.getRequesterId())) {
                 OrangeButton.setText("REVIEW PROVIDER");
             } else {
@@ -342,8 +344,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                 task.completeTask();
                 RedButton.setVisibility(View.INVISIBLE);
                 GreenButton.setVisibility(View.INVISIBLE);
-                PinkButton.setVisibility(View.VISIBLE);
-                YellowButton.setVisibility(View.VISIBLE);
+                TaskStatus.setText("Completed");
             }
         });
 
@@ -601,12 +602,13 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
     }
 
     public void theOrangeButton(android.view.View view) {
-        Intent intent = new Intent(view.getContext(), EditTaskActivity.class);
+        Intent intent = new Intent(view.getContext(), NewReviewActivity.class);
         if (currentUserId.equals(task.getRequesterId())) {
             intent.putExtra("who", "p");
             intent.putExtra("id", task.getProviderId());
         } else {
-            intent.putExtra("who", task.getRequesterId());
+            intent.putExtra("who", "r");
+            intent.putExtra("id", task.getRequesterId());
         }
         startActivity(intent);
     }

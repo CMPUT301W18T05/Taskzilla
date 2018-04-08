@@ -55,7 +55,6 @@ public class Bid implements Comparable<Bid> {
     public String getUserId() {
         return userId;
     }
-
     /**
      * Returns the price of the bid
      * @return this.bidAmount
@@ -111,7 +110,10 @@ public class Bid implements Comparable<Bid> {
         RequestManager.getInstance().invokeRequest(taskRequest);
         DecimalFormat cents = new DecimalFormat("#0.00");
         //return String.format("%-20s \n\n%-45s%s", this.name, this.startDate, ("$" + cents.format(this.price)));
-        return  "Task: " + taskRequest.getResult().getName() + " \nRequester: " + taskRequest.getResult().getTaskRequester().getName() + " \nStatus: " + taskRequest.getResult().getStatus() +
-                "\nBid amount: $"  + cents.format(this.bidAmount) + " Lowest bid: $" + cents.format(taskRequest.getResult().getBestBid());
+        return  "Task: " + taskRequest.getResult().getName() + " \nRequester: " +
+                taskRequest.getResult().getTaskRequester().getName() + " \nStatus: " +
+                taskRequest.getResult().getStatus() +
+                "\nBid amount: $"  + cents.format(this.bidAmount) + " Lowest bid: $" +
+                cents.format(taskRequest.getResult().getBestBid());
     }
 }

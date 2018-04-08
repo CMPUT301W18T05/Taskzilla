@@ -16,6 +16,7 @@ import android.util.Log;
 
 import com.cmput301w18t05.taskzilla.Bid;
 import com.cmput301w18t05.taskzilla.Notification;
+import com.cmput301w18t05.taskzilla.Review;
 import com.cmput301w18t05.taskzilla.Task;
 import com.cmput301w18t05.taskzilla.User;
 import com.searchly.jestdroid.DroidClientConfig;
@@ -814,6 +815,34 @@ public class ElasticSearchController {
                 }
             }
             return foundNotifications;
+        }
+    }
+
+    /**
+     * Asynchronous task for adding a bid
+     */
+    public static class AddReview extends AsyncTask<Review, Void, Boolean> {
+        /**
+         * Handles adding a review
+         * @return Boolean
+         */
+        @Override
+        protected Boolean doInBackground(Review... reviews) {
+            verifySettings();
+
+            for (Review r : reviews) {
+                Index index = new Index.Builder(r).index("cmput301w18t05").type("review").build();
+                try {
+                    DocumentResult result = client.execute(index);
+                    if (result.isSucceeded()) {
+                        r.setId(result.getId());
+                        return true;
+                    }
+                } catch (Exception e) {
+                    Log.i("Error", "Bid not added");
+                }
+            }
+            return false;
         }
     }
 

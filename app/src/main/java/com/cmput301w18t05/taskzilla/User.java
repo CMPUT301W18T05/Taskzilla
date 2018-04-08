@@ -39,6 +39,8 @@ public class User implements Comparable<User> {
     protected Float requesterRating;
     protected Integer numRequests;
     protected Integer numCompleteTasks;
+    protected Integer numReviewsAsRequester;
+    protected Integer numReviewsAsProvider;
     protected Photo photo = new Photo("/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkz ODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2Nj Y2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCADwAPADASIA AhEBAxEB/8QAGgABAAMBAQEAAAAAAAAAAAAAAAIDBAEFB//EACoQAQACAQEGBQUBAQAAAAAAAAAB AgMRBCExM1FxEiIyQaETQoGRsVJh/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAA AAAAAAAAAAD/2gAMAwEAAhEDEQA/APoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAja1axraYiFNtqrHpiZ+AaBkna7e1YI2u3vWAaxnrtVJ9UTX5 XVtFo1rMTAJAAAAAAAAAAAAAAAAAAAAAAM+baIp5ab7fx3aMvgjw19U/DGDtrTadbTrLgAAAO1tN Z1rOkuANmHPF/Lbdb+r3mNmz5fHXS3qj5BeAAAAAAAAAAAAAAAAAAja0VrMzwhJRtdtMcR1kGS1p tabTxlwAAAAAAAHaWml4tHs4A9KJi0RMcJdUbLbXFp0nReAAAAAAAAAAAAAAAAAybZPmrH/Gtk2y N9Z7gzgAAAAAAAAA07H98dmpl2OPXPZqAAAAAAAAAAAAAAAAAUbVXXFr0le5MRaJieEg80SvWaXm s+yIAAAAAAAJY6Te8Vj8g17NXw4onrvXORGkaQ6AAAAAAAAAAAAAAAAAACnPi+pXWPVHBimNJ0nd L01OXDGTfwt1BiEr47Y580flEAAAEqY7ZJ8sfn2ByImZ0jfMtuDF9Ou/1TxMWGuONeNuq0AAAAAA AAAAAAAAAAAAAAAAHJjWN6q2z47cI07LJtWONojvKM5scffAKp2SPa8/ojZI97z+ln18X+/g+vi/ 2Dldnx19te62N3BCM2OfvhKLVnhaJ7SCQAAAAAAAAAAAAAAAAAAIXvXHXW0gmqvnpTdrrPSGbLnt fdHlr0hUC+21Xn0xFflVbJe3G0z+UQAAAAAAEq5L14WlbXarx6oifhQA3Uz0vuidJ6SteYtxZ7U3 T5qg3CFL1vXWs6wmAAAAAAAAAAAACF7xSs2lhvecltbfros2m/iyeGOFf6pAAAAAAAAAAAAAABPH knHbWPzHVupaL1i0cJecv2XJ4b+CeE/0GwAAAAAAAAABG06VmekapK83Jv2Bg113gAAAAAAAAAAA AAAAETpMTHtvAHpROsRLqGLl17QmAAAAAAAAArzcm/ZYrzcm/YGAAAAAAAAAAAAAAAAAAHoYuVXt CaGLlV7QmAAAAAAAAArzcm/ZYrzcm/YGAAAAAAAAAAAAAAAAAAHoYuVXtCaGLlV7QmAAAAAAAAAr zcm/ZYrzcm/YGAAAAAAAAAAAAAAAAAAHoYuVXtCaGLlV7QmAAAAD/9k= ");
 
     public User() {
@@ -49,6 +51,8 @@ public class User implements Comparable<User> {
         requesterRating = 0.0f;
         numRequests = 0;
         numCompleteTasks = 0;
+        numReviewsAsRequester = 0;
+        numReviewsAsProvider = 0;
     }
 
     /**
@@ -224,7 +228,7 @@ public class User implements Comparable<User> {
      * @return Returns true if rating was successfully set. False if setting fails
      */
     public boolean setProviderRating(double providerRating) {
-        if (providerRating < 5.0f || providerRating > 0.0f) {
+        if (providerRating <= 5.0f || providerRating > 0.0f) {
             this.providerRating = new Float(providerRating);
             return true;
         }
@@ -292,6 +296,22 @@ public class User implements Comparable<User> {
      */
     public void setNumCompleteTasks(Integer numCompleteTasks) {
         this.numCompleteTasks = numCompleteTasks;
+    }
+
+    public Integer getNumReviewsAsRequester() {
+        return numReviewsAsRequester;
+    }
+
+    public void addNumRequesterReviews() {
+        this.numReviewsAsRequester++;
+    }
+
+    public Integer getNumReviewsAsProvider() {
+        return numReviewsAsProvider;
+    }
+
+    public void addNumProviderReviews() {
+        this.numReviewsAsProvider++;
     }
 
     /**

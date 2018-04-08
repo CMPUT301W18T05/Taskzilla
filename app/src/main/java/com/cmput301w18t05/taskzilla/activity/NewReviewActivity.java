@@ -20,10 +20,16 @@ import android.text.Html;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cmput301w18t05.taskzilla.R;
-
-import java.util.Calendar;
+import com.cmput301w18t05.taskzilla.Review;
+import com.cmput301w18t05.taskzilla.User;
+import com.cmput301w18t05.taskzilla.currentUser;
+import com.cmput301w18t05.taskzilla.request.RequestManager;
+import com.cmput301w18t05.taskzilla.request.command.AddUserRequest;
+import com.cmput301w18t05.taskzilla.request.command.GetUserRequest;
 
 /**
  * Created by James on 4/7/2018.
@@ -36,7 +42,14 @@ public class NewReviewActivity extends AppCompatActivity {
     private Button CancelButton;
     private EditText TitleText;
     private EditText DescriptionText;
-    private RatingBar ratingBar;
+    private RatingBar RatingBar;
+    private TextView nameTextView;
+
+    private String revieweeType;
+    private String targetUserId;
+    private String targetUserName;
+    private String currentUserId;
+    private User targetUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,29 +61,77 @@ public class NewReviewActivity extends AppCompatActivity {
         actionBar.setTitle(Html.fromHtml("<font color='#00e5ee'>Taskzilla</font>"));
 
         findViews();
-
+        setValues();
     }
 
 
-
-
-
-
-
-    public void findViews(){
+    public void findViews() {
         SaveButton = findViewById(R.id.saveReviewButton);
         CancelButton = findViewById(R.id.cancelReviewButton);
         TitleText = findViewById(R.id.reviewTitle);
         DescriptionText = findViewById(R.id.reviewDescription);
-        ratingBar = findViewById(R.id.ratingBar);
+        RatingBar = findViewById(R.id.ratingBar);
+        nameTextView = findViewById(R.id.ReviewTextView);
     }
 
-    public void setValues(){
+    public void setValues() {
+        revieweeType = getIntent().getStringExtra("who");
+        targetUserId = getIntent().getStringExtra("id");
+        currentUserId = currentUser.getInstance().getId();
 
+        GetUserRequest request = new GetUserRequest(targetUserId);
+        request.execute();
+        targetUser = request.getResult();
+        targetUserName = targetUser.getName();
+        nameTextView.setText("Review for " + targetUserName);
     }
 
 
+    public void reviewSaveButton(android.view.View view) {
+        String reviewTitle = TitleText.getText().toString();
+        String reviewDescription = DescriptionText.getText().toString();
+        Float reviewRating = RatingBar.getRating();
+
+        if (reviewTitle.equals("") || reviewRating == 0.0f) {
+            Toast.makeText(this, "Please fill out the required fields", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Review review = new Review(reviewTitle, reviewRating, reviewDescription,
+                targetUserId, currentUserId);
+
+        Float newRating = 0.0f;
+        if (revieweeType.equals("r")) {
+            return;
+//            newRating = (Float.intBitsToFloat(targetUser.getNumReviewsAsProvider()) *
+//                    targetUser.getProviderRating() + reviewRating) /
+//                    (targetUser.getNumReviewsAsProvider() + 1);
+//            targetUser.setProviderRating(newRating);
+//            targetUser.addNumProviderReviews();
+        } else {
+            //newRating += Float(targetUser.getNumReviewsAsRequester());
+            //Toast.makeText(this, targetUser.getNumReviewsAsRequester(), Toast.LENGTH_SHORT).show();
+            return;
+//            newRating = (Float.intBitsToFloat(targetUser.getNumReviewsAsRequester()) *
+//                    targetUser.getRequesterRating() + reviewRating) /
+//                    (targetUser.getNumReviewsAsRequester() + 1);
+//            targetUser.setRequesterRating(newRating);
+//            targetUser.addNumRequesterReviews();
+        }
 
 
+        //AddUserRequest request = new AddUserRequest(targetUser);
+        //RequestManager.getInstance().invokeRequest(this, request);
+
+//        review.updateThis(); // send to ES
+//
+//        Toast.makeText(this, "Review created for " + targetUserName, Toast.LENGTH_SHORT).show();
+//        finish();
+    }
+
+
+    public void reviewCancelButton(android.view.View view) {
+        finish();
+    }
 
 }

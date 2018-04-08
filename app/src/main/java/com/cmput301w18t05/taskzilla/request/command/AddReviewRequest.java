@@ -12,53 +12,41 @@
 package com.cmput301w18t05.taskzilla.request.command;
 
 import com.cmput301w18t05.taskzilla.AppCache;
+import com.cmput301w18t05.taskzilla.Bid;
+import com.cmput301w18t05.taskzilla.Review;
 import com.cmput301w18t05.taskzilla.controller.ElasticSearchController;
-import com.cmput301w18t05.taskzilla.User;
-import com.cmput301w18t05.taskzilla.request.Request;
-
+import com.cmput301w18t05.taskzilla.request.InsertionRequest;
 
 /**
- * Request for getting an user object from Elastic search using the user's id
- * @author myapplestory
+ * Request for adding bids to elastic search
+ * @author Wyatt
  * @see ElasticSearchController
  * @version 1.0
  */
-public class GetUserRequest extends Request {
-    ElasticSearchController.GetUser task;
-    String userId;
-    User result;
+public class AddReviewRequest extends InsertionRequest {
+    ElasticSearchController.AddReview task;
+    Review review;
 
-    public GetUserRequest(String userId) {
-        this.userId = userId;
+    public AddReviewRequest(Review review) {
+        this.review = review;
+        queueReady = true;
     }
 
+    @Override
     public void execute() {
-        task = new ElasticSearchController.GetUser();
-        task.execute(this.userId);
+        task = new ElasticSearchController.AddReview();
+        task.execute(review);
     }
 
     @Override
     public void executeOffline() {
-        executedOffline = true;
-        AppCache appCache = AppCache.getInstance();
-        result = appCache.findCachedUserByUserid(userId);
     }
 
     @Override
     public boolean requiresConnection() {
-        return false;
+        return true;
     }
 
-    public User getResult() {
-        try {
-            if (!executedOffline) {
-                result = this.task.get();
-                AppCache.getInstance().addInCache(result);
-            }
-            return result;
-        }
-        catch (Exception e) {
-            return null;
-        }
+    public void getResult() {
     }
 }
