@@ -11,6 +11,7 @@
 
 package com.cmput301w18t05.taskzilla.activity;
 
+import android.app.ExpandableListActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -64,6 +65,7 @@ import com.cmput301w18t05.taskzilla.controller.ProfileController;
 import com.cmput301w18t05.taskzilla.controller.ViewTaskController;
 import com.cmput301w18t05.taskzilla.currentUser;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
+import com.cmput301w18t05.taskzilla.request.command.AddNotificationRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetBidsByTaskIdRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetUserRequest;
 import com.cmput301w18t05.taskzilla.request.command.RemoveBidRequest;
@@ -147,7 +149,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         //mapFragment.getView().setVisibility(View.INVISIBLE);
         //mapFragment.getView().setActivated(false);
         //mapFragment.getView().setEnabled(false);
-
+        
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         findViews();
@@ -192,6 +194,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                 RedButton.setVisibility(View.VISIBLE);
                 YellowButton.setVisibility(View.INVISIBLE);
                 PinkButton.setVisibility(View.INVISIBLE);
+                BidslistView.setVisibility(View.INVISIBLE);
             }
             else {
                 EditButton.setVisibility(View.INVISIBLE);
@@ -417,6 +420,10 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                 //AddNotificationRequest request = new AddNotificationRequest(notification);
                 //RequestManager.getInstance().invokeRequest(getApplicationContext(), request);
                 //NotificationManager.getInstance().createNotification(notification);
+                //NotificationManager.getInstance().sendNotification(notification);
+
+                //Notification notification = new Notification("Hi",currentUser.getInstance().getId(), task.getRequesterId(),taskID, currentUser.getInstance());
+                //NotificationManager.getInstance().sendNotification(notification);
 
                 Toast.makeText(ViewTaskActivity.this, "Bid placed", Toast.LENGTH_SHORT).show();
 

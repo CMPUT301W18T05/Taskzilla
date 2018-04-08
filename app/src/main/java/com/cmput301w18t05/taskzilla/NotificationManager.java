@@ -59,10 +59,10 @@ public class NotificationManager extends ContextWrapper {
 
         System.out.println("Setting up notification poller");
         new pollNotifications(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        //createChannels(context);
-        //if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            //createChannels(context);
-        //}
+        createChannels(context);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            createChannels(context);
+        }
     }
 
     public static NotificationManager getInstance(Context context) {
@@ -106,7 +106,7 @@ public class NotificationManager extends ContextWrapper {
         Random rand = new Random();
         int id = rand.nextInt(1000)+1;
 
-        //mManager.notify(id, mBuilder.build());
+        mManager.notify(id, mBuilder.build());
     }
 
     public void sendNotification(Notification notification) {
@@ -118,6 +118,8 @@ public class NotificationManager extends ContextWrapper {
         System.out.println("Notification received.");
 
         for (Notification n : newNotifs) {
+            n.acknowledge();
+            createNotification(n);
             System.out.println("Received: "+n);
         }
     }

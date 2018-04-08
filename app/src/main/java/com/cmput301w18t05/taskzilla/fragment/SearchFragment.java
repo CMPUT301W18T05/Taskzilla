@@ -14,8 +14,10 @@ package com.cmput301w18t05.taskzilla.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +26,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Spinner;
 
 import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.TaskCustomAdapter;
@@ -51,6 +54,8 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
     private ArrayAdapter<Task> adapter;
     private ArrayList<Task> searchResults;
     private SearchController searchController;
+    private SwipeRefreshLayout mySwipeRefreshLayout;
+    private Spinner spinner;
     private Task currentTask;
 
     public SearchFragment() {
@@ -152,6 +157,19 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
         searchField = view.findViewById(R.id.searchView);
 
         /*
+        spinner = view.findViewById(R.id.spinner);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapterS = ArrayAdapter.createFromResource(getActivity(),
+        R.array.sort_options, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapterS.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinner.setAdapter(adapterS);
+
+        mySwipeRefreshLayout = view.findViewById(R.id.swiperefresh);
+*/
+
+        /*
          * Listens for changes in the searchview
          * OnQueryTextChange invokes whenever the user types, while on the other hand
          * OnQueryTextSubmit invokes only when the user submits the keywords.
@@ -201,6 +219,29 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
                 return false;
             }
         });
+
+        /*
+        mySwipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        //String spinnerItem = spinner.getSelectedItem().toString();
+
+                        //add stuff here for listrefresh
+
+                        final Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(mySwipeRefreshLayout.isRefreshing()) {
+                                    mySwipeRefreshLayout.setRefreshing(false);
+                                }
+                            }
+                        }, 1000);
+                    }
+                }
+        );
+        */
     }
 
     @Override

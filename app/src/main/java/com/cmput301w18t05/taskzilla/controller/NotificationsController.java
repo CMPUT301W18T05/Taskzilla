@@ -54,17 +54,20 @@ public class NotificationsController {
     }
 
     public void getNotificationsRequest() {
-        //GetNotificationsByUserIdRequest request = new GetNotificationsByUserIdRequest(cUser.getId());
-        //RequestManager.getInstance().invokeRequest(ctx, request);
+        GetNotificationsByUserIdRequest request = new GetNotificationsByUserIdRequest(cUser.getId());
+        RequestManager.getInstance().invokeRequest(ctx, request);
 
         notificationList.clear();
 
-        ArrayList<Notification> temp;
-        //temp = request.getResult();
+        ArrayList<Notification> temp = new ArrayList<>();
 
-        //for(Notification n : temp)
-        //    notificationList.add(n);
+        if (temp != null) {
+            temp = request.getResult();
 
+            for (Notification n : temp)
+                notificationList.add(n);
+
+        }
         view.notifyChange();
     }
 

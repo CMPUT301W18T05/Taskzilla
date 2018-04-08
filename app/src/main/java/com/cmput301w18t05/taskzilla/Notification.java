@@ -28,27 +28,29 @@ public class Notification {
     private String title;
     private String context;
     private Intent intent;
-    private String providerId;
-    private String requesterId;
+    //private String providerId;
+    //private String requesterId;
     private User user;
 
     private String senderID;
     private String receiverID;
     private String event;
     private String taskID;
-    private boolean awknowledged = false;
+    private boolean acknowledged = false;
 
     @JestId
     private String id;
 
-    /*public Notification(String nTitle, String nContext, Intent nIntent, String nProviderId, String nRequesterId, User nUser) {
+    public Notification(String nTitle, String nContext, Intent nIntent, String nSenderId, String nRecieverId, User nUser) {
         this.title = nTitle;
         this.context = nContext;
         this.intent = nIntent;
-        this.providerId = nProviderId;
-        this.requesterId = nRequesterId;
+        this.senderID = nSenderId;
+        this.receiverID = nRecieverId;
         this.user = nUser;
-    }*/
+        this.taskID = new String();
+        this.event = new String();
+    }
 
     public Notification(String event, String senderID, String receiverID, String taskID) {
         this.event = event;
@@ -69,12 +71,12 @@ public class Notification {
         return this.intent;
     }
 
-    public String getProviderId() {
-        return this.providerId;
+    public String getReceiverID() {
+        return this.receiverID;
     }
 
-    public String getRequesterId() {
-        return this.requesterId;
+    public String getSenderID() {
+        return this.senderID;
     }
 
     public String toString() {
@@ -93,17 +95,17 @@ public class Notification {
         return this.user;
     }
 
-    public void awknowledge() {
+    public void acknowledge() {
         if (id == null)
             return;
 
-        this.awknowledged = true;
+        this.acknowledged = true;
         AddNotificationRequest task = new AddNotificationRequest(this);
         RequestManager.getInstance().invokeRequest(task);
     }
 
-    public boolean isAwknowledged() {
-        return awknowledged == true;
+    public boolean isAcknowledged() {
+        return acknowledged == true;
     }
 
     public int compareTo(Notification notification) {
