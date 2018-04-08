@@ -72,7 +72,7 @@ public class BidActivityTest extends ActivityInstrumentationTestCase2 {
         solo.clickOnButton("Add Task");
         solo.waitForActivity(WelcomeActivity.class);
         solo.assertCurrentActivity("Wrong Activity", WelcomeActivity.class);
-        View fab2 = solo.getCurrentActivity().findViewById(R.id.fab2);
+        View fab2 = solo.getCurrentActivity().findViewById(R.id.fab);
         solo.clickOnView(fab2);
         assertTrue(solo.waitForText("Test Task Name"));
 
@@ -80,7 +80,7 @@ public class BidActivityTest extends ActivityInstrumentationTestCase2 {
         solo.waitForText("Profile");
         solo.clickOnText("Profile");
 
-        solo.clickOnView(solo.getView(R.id.LogOutButton));
+        solo.clickOnView(solo.getView(R.id.logOutButton));
         solo.waitForActivity(MainActivity.class);
         solo.assertCurrentActivity("Wrong Activity",MainActivity.class);
 

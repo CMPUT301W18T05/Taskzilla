@@ -35,6 +35,7 @@ import com.cmput301w18t05.taskzilla.EmailAddress;
 import com.cmput301w18t05.taskzilla.PhoneNumber;
 import com.cmput301w18t05.taskzilla.Photo;
 import com.cmput301w18t05.taskzilla.Review;
+import com.cmput301w18t05.taskzilla.ReviewCustomAdapter;
 import com.cmput301w18t05.taskzilla.Task;
 import com.cmput301w18t05.taskzilla.activity.MainActivity;
 import com.cmput301w18t05.taskzilla.activity.ZoomImageActivity;
@@ -248,18 +249,14 @@ public class ProfileFragment extends Fragment {
         final View mView = getLayoutInflater().inflate(R.layout.dialog_review_list,null);
         final ListView ReviewsListView = mView.findViewById(R.id.ReviewsListView);
         final TextView ReviewBannerTextView = mView.findViewById(R.id.ReviewsBannerTextView);
-        ArrayList<String> ReviewsListString = new ArrayList<>();
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this.getContext(),
-                android.R.layout.simple_list_item_1, ReviewsListString);
-        ReviewsListView.setAdapter(adapter);
 
         GetReviewsByUserIdRequest request = new GetReviewsByUserIdRequest(user.getId());
         request.execute();
         ArrayList<Review> ReviewsList = request.getResult();
 
-//        for (Review review : ReviewsList) {
-//            ReviewsListString.add(review.getTitle());
-//        }
+        ArrayAdapter<Review> adapter = new ReviewCustomAdapter(this.getContext(),
+                R.layout.list_view_review, ReviewsList);
+        ReviewsListView.setAdapter(adapter);
 
 
 

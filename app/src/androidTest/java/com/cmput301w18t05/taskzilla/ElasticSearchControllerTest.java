@@ -38,7 +38,7 @@ public class ElasticSearchControllerTest extends ActivityInstrumentationTestCase
         user.setEmail(new EmailAddress("test@301.com"));
         user.setProviderRating(1.8);
         user.setRequesterRating(8.0);
-        user.setPhotos(new ArrayList<Photo>());
+        //user.setPhoto(new Photo());
 
         Bid bid = new Bid(user.getId(), task.getId(), 10.0f);
 
