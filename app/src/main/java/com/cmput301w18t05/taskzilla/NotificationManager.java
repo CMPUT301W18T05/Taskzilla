@@ -59,7 +59,6 @@ public class NotificationManager extends ContextWrapper {
 
         System.out.println("Setting up notification poller");
         new pollNotifications(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        createChannels(context);
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createChannels(context);
         }
