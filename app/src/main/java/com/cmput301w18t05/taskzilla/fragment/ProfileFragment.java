@@ -36,6 +36,7 @@ import com.cmput301w18t05.taskzilla.PhoneNumber;
 import com.cmput301w18t05.taskzilla.Photo;
 import com.cmput301w18t05.taskzilla.Task;
 import com.cmput301w18t05.taskzilla.activity.MainActivity;
+import com.cmput301w18t05.taskzilla.activity.ZoomImageActivity;
 import com.cmput301w18t05.taskzilla.controller.ProfileController;
 import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.User;
@@ -150,6 +151,13 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        profilePicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProfilePictureClicked();
+            }
+        });
+
     }
 
     // Taken from https://stackoverflow.com/questions/41655797/refresh-fragment-when-change-between-tabs?noredirect=1&lq=1
@@ -242,6 +250,12 @@ public class ProfileFragment extends Fragment {
 
     public TextView getProviderRatingField() {
         return providerRatingField;
+    }
+
+    public void ProfilePictureClicked(){
+        Intent intent = new Intent(getActivity(),ZoomImageActivity.class);
+        intent.putExtra("Photo", user.getPhoto().toString());
+        startActivity(intent);
     }
 
     @Override

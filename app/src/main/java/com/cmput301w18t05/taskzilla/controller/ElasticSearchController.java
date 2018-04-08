@@ -258,6 +258,13 @@ public class ElasticSearchController {
      * Asynchronous task that retrieves tasks from a provider username
      */
     public static class GetTasksByProviderUsername extends AsyncTask<String, Void, ArrayList<Task>> {
+        private int from, size;
+
+        public GetTasksByProviderUsername(int from, int size) {
+            this.from = from;
+            this.size = size;
+        }
+
         /**
          * Handles retrieving tasks from a provider username
          * @param usernames The provider's username
@@ -269,7 +276,7 @@ public class ElasticSearchController {
             ArrayList<Task> foundTasks = new ArrayList<>();
 
             for (String username : usernames) {
-                String query = "{ \"query\" : { \"common\" : {\"providerUsername\" : \"" + username + "\" }}}";
+                String query = "{ \"from\" : " + from + ", \"size\" : " + size + ", \"query\" : { \"common\" : {\"providerUsername\" : \"" + username + "\" }}}";
                 Log.i("Query:", query);
 
                 Search search = new Search.Builder(query)
@@ -296,6 +303,13 @@ public class ElasticSearchController {
      * Asynchronous task that retrieves tasks from a requester username
      */
     public static class GetTasksByRequesterUsername extends AsyncTask<String, Void, ArrayList<Task>> {
+        private int from,size;
+
+        public GetTasksByRequesterUsername(int from, int size) {
+            this.from = from;
+            this.size = size;
+        }
+
         /**
          * Handles retrieving tasks from a requester username
          * @param usernames The requester's username
@@ -307,7 +321,7 @@ public class ElasticSearchController {
             ArrayList<Task> foundTasks = new ArrayList<>();
 
             for (String username : usernames) {
-                String query = "{ \"query\" : { \"common\" : {\"requesterUsername\" : \"" + username + "\" }}}";
+                String query = "{ \"from\" : "+ from +", \"size\" : " + size + ", \"query\" : { \"common\" : {\"requesterUsername\" : \"" + username + "\" }}}";
                 Log.i("Query:", query);
 
                 Search search = new Search.Builder(query)

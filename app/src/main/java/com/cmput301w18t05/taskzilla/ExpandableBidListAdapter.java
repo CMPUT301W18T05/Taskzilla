@@ -110,7 +110,7 @@ public class ExpandableBidListAdapter extends BaseExpandableListAdapter {
         User BidOwner = getUserRequest.getResult();
 
         TextView textView = new TextView(context);
-        String output = "$" + Float.toString(currentBid.getBidAmount())
+        String output = "$" + String.format("%.2f",currentBid.getBidAmount())
                 + "    By user: " + BidOwner.getName();
 
         textView.setText(output);

@@ -12,10 +12,12 @@
 package com.cmput301w18t05.taskzilla.activity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -27,6 +29,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.cmput301w18t05.taskzilla.CustomOnItemClick;
 import com.cmput301w18t05.taskzilla.Photo;
 import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.RecyclerViewAdapter;
@@ -41,13 +44,13 @@ import java.util.ArrayList;
 /**
  * Activity for editing a task
  */
-public class EditTaskActivity extends AppCompatActivity {
+public class EditTaskActivity extends AppCompatActivity{
     private Task task;
     private Context ctx;
     private Integer PICK_IMAGE = 5;
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter recyclerViewAdapter;
-    private RecyclerView.LayoutManager recyclerViewLayoutManager;
+    private RecyclerView recyclerPhotosView;
+    private RecyclerView.Adapter recyclerPhotosViewAdapter;
+    private RecyclerView.LayoutManager layoutManager;
     private LinearLayout linearLayout;
     private Integer maxSize;
     private ArrayList<Photo> photos;
@@ -76,12 +79,42 @@ public class EditTaskActivity extends AppCompatActivity {
             Log.i("test",photosString.get(i));
             photos.add(new Photo(photosString.get(i)));
         }
-        linearLayout = (LinearLayout) findViewById(R.id.Pictures);
-        recyclerView = (RecyclerView) findViewById(R.id.listOfPhotos);
-        recyclerViewLayoutManager = new LinearLayoutManager(ctx, LinearLayoutManager.HORIZONTAL, false);
-        recyclerView.setLayoutManager(recyclerViewLayoutManager);
-        recyclerViewAdapter = new RecyclerViewAdapter(ctx, photos);
-        recyclerView.setAdapter(recyclerViewAdapter);
+        linearLayout = (LinearLayout) findViewById(R.id.Photos);
+        recyclerPhotosView = (RecyclerView) findViewById(R.id.listOfPhotos);
+        layoutManager = new LinearLayoutManager(ctx, LinearLayoutManager.HORIZONTAL, false);
+        recyclerPhotosView.setLayoutManager(layoutManager);
+        recyclerPhotosViewAdapter = new RecyclerViewAdapter(ctx, photos, new CustomOnItemClick() {
+            @Override
+            public void onColumnClicked(final int position) {
+                // taken from https://stackoverflow.com/questions/2115758/how-do-i-display-an-alert-dialog-on-android
+                // 2018-03-16
+                AlertDialog.Builder alert = new AlertDialog.Builder(EditTaskActivity.this);
+                alert.setTitle("Delete Photo");
+                alert.setMessage("Are you sure you want to delete this photo?");
+
+                //DELETE CODE
+                alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        photos.remove(position);
+                        dialogInterface.dismiss();
+                        recyclerPhotosViewAdapter.notifyDataSetChanged();
+                    }
+                });
+
+                //DELETE CANCEL CODE
+                alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                alert.show();
+
+            }
+
+        });
+        recyclerPhotosView.setAdapter(recyclerPhotosViewAdapter);
 
     }
 
@@ -128,10 +161,16 @@ public class EditTaskActivity extends AppCompatActivity {
     }
 
     public void AddPhotoButton(View view){
+        if(photos.size()==10){
+            Toast.makeText(EditTaskActivity.this,"Photo limited reached",Toast.LENGTH_LONG).show();
+        }
+
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
         photoPickerIntent.setType("image/*");
         startActivityForResult(photoPickerIntent, PICK_IMAGE);
     }
+
+
 
     @Override
     protected void onActivityResult(int reqCode, int resultCode, Intent data) {
@@ -166,7 +205,7 @@ public class EditTaskActivity extends AppCompatActivity {
                 String image = Base64.encodeToString(byteImage, Base64.DEFAULT);
                 photos.add(new Photo(image));
                 Log.i("hi",String.valueOf(photos.size()));
-                recyclerViewAdapter.notifyDataSetChanged();
+                recyclerPhotosViewAdapter.notifyDataSetChanged();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
                 Toast.makeText(EditTaskActivity.this, "Something went wrong", Toast.LENGTH_LONG).show();

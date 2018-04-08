@@ -19,6 +19,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.LocationManager;
 import android.os.Handler;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -41,6 +42,7 @@ import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -49,6 +51,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.cmput301w18t05.taskzilla.Bid;
+import com.cmput301w18t05.taskzilla.CustomOnItemClick;
 import com.cmput301w18t05.taskzilla.ExpandableBidListAdapter;
 import com.cmput301w18t05.taskzilla.Notification;
 import com.cmput301w18t05.taskzilla.NotificationManager;
@@ -106,12 +109,14 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
     private ExpandableListView BidslistView;
     private Button BlueButton;
     private Button YellowButton;
+    private Button GreenButton;
+    private Button RedButton;
     private Button PinkButton;
     private ScrollView scrollView;
 
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter recyclerViewAdapter;
-    private RecyclerView.LayoutManager recyclerViewLayoutManager;
+    private RecyclerView recyclerPhotosView;
+    private RecyclerView.Adapter recyclerPhotosViewAdapter;
+    private RecyclerView.LayoutManager layoutManager;
     private LinearLayout linearLayout;
     private ArrayList<Photo> photos;
     /**onCreate
@@ -140,6 +145,8 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         //mapFragment.getView().setActivated(false);
         //mapFragment.getView().setEnabled(false);
 
+
+
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         findViews();
@@ -157,12 +164,19 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         setProviderField();
 
         photos = task.getPhotos();
-        linearLayout = (LinearLayout) findViewById(R.id.Pictures);
-        recyclerView = (RecyclerView) findViewById(R.id.listOfPhotos);
-        recyclerViewLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
-        recyclerView.setLayoutManager(recyclerViewLayoutManager);
-        recyclerViewAdapter = new RecyclerViewAdapter(getApplicationContext(), photos);
-        recyclerView.setAdapter(recyclerViewAdapter);
+        linearLayout = findViewById(R.id.Photos);
+        recyclerPhotosView = findViewById(R.id.listOfPhotos);
+        layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerPhotosView.setLayoutManager(layoutManager);
+        recyclerPhotosViewAdapter = new RecyclerViewAdapter(getApplicationContext(), photos, new CustomOnItemClick() {
+            @Override
+            public void onColumnClicked(int position) {
+                Intent intent = new Intent(getApplicationContext(),ZoomImageActivity.class);
+                intent.putExtra("Photo",photos.get(position).toString());
+                startActivity(intent);
+            }
+        });
+        recyclerPhotosView.setAdapter(recyclerPhotosViewAdapter);
         // taken from https://stackoverflow.com/questions/3465841/how-to-change-visibility-of-layout-programmatically
         // 2018-03-14
         if (currentUserId.equals(taskUserId)) {
@@ -170,20 +184,32 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
             BlueButton.setVisibility(View.INVISIBLE);
             if (task.getStatus().equals("requested")) {
                 EditButton.setVisibility(View.VISIBLE);
-            } else {
+            }
+            else if (task.getStatus().equals("assigned")) {
+                GreenButton.setVisibility(View.VISIBLE);
+                RedButton.setVisibility(View.VISIBLE);
+                YellowButton.setVisibility(View.INVISIBLE);
+                PinkButton.setVisibility(View.INVISIBLE);
+            }
+            else {
                 EditButton.setVisibility(View.INVISIBLE);
             }
-        } else {
+        }
+        else {
             DeleteButton.setVisibility(View.INVISIBLE);
             EditButton.setVisibility(View.INVISIBLE);
             YellowButton.setVisibility(View.INVISIBLE);
             PinkButton.setVisibility(View.INVISIBLE);
+            GreenButton.setVisibility(View.INVISIBLE);
+            RedButton.setVisibility(View.INVISIBLE);
         }
-        if (task.getStatus().equals("assigned")) {
+
+        if (task.isComplete()) {
             YellowButton.setVisibility(View.INVISIBLE);
-            PinkButton.setVisibility(View.INVISIBLE);
             BlueButton.setVisibility(View.INVISIBLE);
-            BidslistView.setVisibility(View.INVISIBLE);
+            RedButton.setVisibility(View.INVISIBLE);
+            GreenButton.setVisibility(View.INVISIBLE);
+            PinkButton.setVisibility(View.INVISIBLE);
         }
 
 //            LinearLayout.LayoutParams detailsLayout =
@@ -258,8 +284,8 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                 // taken from https://stackoverflow.com/questions/2115758/how-do-i-display-an-alert-dialog-on-android
                 // 2018-03-16
                 AlertDialog.Builder alert = new AlertDialog.Builder(ViewTaskActivity.this);
-                alert.setTitle("Delete");
-                alert.setMessage("Are you sure you want to delete?");
+                alert.setTitle("Delete Task");
+                alert.setMessage("Are you sure you want to delete this task?");
 
                 //DELETE CODE
                 alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -286,6 +312,21 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                 alert.show();
             }
         });
+
+        RedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                task.unassignProvider();
+            }
+        });
+
+        GreenButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                task.completeTask();
+            }
+        });
+
 
         // get all of this task's bids and pass it into expandable list to display
         // @author myapplestory
@@ -348,23 +389,15 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                             "Please enter in a valid bid amount", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
                 // do stuff here to actually add bid
-                if (task.getBestBid() > incomingBidFloat || task.getBestBid() == -1.0f) {
-                    task.setBestBidder(currentUserId);
-                    task.setBestBid(incomingBidFloat);
-                    task.updateThis();
-                } else if (task.getBestBid().equals(incomingBidFloat)) {
-                    Toast.makeText(ViewTaskActivity.this,
-                            "A similar bid already exists. Please bid another value",
-                            Toast.LENGTH_SHORT).show();
+                if (updateBestBid(incomingBidFloat) == -1) {
                     return;
-                } else if (task.getBestBid() < incomingBidFloat && task.getBestBidder().equals(currentUserId)) {
-                    task.updateBestBid();
-                    task.updateThis();
+                } else {
+                    task.addBid(new Bid(currentUserId, taskID, incomingBidFloat));
+                    task.setStatus("bidded");
+                    TaskStatus.setText("Bidded");
                 }
-                task.addBid(new Bid(currentUserId, taskID, incomingBidFloat));
-                task.setStatus("bidded");
-                TaskStatus.setText("Bidded");
                 setProviderField();
 
                 Notification notification = new Notification("bidded", "hi", getIntent(), currentUser.getInstance().getId(), task.getRequesterId(), currentUser.getInstance());
@@ -458,6 +491,26 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         Toast.makeText(this, "dawdwadwwadwad", Toast.LENGTH_SHORT).show();
     }
 
+    public Integer updateBestBid(Float incomingBidFloat) {
+        if (task.getBestBid() > incomingBidFloat || task.getBestBid() == -1.0f) {
+            task.setBestBidder(currentUserId);
+            task.setBestBid(incomingBidFloat);
+            task.updateThis();
+        } else if (task.getBestBid().equals(incomingBidFloat)) {
+            Toast.makeText(ViewTaskActivity.this,
+                    "A similar bid already exists. Please bid another value",
+                    Toast.LENGTH_SHORT).show();
+            return -1;
+        } else if (task.getBestBid() < incomingBidFloat && task.getBestBidder().equals(currentUserId)) {
+            Toast.makeText(this,
+                    "You cannot change your bid, you already have the highest bid",
+                    Toast.LENGTH_SHORT).show();
+            return -1;
+        }
+        return 0;
+    }
+
+
     public void setRequesterField() {
         String text = "Requester: " + TaskRequester.getName();
         RequesterName.setText(text);
@@ -479,7 +532,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
             profileController.setUserID(task.getBestBidder());
             profileController.getUserRequest();
             User tempUser = profileController.getUser();
-            String text = "Best bidder: " + tempUser.getName() + "\nBid amount: " + Float.toString(task.getBestBid());
+            String text = "Best bidder: " + tempUser.getName() + "\nBid amount: " + "$" + String.format("%.2f",task.getBestBid());
             ProviderName.setText(text);
             try {
                 ProviderPicture.setImageBitmap(tempUser.getPhoto().StringToBitmap());
@@ -487,7 +540,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                 Photo defaultPhoto = new Photo("");
                 ProviderPicture.setImageBitmap(defaultPhoto.StringToBitmap());
             }
-        } else if (task.getStatus().equals("assigned")) {
+        } else if (task.getStatus().equals("assigned") || task.isComplete()) {
             String text = "Provider: " + TaskProvider.getName();
             ProviderName.setText(text);
             try {
@@ -513,6 +566,8 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         scrollView = findViewById(R.id.ViewTaskScrollView);
         BlueButton = findViewById(R.id.BlueButton);
         YellowButton = findViewById(R.id.YellowButton);
+        GreenButton = findViewById(R.id.CompleteTaskButton);
+        RedButton = findViewById(R.id.AbortTaskButton);
         PinkButton = findViewById(R.id.PinkButton);
     }
 
@@ -544,19 +599,26 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
 
+            @Override
+            public void onMapClick(LatLng point) {
+                Intent intent = new Intent(getApplicationContext(), MapActivity.class);
+                intent.putExtra("lat",Double.toString(task.getLocation().latitude));
+                intent.putExtra("lon",Double.toString(task.getLocation().longitude));
+                intent.putExtra("TaskName",task.getName());
+                startActivity(intent);
+            }
+        });
         if(task.getLocation()!=null) {
             mMap.getUiSettings().setScrollGesturesEnabled(false);
             mMap.getUiSettings().setZoomGesturesEnabled(false);
             //mMap.getUiSettings()
             // Add a marker to a location and move the camera
             LatLng taskLocation = task.getLocation();
-            mMap.addMarker(new MarkerOptions().position(taskLocation).title("Task Name"));
+            mMap.addMarker(new MarkerOptions().position(taskLocation));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(taskLocation));
             moveToCurrentLocation(taskLocation);
-            mMap.addCircle(new CircleOptions()
-                    .center(taskLocation)
-                    .radius(5000).strokeColor(Color.CYAN).strokeWidth((float) 5.0));
             //mMap.
         }else{
 
@@ -569,7 +631,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         // Zoom in, animating the camera.
         mMap.animateCamera(CameraUpdateFactory.zoomIn());
         // Zoom out to zoom level 10, animating with a duration of 2 seconds.
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(13), 2000, null);
 
     }
 
@@ -598,7 +660,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                         Log.i("test",photosString.get(i));
                         photos.add(new Photo(photosString.get(i)));
                     }
-                    recyclerViewAdapter.notifyDataSetChanged();
+                    recyclerPhotosViewAdapter.notifyDataSetChanged();
                     task.setName(taskName);
                     task.setDescription(description);
                     viewTaskController.updateTaskRequest(task);

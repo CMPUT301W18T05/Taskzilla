@@ -42,6 +42,7 @@ import java.util.regex.Pattern;
 
 public class SignUpActivity extends AppCompatActivity {
     public TextView username;
+    public TextView password;
     public TextView name;
     public TextView email;
     public TextView phone;
@@ -58,6 +59,7 @@ public class SignUpActivity extends AppCompatActivity {
 
         /* get views */
         username = findViewById(R.id.usernameField);
+        password = findViewById(R.id.passwordField);
         name = findViewById(R.id.nameField);
         email = findViewById(R.id.emailField);
         phone = findViewById(R.id.phoneField);
@@ -162,6 +164,21 @@ public class SignUpActivity extends AppCompatActivity {
                 return false;
             }
         }
+        if(TextUtils.isEmpty(password.getText())) {
+            showError("Password required!");
+            return false;
+        } else if(password.getText().length() > 30) {
+            showError("Password too long!");
+            return false;
+        } else {
+            String passwordTemp = password.getText().toString();
+            Pattern passwordConstraint = Pattern.compile("[^a-zA-Z ]");
+            boolean hasChar = passwordConstraint.matcher(passwordTemp).find();
+            if(hasChar == true) {
+                showError("Password contains illegal character!");
+                return false;
+            }
+        }
         return true; // todo
     }
 
@@ -175,6 +192,7 @@ public class SignUpActivity extends AppCompatActivity {
     public void convertToUserObject() {
         String name = this.name.getText().toString();
         String username = this.username.getText().toString();
+        String password = this.password.getText().toString();
         String email = this.email.getText().toString();
         String phone = this.phone.getText().toString();
 
@@ -183,6 +201,7 @@ public class SignUpActivity extends AppCompatActivity {
         newUser.setName(name);
         newUser.setEmail(new EmailAddress(email));
         newUser.setUsername(username);
+        newUser.setPassword(password);
         newUser.setPhone(new PhoneNumber(phone));
     }
 

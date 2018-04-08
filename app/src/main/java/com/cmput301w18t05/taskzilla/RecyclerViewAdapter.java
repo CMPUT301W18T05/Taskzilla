@@ -29,13 +29,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     ArrayList<Photo> photoList;
     Context context;
-    View view1;
-    ViewHolder viewHolder1;
-    TextView textView;
+    View view;
+    ViewHolder viewHolder;
+    private CustomOnItemClick listener;
 
 
-    public RecyclerViewAdapter(Context context,ArrayList<Photo> photoList){
-
+    public RecyclerViewAdapter(Context context,ArrayList<Photo> photoList, CustomOnItemClick listener){
+        this.listener = listener;
         this.photoList = photoList;
         this.context = context;
 
@@ -45,9 +45,21 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         public ImageView imageView;
 
-        public ViewHolder(View v){
+        public ViewHolder(View v, final CustomOnItemClick listener){
 
             super(v);
+
+            // taken from https://stackoverflow.com/questions/33264042/recyclerview-how-to-catch-the-onclick-on-an-imageview
+            // 2018-04-07
+            v.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view){
+                    if(listener != null)
+                        listener.onColumnClicked(getAdapterPosition());
+                }
+            });
+
+
 
             imageView = (ImageView) v.findViewById(R.id.ImageView);
         }
@@ -56,9 +68,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public RecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
 
-        view1 = LayoutInflater.from(context).inflate(R.layout.recyclerview_items,parent,false);
-        viewHolder1 = new ViewHolder(view1);
-        return viewHolder1;
+        view = LayoutInflater.from(context).inflate(R.layout.recyclerview_items,parent,false);
+        viewHolder = new ViewHolder(view, listener);
+        return viewHolder;
     }
 
     @Override

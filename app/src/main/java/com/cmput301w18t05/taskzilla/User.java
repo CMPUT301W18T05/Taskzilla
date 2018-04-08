@@ -11,6 +11,9 @@
 
 package com.cmput301w18t05.taskzilla;
 
+import com.cmput301w18t05.taskzilla.request.RequestManager;
+import com.cmput301w18t05.taskzilla.request.command.GetTasksByRequesterUsernameRequest;
+
 import java.util.ArrayList;
 
 import io.searchbox.annotations.JestId;
@@ -25,6 +28,7 @@ public class User implements Comparable<User> {
 
     protected String name;
     protected String username;
+    protected String password;
 
     @JestId
     protected String id;
@@ -51,6 +55,7 @@ public class User implements Comparable<User> {
      * Constructs a user instance using the given parameters
      * @param name Name of the user
      * @param username Unique username of the user
+     * @param password The password of the user
      * @param id Unique id of the user
      * @param phone Phone number of the user
      * @param email Email address of the user
@@ -60,12 +65,12 @@ public class User implements Comparable<User> {
      * @param numCompleteTasks The number of tasks the user has completed for others
      * @param photo Profile picture of the user
      */
-    public User(String name, String username, String id,
-                PhoneNumber phone, EmailAddress email,
-                double providerRating, double requesterRating,
-                Integer numRequests, Integer numCompleteTasks, Photo photo){
+    public User(String name, String username, String password, String id,
+                PhoneNumber phone, EmailAddress email, double providerRating,
+                double requesterRating, Integer numRequests, Integer numCompleteTasks, Photo photo){
         this.name = name;
         this.username = username;
+        this.password = password;
         this.phone = phone;
         this.email = email;
         this.providerRating = (float) providerRating;
@@ -118,6 +123,28 @@ public class User implements Comparable<User> {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Sets the password of the user
+     * Error checks the password
+     * @param password
+     * @return boolean
+     */
+    public boolean setPassword(String password) {
+        if (password.matches("[a-zA-Z_0-9][a-zA-Z_0-9 ]") || (password.length() <= 25)) {
+            this.password = password;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Gets the user password
+     * @return String
+     */
+    public String getPassword() {
+        return this.password;
     }
 
     /**
@@ -289,6 +316,26 @@ public class User implements Comparable<User> {
      */
     public String toString() {
         return this.name+" "+this.id;
+    }
+
+    /**
+     * Get a list of tasks that this user has requested.
+     * @return ArrayList
+     */
+    public ArrayList<Task> getTasksRequested() {
+        ArrayList<Task> res = new ArrayList<>();
+        ArrayList<Task> temp;
+
+        GetTasksByRequesterUsernameRequest requestTasks = new GetTasksByRequesterUsernameRequest(this.getUsername());
+        RequestManager.getInstance().invokeRequest(requestTasks);
+        temp = requestTasks.getResult();
+
+        while (temp != null && !temp.isEmpty()) {
+            res.addAll(temp);
+            RequestManager.getInstance().invokeRequest(requestTasks);
+            temp = requestTasks.getResult();
+        }
+        return res;
     }
 
     public int compareTo(User user) {
