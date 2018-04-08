@@ -13,6 +13,7 @@ import com.cmput301w18t05.taskzilla.request.command.GetUserRequest;
 
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import javax.crypto.SecretKeyFactory;
 
@@ -84,7 +85,7 @@ public class ExpandableBidListAdapter extends BaseExpandableListAdapter {
     public View getGroupView(int groupPosition, boolean isExpanded, View view, ViewGroup parent) {
         TextView textView = new TextView(context);
         textView.setText(this.groupName.get(groupPosition));
-        textView.setTextColor(Color.rgb(255,64,129));
+        textView.setTextColor(0xff00e5ee);
         textView.setPadding(96, 0,0,0);
         textView.setTextSize(24);
         return textView;
@@ -110,11 +111,11 @@ public class ExpandableBidListAdapter extends BaseExpandableListAdapter {
         User BidOwner = getUserRequest.getResult();
 
         TextView textView = new TextView(context);
-        String output = "$" + String.format("%.2f",currentBid.getBidAmount())
+        String output = "$" + String.format(Locale.CANADA,"%.2f",currentBid.getBidAmount())
                 + "    By user: " + BidOwner.getName();
 
         textView.setText(output);
-        textView.setTextColor(0xffff8800);
+        textView.setTextColor(0xffff88ff);
         textView.setTextSize(18);
         textView.setPadding(144, 0,0,0);
 

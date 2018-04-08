@@ -185,6 +185,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                 EditButton.setVisibility(View.VISIBLE);
             }
             else if (task.getStatus().equals("assigned")) {
+                EditButton.setVisibility(View.INVISIBLE);
                 GreenButton.setVisibility(View.VISIBLE);
                 RedButton.setVisibility(View.VISIBLE);
                 YellowButton.setVisibility(View.INVISIBLE);
@@ -487,7 +488,39 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
 
 
     public void thePinkButton(android.view.View view) {
-        Toast.makeText(this, "dawdwadwwadwad", Toast.LENGTH_SHORT).show();
+        final AlertDialog mBuilder = new AlertDialog.Builder(ViewTaskActivity.this).create();
+        final View mView = getLayoutInflater().inflate(R.layout.dialog_decline_bid,null);
+        final ListView acceptBidListView = mView.findViewById(R.id.DeclineBidList);
+        final Button acceptBidButton = mView.findViewById(R.id.DeclineBidButton);
+        ArrayList<String> tempList = new ArrayList<>();
+
+
+//        if (BidList.isEmpty()) {
+//            tempList.add("No bids :'(");
+//            ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+//                    android.R.layout.simple_list_item_1, tempList);
+//            acceptBidListView.setAdapter(adapter);
+//            acceptBidButton.setText("SAD");
+//            acceptBidButton.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    mBuilder.dismiss();
+//                }
+//            });
+//
+//        }
+
+
+
+
+
+
+
+
+
+
+
+
     }
 
     public Integer updateBestBid(Float incomingBidFloat) {
