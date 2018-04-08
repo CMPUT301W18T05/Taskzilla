@@ -225,7 +225,7 @@
         <android.support.constraint.ConstraintLayout
             android:id="@+id/ProfileLayout"
             android:layout_width="0dp"
-            android:layout_height="135dp"
+            android:layout_height="128dp"
             android:background="@android:color/background_light"
             android:elevation="1dp"
             app:layout_constraintEnd_toEndOf="parent"

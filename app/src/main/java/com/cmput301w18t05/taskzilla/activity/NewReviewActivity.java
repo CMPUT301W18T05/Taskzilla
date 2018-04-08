@@ -27,6 +27,8 @@ import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.Review;
 import com.cmput301w18t05.taskzilla.User;
 import com.cmput301w18t05.taskzilla.currentUser;
+import com.cmput301w18t05.taskzilla.request.RequestManager;
+import com.cmput301w18t05.taskzilla.request.command.AddUserRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetUserRequest;
 
 /**
@@ -93,7 +95,23 @@ public class NewReviewActivity extends AppCompatActivity {
         Review review = new Review(reviewTitle, reviewRating, reviewDescription,
                 targetUserId, currentUserId);
 
+        Float newRating = 0.0f;
+        if (revieweeType.equals("r")) {
+            newRating += (targetUser.getNumReviewsAsProvider() *
+                    targetUser.getProviderRating() + reviewRating) /
+                    (targetUser.getNumReviewsAsProvider() + 1);
+            targetUser.setProviderRating(newRating);
+        } else {
+            newRating += (targetUser.getNumReviewsAsRequester() *
+                    targetUser.getRequesterRating() + reviewRating) /
+                    (targetUser.getNumReviewsAsRequester() + 1);
+            targetUser.setRequesterRating(newRating);
+        }
+
+        AddUserRequest request = new AddUserRequest(targetUser);
+        RequestManager.getInstance().invokeRequest(this, request);
         // do stuff here to actually add reviews
+        //
 
     }
 
