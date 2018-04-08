@@ -135,7 +135,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
      * is the owner of the task
      *
      * @param savedInstanceState
-     * @author Micheal-Nguyen
+     * @author Micheal-Nguyen, myapplestory
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -185,13 +185,6 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         recyclerPhotosView.setAdapter(recyclerPhotosViewAdapter);
 
         setVisibility();
-
-//            LinearLayout.LayoutParams detailsLayout =
-//            new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-//            LinearLayout.LayoutParams.WRAP_CONTENT);
-//            detailsLayout.setMargins(0,999,0,0);
-//            DescriptionView.setLayoutParams(detailsLayout);
-
         setUpBidsList();
     }
 

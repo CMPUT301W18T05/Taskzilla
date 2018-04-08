@@ -124,7 +124,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:text="Provider Rating"
+                android:text="Provider Rating:"
                 android:textAlignment="center"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -143,27 +143,32 @@
                 app:layout_constraintTop_toBottomOf="@+id/providerRating" />
 
             <TextView
-                android:id="@+id/providerRatingField"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/requesterRatingField"
+                android:layout_width="0dp"
 
-                android:layout_marginRight="16dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="8dp"
                 android:text="9.8"
                 android:textAlignment="textEnd"
                 android:textSize="24sp"
                 app:layout_constraintBaseline_toBaselineOf="@+id/requesterRating"
-                app:layout_constraintRight_toRightOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
-                android:id="@+id/requesterRatingField"
-                android:layout_width="wrap_content"
+                android:id="@+id/providerRatingField"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
 
                 android:layout_marginEnd="16dp"
+                android:layout_marginStart="8dp"
                 android:text="0.7"
+                android:textAlignment="textEnd"
                 android:textSize="24sp"
                 app:layout_constraintBaseline_toBaselineOf="@+id/providerRating"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
         </android.support.constraint.ConstraintLayout>
 
         <android.support.constraint.ConstraintLayout
