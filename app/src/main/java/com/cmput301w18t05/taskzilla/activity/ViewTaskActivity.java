@@ -79,6 +79,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Activity for viewing a task
@@ -358,7 +359,6 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                     }
                 });
                 alert.show();
-
             }
         });
 
@@ -662,7 +662,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
     }
 
     public Integer updateBestBid(Float incomingBidFloat) {
-        Log.i("CURRENTBESTBIDDER",task.getBestBidder().toString());
+        Log.i("CURRENTBESTBIDDER",task.getBestBidder());
         Log.i("CURRENTUSER",currentUserId);
 
         if (task.getBestBid() > incomingBidFloat || task.getBestBid() == -1.0f) {
@@ -678,8 +678,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         } else if (task.getBestBidder().equals(currentUserId)) {
             Float bestBidTemp = incomingBidFloat;
             String bestBidderIdTemp = currentUserId;
-            for(Bid bid: BidList){
-
+            for(Bid bid: BidList) {
                 if(bid.getBidAmount()<bestBidTemp && !task.getBestBidder().equals(bid.getUserId())){
                     Log.i("CHANGE",bid.getBidAmount().toString());
                     bestBidTemp = bid.getBidAmount();
@@ -718,7 +717,8 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
             profileController.setUserID(task.getBestBidder());
             profileController.getUserRequest();
             User tempUser = profileController.getUser();
-            String text = "Best bidder: " + tempUser.getName() + "\nBid amount: " + "$" + String.format("%.2f",task.getBestBid());
+            String text = "Best bidder: " + tempUser.getName() + "\nBid amount: " + "$" +
+                    String.format(Locale.CANADA, "%.2f",task.getBestBid());
             ProviderName.setText(text);
             try {
                 ProviderPicture.setImageBitmap(tempUser.getPhoto().StringToBitmap());
@@ -787,7 +787,6 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-
             @Override
             public void onMapClick(LatLng point) {
                 Intent intent = new Intent(getApplicationContext(), MapActivity.class);
@@ -797,7 +796,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                 startActivity(intent);
             }
         });
-        if(task.getLocation()!=null) {
+        if (task.getLocation()!=null) {
             mMap.getUiSettings().setScrollGesturesEnabled(false);
             mMap.getUiSettings().setZoomGesturesEnabled(false);
             //mMap.getUiSettings()
