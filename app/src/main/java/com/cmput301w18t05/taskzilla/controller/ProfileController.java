@@ -12,6 +12,7 @@
 package com.cmput301w18t05.taskzilla.controller;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 
 import com.cmput301w18t05.taskzilla.Task;
@@ -119,7 +120,8 @@ public class ProfileController {
         this.taskList.addAll(requestTasksProvider.getResult());
         tasksDone = 0;
         for(Task task: taskList) {
-            if(task.getStatus() == "Done"){
+            Log.i("test",task.getStatus());
+            if(task.getStatus().equals("Completed")){
                 tasksDone++;
             }
         }

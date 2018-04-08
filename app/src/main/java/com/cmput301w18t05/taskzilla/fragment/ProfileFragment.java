@@ -16,6 +16,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -31,6 +32,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cmput301w18t05.taskzilla.AppColors;
 import com.cmput301w18t05.taskzilla.EmailAddress;
 import com.cmput301w18t05.taskzilla.PhoneNumber;
 import com.cmput301w18t05.taskzilla.Photo;
@@ -88,6 +90,7 @@ public class ProfileFragment extends Fragment {
     private ImageButton editProfile;
     private ProfileController profileController;
     private ImageView profilePicture;
+    private AppColors appColors;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -113,6 +116,7 @@ public class ProfileFragment extends Fragment {
      */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        appColors = AppColors.getInstance();
 
         profilePicture = view.findViewById(R.id.profilePictureView);
         nameField = view.findViewById(R.id.nameField2);
@@ -167,7 +171,7 @@ public class ProfileFragment extends Fragment {
 
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-
+            getView().setBackgroundColor(Color.parseColor(appColors.getActionBarColor()));
             taskList = new ArrayList<>();
             //gets all of current user's tasks
             requestTasksRequester = new GetTasksByRequesterUsernameRequest(user.getUsername());
@@ -179,7 +183,7 @@ public class ProfileFragment extends Fragment {
             this.taskList.addAll(requestTasksProvider.getResult());
             tasksDone = 0;
             for(Task task: taskList) {
-                if(task.getStatus() == "Done"){
+                if(task.getStatus().equals("Completed")){
                     tasksDone++;
                 }
             }

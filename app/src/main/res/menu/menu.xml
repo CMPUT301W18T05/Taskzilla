@@ -13,6 +13,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:id="@+id/Theme" android:title="Change Theme"></item>
+    <item android:id="@+id/TextColor" android:title="Change Text Color"></item>
+    <item android:id="@+id/Background" android:title="Change Background Color"></item>
+
 
 
 </menu>

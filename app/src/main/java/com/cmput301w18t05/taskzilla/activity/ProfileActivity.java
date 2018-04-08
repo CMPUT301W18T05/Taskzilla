@@ -22,6 +22,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.cmput301w18t05.taskzilla.AppColors;
 import com.cmput301w18t05.taskzilla.Photo;
 import com.cmput301w18t05.taskzilla.controller.ProfileController;
 import com.cmput301w18t05.taskzilla.R;
@@ -49,6 +50,7 @@ public class ProfileActivity extends AppCompatActivity {
     private String phone;
     private String numRequests;
     private String numTasksDone;
+    private AppColors appColors;
 
     /**
      * onCreate
@@ -62,10 +64,10 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-
+        appColors = AppColors.getInstance();
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#000000")));
-        actionBar.setTitle(Html.fromHtml("<font color='#00e5ee'>Taskzilla</font>"));
+        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor(appColors.getActionBarColor())));
+        actionBar.setTitle(Html.fromHtml("<font color='"+ appColors.getActionBarTextColor() + "'>Taskzilla</font>"));
 
         userID = getIntent().getStringExtra("user id");
         this.profileController = new ProfileController(this.findViewById(android.R.id.content),this);

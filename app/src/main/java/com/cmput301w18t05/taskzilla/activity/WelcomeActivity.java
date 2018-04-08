@@ -11,6 +11,7 @@
 
 package com.cmput301w18t05.taskzilla.activity;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -26,6 +27,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,7 +35,10 @@ import android.widget.ListView;
 import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
+import com.cmput301w18t05.taskzilla.AppColors;
 import com.cmput301w18t05.taskzilla.NotificationManager;
+import com.cmput301w18t05.taskzilla.User;
+import com.cmput301w18t05.taskzilla.currentUser;
 import com.cmput301w18t05.taskzilla.fragment.MyBidsFragment;
 import com.cmput301w18t05.taskzilla.fragment.NotificationsFragment;
 import com.cmput301w18t05.taskzilla.fragment.ProfileFragment;
@@ -42,7 +47,20 @@ import com.cmput301w18t05.taskzilla.fragment.SearchFragment;
 import com.cmput301w18t05.taskzilla.fragment.TasksFragment;
 import com.cmput301w18t05.taskzilla.fragment.TasksProviderFragment;
 import com.cmput301w18t05.taskzilla.fragment.TasksRequesterFragment;
+import com.google.gson.Gson;
 import com.pes.androidmaterialcolorpickerdialog.ColorPicker;
+import com.pes.androidmaterialcolorpickerdialog.ColorPickerCallback;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+
+import static android.provider.Telephony.Mms.Part.FILENAME;
 
 /**
  * Welcome activity of the app
@@ -55,8 +73,15 @@ public class WelcomeActivity extends AppCompatActivity {
     TabLayout tabs;
     ViewPager tabsContent;
     FragmentPagerAdapter tabsAdapter;
-
+    ActionBar actionBar;
     private ListView test;
+
+    private AppColors appColors;
+
+    Integer defaultColorR;
+    Integer defaultColorG;
+    Integer defaultColorB;
+    ColorPicker cp;
 
     /**
      * Activity uses the activity_welcome.xml layout
@@ -67,10 +92,14 @@ public class WelcomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
         NotificationManager.getInstance(this.getApplicationContext());
-
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#000000")));
-        actionBar.setTitle(Html.fromHtml("<font color='#00e5ee'>Taskzilla</font>"));
+        appColors = AppColors.getInstance();
+        appColors.setActionBarColor("#000000");
+        appColors.setActionBarTextColor("#05e5ee");
+        appColors.setBackgroundColor("#ffffff");
+        actionBar = getSupportActionBar();
+        loadAppColors();
+        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor(appColors.getActionBarColor())));
+        actionBar.setTitle(Html.fromHtml("<font color='" + appColors.getActionBarTextColor() + "'>Taskzilla</font>"));
 
         tabsAdapter = new TabsManager(this.getSupportFragmentManager());
         tabsContent = findViewById(R.id.welcome_tabs_content);
@@ -97,12 +126,60 @@ public class WelcomeActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         switch(item.getItemId()) {
             case R.id.Theme:
-                Integer defaultColorR = 0;
-                Integer defaultColorG = 0;
-                Integer defaultColorB = 0;
-                final ColorPicker cp = new ColorPicker(WelcomeActivity.this, defaultColorR, defaultColorG, defaultColorB);
+                defaultColorR = 0;
+                defaultColorG = 0;
+                defaultColorB = 0;
+                cp = new ColorPicker(WelcomeActivity.this, defaultColorR, defaultColorG, defaultColorB);
+                cp.setTitle("Test");
                 cp.show();
+                cp.setCallback(new ColorPickerCallback() {
+                    @Override
+                    public void onColorChosen(int color) {
+                        appColors.setActionBarColor(String.format("#%06X", (0xFFFFFF & color)));
+                        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor(appColors.getActionBarColor())));
+                        tabs.setBackground(new ColorDrawable(Color.parseColor(String.format("#%06X", (0xFFFFFF & color)))));
+                        cp.dismiss();
+                    }
+                });
+                saveAppColors();
                 return true;
+
+            case R.id.TextColor:
+                defaultColorR = 0;
+                defaultColorG = 0;
+                defaultColorB = 0;
+                cp = new ColorPicker(WelcomeActivity.this, defaultColorR, defaultColorG, defaultColorB);
+                cp.setTitle("Test");
+                cp.show();
+                cp.setCallback(new ColorPickerCallback() {
+                    @Override
+                    public void onColorChosen(int color) {
+                        appColors.setActionBarTextColor(String.format("#%06X", (0xFFFFFF & color)));
+                        actionBar.setTitle(Html.fromHtml("<font color='" + appColors.getActionBarTextColor() + "'>Taskzilla</font>"));
+                        cp.dismiss();
+                    }
+                });
+                saveAppColors();
+                return true;
+
+            case R.id.Background:
+                defaultColorR = 0;
+                defaultColorG = 0;
+                defaultColorB = 0;
+                cp = new ColorPicker(WelcomeActivity.this, defaultColorR, defaultColorG, defaultColorB);
+                cp.setTitle("Test");
+                cp.show();
+                cp.setCallback(new ColorPickerCallback() {
+                    @Override
+                    public void onColorChosen(int color) {
+                        appColors.setBackgroundColor(String.format("#%06X", (0xFFFFFF & color)));
+                        cp.dismiss();
+                    }
+                });
+                saveAppColors();
+                return true;
+
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -196,6 +273,33 @@ public class WelcomeActivity extends AppCompatActivity {
                 default:
                     return null;
             }
+        }
+    }
+    private void loadAppColors() {
+        try {
+            FileInputStream fis = openFileInput(FILENAME);
+            BufferedReader in = new BufferedReader(new InputStreamReader(fis));
+            Gson gson = new Gson();
+
+            appColors = gson.fromJson(in, AppColors.class);
+        } catch (FileNotFoundException e) {
+            appColors = null;
+        } catch (IOException e) {
+            throw new RuntimeException();
+        }
+    }
+
+    private void saveAppColors() {
+        try {
+            FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
+            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(fos));
+            Gson gson = new Gson();
+            gson.toJson(AppColors.getInstance(), out);
+            out.flush();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException();
+        } catch (IOException e) {
+            throw new RuntimeException();
         }
     }
 }
