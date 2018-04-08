@@ -65,6 +65,7 @@ import java.lang.reflect.Type;
 public class MainActivity extends AppCompatActivity {
 
     private TextView usernameView;
+    private TextView passwordView;
     private Button loginButton;
     private TextView signupButton;
     private currentUser user;
@@ -97,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.logInButton);
         signupButton = findViewById(R.id.SignUp);
         usernameView = findViewById(R.id.usernameText);
+        passwordView = findViewById(R.id.passwordText);
 
         cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -114,10 +116,15 @@ public class MainActivity extends AppCompatActivity {
                   /* check if user exists */
                     foundUser = getUser(usernameView.getText().toString());
                     if (foundUser != null) {
-                        currentUser.getRealInstance().setUser(foundUser);
-                        saveLogin();
-                        mainActivityController.logIn();
-                        finish();
+                        /* check if password is correct */
+                        if (foundUser.getPassword().equals(passwordView.getText().toString())) {
+                            currentUser.getRealInstance().setUser(foundUser);
+                            saveLogin();
+                            mainActivityController.logIn();
+                            finish();
+                        } else {
+                            showError("Invalid password.");
+                        }
                     }
                     else {
                         showError("Username does not exist. Please sign up.");
