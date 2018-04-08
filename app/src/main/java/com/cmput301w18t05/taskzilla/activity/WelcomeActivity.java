@@ -171,25 +171,7 @@ public class WelcomeActivity extends AppCompatActivity {
                     }
                 });
                 return true;
-
-            case R.id.Background:
-                defaultColorR = 0;
-                defaultColorG = 0;
-                defaultColorB = 0;
-                cp = new ColorPicker(WelcomeActivity.this, defaultColorR, defaultColorG, defaultColorB);
-                cp.setTitle("Test");
-                cp.show();
-                cp.setCallback(new ColorPickerCallback() {
-                    @Override
-                    public void onColorChosen(int color) {
-                        appColors.setBackgroundColor(String.format("#%06X", (0xFFFFFF & color)));
-                        saveAppColors();
-                        cp.dismiss();
-                    }
-                });
-                return true;
-
-
+                
             default:
                 return super.onOptionsItemSelected(item);
         }
