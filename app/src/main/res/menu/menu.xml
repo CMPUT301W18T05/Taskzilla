@@ -11,9 +11,12 @@
   -->
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/biddedTasks" android:title="Bidded Tasks"></item>
-    <item android:id="@+id/requestedTasks" android:title="Requested Tasks"></item>
-    <item android:id="@+id/completedTasks" android:title="Completed Tasks"></item>
-    <item android:id="@+id/sortByDate" android:title="Sort by Date"></item>
+
+    <item android:id="@+id/Theme" android:title="Change Theme"></item>
+    <item android:id="@+id/TextColor" android:title="Change Text Color"></item>
+    <item android:id="@+id/Background" android:title="Change Background Color"></item>
+
+
+
 
 </menu>

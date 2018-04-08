@@ -49,6 +49,10 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:26.0.+'
     compile 'com.google.android.gms:play-services-location:12.0.0'
     compile 'com.google.android.gms:play-services-places:12.0.0'
+    // taken from https://github.com/Pes8/android-material-color-picker-dialog
+    // 2018-04-07
+    compile 'com.pes.materialcolorpicker:library:1.2.0'
+
 
 
 }

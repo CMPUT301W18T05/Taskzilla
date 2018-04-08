@@ -51,6 +51,7 @@ import android.widget.TextView;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.cmput301w18t05.taskzilla.AppColors;
 import com.cmput301w18t05.taskzilla.Bid;
 import com.cmput301w18t05.taskzilla.CustomOnItemClick;
 import com.cmput301w18t05.taskzilla.ExpandableBidListAdapter;
@@ -123,6 +124,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
     private RecyclerView.LayoutManager layoutManager;
     private LinearLayout linearLayout;
     private ArrayList<Photo> photos;
+    private AppColors appColors;
 
     /**onCreate
      * Retrieve the task using the task id that was sent using
@@ -138,10 +140,10 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_task);
-
+        appColors = AppColors.getInstance();
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#000000")));
-        actionBar.setTitle(Html.fromHtml("<font color='#00e5ee'>Taskzilla</font>"));
+        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor(appColors.getActionBarColor())));
+        actionBar.setTitle(Html.fromHtml("<font color='"+ appColors.getActionBarTextColor() + "'>Taskzilla</font>"));
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.TaskLocation);
