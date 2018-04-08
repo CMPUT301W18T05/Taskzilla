@@ -341,6 +341,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                 task.completeTask();
                 RedButton.setVisibility(View.INVISIBLE);
                 GreenButton.setVisibility(View.INVISIBLE);
+                OrangeButton.setVisibility(View.VISIBLE);
                 TaskStatus.setText("Completed");
             }
         });

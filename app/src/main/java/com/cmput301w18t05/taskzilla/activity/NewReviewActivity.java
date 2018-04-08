@@ -102,31 +102,28 @@ public class NewReviewActivity extends AppCompatActivity {
 
         Float newRating = 0.0f;
         if (revieweeType.equals("r")) {
-            return;
-//            newRating = (Float.intBitsToFloat(targetUser.getNumReviewsAsProvider()) *
-//                    targetUser.getProviderRating() + reviewRating) /
-//                    (targetUser.getNumReviewsAsProvider() + 1);
-//            targetUser.setProviderRating(newRating);
-//            targetUser.addNumProviderReviews();
+            newRating = ((float) (targetUser.getNumReviewsAsRequester()) *
+                    targetUser.getRequesterRating() + reviewRating) /
+                    (targetUser.getNumReviewsAsRequester() + 1);
+            targetUser.setRequesterRating(newRating);
+            targetUser.addNumRequesterReviews();
+
         } else {
-            //newRating += Float(targetUser.getNumReviewsAsRequester());
-            //Toast.makeText(this, targetUser.getNumReviewsAsRequester(), Toast.LENGTH_SHORT).show();
-            return;
-//            newRating = (Float.intBitsToFloat(targetUser.getNumReviewsAsRequester()) *
-//                    targetUser.getRequesterRating() + reviewRating) /
-//                    (targetUser.getNumReviewsAsRequester() + 1);
-//            targetUser.setRequesterRating(newRating);
-//            targetUser.addNumRequesterReviews();
+            newRating = ((float) targetUser.getNumReviewsAsProvider() *
+                    targetUser.getProviderRating() + reviewRating) /
+                    (targetUser.getNumReviewsAsProvider() + 1);
+            targetUser.setProviderRating(newRating);
+            targetUser.addNumProviderReviews();
+
         }
 
+        AddUserRequest request = new AddUserRequest(targetUser);
+        RequestManager.getInstance().invokeRequest(this, request);
 
-        //AddUserRequest request = new AddUserRequest(targetUser);
-        //RequestManager.getInstance().invokeRequest(this, request);
+        review.updateThis(); // send to ES
 
-//        review.updateThis(); // send to ES
-//
-//        Toast.makeText(this, "Review created for " + targetUserName, Toast.LENGTH_SHORT).show();
-//        finish();
+        Toast.makeText(this, "Review created for " + targetUserName, Toast.LENGTH_SHORT).show();
+        finish();
     }
 
 

@@ -128,6 +128,10 @@ public class ProfileFragment extends Fragment {
         nameField.setText(user.getName());
         emailField.setText(user.getEmail().toString());
         phoneField.setText(user.getPhone().toString());
+        providerRatingField.setText(String.format(Locale.CANADA,
+                "%.1f", user.getProviderRating()));
+        requesterRatingField.setText(String.format(Locale.CANADA,
+                "%.1f", user.getRequesterRating()));
         try {
             profilePicture.setImageBitmap(user.getPhoto().StringToBitmap());
         }
