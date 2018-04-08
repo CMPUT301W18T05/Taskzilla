@@ -93,7 +93,7 @@ public class NewReviewActivity extends AppCompatActivity {
         Review review = new Review(reviewTitle, reviewRating, reviewDescription,
                 targetUserId, currentUserId);
 
-        // do stuff here to actually add reviews
+        review.updateThis(); // send to ES
 
     }
 

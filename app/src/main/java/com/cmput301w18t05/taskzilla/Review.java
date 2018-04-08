@@ -11,6 +11,11 @@
 
 package com.cmput301w18t05.taskzilla;
 
+import com.cmput301w18t05.taskzilla.request.RequestManager;
+import com.cmput301w18t05.taskzilla.request.command.AddReviewRequest;
+
+import io.searchbox.annotations.JestId;
+
 /**
  * Represents a review object in the app
  *
@@ -19,6 +24,9 @@ package com.cmput301w18t05.taskzilla;
  * @version 1.0
  */
 public class Review {
+
+    @JestId
+    private String id;
 
     private String title;
     private Float rating;
@@ -121,4 +129,18 @@ public class Review {
     public void setReviewerID(String reviewerID) {
         this.reviewerID = reviewerID;
     }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void updateThis() {
+        AddReviewRequest task = new AddReviewRequest(this);
+        RequestManager.getInstance().invokeRequest(task);
+    }
+
 }
