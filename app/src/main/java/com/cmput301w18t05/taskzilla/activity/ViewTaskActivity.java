@@ -406,7 +406,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                 //RequestManager.getInstance().invokeRequest(getApplicationContext(), request);
                 NotificationManager.getInstance().createNotification(notification);
 
-                //Toast.makeText(ViewTaskActivity.this, "Bid placed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ViewTaskActivity.this, "Bid placed", Toast.LENGTH_SHORT).show();
 
                 // hide keyboard upon pressing button
                 InputMethodManager imm = (InputMethodManager)getSystemService(
@@ -491,27 +491,64 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
     public void thePinkButton(android.view.View view) {
         final AlertDialog mBuilder = new AlertDialog.Builder(ViewTaskActivity.this).create();
         final View mView = getLayoutInflater().inflate(R.layout.dialog_decline_bid,null);
-        final ListView acceptBidListView = mView.findViewById(R.id.DeclineBidList);
-        final Button acceptBidButton = mView.findViewById(R.id.DeclineBidButton);
+        final ListView declineBidListView = mView.findViewById(R.id.DeclineBidList);
+        final Button declineBidButton = mView.findViewById(R.id.DeclineBidButton);
         ArrayList<String> tempList = new ArrayList<>();
 
 
-//        if (BidList.isEmpty()) {
-//            tempList.add("No bids :'(");
-//            ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-//                    android.R.layout.simple_list_item_1, tempList);
-//            acceptBidListView.setAdapter(adapter);
-//            acceptBidButton.setText("SAD");
-//            acceptBidButton.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    mBuilder.dismiss();
-//                }
-//            });
-//
-//        }
-        
+        if (BidList.isEmpty()) {
+            tempList.add("No bids :'(");
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                    android.R.layout.simple_list_item_1, tempList);
+            declineBidListView.setAdapter(adapter);
+            declineBidButton.setText("SAD");
+            declineBidButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mBuilder.dismiss();
+                }
+            });
+        } else {
+            for (Bid bid : BidList) {
+                ProfileController controller = new ProfileController(mView, getBaseContext());
+                controller.setUserID(bid.getUserId());
+                controller.getUserRequest();
+                tempList.add("Best bidder: " + controller.getUser().getName() + "\nBid Amount: " +
+                        bid.getBidAmount());
+            }
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                    android.R.layout.simple_list_item_single_choice, tempList);
+            declineBidListView.setAdapter(adapter);
+            declineBidListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+            declineBidButton.setText("DECLINE BID");
 
+            declineBidListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    selectedBid = BidList.get(i);
+                }
+            });
+
+            declineBidButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+//                    ProfileController controller = new ProfileController(mView, getBaseContext());
+//                    controller.setUserID(selectedBid.getUserId());
+//                    controller.getUserRequest();
+//                    TaskProvider = controller.getUser();
+//                    task.setTaskProvider(TaskProvider);
+//                    task.setStatus("assigned");
+//                    TaskStatus.setText("Assigned");
+//                    updateBidsList();
+//                    EditButton.setVisibility(View.INVISIBLE);
+//                    setProviderField();
+//                    mBuilder.dismiss();
+                    Toast.makeText(ViewTaskActivity.this, "dawdwdwddw", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        mBuilder.setView(mView);
+        mBuilder.show();
     }
 
     public Integer updateBestBid(Float incomingBidFloat) {
