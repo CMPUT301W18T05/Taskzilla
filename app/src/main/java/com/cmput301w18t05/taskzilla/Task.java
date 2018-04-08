@@ -121,12 +121,11 @@ public class Task implements Comparable<Task> {
 
     /**
      * addBid
-     * Insert into sorted bid list
      *
      * @author praharen
-     *
      */
     public void addBid(Bid newbid) {
+        System.out.println("Adding bid: "+newbid);
         GetBidsByTaskIdRequest getbidrequest = new GetBidsByTaskIdRequest(this.Id);
         RequestManager.getInstance().invokeRequest(getbidrequest);
         ArrayList<Bid> bidlist = getbidrequest.getResult();
@@ -139,6 +138,8 @@ public class Task implements Comparable<Task> {
         }
         AddBidRequest addBidRequest = new AddBidRequest(newbid);
         RequestManager.getInstance().invokeRequest(addBidRequest);
+        Notification notification = new Notification("NEW NOTIF", newbid.getUserId(), this.requesterId, this.Id);
+        NotificationManager.getInstance().sendNotification(notification);
     }
 
     /**

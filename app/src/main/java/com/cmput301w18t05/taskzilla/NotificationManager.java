@@ -22,6 +22,11 @@ import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.cmput301w18t05.taskzilla.request.RequestManager;
+import com.cmput301w18t05.taskzilla.request.command.AddNotificationRequest;
+import com.cmput301w18t05.taskzilla.request.command.GetNotificationsByUserIdRequest;
+
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -51,9 +56,13 @@ public class NotificationManager extends ContextWrapper {
 
     protected NotificationManager(Context context) {
         super(context);
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            createChannels(context);
-        }
+
+        System.out.println("Setting up notification poller");
+        new pollNotifications(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        //createChannels(context);
+        //if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            //createChannels(context);
+        //}
     }
 
     public static NotificationManager getInstance(Context context) {
@@ -100,9 +109,43 @@ public class NotificationManager extends ContextWrapper {
         //mManager.notify(id, mBuilder.build());
     }
 
+    public void sendNotification(Notification notification) {
+        AddNotificationRequest task = new AddNotificationRequest(notification);
+        RequestManager.getInstance().invokeRequest(task);
+    }
+
+    public void notificationCallback(ArrayList<Notification> newNotifs) {
+        System.out.println("Notification received.");
+
+        for (Notification n : newNotifs) {
+            System.out.println("Received: "+n);
+        }
+    }
+
     public static class pollNotifications extends AsyncTask<Void, Void, Void> {
+        NotificationManager listener;
+        public pollNotifications(NotificationManager listener) {
+            this.listener = listener;
+        }
+
         @Override
         protected Void doInBackground(Void... voids) {
+            try {
+                while (true) {
+                    Thread.sleep(5000);
+                    GetNotificationsByUserIdRequest task = new GetNotificationsByUserIdRequest(currentUser.getInstance().getId());
+                    RequestManager.getInstance().invokeRequest(task);
+                    System.out.println("Trying to get notification for user");
+
+                    ArrayList<Notification> newNotifs = task.getResult();
+                    if (!newNotifs.isEmpty()) {
+                        listener.notificationCallback(newNotifs);
+                    }
+                }
+            }
+            catch (Exception e) {
+                System.out.println("Something went wrong with the poll notifications");
+            }
             return null;
         }
     }
