@@ -77,11 +77,13 @@ public class WelcomeActivity extends AppCompatActivity {
     private ListView test;
 
     private AppColors appColors;
+    private AppColors loadedAppColors = null;
 
     Integer defaultColorR;
     Integer defaultColorG;
     Integer defaultColorB;
     ColorPicker cp;
+    private static final String FILENAME = "Themes.sav";
 
     /**
      * Activity uses the activity_welcome.xml layout
@@ -93,9 +95,18 @@ public class WelcomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_welcome);
         NotificationManager.getInstance(this.getApplicationContext());
         appColors = AppColors.getInstance();
-        appColors.setActionBarColor("#000000");
-        appColors.setActionBarTextColor("#05e5ee");
-        appColors.setBackgroundColor("#ffffff");
+        if(loadedAppColors == null) {
+            appColors.setActionBarColor("#000000");
+            appColors.setActionBarTextColor("#05e5ee");
+            appColors.setBackgroundColor("#ffffff");
+        }
+        else {
+            AppColors.getInstance().setInstance(loadedAppColors);
+        }
+        appColors = AppColors.getInstance();
+
+
+
         actionBar = getSupportActionBar();
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor(appColors.getActionBarColor())));
         actionBar.setTitle(Html.fromHtml("<font color='" + appColors.getActionBarTextColor() + "'>Taskzilla</font>"));
@@ -137,6 +148,7 @@ public class WelcomeActivity extends AppCompatActivity {
                         appColors.setActionBarColor(String.format("#%06X", (0xFFFFFF & color)));
                         actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor(appColors.getActionBarColor())));
                         tabs.setBackground(new ColorDrawable(Color.parseColor(String.format("#%06X", (0xFFFFFF & color)))));
+                        saveAppColors();
                         cp.dismiss();
                     }
                 });
@@ -154,6 +166,7 @@ public class WelcomeActivity extends AppCompatActivity {
                     public void onColorChosen(int color) {
                         appColors.setActionBarTextColor(String.format("#%06X", (0xFFFFFF & color)));
                         actionBar.setTitle(Html.fromHtml("<font color='" + appColors.getActionBarTextColor() + "'>Taskzilla</font>"));
+                        saveAppColors();
                         cp.dismiss();
                     }
                 });
@@ -170,6 +183,7 @@ public class WelcomeActivity extends AppCompatActivity {
                     @Override
                     public void onColorChosen(int color) {
                         appColors.setBackgroundColor(String.format("#%06X", (0xFFFFFF & color)));
+                        saveAppColors();
                         cp.dismiss();
                     }
                 });
@@ -269,6 +283,34 @@ public class WelcomeActivity extends AppCompatActivity {
                 default:
                     return null;
             }
+        }
+    }
+    private void loadAppColors() {
+        try {
+            FileInputStream fis = openFileInput(FILENAME);
+            BufferedReader in = new BufferedReader(new InputStreamReader(fis));
+            Gson gson = new Gson();
+
+            loadedAppColors = gson.fromJson(in, AppColors.class);
+        } catch (FileNotFoundException e) {
+            loadedAppColors = null;
+        } catch (IOException e) {
+            throw new RuntimeException();
+        }
+    }
+
+    private void saveAppColors() {
+        try {
+            Log.i("saveColors",appColors.getActionBarColor());
+            FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
+            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(fos));
+            Gson gson = new Gson();
+            gson.toJson(AppColors.getInstance(), out);
+            out.flush();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException();
+        } catch (IOException e) {
+            throw new RuntimeException();
         }
     }
 

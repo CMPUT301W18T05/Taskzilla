@@ -13,6 +13,7 @@ package com.cmput301w18t05.taskzilla;
 
 import android.content.Context;
 import android.location.Location;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.cmput301w18t05.taskzilla.activity.ViewTaskActivity;
@@ -133,6 +134,7 @@ public class Task implements Comparable<Task> {
         ArrayList<Bid> bidlist = getbidrequest.getResult();
         for (Bid bid : bidlist) {
             if (bid.getUserId().equals(newbid.getUserId())) {
+                Log.i("IS THIS BEING REMOVED???","ya");
                 RemoveBidRequest removerequest = new RemoveBidRequest(bid);
                 RequestManager.getInstance().invokeRequest(removerequest);
                 break;
