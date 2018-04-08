@@ -14,13 +14,9 @@ package com.cmput301w18t05.taskzilla.fragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,7 +24,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,7 +34,6 @@ import com.cmput301w18t05.taskzilla.Photo;
 import com.cmput301w18t05.taskzilla.Task;
 import com.cmput301w18t05.taskzilla.activity.MainActivity;
 import com.cmput301w18t05.taskzilla.activity.ZoomImageActivity;
-import com.cmput301w18t05.taskzilla.controller.ProfileController;
 import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.User;
 import com.cmput301w18t05.taskzilla.activity.EditProfileActivity;
@@ -51,11 +45,9 @@ import com.cmput301w18t05.taskzilla.request.command.GetTasksByRequesterUsernameR
 import com.google.gson.Gson;
 
 import java.io.BufferedWriter;
-import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -88,7 +80,6 @@ public class ProfileFragment extends Fragment {
     private Button logOut;
     private User user  = currentUser.getInstance();
     private ImageButton editProfile;
-    private ProfileController profileController;
     private ImageView profilePicture;
     private AppColors appColors;
 
@@ -100,10 +91,8 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        final RelativeLayout mRelativeLayout = (RelativeLayout) inflater.inflate(R.layout.fragment_profile,
+        return inflater.inflate(R.layout.fragment_profile,
                 container, false);
-
-        return mRelativeLayout;
     }
 
     /**
@@ -145,34 +134,42 @@ public class ProfileFragment extends Fragment {
 
         }
 
+        providerRatingField.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                providerRatingOnClick();
+            }
+        });
+        requesterRatingField.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                requesterRatingOnClick();
+            }
+        });
         editProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 editProfileClicked();
             }
         });
-
         logOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 logOutClicked();
             }
         });
-
         profilePicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ProfilePictureClicked();
             }
         });
-
     }
 
     // Taken from https://stackoverflow.com/questions/41655797/refresh-fragment-when-change-between-tabs?noredirect=1&lq=1
     // 2018-04-01
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
-
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             getView().setBackgroundColor(Color.parseColor(appColors.getActionBarColor()));
@@ -209,12 +206,9 @@ public class ProfileFragment extends Fragment {
                 }
             }
             numTasksDone = Integer.toString(tasksDone);
-
             numRequestsField.setText(numRequests);
             numTasksDoneField.setText(numTasksDone);
-
         }
-
     }
 
     /**
@@ -249,16 +243,30 @@ public class ProfileFragment extends Fragment {
         } catch (IOException e) {
             throw new RuntimeException();
         }
-
         Intent intent = new Intent(getActivity(), MainActivity.class);
         startActivity(intent);
         getActivity().finish();
     }
 
-    public void notifyChange() {
-        // update fields
-        providerRatingField.setText(String.format(Locale.CANADA, "%f", user.getProviderRating()));
+    /**
+     * providerRatingOnClick
+     *
+     * @author myapplestory
+     */
+    public void providerRatingOnClick() {
+        Toast.makeText(this.getContext(), "dwdwdwdwd", Toast.LENGTH_SHORT).show();
     }
+
+    /**
+     * requesterRatingOnClick
+     *
+     * @author myapplestory
+     */
+    public void requesterRatingOnClick() {
+        Toast.makeText(this.getContext(), "dddddddddddddddddd", Toast.LENGTH_SHORT).show();
+
+    }
+
 
     /**
      * set the user to be the profile fragment, should be the user that is currently logged in
@@ -267,14 +275,6 @@ public class ProfileFragment extends Fragment {
      */
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public void setProfileController(ProfileController profileController) {
-        this.profileController = profileController;
-    }
-
-    public TextView getProviderRatingField() {
-        return providerRatingField;
     }
 
     public void ProfilePictureClicked(){
@@ -305,8 +305,5 @@ public class ProfileFragment extends Fragment {
                 profilePicture.setImageBitmap(user.getPhoto().StringToBitmap());
             }
         }
-
-
-
     }
 }

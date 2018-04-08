@@ -119,7 +119,7 @@ public class NotificationManager extends ContextWrapper {
         for (Notification n : newNotifs) {
             if(!n.isAcknowledged()) {
                 n.acknowledge();
-                //createNotification(n);
+                createNotification(n);
                 System.out.println("Received: "+n);
             }
         }

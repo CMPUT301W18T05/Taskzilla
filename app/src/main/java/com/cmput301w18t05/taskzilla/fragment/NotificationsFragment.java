@@ -15,11 +15,14 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +40,8 @@ import com.cmput301w18t05.taskzilla.controller.NotificationsController;
 import com.cmput301w18t05.taskzilla.currentUser;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.GetNotificationsByUserIdRequest;
+import com.cmput301w18t05.taskzilla.request.command.GetTasksByProviderUsernameRequest;
+import com.cmput301w18t05.taskzilla.request.command.GetTasksByRequesterUsernameRequest;
 
 import java.util.ArrayList;
 import java.util.zip.Inflater;
@@ -48,6 +53,7 @@ public class NotificationsFragment extends Fragment {
     private ArrayAdapter<Notification> adapter;
     private NotificationsController notificationsController;
     private Notification currentNotification;
+    private SwipeRefreshLayout mySwipeRefreshLayout;
     private String taskId;
     private String notificationId;
 
@@ -135,7 +141,26 @@ public class NotificationsFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        mySwipeRefreshLayout = view.findViewById(R.id.swiperefresh);
+        mySwipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
 
+                        notificationsController.getNotificationsRequest();
+
+                        final Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(mySwipeRefreshLayout.isRefreshing()) {
+                                    mySwipeRefreshLayout.setRefreshing(false);
+                                }
+                            }
+                        }, 1000);
+                    }
+                }
+        );
     }
 
     public void viewTask(String taskId){
@@ -148,6 +173,14 @@ public class NotificationsFragment extends Fragment {
         notificationList.clear();
         notificationList.addAll(notificationsController.getResults());
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            notificationsController.getNotificationsRequest();
+        }
     }
 
     public void onResume(){

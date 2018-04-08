@@ -129,21 +129,12 @@ public class Task implements Comparable<Task> {
      */
     public void addBid(Bid newbid) {
         System.out.println("Adding bid: "+newbid);
-        GetBidsByTaskIdRequest getbidrequest = new GetBidsByTaskIdRequest(this.Id);
-        RequestManager.getInstance().invokeRequest(getbidrequest);
-        ArrayList<Bid> bidlist = getbidrequest.getResult();
-        for (Bid bid : bidlist) {
-            if (bid.getUserId().equals(newbid.getUserId())) {
-                Log.i("IS THIS BEING REMOVED???","ya");
-                RemoveBidRequest removerequest = new RemoveBidRequest(bid);
-                RequestManager.getInstance().invokeRequest(removerequest);
-                break;
-            }
-        }
         AddBidRequest addBidRequest = new AddBidRequest(newbid);
         RequestManager.getInstance().invokeRequest(addBidRequest);
-        //Notification notification = new Notification("bidded", "by: " + currentUser.getInstance().getName(), null, requesterId, providerId, currentUser.getRealInstance());
-        Notification notification = new Notification("New Bid", newbid.getUserId(), this.requesterId, this.Id, this.name, currentUser.getInstance());
+
+        String temp = "Your task '" + this.getName() +"' has been bidded on by " + providerId + " for $" + newbid.getBidAmount();
+
+        Notification notification = new Notification("New Bid", newbid.getUserId(), this.requesterId, this.Id, this.name, temp, currentUser.getInstance());
         NotificationManager.getInstance().sendNotification(notification);
     }
 
@@ -327,7 +318,10 @@ public class Task implements Comparable<Task> {
             removeHighestBid();
             updateThis();
 
-            Notification notification = new Notification("Bid Accepted", this.requesterId, this.providerId, this.Id, this.name, currentUser.getInstance());
+            String temp = new String();
+            temp = "Your bid has been accepted!";
+
+            Notification notification = new Notification("Bid Accepted", this.requesterId, this.providerId, this.Id, this.name, temp, currentUser.getInstance());
             NotificationManager.getInstance().sendNotification(notification);
         }
     }
@@ -446,7 +440,9 @@ public class Task implements Comparable<Task> {
         this.status = "Completed";
         updateThis();
 
-        Notification notification = new Notification("Task Completed", this.requesterId, this.providerId, this.Id, this.name, currentUser.getInstance());
+        String temp = this.getName() + " has been completed!";
+
+        Notification notification = new Notification("Task Completed", this.requesterId, this.providerId, this.Id, this.name, temp, currentUser.getInstance());
         NotificationManager.getInstance().sendNotification(notification);
     }
 
