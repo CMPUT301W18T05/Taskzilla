@@ -97,7 +97,6 @@ public class WelcomeActivity extends AppCompatActivity {
         appColors.setActionBarTextColor("#05e5ee");
         appColors.setBackgroundColor("#ffffff");
         actionBar = getSupportActionBar();
-        loadAppColors();
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor(appColors.getActionBarColor())));
         actionBar.setTitle(Html.fromHtml("<font color='" + appColors.getActionBarTextColor() + "'>Taskzilla</font>"));
 
@@ -141,7 +140,6 @@ public class WelcomeActivity extends AppCompatActivity {
                         cp.dismiss();
                     }
                 });
-                saveAppColors();
                 return true;
 
             case R.id.TextColor:
@@ -159,7 +157,6 @@ public class WelcomeActivity extends AppCompatActivity {
                         cp.dismiss();
                     }
                 });
-                saveAppColors();
                 return true;
 
             case R.id.Background:
@@ -176,7 +173,6 @@ public class WelcomeActivity extends AppCompatActivity {
                         cp.dismiss();
                     }
                 });
-                saveAppColors();
                 return true;
 
 
@@ -275,31 +271,5 @@ public class WelcomeActivity extends AppCompatActivity {
             }
         }
     }
-    private void loadAppColors() {
-        try {
-            FileInputStream fis = openFileInput(FILENAME);
-            BufferedReader in = new BufferedReader(new InputStreamReader(fis));
-            Gson gson = new Gson();
 
-            appColors = gson.fromJson(in, AppColors.class);
-        } catch (FileNotFoundException e) {
-            appColors = null;
-        } catch (IOException e) {
-            throw new RuntimeException();
-        }
-    }
-
-    private void saveAppColors() {
-        try {
-            FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
-            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(fos));
-            Gson gson = new Gson();
-            gson.toJson(AppColors.getInstance(), out);
-            out.flush();
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException();
-        } catch (IOException e) {
-            throw new RuntimeException();
-        }
-    }
 }
