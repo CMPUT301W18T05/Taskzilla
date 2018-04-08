@@ -138,7 +138,7 @@ public class NotificationsFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        mySwipeRefreshLayout = view.findViewById(R.id.swiperefreshProvider);
+        mySwipeRefreshLayout = view.findViewById(R.id.swiperefresh);
         mySwipeRefreshLayout.setOnRefreshListener(
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
