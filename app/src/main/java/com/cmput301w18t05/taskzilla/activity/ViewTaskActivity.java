@@ -135,7 +135,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
      * is the owner of the task
      *
      * @param savedInstanceState
-     * @author Micheal-Nguyen
+     * @author Micheal-Nguyen, myapplestory
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -183,227 +183,106 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
             }
         });
         recyclerPhotosView.setAdapter(recyclerPhotosViewAdapter);
-        // taken from https://stackoverflow.com/questions/3465841/how-to-change-visibility-of-layout-programmatically
-        // 2018-03-14
-        if (currentUserId.equals(taskUserId)) {
-            DeleteButton.setVisibility(View.VISIBLE);
-            BlueButton.setVisibility(View.INVISIBLE);
-            if (task.getStatus().equals("requested")) {
-                EditButton.setVisibility(View.VISIBLE);
-            }
-            else if (task.getStatus().equals("assigned")) {
-                EditButton.setVisibility(View.INVISIBLE);
-                GreenButton.setVisibility(View.VISIBLE);
-                RedButton.setVisibility(View.VISIBLE);
-                YellowButton.setVisibility(View.INVISIBLE);
-                PinkButton.setVisibility(View.INVISIBLE);
-                BidslistView.setVisibility(View.INVISIBLE);
-                BidslistView.setVisibility(View.INVISIBLE);
-            }
-            else {
-                EditButton.setVisibility(View.INVISIBLE);
-            }
-        } else {
-            DeleteButton.setVisibility(View.INVISIBLE);
-            EditButton.setVisibility(View.INVISIBLE);
-            YellowButton.setVisibility(View.INVISIBLE);
-            PinkButton.setVisibility(View.INVISIBLE);
-            GreenButton.setVisibility(View.INVISIBLE);
-            RedButton.setVisibility(View.INVISIBLE);
-        }
 
-        if (task.isComplete()) {
-            YellowButton.setVisibility(View.INVISIBLE);
-            BlueButton.setVisibility(View.INVISIBLE);
-            RedButton.setVisibility(View.INVISIBLE);
-            GreenButton.setVisibility(View.INVISIBLE);
-            PinkButton.setVisibility(View.INVISIBLE);
-            OrangeButton.setVisibility(View.VISIBLE);
-            BidslistView.setVisibility(View.INVISIBLE);
-            if (currentUserId.equals(task.getRequesterId())) {
-                OrangeButton.setText("REVIEW PROVIDER");
+        setVisibility();
+        setUpBidsList();
+    }
+
+    /**
+     * deleteButtonOnClick
+     * in the activity_view_taskxml, when the delete button is pressed
+     * prompt user with a confirmation dialog.
+     * upon confirmation call vieTaskController to remove
+     * the task through elastic search
+     *
+     * @author Micheal-Nguyen
+     */
+    public void deleteButtonOnClick(android.view.View view) {
+// taken from https://stackoverflow.com/questions/2115758/how-do-i-display-an-alert-dialog-on-android
+        // 2018-03-16
+        AlertDialog.Builder alert = new AlertDialog.Builder(ViewTaskActivity.this);
+        alert.setTitle("Delete Task");
+        alert.setMessage("Are you sure you want to delete this task?");
+
+        //DELETE CODE
+        alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                viewTaskController.RemoveTaskRequest(task);
+                dialogInterface.dismiss();
+
+                Intent intent = new Intent();
+                intent.putExtra("result", true);
+                setResult(RESULT_OK, intent);
+
+                finish();
+            }
+        });
+        //DELETE CANCEL CODE
+        alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        alert.show();
+    }
+
+    /**
+     * editButtonOnClick
+     * in the activity_view_taskxml, when the edit button is pressed
+     * got to the edit task activity
+     * upon confirmation call vieTaskController to edit
+     * the task through elastic search
+     *
+     * @author Micheal-Nguyen
+     */
+    public void editButtonOnClick(android.view.View view){
+        Intent intent = new Intent(view.getContext(), EditTaskActivity.class);
+        intent.putExtra("task Name", taskName);
+        intent.putExtra("Description", description);
+        ArrayList<String> photosString = new ArrayList<String>();
+        for(int i = 0;i < photos.size(); i++){
+            photosString.add(photos.get(i).toString());
+        }
+        intent.putStringArrayListExtra("photos",photosString);
+        startActivityForResult(intent, 1);
+    }
+
+    /**
+     * RequesterPictureOnClick
+     * when requester picture clicked in
+     * activity_view_task.xml pass user id through intent
+     * and start the ProfileActivity
+     *
+     * @author Micheal-Nguyen
+     */
+    public void requesterPictureOnClick(android.view.View view) {
+        try {
+            Intent intent = new Intent(view.getContext(), ProfileActivity.class);
+            intent.putExtra("user id", TaskRequester.getId());
+            startActivity(intent);
+        } catch (Exception e) {}
+    }
+
+    /**
+     * ProviderPictureOnClick
+     * when providerpicture clicked in
+     * activity_view_task.xml pass user id through intent
+     * and start the ProfileActivity
+     *
+     * @author Micheal-Nguyen
+     */
+    public void providerPictureOnClick(android.view.View view) {
+        try {
+            Intent intent = new Intent(view.getContext(), ProfileActivity.class);
+            if (task.getStatus().equals("bidded")) {
+                intent.putExtra("user id", task.getBestBidder());
             } else {
-                OrangeButton.setText("REVIEW REQUESTER");
+                intent.putExtra("user id", TaskProvider.getId());
             }
-        }
-
-//            LinearLayout.LayoutParams detailsLayout =
-//            new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-//            LinearLayout.LayoutParams.WRAP_CONTENT);
-//            detailsLayout.setMargins(0,999,0,0);
-//            DescriptionView.setLayoutParams(detailsLayout);
-
-        /*
-         * ProviderPicture and RequesterPicture
-         * when provider or requester picture clicked in
-         * activity_view_task.xml pass user id through intent
-         * and start the ProfileActivity
-         *
-         * @author Micheal-Nguyen
-         */
-        ProviderPicture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    Intent intent = new Intent(view.getContext(), ProfileActivity.class);
-                    if (task.getStatus().equals("bidded")) {
-                        intent.putExtra("user id", task.getBestBidder());
-                    } else {
-                        intent.putExtra("user id", TaskProvider.getId());
-                    }
-                    startActivity(intent);
-                } catch (Exception e) {}
-            }
-
-        });
-
-        RequesterPicture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    Intent intent = new Intent(view.getContext(), ProfileActivity.class);
-                    intent.putExtra("user id", TaskRequester.getId());
-                    startActivity(intent);
-                } catch (Exception e) {}
-            }
-        });
-
-        //Edit Task Button
-        EditButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), EditTaskActivity.class);
-                intent.putExtra("task Name", taskName);
-                intent.putExtra("Description", description);
-                ArrayList<String> photosString = new ArrayList<String>();
-                for(int i=0;i<photos.size();i++){
-                    photosString.add(photos.get(i).toString());
-                }
-                intent.putStringArrayListExtra("photos",photosString);
-                startActivityForResult(intent, 1);
-            }
-        });
-
-        /*
-         * DeleteButton
-         * in the activity_view_taskxml, when the delete button is pressed
-         * prompt user with a confirmation dialog.
-         * upon confirmation call vieTaskController to remove
-         * the task through elastic search
-         *
-         * @author Micheal-Nguyen
-         */
-        DeleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // taken from https://stackoverflow.com/questions/2115758/how-do-i-display-an-alert-dialog-on-android
-                // 2018-03-16
-                AlertDialog.Builder alert = new AlertDialog.Builder(ViewTaskActivity.this);
-                alert.setTitle("Delete Task");
-                alert.setMessage("Are you sure you want to delete this task?");
-
-                //DELETE CODE
-                alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        viewTaskController.RemoveTaskRequest(task);
-                        dialogInterface.dismiss();
-
-                        Intent intent = new Intent();
-                        intent.putExtra("result", true);
-                        setResult(RESULT_OK, intent);
-
-                        finish();
-                    }
-                });
-                //DELETE CANCEL CODE
-                alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                });
-                alert.show();
-            }
-        });
-
-        RedButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder alert = new AlertDialog.Builder(ViewTaskActivity.this);
-                alert.setTitle("Unassign Provider");
-                alert.setMessage("Are you sure you want to unassign this provider?");
-
-                //DELETE CODE
-                alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                        task.unassignProvider();
-                        RedButton.setVisibility(View.INVISIBLE);
-                        GreenButton.setVisibility(View.INVISIBLE);
-                        PinkButton.setVisibility(View.VISIBLE);
-                        YellowButton.setVisibility(View.VISIBLE);
-                        TaskStatus.setText("Requested");
-                        if (currentUserId.equals(task.getRequesterId())) {
-                            OrangeButton.setText("REVIEW PROVIDER");
-                        } else {
-                            OrangeButton.setText("REVIEW REQUESTER");
-                        }
-                    }
-                });
-                alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                });
-                alert.show();
-            }
-        });
-
-        GreenButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder alert = new AlertDialog.Builder(ViewTaskActivity.this);
-                alert.setTitle("Complete task");
-                alert.setMessage("Are you sure you want to set this task as completed?");
-
-                //DELETE CODE
-                alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                        task.completeTask();
-                        RedButton.setVisibility(View.INVISIBLE);
-                        GreenButton.setVisibility(View.INVISIBLE);
-                        OrangeButton.setVisibility(View.VISIBLE);
-                        TaskStatus.setText("Completed");
-                        if (currentUserId.equals(task.getRequesterId())) {
-                            OrangeButton.setText("REVIEW PROVIDER");
-                        } else {
-                            OrangeButton.setText("REVIEW REQUESTER");
-                        }
-                    }
-                });
-                alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                });
-                alert.show();
-            }
-        });
-
-        // get all of this task's bids and pass it into expandable list to display
-        // @author myapplestory
-        BidList.clear();
-        GetBidsByTaskIdRequest getBidsByTaskIdRequest = new GetBidsByTaskIdRequest(this.taskID);
-        RequestManager.getInstance().invokeRequest(getBidsByTaskIdRequest);
-        BidList.addAll(getBidsByTaskIdRequest.getResult());
-        ExpandableListAdapter expandableListAdapter = new ExpandableBidListAdapter(this, BidList);
-        BidslistView.setAdapter(expandableListAdapter);
+            startActivity(intent);
+        } catch (Exception e) {}
     }
 
     /**
@@ -413,9 +292,6 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
      * upon pressing place button on task page
      * prompts user to enter in a bid amount
      * if valid input, will add bid to task
-     *
-     * notes
-     * can probably add more stuff to dialog
      */
     public void theBlueButton(android.view.View view) {
         final AlertDialog mBuilder = new AlertDialog.Builder(ViewTaskActivity.this).create();
@@ -497,12 +373,22 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         mBuilder.show();
     }
 
+    /**
+     * theYellowButton
+     * when the task is bidded or requested
+     * the requester can accept an existing bid from the list of existing bids
+     * onclick a dialog shows up with a list view of existing bids and a button to confirm acceptance
+     *
+     * @param view
+     * @author myapplestory
+     */
     public void theYellowButton(android.view.View view) {
         final AlertDialog mBuilder = new AlertDialog.Builder(ViewTaskActivity.this).create();
         final View mView = getLayoutInflater().inflate(R.layout.dialog_accept_bid,null);
         final ListView acceptBidListView = mView.findViewById(R.id.AcceptBidList);
         final Button acceptBidButton = mView.findViewById(R.id.AcceptBidButton);
         ArrayList<String> tempList = new ArrayList<>();
+        selectedBid = null;
 
         if (BidList.isEmpty()) {
             tempList.add("No bids :'(");
@@ -537,9 +423,15 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                 }
             });
 
+            // upon clicking accepting, take the bids that was selected and update task
             acceptBidButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    if (selectedBid == null) {
+                        Toast.makeText(ViewTaskActivity.this,
+                                "Select one of the bids before accepting", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     ProfileController controller = new ProfileController(mView, getBaseContext());
                     controller.setUserID(selectedBid.getUserId());
                     controller.getUserRequest();
@@ -555,6 +447,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                     GreenButton.setVisibility(View.VISIBLE);
                     PinkButton.setVisibility(View.INVISIBLE);
                     YellowButton.setVisibility(View.INVISIBLE);
+                    BidslistView.setVisibility(View.INVISIBLE);
                 }
             });
         }
@@ -562,13 +455,22 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         mBuilder.show();
     }
 
-
+    /**
+     * thePinkButton
+     * when the task is requested or bidded
+     * there will be a pink button where the requester can decline one of the existing bids
+     * onclick it shows a dialog with a listview of existing bids and a button to confirm declination
+     *
+     * @param view the view this button is in
+     * @author myapplestory
+     */
     public void thePinkButton(android.view.View view) {
         final AlertDialog mBuilder = new AlertDialog.Builder(ViewTaskActivity.this).create();
         final View mView = getLayoutInflater().inflate(R.layout.dialog_decline_bid,null);
         final ListView declineBidListView = mView.findViewById(R.id.DeclineBidList);
         final Button declineBidButton = mView.findViewById(R.id.DeclineBidButton);
         ArrayList<String> tempList = new ArrayList<>();
+        selectedBid = null;
 
         if (BidList.isEmpty()) {
             tempList.add("No bids :'(");
@@ -605,29 +507,34 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
             declineBidButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    if (selectedBid == null) {
+                        Toast.makeText(ViewTaskActivity.this,
+                                "Select a bid before declining", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     RemoveBidRequest removeRequest = new RemoveBidRequest(selectedBid);
                     RequestManager.getInstance().invokeRequest(removeRequest);
                     BidList.remove(selectedBid);
                     updateBidsList();
 
-                    if (BidList.isEmpty()) {
+                    if (BidList.size() == 1) {
                         EditButton.setVisibility(View.VISIBLE);
                         task.setStatus("requested");
                         TaskStatus.setText("requested");
+                        updateBidsList();
                     } else {
-                        Float bestBidTemp = -1f;
+                        Float bestBidTemp = -1.0f;
                         String bestBidderIdTemp = "-1";
                         for(Bid bid: BidList){
-                            if(bestBidTemp == -1f){
+                            if(bestBidTemp == -1.0f){
                                 bestBidTemp = bid.getBidAmount();
                                 GetUserRequest request = new GetUserRequest(bid.getUserId());
                                 RequestManager.getInstance().invokeRequest(getApplicationContext(), request);
                                 User tempBidder = request.getResult();
                                 bestBidderIdTemp = tempBidder.getId();
-
                             }
 
-                            if(bid.getBidAmount()<bestBidTemp && !task.getBestBidder().equals(bid.getUserId())){
+                            if(bid.getBidAmount() < bestBidTemp && !task.getBestBidder().equals(bid.getUserId())){
                                 Log.i("CHANGE",bid.getBidAmount().toString());
                                 bestBidTemp = bid.getBidAmount();
                                 GetUserRequest request = new GetUserRequest(bid.getUserId());
@@ -649,6 +556,14 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         mBuilder.show();
     }
 
+    /**
+     * theOrangeButton
+     * upon completing a task, a orange button appears which enables the requester/provider
+     * to review the other user
+     * goes to another activity to write a review
+     * @param view the view this button is in
+     * @author myapplestory
+     */
     public void theOrangeButton(android.view.View view) {
         Intent intent = new Intent(view.getContext(), NewReviewActivity.class);
         if (currentUserId.equals(task.getRequesterId())) {
@@ -661,6 +576,93 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         startActivity(intent);
     }
 
+    /**
+     * theRedButton
+     * when the task is assigned
+     * there will be a red button where the requester is
+     * able to unassign the provider from the task
+     * and reset the task back to requested with no bids
+     * @author wyatt
+     */
+    public void theRedButton(android.view.View view){
+        AlertDialog.Builder alert = new AlertDialog.Builder(ViewTaskActivity.this);
+        alert.setTitle("Unassign Provider");
+        alert.setMessage("Are you sure you want to unassign this provider?");
+
+        //DELETE CODE
+        alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+                task.unassignProvider();
+                RedButton.setVisibility(View.INVISIBLE);
+                GreenButton.setVisibility(View.INVISIBLE);
+                PinkButton.setVisibility(View.VISIBLE);
+                YellowButton.setVisibility(View.VISIBLE);
+                TaskStatus.setText("Requested");
+                if (currentUserId.equals(task.getRequesterId())) {
+                    OrangeButton.setText("REVIEW PROVIDER");
+                } else {
+                    OrangeButton.setText("REVIEW REQUESTER");
+                }
+            }
+        });
+        alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        alert.show();
+    }
+
+    /**
+     * theGreenButton
+     * when the task is assigned
+     * there will be a green button where the requester is
+     * able to complete the task
+     *
+     * @author wyatt
+     */
+    public void theGreenButton(android.view.View view){
+        AlertDialog.Builder alert = new AlertDialog.Builder(ViewTaskActivity.this);
+        alert.setTitle("Complete task");
+        alert.setMessage("Are you sure you want to set this task as completed?");
+
+        //DELETE CODE
+        alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+                task.completeTask();
+                RedButton.setVisibility(View.INVISIBLE);
+                GreenButton.setVisibility(View.INVISIBLE);
+                OrangeButton.setVisibility(View.VISIBLE);
+                TaskStatus.setText("Completed");
+                if (currentUserId.equals(task.getRequesterId())) {
+                    OrangeButton.setText("REVIEW PROVIDER");
+                } else {
+                    OrangeButton.setText("REVIEW REQUESTER");
+                }
+            }
+        });
+        alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        alert.show();
+    }
+
+    /**
+     * updateBestBid
+     * updates best bidder field if new bid has value less than the current best bid
+     *
+     * @param incomingBidFloat the bid amount the new bid will be
+     * @return 0 if best bidder needs update, -1 if not
+     * @author myapplestory, Micheal-Nguyen
+     */
     public Integer updateBestBid(Float incomingBidFloat) {
         Log.i("CURRENTBESTBIDDER",task.getBestBidder());
         Log.i("CURRENTUSER",currentUserId);
@@ -695,7 +697,11 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         return 0;
     }
 
-
+    /**
+     * setRequesterField
+     * sets the text and picture in the requester field
+     * @author myapplestory
+     */
     public void setRequesterField() {
         String text = "Requester: " + TaskRequester.getName();
         RequesterName.setText(text);
@@ -707,6 +713,13 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         }
     }
 
+    /**
+     * setPoviderField
+     * sets the provider text and picture accordingly
+     * if the task status is bidded then the best bidder will appear on the field
+     * else if the task status is assigned or completed then the provider will appear
+     * @author myapplestory
+     */
     public void setProviderField() {
         if (task.getStatus().equals("requested")) {
             Photo defaultPhoto = new Photo("");
@@ -738,6 +751,11 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         }
     }
 
+    /**
+     * findViews
+     * assign variables to their respective views upon init
+     * @author myapplestory
+     */
     public void findViews(){
         EditButton = findViewById(R.id.EditButton);
         DeleteButton = findViewById(R.id.DeleteButton);
@@ -758,6 +776,11 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         OrangeButton = findViewById(R.id.orangeButton);
     }
 
+    /**
+     * setValues
+     * set the values of the respective variables upon init
+     * @author myapplestory
+     */
     public void setValues(){
         viewTaskController.setTaskID(taskID);
         viewTaskController.getTaskRequest();
@@ -774,12 +797,82 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         DescriptionView.setText(description);
     }
 
+    /**
+     * setVisibility
+     * sets the visibilities of every button according to the task status and viewer upon init
+     * @author myapplestory
+     */
+    public void setVisibility(){
+        // taken from https://stackoverflow.com/questions/3465841/how-to-change-visibility-of-layout-programmatically
+        // 2018-03-14
+        if (currentUserId.equals(taskUserId)) {
+            DeleteButton.setVisibility(View.VISIBLE);
+            BlueButton.setVisibility(View.INVISIBLE);
+            if (task.getStatus().equals("requested")) {
+                EditButton.setVisibility(View.VISIBLE);
+                ProviderPicture.setVisibility(View.INVISIBLE);
+            }
+            else if (task.getStatus().equals("assigned")) {
+                EditButton.setVisibility(View.INVISIBLE);
+                GreenButton.setVisibility(View.VISIBLE);
+                RedButton.setVisibility(View.VISIBLE);
+                YellowButton.setVisibility(View.INVISIBLE);
+                PinkButton.setVisibility(View.INVISIBLE);
+                BidslistView.setVisibility(View.INVISIBLE);
+                BidslistView.setVisibility(View.INVISIBLE);
+            }
+            else {
+                EditButton.setVisibility(View.INVISIBLE);
+            }
+        } else {
+            DeleteButton.setVisibility(View.INVISIBLE);
+            EditButton.setVisibility(View.INVISIBLE);
+            YellowButton.setVisibility(View.INVISIBLE);
+            PinkButton.setVisibility(View.INVISIBLE);
+            GreenButton.setVisibility(View.INVISIBLE);
+            RedButton.setVisibility(View.INVISIBLE);
+        }
+        if (task.isComplete()) {
+            YellowButton.setVisibility(View.INVISIBLE);
+            BlueButton.setVisibility(View.INVISIBLE);
+            RedButton.setVisibility(View.INVISIBLE);
+            GreenButton.setVisibility(View.INVISIBLE);
+            PinkButton.setVisibility(View.INVISIBLE);
+            OrangeButton.setVisibility(View.VISIBLE);
+            BidslistView.setVisibility(View.INVISIBLE);
+            if (currentUserId.equals(task.getRequesterId())) {
+                OrangeButton.setText("REVIEW PROVIDER");
+            } else {
+                OrangeButton.setText("REVIEW REQUESTER");
+            }
+        }
+    }
+
+    /**
+     * updateBidsList
+     * updates bbids list view upon call
+     * @author myapplestory
+     */
     public void updateBidsList(){
         BidList.clear();
         GetBidsByTaskIdRequest getBidsByTaskIdRequest = new GetBidsByTaskIdRequest(this.taskID);
         RequestManager.getInstance().invokeRequest(getBidsByTaskIdRequest);
         BidList.addAll(getBidsByTaskIdRequest.getResult());
         ExpandableListAdapter expandableListAdapter= new ExpandableBidListAdapter(this, BidList);
+        BidslistView.setAdapter(expandableListAdapter);
+    }
+
+    /**
+     * setUpBidsList
+     * get all of this task's bids and pass it into expandable list to display
+     * @author myapplestory
+     */
+    public void setUpBidsList(){
+        BidList.clear();
+        GetBidsByTaskIdRequest getBidsByTaskIdRequest = new GetBidsByTaskIdRequest(this.taskID);
+        RequestManager.getInstance().invokeRequest(getBidsByTaskIdRequest);
+        BidList.addAll(getBidsByTaskIdRequest.getResult());
+        ExpandableListAdapter expandableListAdapter = new ExpandableBidListAdapter(this, BidList);
         BidslistView.setAdapter(expandableListAdapter);
     }
 
