@@ -17,13 +17,16 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -237,7 +240,24 @@ public class ProfileFragment extends Fragment {
      * @author myapplestory
      */
     public void providerRatingOnClick() {
-        Toast.makeText(this.getContext(), "dwdwdwdwd", Toast.LENGTH_SHORT).show();
+        final AlertDialog mBuilder = new AlertDialog.Builder(this.getContext()).create();
+        final View mView = getLayoutInflater().inflate(R.layout.dialog_review_list,null);
+        final ListView ReviewsListView = mView.findViewById(R.id.ReviewsListView);
+        final TextView ReviewBannerTextView = mView.findViewById(R.id.ReviewsBannerTextView);
+        ArrayList<String> ReviewsList = new ArrayList<>();
+
+        ReviewsList.add("dwdwdw");
+        ReviewsList.add("dwdwdw");
+        ReviewsList.add("dwdwdw");
+        ReviewsList.add("dwdwdw");
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>
+                (this.getContext(), android.R.layout.simple_list_item_1, ReviewsList);
+
+        ReviewsListView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+        mBuilder.setView(mView);
+        mBuilder.show();
     }
 
     /**

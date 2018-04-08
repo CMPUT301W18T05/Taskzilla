@@ -387,13 +387,13 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         final View mView = getLayoutInflater().inflate(R.layout.dialog_accept_bid,null);
         final ListView acceptBidListView = mView.findViewById(R.id.AcceptBidList);
         final Button acceptBidButton = mView.findViewById(R.id.AcceptBidButton);
-        ArrayList<String> tempList = new ArrayList<>();
+        ArrayList<String> tempBidList = new ArrayList<>();
         selectedBid = null;
 
         if (BidList.isEmpty()) {
-            tempList.add("No bids :'(");
+            tempBidList.add("No bids :'(");
             ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                    android.R.layout.simple_list_item_1, tempList);
+                    android.R.layout.simple_list_item_1, tempBidList);
             acceptBidListView.setAdapter(adapter);
             acceptBidButton.setText("SAD");
             acceptBidButton.setOnClickListener(new View.OnClickListener() {
@@ -407,11 +407,11 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                 ProfileController controller = new ProfileController(mView, getBaseContext());
                 controller.setUserID(bid.getUserId());
                 controller.getUserRequest();
-                tempList.add("Best bidder: " + controller.getUser().getName() + "\nBid Amount: " +
+                tempBidList.add("Best bidder: " + controller.getUser().getName() + "\nBid Amount: " +
                         bid.getBidAmount());
             }
             ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                    android.R.layout.simple_list_item_single_choice, tempList);
+                    android.R.layout.simple_list_item_single_choice, tempBidList);
             acceptBidListView.setAdapter(adapter);
             acceptBidListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
             acceptBidButton.setText("ACCEPT BID");

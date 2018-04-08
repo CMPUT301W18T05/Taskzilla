@@ -98,7 +98,7 @@ public class NewReviewActivity extends AppCompatActivity {
         }
 
         Review review = new Review(reviewTitle, reviewRating, reviewDescription,
-                targetUserId, currentUserId);
+                targetUserId, currentUserId, revieweeType);
 
         Float newRating = 0.0f;
         if (revieweeType.equals("r")) {
