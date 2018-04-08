@@ -19,8 +19,10 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +53,7 @@ public class NotificationsFragment extends Fragment {
     private ArrayAdapter<Notification> adapter;
     private NotificationsController notificationsController;
     private Notification currentNotification;
+    private SwipeRefreshLayout mySwipeRefreshLayout;
     private String taskId;
     private String notificationId;
 
@@ -138,7 +141,26 @@ public class NotificationsFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        mySwipeRefreshLayout = view.findViewById(R.id.swiperefreshProvider);
+        mySwipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
 
+                        //Andy Put your update method here
+
+                        final Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(mySwipeRefreshLayout.isRefreshing()) {
+                                    mySwipeRefreshLayout.setRefreshing(false);
+                                }
+                            }
+                        }, 1000);
+                    }
+                }
+        );
     }
 
     public void viewTask(String taskId){
