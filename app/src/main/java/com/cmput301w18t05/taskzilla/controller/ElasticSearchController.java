@@ -701,6 +701,44 @@ public class ElasticSearchController {
         }
     }
 
+    public static class GetReviewsByUserId extends AsyncTask<String, Void, ArrayList<Review>> {
+        /**
+         * Handles retrieving all bids from a user id
+         * @return ArrayList<Bid>
+         */
+        @Override
+        protected ArrayList<Review> doInBackground(String... userIds) {
+            verifySettings();
+            ArrayList<Review> foundReviews = new ArrayList<>();
+
+            for (String  userId : userIds) {
+                String query = "{ \"query\" : { \"match\" : { \"userId\" : \""+ userId + "\" } } }";
+                Log.i("Query: ", query);
+
+                SearchResult result;
+                Search search = new Search.Builder(query)
+                        .addIndex("cmput301w18t05")
+                        .addType("review")
+                        .build();
+
+                try {
+                    result = client.execute(search);
+                    if (result.isSucceeded()) {
+                        List<Review> newReviews = result.getSourceAsObjectList(Review.class);
+                        foundReviews.addAll(newReviews);
+                    }
+                    else {
+                        return null;
+                    }
+                }
+                catch (Exception e) {
+                    return null;
+                }
+            }
+            return foundReviews;
+        }
+    }
+
     /**
      * Asynchronous task that removes a bid
      * todo: make this take in a bid id
