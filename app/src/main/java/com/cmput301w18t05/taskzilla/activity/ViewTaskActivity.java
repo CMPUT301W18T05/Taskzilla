@@ -115,6 +115,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
     private Button GreenButton;
     private Button RedButton;
     private Button PinkButton;
+    private Button OrangeButton;
     private ScrollView scrollView;
 
     private RecyclerView recyclerPhotosView;
@@ -122,6 +123,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
     private RecyclerView.LayoutManager layoutManager;
     private LinearLayout linearLayout;
     private ArrayList<Photo> photos;
+
     /**onCreate
      * Retrieve the task using the task id that was sent using
      * intent into the activity updating the information on the
@@ -147,8 +149,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         //mapFragment.getView().setVisibility(View.INVISIBLE);
         //mapFragment.getView().setActivated(false);
         //mapFragment.getView().setEnabled(false);
-
-
+        
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         findViews();
@@ -198,8 +199,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
             else {
                 EditButton.setVisibility(View.INVISIBLE);
             }
-        }
-        else {
+        } else {
             DeleteButton.setVisibility(View.INVISIBLE);
             EditButton.setVisibility(View.INVISIBLE);
             YellowButton.setVisibility(View.INVISIBLE);
@@ -214,6 +214,12 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
             RedButton.setVisibility(View.INVISIBLE);
             GreenButton.setVisibility(View.INVISIBLE);
             PinkButton.setVisibility(View.INVISIBLE);
+            OrangeButton.setVisibility(View.VISIBLE);
+            if (currentUserId.equals(task.getRequesterId())) {
+                OrangeButton.setText("REVIEW PROVIDER");
+            } else {
+                OrangeButton.setText("REVIEW REQUESTER");
+            }
         }
 
 //            LinearLayout.LayoutParams detailsLayout =
@@ -305,7 +311,6 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                         finish();
                     }
                 });
-
                 //DELETE CANCEL CODE
                 alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
@@ -321,6 +326,10 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
             @Override
             public void onClick(View view) {
                 task.unassignProvider();
+                RedButton.setVisibility(View.INVISIBLE);
+                GreenButton.setVisibility(View.INVISIBLE);
+                PinkButton.setVisibility(View.VISIBLE);
+                YellowButton.setVisibility(View.VISIBLE);
             }
         });
 
@@ -328,9 +337,12 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
             @Override
             public void onClick(View view) {
                 task.completeTask();
+                RedButton.setVisibility(View.INVISIBLE);
+                GreenButton.setVisibility(View.INVISIBLE);
+                PinkButton.setVisibility(View.VISIBLE);
+                YellowButton.setVisibility(View.VISIBLE);
             }
         });
-
 
         // get all of this task's bids and pass it into expandable list to display
         // @author myapplestory
@@ -487,6 +499,10 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                     EditButton.setVisibility(View.INVISIBLE);
                     setProviderField();
                     mBuilder.dismiss();
+                    RedButton.setVisibility(View.VISIBLE);
+                    GreenButton.setVisibility(View.VISIBLE);
+                    PinkButton.setVisibility(View.INVISIBLE);
+                    YellowButton.setVisibility(View.INVISIBLE);
                 }
             });
         }
@@ -547,10 +563,31 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                         task.setStatus("requested");
                         TaskStatus.setText("requested");
                     } else {
-                        //update best bid field
+                        Float bestBidTemp = -1f;
+                        String bestBidderIdTemp = "-1";
+                        for(Bid bid: BidList){
+                            if(bestBidTemp == -1f){
+                                bestBidTemp = bid.getBidAmount();
+                                GetUserRequest request = new GetUserRequest(bid.getUserId());
+                                RequestManager.getInstance().invokeRequest(getApplicationContext(), request);
+                                User tempBidder = request.getResult();
+                                bestBidderIdTemp = tempBidder.getId();
+
+                            }
+
+                            if(bid.getBidAmount()<bestBidTemp && !task.getBestBidder().equals(bid.getUserId())){
+                                Log.i("CHANGE",bid.getBidAmount().toString());
+                                bestBidTemp = bid.getBidAmount();
+                                GetUserRequest request = new GetUserRequest(bid.getUserId());
+                                RequestManager.getInstance().invokeRequest(getApplicationContext(), request);
+                                User tempBidder = request.getResult();
+                                bestBidderIdTemp = tempBidder.getId();
+                            }
+                        }
+                        task.setBestBid(bestBidTemp);
+                        task.setBestBidder(bestBidderIdTemp);
+                        task.updateThis();
                     }
-
-
                     setProviderField();
                     mBuilder.dismiss();
                 }
@@ -560,8 +597,23 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         mBuilder.show();
     }
 
+    public void theOrangeButton(android.view.View view) {
+        Intent intent = new Intent(view.getContext(), EditTaskActivity.class);
+        if (currentUserId.equals(task.getRequesterId())) {
+            intent.putExtra("who", "p");
+            intent.putExtra("id", task.getProviderId());
+        } else {
+            intent.putExtra("who", task.getRequesterId());
+        }
+        startActivity(intent);
+    }
+
     public Integer updateBestBid(Float incomingBidFloat) {
+        Log.i("CURRENTBESTBIDDER",task.getBestBidder().toString());
+        Log.i("CURRENTUSER",currentUserId);
+
         if (task.getBestBid() > incomingBidFloat || task.getBestBid() == -1.0f) {
+            Log.i("in","1");
             task.setBestBidder(currentUserId);
             task.setBestBid(incomingBidFloat);
             task.updateThis();
@@ -570,20 +622,22 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                     "A similar bid already exists. Please bid another value",
                     Toast.LENGTH_SHORT).show();
             return -1;
-        } if (task.getBestBidder().equals(currentUserId)) {
-            task.setBestBid(incomingBidFloat);
+        } else if (task.getBestBidder().equals(currentUserId)) {
+            Float bestBidTemp = incomingBidFloat;
+            String bestBidderIdTemp = currentUserId;
             for(Bid bid: BidList){
-                if(bid.getBidAmount()<task.getBestBid() && !task.getBestBidder().equals(bid.getUserId())){
-                    task.setBestBid(bid.getBidAmount());
+
+                if(bid.getBidAmount()<bestBidTemp && !task.getBestBidder().equals(bid.getUserId())){
+                    Log.i("CHANGE",bid.getBidAmount().toString());
+                    bestBidTemp = bid.getBidAmount();
                     GetUserRequest request = new GetUserRequest(bid.getUserId());
-                    Log.i("testBIDID",bid.getUserId());
                     RequestManager.getInstance().invokeRequest(getApplicationContext(), request);
                     User tempBidder = request.getResult();
-                    Log.i("TESTBIDDERNAME",tempBidder.getName());
-                    task.setBestBidder(tempBidder.getId());
-                    Log.i("BEST BIDDER",task.getBestBidder());
+                    bestBidderIdTemp = tempBidder.getId();
                 }
             }
+            task.setBestBid(bestBidTemp);
+            task.setBestBidder(bestBidderIdTemp);
         }
         task.updateThis();
         return 0;
@@ -648,6 +702,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         GreenButton = findViewById(R.id.CompleteTaskButton);
         RedButton = findViewById(R.id.AbortTaskButton);
         PinkButton = findViewById(R.id.PinkButton);
+        OrangeButton = findViewById(R.id.orangeButton);
     }
 
     public void setValues(){

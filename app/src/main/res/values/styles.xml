@@ -48,5 +48,8 @@
     <style name="AppTheme.RedButton" parent="Base.Widget.AppCompat.Button">
         <item name="colorButtonNormal">@color/buttonRed</item>
     </style>
+    <style name="AppTheme.OrangeButton" parent="Base.Widget.AppCompat.Button">
+        <item name="colorButtonNormal">@color/buttonOrange</item>
+    </style>
 
 </resources>

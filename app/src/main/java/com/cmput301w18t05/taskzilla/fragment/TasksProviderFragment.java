@@ -47,7 +47,6 @@ import java.util.ArrayList;
  * @version 1.0
  */
 public class TasksProviderFragment extends Fragment {
-
     // List of Tasks
     private ArrayList<Task> taskList;
     private ListView taskListView;
@@ -127,6 +126,7 @@ public class TasksProviderFragment extends Fragment {
         taskList.addAll(requestTasks.getResult());
         adapter.notifyDataSetChanged();
     }
+
     /**
      * Switches to ViewTaskActivity
      * @param id id of the task to be view is passed in as a String
