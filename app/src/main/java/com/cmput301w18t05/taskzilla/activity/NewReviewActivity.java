@@ -92,6 +92,12 @@ public class NewReviewActivity extends AppCompatActivity {
         String reviewDescription = DescriptionText.getText().toString();
         Float reviewRating = RatingBar.getRating();
 
+        if (reviewTitle.isEmpty() || reviewDescription.isEmpty() || reviewRating == 0.0f) {
+            Toast.makeText(this, "Fill", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
         Review review = new Review(reviewTitle, reviewRating, reviewDescription,
                 targetUserId, currentUserId);
 
@@ -108,11 +114,13 @@ public class NewReviewActivity extends AppCompatActivity {
             targetUser.setRequesterRating(newRating);
         }
 
-        AddUserRequest request = new AddUserRequest(targetUser);
-        RequestManager.getInstance().invokeRequest(this, request);
-        // do stuff here to actually add reviews
-        //
+        //AddUserRequest request = new AddUserRequest(targetUser);
+        //RequestManager.getInstance().invokeRequest(this, request);
 
+        review.updateThis(); // send to ES
+
+        Toast.makeText(this, "Review created for " + targetUserName, Toast.LENGTH_SHORT).show();
+        finish();
     }
 
 
