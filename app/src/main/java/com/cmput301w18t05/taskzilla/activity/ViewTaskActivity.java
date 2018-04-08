@@ -66,6 +66,7 @@ import com.cmput301w18t05.taskzilla.currentUser;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.GetBidsByTaskIdRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetUserRequest;
+import com.cmput301w18t05.taskzilla.request.command.RemoveBidRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -495,7 +496,6 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         final Button declineBidButton = mView.findViewById(R.id.DeclineBidButton);
         ArrayList<String> tempList = new ArrayList<>();
 
-
         if (BidList.isEmpty()) {
             tempList.add("No bids :'(");
             ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
@@ -521,7 +521,6 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
             declineBidListView.setAdapter(adapter);
             declineBidListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
             declineBidButton.setText("DECLINE BID");
-
             declineBidListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -532,18 +531,22 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
             declineBidButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//                    ProfileController controller = new ProfileController(mView, getBaseContext());
-//                    controller.setUserID(selectedBid.getUserId());
-//                    controller.getUserRequest();
-//                    TaskProvider = controller.getUser();
-//                    task.setTaskProvider(TaskProvider);
-//                    task.setStatus("assigned");
-//                    TaskStatus.setText("Assigned");
-//                    updateBidsList();
-//                    EditButton.setVisibility(View.INVISIBLE);
-//                    setProviderField();
-//                    mBuilder.dismiss();
-                    Toast.makeText(ViewTaskActivity.this, "dawdwdwddw", Toast.LENGTH_SHORT).show();
+                    RemoveBidRequest removeRequest = new RemoveBidRequest(selectedBid);
+                    RequestManager.getInstance().invokeRequest(removeRequest);
+                    BidList.remove(selectedBid);
+                    updateBidsList();
+
+                    if (BidList.isEmpty()) {
+                        EditButton.setVisibility(View.VISIBLE);
+                        task.setStatus("requested");
+                        TaskStatus.setText("requested");
+                    } else {
+                        //update best bid field
+                    }
+
+
+                    setProviderField();
+                    mBuilder.dismiss();
                 }
             });
         }
