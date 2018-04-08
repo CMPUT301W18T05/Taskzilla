@@ -558,7 +558,30 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                         task.setStatus("requested");
                         TaskStatus.setText("requested");
                     } else {
-                        //update best bid field
+                        Float bestBidTemp = -1f;
+                        String bestBidderIdTemp = "-1";
+                        for(Bid bid: BidList){
+                            if(bestBidTemp == -1f){
+                                bestBidTemp = bid.getBidAmount();
+                                GetUserRequest request = new GetUserRequest(bid.getUserId());
+                                RequestManager.getInstance().invokeRequest(getApplicationContext(), request);
+                                User tempBidder = request.getResult();
+                                bestBidderIdTemp = tempBidder.getId();
+
+                            }
+
+                            if(bid.getBidAmount()<bestBidTemp && !task.getBestBidder().equals(bid.getUserId())){
+                                Log.i("CHANGE",bid.getBidAmount().toString());
+                                bestBidTemp = bid.getBidAmount();
+                                GetUserRequest request = new GetUserRequest(bid.getUserId());
+                                RequestManager.getInstance().invokeRequest(getApplicationContext(), request);
+                                User tempBidder = request.getResult();
+                                bestBidderIdTemp = tempBidder.getId();
+                            }
+                        }
+                        task.setBestBid(bestBidTemp);
+                        task.setBestBidder(bestBidderIdTemp);
+                        task.updateThis();
                     }
                     setProviderField();
                     mBuilder.dismiss();
