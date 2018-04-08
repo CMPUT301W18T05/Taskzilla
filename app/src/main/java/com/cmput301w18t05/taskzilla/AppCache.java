@@ -57,28 +57,40 @@ public class AppCache {
     // can override these to accept different classes
     public void addInCache(Task task) {
         System.out.println("Adding task to cache with requester = "+task.getTaskRequester().getUsername());
-        System.out.println("Setting this taskid to "+taskIDCounter);
-        task.setId(String.valueOf(taskIDCounter));
+
+        if (task.getId() == null) {
+            System.out.println("Setting this taskid to "+taskIDCounter);
+            task.setId(String.valueOf(taskIDCounter));
+            taskIDCounter++;
+        }
+
         cachedTasks.add(task);
-        taskIDCounter++;
+
     }
 
     public void addInCache(Collection<Task> tasks) {
-        cachedTasks.addAll(tasks);
+        if (tasks != null)
+            cachedTasks.addAll(tasks);
     }
 
     public void addInCache(Bid bid) {
+        if (bid == null)
+            return;
+        System.out.println("Adding bid: " + bid.getId() + " to cache.");
+
         bid.setId(String.valueOf(bidIDCounter));
         cachedBids.add(bid);
         bidIDCounter++;
     }
 
     public void addBidsToCache(Collection<Bid> bids) {
-        cachedBids.addAll(bids);
+        if (bids != null)
+            cachedBids.addAll(bids);
     }
 
     public void addInCache(User user) {
-        cachedUsers.add(user);
+        if (user != null)
+            cachedUsers.add(user);
     }
 
     public void removeTaskByTaskid(String taskid) {
