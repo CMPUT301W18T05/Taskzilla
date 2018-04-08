@@ -13,7 +13,6 @@ package com.cmput301w18t05.taskzilla.activity;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.media.Rating;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -94,7 +93,7 @@ public class NewReviewActivity extends AppCompatActivity {
         Review review = new Review(reviewTitle, reviewRating, reviewDescription,
                 targetUserId, currentUserId);
 
-
+        // do stuff here to actually add reviews
 
     }
 
