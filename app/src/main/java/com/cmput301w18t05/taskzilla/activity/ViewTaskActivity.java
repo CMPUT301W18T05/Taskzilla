@@ -509,17 +509,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
 //            });
 //
 //        }
-
-
-
-
-
-
-
-
-
-
-
+        
 
     }
 
