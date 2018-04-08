@@ -581,7 +581,8 @@ public class ElasticSearchController {
             verifySettings();
 
             for (Bid bid : bids) {
-                String searchQuery = "{\"query\": {\"bool\": {\"must\": [{\"match\": { \"taskId\": \"a\" }},{\"match\": {\"userId\": \"c\"}}]}}}";
+                //String searchQuery = "{\"query\": {\"bool\": {\"must\": [{\"match\": { \"taskId\": \"" + bid.getTaskId() + "\" }},{\"match\": {\"userId\": \"" + bid.getUserId() + "\"}}]}}}";
+                String searchQuery = "{\"query\" : {\"constant_score\" : {\"filter\" : {\"bool\" : {\"must\" : [{\"term\" : { \"taskId\" : \""+bid.getTaskId()+"\" }},{ \"term\" : { \"userId\" : \""+bid.getUserId()+"\" }}]}}}}}";
                 Search search = new Search.Builder(searchQuery)
                         .addIndex("cmput301w18t05")
                         .addType("bid").build();
@@ -591,7 +592,9 @@ public class ElasticSearchController {
                     List<Bid> foundBids = otherBids.getSourceAsObjectList(Bid.class);
                     ArrayList<Bid> realRes = new ArrayList<>();
                     realRes.addAll(foundBids);
+                    System.out.println(searchQuery);
                     for (Bid b : realRes) {
+                        System.out.println("AddBidES: Deleting bid: "+b.getId());
                         Delete delete = new Delete.Builder(b.getId()).index("cmput301w18t05").type("bid").build();
                         client.execute(delete);
                     }
@@ -671,7 +674,7 @@ public class ElasticSearchController {
             ArrayList<Bid> foundBids = new ArrayList<>();
 
             for (String  taskId : taskIds) {
-                String query = "{ \"query\" : { \"common\" : { \"taskId\" : \""+ taskId + "\" } } }";
+                String query = "{ \"query\" : { \"match\" : { \"taskId\" : \""+ taskId + "\" } } }";
                 Log.i("Query: ", query);
 
                 SearchResult result;
@@ -698,6 +701,44 @@ public class ElasticSearchController {
         }
     }
 
+    public static class GetReviewsByUserId extends AsyncTask<String, Void, ArrayList<Review>> {
+        /**
+         * Handles retrieving all bids from a user id
+         * @return ArrayList<Bid>
+         */
+        @Override
+        protected ArrayList<Review> doInBackground(String... userIds) {
+            verifySettings();
+            ArrayList<Review> foundReviews = new ArrayList<>();
+
+            for (String  userId : userIds) {
+                String query = "{ \"query\" : { \"match\" : { \"userId\" : \""+ userId + "\" } } }";
+                Log.i("Query: ", query);
+
+                SearchResult result;
+                Search search = new Search.Builder(query)
+                        .addIndex("cmput301w18t05")
+                        .addType("review")
+                        .build();
+
+                try {
+                    result = client.execute(search);
+                    if (result.isSucceeded()) {
+                        List<Review> newReviews = result.getSourceAsObjectList(Review.class);
+                        foundReviews.addAll(newReviews);
+                    }
+                    else {
+                        return null;
+                    }
+                }
+                catch (Exception e) {
+                    return null;
+                }
+            }
+            return foundReviews;
+        }
+    }
+
     /**
      * Asynchronous task that removes a bid
      * todo: make this take in a bid id
@@ -713,6 +754,7 @@ public class ElasticSearchController {
             verifySettings();
             for (Bid bid : bids) {
                 try {
+                    System.out.println("Removing bid in DB: "+bid.getId());
                     client.execute(new Delete.Builder(bid.getId()).index("cmput301w18t05").type("bid").build());
                 } catch (Exception e) {
                     Log.i("Error", "Bid not deleted");
