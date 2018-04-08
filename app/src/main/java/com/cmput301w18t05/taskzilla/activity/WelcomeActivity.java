@@ -42,6 +42,7 @@ import com.cmput301w18t05.taskzilla.fragment.SearchFragment;
 import com.cmput301w18t05.taskzilla.fragment.TasksFragment;
 import com.cmput301w18t05.taskzilla.fragment.TasksProviderFragment;
 import com.cmput301w18t05.taskzilla.fragment.TasksRequesterFragment;
+import com.pes.androidmaterialcolorpickerdialog.ColorPicker;
 
 /**
  * Welcome activity of the app
@@ -84,6 +85,27 @@ public class WelcomeActivity extends AppCompatActivity {
         tabs.getTabAt(3).setIcon(android.R.drawable.ic_popup_reminder);
         tabs.getTabAt(4).setIcon(android.R.drawable.ic_menu_myplaces);
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch(item.getItemId()) {
+            case R.id.Theme:
+                Integer defaultColorR = 0;
+                Integer defaultColorG = 0;
+                Integer defaultColorB = 0;
+                final ColorPicker cp = new ColorPicker(WelcomeActivity.this, defaultColorR, defaultColorG, defaultColorB);
+                cp.show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     boolean doubleBackToExitPressedOnce = false;
