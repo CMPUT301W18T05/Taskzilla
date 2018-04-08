@@ -53,8 +53,10 @@ public class GetTasksByProviderUsernameRequest extends Request {
 
     @Override
     public void executeOffline() {
-        if (executedOffline)
+        if (executedOffline) {
             result = new ArrayList<>();
+            return;
+        }
 
         executedOffline = true;
         AppCache appCache = AppCache.getInstance();
