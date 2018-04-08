@@ -51,6 +51,7 @@ import android.widget.TextView;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.cmput301w18t05.taskzilla.AppColors;
 import com.cmput301w18t05.taskzilla.Bid;
 import com.cmput301w18t05.taskzilla.CustomOnItemClick;
 import com.cmput301w18t05.taskzilla.ExpandableBidListAdapter;
@@ -78,6 +79,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Activity for viewing a task
@@ -123,6 +125,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
     private RecyclerView.LayoutManager layoutManager;
     private LinearLayout linearLayout;
     private ArrayList<Photo> photos;
+    private AppColors appColors;
 
     /**onCreate
      * Retrieve the task using the task id that was sent using
@@ -138,10 +141,10 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_task);
-
+        appColors = AppColors.getInstance();
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#000000")));
-        actionBar.setTitle(Html.fromHtml("<font color='#00e5ee'>Taskzilla</font>"));
+        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor(appColors.getActionBarColor())));
+        actionBar.setTitle(Html.fromHtml("<font color='"+ appColors.getActionBarTextColor() + "'>Taskzilla</font>"));
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.TaskLocation);
@@ -195,6 +198,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                 YellowButton.setVisibility(View.INVISIBLE);
                 PinkButton.setVisibility(View.INVISIBLE);
                 BidslistView.setVisibility(View.INVISIBLE);
+                BidslistView.setVisibility(View.INVISIBLE);
             }
             else {
                 EditButton.setVisibility(View.INVISIBLE);
@@ -215,6 +219,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
             GreenButton.setVisibility(View.INVISIBLE);
             PinkButton.setVisibility(View.INVISIBLE);
             OrangeButton.setVisibility(View.VISIBLE);
+            BidslistView.setVisibility(View.INVISIBLE);
             if (currentUserId.equals(task.getRequesterId())) {
                 OrangeButton.setText("REVIEW PROVIDER");
             } else {
@@ -325,22 +330,69 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         RedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                task.unassignProvider();
-                RedButton.setVisibility(View.INVISIBLE);
-                GreenButton.setVisibility(View.INVISIBLE);
-                PinkButton.setVisibility(View.VISIBLE);
-                YellowButton.setVisibility(View.VISIBLE);
+                AlertDialog.Builder alert = new AlertDialog.Builder(ViewTaskActivity.this);
+                alert.setTitle("Unassign Provider");
+                alert.setMessage("Are you sure you want to unassign this provider?");
+
+                //DELETE CODE
+                alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                        task.unassignProvider();
+                        RedButton.setVisibility(View.INVISIBLE);
+                        GreenButton.setVisibility(View.INVISIBLE);
+                        PinkButton.setVisibility(View.VISIBLE);
+                        YellowButton.setVisibility(View.VISIBLE);
+                        TaskStatus.setText("Requested");
+                        if (currentUserId.equals(task.getRequesterId())) {
+                            OrangeButton.setText("REVIEW PROVIDER");
+                        } else {
+                            OrangeButton.setText("REVIEW REQUESTER");
+                        }
+                    }
+                });
+                alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                alert.show();
             }
         });
 
         GreenButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                task.completeTask();
-                RedButton.setVisibility(View.INVISIBLE);
-                GreenButton.setVisibility(View.INVISIBLE);
-                PinkButton.setVisibility(View.VISIBLE);
-                YellowButton.setVisibility(View.VISIBLE);
+                AlertDialog.Builder alert = new AlertDialog.Builder(ViewTaskActivity.this);
+                alert.setTitle("Complete task");
+                alert.setMessage("Are you sure you want to set this task as completed?");
+
+                //DELETE CODE
+                alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                        task.completeTask();
+                        RedButton.setVisibility(View.INVISIBLE);
+                        GreenButton.setVisibility(View.INVISIBLE);
+                        OrangeButton.setVisibility(View.VISIBLE);
+                        TaskStatus.setText("Completed");
+                        if (currentUserId.equals(task.getRequesterId())) {
+                            OrangeButton.setText("REVIEW PROVIDER");
+                        } else {
+                            OrangeButton.setText("REVIEW REQUESTER");
+                        }
+                    }
+                });
+                alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                alert.show();
             }
         });
 
@@ -598,18 +650,19 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
     }
 
     public void theOrangeButton(android.view.View view) {
-        Intent intent = new Intent(view.getContext(), EditTaskActivity.class);
+        Intent intent = new Intent(view.getContext(), NewReviewActivity.class);
         if (currentUserId.equals(task.getRequesterId())) {
             intent.putExtra("who", "p");
             intent.putExtra("id", task.getProviderId());
         } else {
-            intent.putExtra("who", task.getRequesterId());
+            intent.putExtra("who", "r");
+            intent.putExtra("id", task.getRequesterId());
         }
         startActivity(intent);
     }
 
     public Integer updateBestBid(Float incomingBidFloat) {
-        Log.i("CURRENTBESTBIDDER",task.getBestBidder().toString());
+        Log.i("CURRENTBESTBIDDER",task.getBestBidder());
         Log.i("CURRENTUSER",currentUserId);
 
         if (task.getBestBid() > incomingBidFloat || task.getBestBid() == -1.0f) {
@@ -625,8 +678,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         } else if (task.getBestBidder().equals(currentUserId)) {
             Float bestBidTemp = incomingBidFloat;
             String bestBidderIdTemp = currentUserId;
-            for(Bid bid: BidList){
-
+            for(Bid bid: BidList) {
                 if(bid.getBidAmount()<bestBidTemp && !task.getBestBidder().equals(bid.getUserId())){
                     Log.i("CHANGE",bid.getBidAmount().toString());
                     bestBidTemp = bid.getBidAmount();
@@ -665,7 +717,8 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
             profileController.setUserID(task.getBestBidder());
             profileController.getUserRequest();
             User tempUser = profileController.getUser();
-            String text = "Best bidder: " + tempUser.getName() + "\nBid amount: " + "$" + String.format("%.2f",task.getBestBid());
+            String text = "Best bidder: " + tempUser.getName() + "\nBid amount: " + "$" +
+                    String.format(Locale.CANADA, "%.2f",task.getBestBid());
             ProviderName.setText(text);
             try {
                 ProviderPicture.setImageBitmap(tempUser.getPhoto().StringToBitmap());
@@ -734,7 +787,6 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-
             @Override
             public void onMapClick(LatLng point) {
                 Intent intent = new Intent(getApplicationContext(), MapActivity.class);
@@ -744,7 +796,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                 startActivity(intent);
             }
         });
-        if(task.getLocation()!=null) {
+        if (task.getLocation()!=null) {
             mMap.getUiSettings().setScrollGesturesEnabled(false);
             mMap.getUiSettings().setZoomGesturesEnabled(false);
             //mMap.getUiSettings()

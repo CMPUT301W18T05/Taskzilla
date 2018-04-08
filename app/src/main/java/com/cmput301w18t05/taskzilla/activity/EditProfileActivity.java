@@ -54,9 +54,9 @@ public class EditProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setTitle("Edit Profile");
         setContentView(R.layout.activity_edit_profile);
-        NameText = (EditText) findViewById(R.id.NameField);
-        EmailText = (EditText) findViewById(R.id.EmailField);
-        PhoneText = (EditText) findViewById(R.id.Phone);
+        NameText = findViewById(R.id.NameField);
+        EmailText = findViewById(R.id.EmailField);
+        PhoneText = findViewById(R.id.Phone);
         profilePicture = findViewById(R.id.ProfilePictureView);
 
         String userName = getIntent().getStringExtra("Name");
@@ -97,8 +97,6 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     public void ProfileSaveButton(View view){
-        /** Add Save Code when ESC and controllers get figured out */
-
         if(validateInformation()){
             user.setName(NameText.getText().toString());
             user.setEmail(new EmailAddress(EmailText.getText().toString()));

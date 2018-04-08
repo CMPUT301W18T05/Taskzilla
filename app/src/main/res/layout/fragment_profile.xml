@@ -26,12 +26,12 @@
             android:id="@+id/RatingDescriptionTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:text="User Ratings"
             android:textSize="23sp"
-            app:layout_constraintBottom_toTopOf="@+id/RatingsLayout"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/InfoLayout" />
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/AcomplishmentsLayout"
@@ -51,6 +51,7 @@
                 android:layout_marginEnd="8dp"
                 android:text="998"
                 android:textSize="24sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/numTasksDone"
                 app:layout_constraintEnd_toEndOf="parent" />
 
             <TextView
@@ -58,11 +59,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:layout_marginTop="8dp"
                 android:text="2"
                 android:textSize="24sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/numTasksDoneField" />
+                app:layout_constraintBaseline_toBaselineOf="@+id/numRequests"
+                app:layout_constraintEnd_toEndOf="parent" />
 
             <TextView
                 android:id="@+id/numTasksDone"
@@ -95,20 +95,18 @@
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             android:background="@android:color/holo_red_light"
             android:text="Log out"
             android:textColor="@android:color/background_light"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/RatingsLayout" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/RatingsLayout"
             android:layout_width="0dp"
-            android:layout_height="90dp"
-            android:layout_marginTop="50dp"
+            android:layout_height="75dp"
+            android:layout_marginTop="8dp"
             android:background="@android:color/background_light"
             android:elevation="1dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -116,7 +114,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/InfoLayout">
+            app:layout_constraintTop_toBottomOf="@+id/RatingDescriptionTextView">
 
             <TextView
                 android:id="@+id/providerRating"
@@ -134,53 +132,42 @@
                 android:id="@+id/requesterRating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="Requester Rating:"
                 android:textAlignment="center"
                 android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/providerRating" />
 
             <TextView
                 android:id="@+id/providerRatingField"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
-                android:layout_marginBottom="8dp"
-
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginRight="16dp"
                 android:text="9.8"
                 android:textAlignment="center"
                 android:textSize="24sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/providerRating"
-                app:layout_constraintStart_toStartOf="@+id/providerRating"
-                app:layout_constraintTop_toBottomOf="@+id/providerRating" />
+                app:layout_constraintBaseline_toBaselineOf="@+id/requesterRating"
+                app:layout_constraintRight_toRightOf="parent" />
 
             <TextView
                 android:id="@+id/requesterRatingField"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
                 android:text="0.7"
                 android:textSize="24sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/requesterRating"
-                app:layout_constraintStart_toStartOf="@+id/requesterRating"
-                app:layout_constraintTop_toBottomOf="@+id/requesterRating" />
+                app:layout_constraintBaseline_toBaselineOf="@+id/providerRating"
+                app:layout_constraintEnd_toEndOf="parent" />
         </android.support.constraint.ConstraintLayout>
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/InfoLayout"
             android:layout_width="0dp"
-            android:layout_height="80dp"
+            android:layout_height="76dp"
             android:layout_marginTop="8dp"
             android:background="@android:color/background_light"
             android:elevation="1dp"
@@ -221,9 +208,9 @@
                 android:layout_marginRight="16dp"
                 android:text="android1@gmail.com"
                 android:textSize="20sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/email2"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/email2" />
+                app:layout_constraintRight_toRightOf="parent" />
 
             <TextView
                 android:id="@+id/phoneField2"
@@ -232,14 +219,14 @@
                 android:layout_marginEnd="8dp"
                 android:text="780 123 4567"
                 android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/phone" />
+                app:layout_constraintBaseline_toBaselineOf="@+id/phone"
+                app:layout_constraintEnd_toEndOf="parent" />
         </android.support.constraint.ConstraintLayout>
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/ProfileLayout"
             android:layout_width="0dp"
-            android:layout_height="135dp"
+            android:layout_height="128dp"
             android:background="@android:color/background_light"
             android:elevation="1dp"
             app:layout_constraintEnd_toEndOf="parent"
