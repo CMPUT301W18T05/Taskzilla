@@ -27,14 +27,9 @@ import io.searchbox.annotations.JestId;
  */
 
 public class Notification {
-    private String title;
-    private String context;
-    private Intent intent;
-    //private String providerId;
-    //private String requesterId;
     private User user;
     private String taskName;
-
+    private String context;
     private String senderID;
     private String receiverID;
     private String event;
@@ -43,44 +38,30 @@ public class Notification {
 
     @JestId
     private String id;
-/*
-    public Notification(String nTitle, String nContext, Intent nIntent, String nSenderId, String nRecieverId, User nUser) {
-        this.title = nTitle;
-        this.context = nContext;
-        this.intent = nIntent;
-        this.senderID = nSenderId;
-        this.receiverID = nRecieverId;
-        this.user = nUser;
-        this.taskID = new String();
-        this.event = new String();
-    }
-*/
-    public Notification(String event, String senderID, String receiverID, String taskID, String taskName, User user) {
+
+    public Notification(String event, String senderID, String receiverID, String taskID, String taskName, String context, User user) {
         this.event = event;
         this.senderID = senderID;
         this.receiverID = receiverID;
         this.taskID = taskID;
         this.taskName = taskName;
         this.user = user;
+        this.context = context;
     }
 
     public String getEvent() {
         return this.event;
     }
 
-    /*
-    public String getTitle() {
-        return this.title;
-    }
-*/
     public String getContext() {
         return this.context;
     }
 
+    /*
     public Intent getNotificationIntent() {
         return this.intent;
     }
-
+*/
     public String getReceiverID() {
         return this.receiverID;
     }
