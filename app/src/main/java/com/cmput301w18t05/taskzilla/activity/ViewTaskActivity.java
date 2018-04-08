@@ -327,22 +327,70 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         RedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                task.unassignProvider();
-                RedButton.setVisibility(View.INVISIBLE);
-                GreenButton.setVisibility(View.INVISIBLE);
-                PinkButton.setVisibility(View.VISIBLE);
-                YellowButton.setVisibility(View.VISIBLE);
+                AlertDialog.Builder alert = new AlertDialog.Builder(ViewTaskActivity.this);
+                alert.setTitle("Unassign Provider");
+                alert.setMessage("Are you sure you want to unassign this provider?");
+
+                //DELETE CODE
+                alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                        task.unassignProvider();
+                        RedButton.setVisibility(View.INVISIBLE);
+                        GreenButton.setVisibility(View.INVISIBLE);
+                        PinkButton.setVisibility(View.VISIBLE);
+                        YellowButton.setVisibility(View.VISIBLE);
+                        TaskStatus.setText("Requested");
+                        if (currentUserId.equals(task.getRequesterId())) {
+                            OrangeButton.setText("REVIEW PROVIDER");
+                        } else {
+                            OrangeButton.setText("REVIEW REQUESTER");
+                        }
+                    }
+                });
+                alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                alert.show();
+
             }
         });
 
         GreenButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                task.completeTask();
-                RedButton.setVisibility(View.INVISIBLE);
-                GreenButton.setVisibility(View.INVISIBLE);
-                OrangeButton.setVisibility(View.VISIBLE);
-                TaskStatus.setText("Completed");
+                AlertDialog.Builder alert = new AlertDialog.Builder(ViewTaskActivity.this);
+                alert.setTitle("Complete task");
+                alert.setMessage("Are you sure you want to set this task as completed?");
+
+                //DELETE CODE
+                alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                        task.completeTask();
+                        RedButton.setVisibility(View.INVISIBLE);
+                        GreenButton.setVisibility(View.INVISIBLE);
+                        OrangeButton.setVisibility(View.VISIBLE);
+                        TaskStatus.setText("Completed");
+                        if (currentUserId.equals(task.getRequesterId())) {
+                            OrangeButton.setText("REVIEW PROVIDER");
+                        } else {
+                            OrangeButton.setText("REVIEW REQUESTER");
+                        }
+                    }
+                });
+                alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                alert.show();
             }
         });
 
