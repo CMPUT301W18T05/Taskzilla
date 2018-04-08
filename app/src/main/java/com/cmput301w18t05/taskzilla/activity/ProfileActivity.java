@@ -28,6 +28,8 @@ import com.cmput301w18t05.taskzilla.controller.ProfileController;
 import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.User;
 
+import java.util.Locale;
+
 /**
  * Activity for viewing user profile
  */
@@ -92,6 +94,8 @@ public class ProfileActivity extends AppCompatActivity {
         phoneField = findViewById(R.id.phoneField2);
         numRequestsField = findViewById(R.id.numRequestsField);
         numTasksDoneField = findViewById(R.id.numTasksDoneField);
+        providerRatingField = findViewById(R.id.providerRatingField);
+        requesterRatingField = findViewById(R.id.requesterRatingField);
         profilePicture = findViewById(R.id.profilePictureView);
 
         nameField.setText(name);
@@ -99,8 +103,10 @@ public class ProfileActivity extends AppCompatActivity {
         phoneField.setText(phone);
         numRequestsField.setText(numRequests);
         numTasksDoneField.setText(numTasksDone);
-
-
+        providerRatingField.setText(String.format(Locale.CANADA,
+                "%.1f", user.getProviderRating()));
+        requesterRatingField.setText(String.format(Locale.CANADA,
+                "%.1f", user.getRequesterRating()));
         try {
             profilePicture.setImageBitmap(user.getPhoto().StringToBitmap());
         }

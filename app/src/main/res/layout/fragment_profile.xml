@@ -132,12 +132,13 @@
                 android:id="@+id/requesterRating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="Requester Rating:"
                 android:textAlignment="center"
                 android:textSize="20sp"
-                app:layout_constraintTop_toBottomOf="@+id/providerRating"
-                tools:layout_editor_absoluteX="8dp" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/providerRating" />
 
             <TextView
                 android:id="@+id/providerRatingField"
