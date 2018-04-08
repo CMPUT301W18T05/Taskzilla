@@ -561,7 +561,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                     "A similar bid already exists. Please bid another value",
                     Toast.LENGTH_SHORT).show();
             return -1;
-        } else if (task.getBestBidder().equals(currentUserId)) {
+        } if (task.getBestBidder().equals(currentUserId)) {
             task.setBestBid(incomingBidFloat);
             for(Bid bid: BidList){
                 if(bid.getBidAmount()<task.getBestBid() && !task.getBestBidder().equals(bid.getUserId())){
@@ -576,6 +576,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                 }
             }
         }
+        task.updateThis();
         return 0;
     }
 
