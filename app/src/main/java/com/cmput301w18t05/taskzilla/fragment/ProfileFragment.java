@@ -245,6 +245,7 @@ public class ProfileFragment extends Fragment {
         final ListView ReviewsListView = mView.findViewById(R.id.ReviewsListView);
         final TextView ReviewBannerTextView = mView.findViewById(R.id.ReviewsBannerTextView);
         ArrayList<String> ReviewsList = new ArrayList<>();
+        
 
         ReviewsList.add("dwdwdw");
         ReviewsList.add("dwdwdw");
@@ -252,10 +253,10 @@ public class ProfileFragment extends Fragment {
         ReviewsList.add("dwdwdw");
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>
-                (this.getContext(), android.R.layout.simple_list_item_1, ReviewsList);
-
+                (this.getContext(), android.R.layout.simple_list_item_2, ReviewsList);
         ReviewsListView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+
+        //adapter.notifyDataSetChanged();
         mBuilder.setView(mView);
         mBuilder.show();
     }
