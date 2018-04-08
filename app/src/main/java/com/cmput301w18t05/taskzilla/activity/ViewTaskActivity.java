@@ -391,11 +391,12 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                 }
 
                 // do stuff here to actually add bid
-                task.addBid(new Bid(currentUserId, taskID, incomingBidFloat));
-                task.setStatus("bidded");
-                TaskStatus.setText("Bidded");
                 if (updateBestBid(incomingBidFloat) == -1) {
                     return;
+                } else {
+                    task.addBid(new Bid(currentUserId, taskID, incomingBidFloat));
+                    task.setStatus("bidded");
+                    TaskStatus.setText("Bidded");
                 }
                 setProviderField();
 
@@ -517,7 +518,6 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         }
         return 0;
     }
-
 
 
     public void setRequesterField() {
