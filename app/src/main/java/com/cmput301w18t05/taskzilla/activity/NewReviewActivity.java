@@ -92,35 +92,41 @@ public class NewReviewActivity extends AppCompatActivity {
         String reviewDescription = DescriptionText.getText().toString();
         Float reviewRating = RatingBar.getRating();
 
-        if (reviewTitle.isEmpty() || reviewDescription.isEmpty() || reviewRating == 0.0f) {
-            Toast.makeText(this, "Fill", Toast.LENGTH_SHORT).show();
+        if (reviewTitle.equals("") || reviewRating == 0.0f) {
+            Toast.makeText(this, "Please fill out the required fields", Toast.LENGTH_SHORT).show();
             return;
         }
-
 
         Review review = new Review(reviewTitle, reviewRating, reviewDescription,
                 targetUserId, currentUserId);
 
         Float newRating = 0.0f;
         if (revieweeType.equals("r")) {
-            newRating += (targetUser.getNumReviewsAsProvider() *
-                    targetUser.getProviderRating() + reviewRating) /
-                    (targetUser.getNumReviewsAsProvider() + 1);
-            targetUser.setProviderRating(newRating);
+            return;
+//            newRating = (Float.intBitsToFloat(targetUser.getNumReviewsAsProvider()) *
+//                    targetUser.getProviderRating() + reviewRating) /
+//                    (targetUser.getNumReviewsAsProvider() + 1);
+//            targetUser.setProviderRating(newRating);
+//            targetUser.addNumProviderReviews();
         } else {
-            newRating += (targetUser.getNumReviewsAsRequester() *
-                    targetUser.getRequesterRating() + reviewRating) /
-                    (targetUser.getNumReviewsAsRequester() + 1);
-            targetUser.setRequesterRating(newRating);
+            //newRating += Float(targetUser.getNumReviewsAsRequester());
+            //Toast.makeText(this, targetUser.getNumReviewsAsRequester(), Toast.LENGTH_SHORT).show();
+            return;
+//            newRating = (Float.intBitsToFloat(targetUser.getNumReviewsAsRequester()) *
+//                    targetUser.getRequesterRating() + reviewRating) /
+//                    (targetUser.getNumReviewsAsRequester() + 1);
+//            targetUser.setRequesterRating(newRating);
+//            targetUser.addNumRequesterReviews();
         }
+
 
         //AddUserRequest request = new AddUserRequest(targetUser);
         //RequestManager.getInstance().invokeRequest(this, request);
 
-        review.updateThis(); // send to ES
-
-        Toast.makeText(this, "Review created for " + targetUserName, Toast.LENGTH_SHORT).show();
-        finish();
+//        review.updateThis(); // send to ES
+//
+//        Toast.makeText(this, "Review created for " + targetUserName, Toast.LENGTH_SHORT).show();
+//        finish();
     }
 
 

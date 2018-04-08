@@ -51,6 +51,8 @@ public class User implements Comparable<User> {
         requesterRating = 0.0f;
         numRequests = 0;
         numCompleteTasks = 0;
+        numReviewsAsRequester = 0;
+        numReviewsAsProvider = 0;
     }
 
     /**
