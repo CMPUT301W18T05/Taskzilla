@@ -31,7 +31,6 @@ public class BidActivityTest extends ActivityInstrumentationTestCase2 {
     private Solo solo;
     private TasksRequesterFragment fragment;
 
-
     public BidActivityTest(){
         super(MainActivity.class);
     }
@@ -39,7 +38,6 @@ public class BidActivityTest extends ActivityInstrumentationTestCase2 {
     public void setUp() throws Exception{
         solo = new Solo(getInstrumentation(), getActivity());
     }
-
 
     public void testBid(){
 
@@ -130,13 +128,5 @@ public class BidActivityTest extends ActivityInstrumentationTestCase2 {
         solo.sleep(1000);
         solo.clickOnButton("Yes");
         assertFalse(solo.waitForText("25.22",1,1000));
-
-
-
-
-
-
-
     }
-
 }
