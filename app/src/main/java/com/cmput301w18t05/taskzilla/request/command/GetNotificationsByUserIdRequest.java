@@ -54,11 +54,12 @@ public class GetNotificationsByUserIdRequest extends Request {
 
     public ArrayList<Notification> getResult() {
         try {
-                result = task.get();
-                return result;
-            } catch (Exception e) {
-            return null;
+            result = task.get();
+            return result;
+        } catch (Exception e) {
+            System.out.println("Something went wrong when getting notifications by userid");
         }
+        return new ArrayList<>();
     }
 }
 

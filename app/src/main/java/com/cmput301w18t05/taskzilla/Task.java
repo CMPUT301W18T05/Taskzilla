@@ -11,9 +11,11 @@
 
 package com.cmput301w18t05.taskzilla;
 
+import android.content.Context;
 import android.location.Location;
 import android.widget.Toast;
 
+import com.cmput301w18t05.taskzilla.activity.ViewTaskActivity;
 import com.cmput301w18t05.taskzilla.controller.ElasticSearchController;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.AddBidRequest;
@@ -121,12 +123,11 @@ public class Task implements Comparable<Task> {
 
     /**
      * addBid
-     * Insert into sorted bid list
      *
      * @author praharen
-     *
      */
     public void addBid(Bid newbid) {
+        System.out.println("Adding bid: "+newbid);
         GetBidsByTaskIdRequest getbidrequest = new GetBidsByTaskIdRequest(this.Id);
         RequestManager.getInstance().invokeRequest(getbidrequest);
         ArrayList<Bid> bidlist = getbidrequest.getResult();
@@ -139,6 +140,9 @@ public class Task implements Comparable<Task> {
         }
         AddBidRequest addBidRequest = new AddBidRequest(newbid);
         RequestManager.getInstance().invokeRequest(addBidRequest);
+        Notification notification = new Notification("bidded", "hi", null, providerId, requesterId, currentUser.getRealInstance());
+        //Notification notification = new Notification("NEW NOTIF", newbid.getUserId(), this.requesterId, this.Id);
+        NotificationManager.getInstance().sendNotification(notification);
     }
 
     /**

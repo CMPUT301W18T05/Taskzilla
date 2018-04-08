@@ -13,6 +13,13 @@ package com.cmput301w18t05.taskzilla;
 
 import android.content.Intent;
 
+import com.cmput301w18t05.taskzilla.controller.ElasticSearchController;
+import com.cmput301w18t05.taskzilla.request.Request;
+import com.cmput301w18t05.taskzilla.request.RequestManager;
+import com.cmput301w18t05.taskzilla.request.command.AddNotificationRequest;
+
+import io.searchbox.annotations.JestId;
+
 /**
  * Created by Andy on 4/4/2018.
  */
@@ -21,19 +28,35 @@ public class Notification {
     private String title;
     private String context;
     private Intent intent;
-    private String providerId;
-    private String requesterId;
+    //private String providerId;
+    //private String requesterId;
     private User user;
 
+    private String senderID;
+    private String receiverID;
+    private String event;
+    private String taskID;
+    private boolean acknowledged = false;
+
+    @JestId
     private String id;
 
-    public Notification(String nTitle, String nContext, Intent nIntent, String nProviderId, String nRequesterId, User nUser) {
+    public Notification(String nTitle, String nContext, Intent nIntent, String nSenderId, String nRecieverId, User nUser) {
         this.title = nTitle;
         this.context = nContext;
         this.intent = nIntent;
-        this.providerId = nProviderId;
-        this.requesterId = nRequesterId;
+        this.senderID = nSenderId;
+        this.receiverID = nRecieverId;
         this.user = nUser;
+        this.taskID = new String();
+        this.event = new String();
+    }
+
+    public Notification(String event, String senderID, String receiverID, String taskID) {
+        this.event = event;
+        this.senderID = senderID;
+        this.receiverID = receiverID;
+        this.taskID = taskID;
     }
 
     public String getTitle() {
@@ -48,16 +71,16 @@ public class Notification {
         return this.intent;
     }
 
-    public String getProviderId() {
-        return this.providerId;
+    public String getReceiverID() {
+        return this.receiverID;
     }
 
-    public String getRequesterId() {
-        return this.requesterId;
+    public String getSenderID() {
+        return this.senderID;
     }
 
     public String toString() {
-        return "Title: " + this.title + "\nContext: " + this.context + "\nBy: " + this.providerId;
+        return "ID: " + id + " " + event + " " + senderID + " " + receiverID;
     }
 
     public String getId() {
@@ -70,6 +93,19 @@ public class Notification {
 
     public User getUser() {
         return this.user;
+    }
+
+    public void acknowledge() {
+        if (id == null)
+            return;
+
+        this.acknowledged = true;
+        AddNotificationRequest task = new AddNotificationRequest(this);
+        RequestManager.getInstance().invokeRequest(task);
+    }
+
+    public boolean isAcknowledged() {
+        return acknowledged == true;
     }
 
     public int compareTo(Notification notification) {

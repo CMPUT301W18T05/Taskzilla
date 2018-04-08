@@ -38,20 +38,20 @@ public class TaskCustomAdapter extends ArrayAdapter<Task> {
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.tasks_list_view2, parent, false);
         }
-        TextView taskTitleView = (TextView) convertView.findViewById(R.id.taskTitle);
-        TextView requesterUsernameView = (TextView) convertView.findViewById(R.id.requesterUsername);
-        TextView taskStatusView = (TextView) convertView.findViewById(R.id.taskStatus);
-        TextView lowestBidView = (TextView) convertView.findViewById(R.id.lowestBid);
+        TextView taskTitleView = convertView.findViewById(R.id.taskTitle);
+        TextView requesterUsernameView = convertView.findViewById(R.id.requesterUsername);
+        TextView taskStatusView = convertView.findViewById(R.id.taskStatus);
+        TextView lowestBidView = convertView.findViewById(R.id.lowestBid);
 
         // Set the values for all the views
         taskTitleView.setText(task.getName());
-        requesterUsernameView.setText("Requester: " + task.getRequesterUsername());
+        requesterUsernameView.setText("Requester: " + task.getTaskRequester().getName());
         taskStatusView.setText("Status: " + task.getStatus());
 
         // Check if the best bid is null or <= 0
         try {
             Float bestBid = task.getBestBid();
-            if (bestBid <= 0) {
+            if (bestBid < 0) {
                 lowestBidView.setText("Lowest Bid: None");
             } else {
                 lowestBidView.setText("Lowest Bid: " + String.format("%.2f",bestBid));

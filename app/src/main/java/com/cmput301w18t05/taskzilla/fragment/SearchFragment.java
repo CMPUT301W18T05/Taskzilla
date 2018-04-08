@@ -156,6 +156,7 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
         // expand search bar by default
         searchField = view.findViewById(R.id.searchView);
 
+        /*
         spinner = view.findViewById(R.id.spinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapterS = ArrayAdapter.createFromResource(getActivity(),
@@ -166,6 +167,7 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
         spinner.setAdapter(adapterS);
 
         mySwipeRefreshLayout = view.findViewById(R.id.swiperefresh);
+*/
 
         /*
          * Listens for changes in the searchview
@@ -218,6 +220,7 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
             }
         });
 
+        /*
         mySwipeRefreshLayout.setOnRefreshListener(
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
@@ -238,6 +241,7 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
                     }
                 }
         );
+        */
     }
 
     @Override
