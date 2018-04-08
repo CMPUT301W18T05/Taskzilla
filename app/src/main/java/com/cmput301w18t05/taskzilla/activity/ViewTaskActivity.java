@@ -148,8 +148,6 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         //mapFragment.getView().setActivated(false);
         //mapFragment.getView().setEnabled(false);
 
-
-
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         findViews();
@@ -593,7 +591,14 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
     }
 
     public void theOrangeButton(android.view.View view) {
-        Toast.makeText(this, "ddd", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(view.getContext(), EditTaskActivity.class);
+        if (currentUserId.equals(task.getRequesterId())) {
+            intent.putExtra("who", "p");
+            intent.putExtra("id", task.getProviderId());
+        } else {
+            intent.putExtra("who", task.getRequesterId());
+        }
+        startActivity(intent);
     }
 
     public Integer updateBestBid(Float incomingBidFloat) {
