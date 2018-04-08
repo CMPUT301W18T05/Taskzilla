@@ -17,8 +17,7 @@ import com.cmput301w18t05.taskzilla.activity.MainActivity;
 
 /**
  * Created by James on 2/23/2018.
- *
- *
+ * Updated by Jeremy
  */
 
 public class UserTest extends ActivityInstrumentationTestCase2 {
@@ -80,6 +79,80 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
 
         username = "Michael Nguyen Michael Nguyen Michael Nguyen Michael Nguyen ";
         assertFalse(user.setUsername(username));
+    }
+
+    //
+    public void setProviderRating() {
+        User user = new User();
+
+        Float floatRating = 3.5f;
+        Double doubleRating = 3.5d;
+        assertTrue(user.setProviderRating(floatRating));
+        assertTrue(user.setProviderRating(doubleRating));
+
+        floatRating = -1.0f;
+        doubleRating = -1.0d;
+        assertFalse(user.setProviderRating(floatRating));
+        assertFalse(user.setProviderRating(doubleRating));
+
+        floatRating = 6.0f;
+        doubleRating = 6.0d;
+        assertFalse(user.setProviderRating(floatRating));
+        assertFalse(user.setProviderRating(doubleRating));
+    }
+
+    public void setRequesterRating() {
+        User user = new User();
+
+        Float floatRating = 3.5f;
+        Double doubleRating = 3.5d;
+        assertTrue(user.setProviderRating(floatRating));
+        assertTrue(user.setProviderRating(doubleRating));
+
+        floatRating = -1.0f;
+        doubleRating = -1.0d;
+        assertFalse(user.setProviderRating(floatRating));
+        assertFalse(user.setProviderRating(doubleRating));
+
+        floatRating = 6.0f;
+        doubleRating = 6.0d;
+        assertFalse(user.setProviderRating(floatRating));
+        assertFalse(user.setProviderRating(doubleRating));
+    }
+
+    // Test for setting password
+    public void testSetPassword() {
+        User user = new User();
+        String password = "jeremy";
+        assertTrue(user.setPassword(password));
+
+        password = "Jeremy01";
+        assertTrue(user.setPassword(password));
+
+        password = "!@#$%";
+        assertFalse(user.setPassword(password));
+
+        password = "";
+        assertFalse(user.setPassword(password));
+
+        password = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+        assertFalse(user.setPassword(password));
+    }
+
+    // Test for toString method
+    public void testToString() {
+        User user = new User();
+        String name = "jeremy";
+        String id = "123abc";
+        assertTrue(user.setName(name));
+        user.setId(id);
+        assertEquals(user.toString(), "jeremy 123abc");
+    }
+
+    // Test for getting a list of tasks that the user has requested
+    public void testGetTasksRequested() {
+        User user = new User();
+
     }
 
     /**
