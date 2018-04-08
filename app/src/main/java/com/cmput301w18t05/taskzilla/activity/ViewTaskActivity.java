@@ -61,6 +61,7 @@ import com.cmput301w18t05.taskzilla.controller.ProfileController;
 import com.cmput301w18t05.taskzilla.controller.ViewTaskController;
 import com.cmput301w18t05.taskzilla.currentUser;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
+import com.cmput301w18t05.taskzilla.request.command.AddNotificationRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetBidsByTaskIdRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -367,8 +368,8 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                 setProviderField();
 
                 Notification notification = new Notification("bidded", "hi", getIntent(), currentUser.getInstance().getId(), task.getRequesterId(), currentUser.getInstance());
-                //AddNotificationRequest request = new AddNotificationRequest(notification);
-                //RequestManager.getInstance().invokeRequest(getApplicationContext(), request);
+                AddNotificationRequest request = new AddNotificationRequest(notification);
+                RequestManager.getInstance().invokeRequest(getApplicationContext(), request);
                 NotificationManager.getInstance().createNotification(notification);
 
                 //Toast.makeText(ViewTaskActivity.this, "Bid placed", Toast.LENGTH_SHORT).show();
