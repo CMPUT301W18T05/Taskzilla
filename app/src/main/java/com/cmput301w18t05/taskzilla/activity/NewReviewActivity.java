@@ -13,6 +13,7 @@ package com.cmput301w18t05.taskzilla.activity;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.Rating;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -20,10 +21,14 @@ import android.text.Html;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cmput301w18t05.taskzilla.R;
-
-import java.util.Calendar;
+import com.cmput301w18t05.taskzilla.Review;
+import com.cmput301w18t05.taskzilla.User;
+import com.cmput301w18t05.taskzilla.currentUser;
+import com.cmput301w18t05.taskzilla.request.command.GetUserRequest;
 
 /**
  * Created by James on 4/7/2018.
@@ -36,7 +41,14 @@ public class NewReviewActivity extends AppCompatActivity {
     private Button CancelButton;
     private EditText TitleText;
     private EditText DescriptionText;
-    private RatingBar ratingBar;
+    private RatingBar RatingBar;
+    private TextView nameTextView;
+
+    private String revieweeType;
+    private String targetUserId;
+    private String targetUserName;
+    private String currentUserId;
+    private User targetUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,29 +60,47 @@ public class NewReviewActivity extends AppCompatActivity {
         actionBar.setTitle(Html.fromHtml("<font color='#00e5ee'>Taskzilla</font>"));
 
         findViews();
-
+        setValues();
     }
 
 
-
-
-
-
-
-    public void findViews(){
+    public void findViews() {
         SaveButton = findViewById(R.id.saveReviewButton);
         CancelButton = findViewById(R.id.cancelReviewButton);
         TitleText = findViewById(R.id.reviewTitle);
         DescriptionText = findViewById(R.id.reviewDescription);
-        ratingBar = findViewById(R.id.ratingBar);
+        RatingBar = findViewById(R.id.ratingBar);
+        nameTextView = findViewById(R.id.ReviewTextView);
     }
 
-    public void setValues(){
+    public void setValues() {
+        revieweeType = getIntent().getStringExtra("who");
+        targetUserId = getIntent().getStringExtra("id");
+        currentUserId = currentUser.getInstance().getId();
+
+        GetUserRequest request = new GetUserRequest(targetUserId);
+        request.execute();
+        targetUser = request.getResult();
+        targetUserName = targetUser.getName();
+        nameTextView.setText("Review for " + targetUserName);
+    }
+
+
+    public void reviewSaveButton(android.view.View view) {
+        String reviewTitle = TitleText.getText().toString();
+        String reviewDescription = DescriptionText.getText().toString();
+        Float reviewRating = RatingBar.getRating();
+
+        Review review = new Review(reviewTitle, reviewRating, reviewDescription,
+                targetUserId, currentUserId);
+
+
 
     }
 
 
-
-
+    public void reviewCancelButton(android.view.View view) {
+        finish();
+    }
 
 }

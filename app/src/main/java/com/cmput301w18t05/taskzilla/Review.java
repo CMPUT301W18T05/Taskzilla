@@ -21,10 +21,10 @@ package com.cmput301w18t05.taskzilla;
 public class Review {
 
     private String title;
-    private int rating;
+    private Float rating;
     private String description;
-    private int targetUserID;
-    private int reviewerID;
+    private String targetUserID;
+    private String reviewerID;
 
     /**
      * Constructs a review instance using the given parameters
@@ -34,7 +34,7 @@ public class Review {
      * @param targetUserID
      * @param reviewerID
      */
-    public Review(String title, int rating, String description, int targetUserID, int reviewerID){
+    public Review(String title, Float rating, String description, String targetUserID, String reviewerID){
         this.title = title;
         this.rating = rating;
         this.description = description;
@@ -62,7 +62,7 @@ public class Review {
      * Get the rating of the review
      * @return rating of the user
      */
-    public int getRating() {
+    public Float getRating() {
         return rating;
     }
 
@@ -70,7 +70,7 @@ public class Review {
      * Set the rating of the review
      * @param rating
      */
-    public void setRating(int rating) {
+    public void setRating(Float rating) {
         this.rating = rating;
     }
 
@@ -94,7 +94,7 @@ public class Review {
      * Get the ID for the target of the review
      * @return the ID of the user that is being reviewed
      */
-    public int getTargetUserID() {
+    public String getTargetUserID() {
         return targetUserID;
     }
 
@@ -102,7 +102,7 @@ public class Review {
      * Set the ID for the target of the review
      * @param targetUserID
      */
-    public void setTargetUserID(int targetUserID) {
+    public void setTargetUserID(String targetUserID) {
         this.targetUserID = targetUserID;
     }
 
@@ -110,7 +110,7 @@ public class Review {
      * Get the ID for the Reviewer of the review
      * @return the ID of the user that created the review
      */
-    public int getReviewerID() {
+    public String getReviewerID() {
         return reviewerID;
     }
 
@@ -118,10 +118,7 @@ public class Review {
      * Set the ID for the review of the review
      * @param reviewerID
      */
-    public void setReviewerID(int reviewerID) {
+    public void setReviewerID(String reviewerID) {
         this.reviewerID = reviewerID;
     }
-
-
-
 }

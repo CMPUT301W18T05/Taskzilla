@@ -18,8 +18,8 @@ import com.cmput301w18t05.taskzilla.request.Request;
 
 
 /**
- * Request for getting an user object from Elastic search using the user' if
- * @author myapp
+ * Request for getting an user object from Elastic search using the user's id
+ * @author myapplestory
  * @see ElasticSearchController
  * @version 1.0
  */

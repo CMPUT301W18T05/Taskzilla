@@ -224,7 +224,7 @@ public class User implements Comparable<User> {
      * @return Returns true if rating was successfully set. False if setting fails
      */
     public boolean setProviderRating(double providerRating) {
-        if (providerRating < 5.0f || providerRating > 0.0f) {
+        if (providerRating <= 5.0f || providerRating > 0.0f) {
             this.providerRating = new Float(providerRating);
             return true;
         }
