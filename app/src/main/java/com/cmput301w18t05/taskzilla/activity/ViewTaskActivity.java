@@ -149,7 +149,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         //mapFragment.getView().setVisibility(View.INVISIBLE);
         //mapFragment.getView().setActivated(false);
         //mapFragment.getView().setEnabled(false);
-        
+
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         findViews();
