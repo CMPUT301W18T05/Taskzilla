@@ -45,6 +45,7 @@ public class GetTasksByProviderUsernameRequest extends Request {
         try {
             result = task.get();
             from += size;
+            AppCache.getInstance().addInCache(result);
         } catch (Exception e) {
             System.out.println("Error when get tasks as provider");
             result = new ArrayList<>();
