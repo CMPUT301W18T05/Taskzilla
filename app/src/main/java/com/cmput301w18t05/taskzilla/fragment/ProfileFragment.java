@@ -34,15 +34,18 @@ import com.cmput301w18t05.taskzilla.AppColors;
 import com.cmput301w18t05.taskzilla.EmailAddress;
 import com.cmput301w18t05.taskzilla.PhoneNumber;
 import com.cmput301w18t05.taskzilla.Photo;
+import com.cmput301w18t05.taskzilla.Review;
 import com.cmput301w18t05.taskzilla.Task;
 import com.cmput301w18t05.taskzilla.activity.MainActivity;
 import com.cmput301w18t05.taskzilla.activity.ZoomImageActivity;
 import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.User;
 import com.cmput301w18t05.taskzilla.activity.EditProfileActivity;
+import com.cmput301w18t05.taskzilla.controller.ElasticSearchController;
 import com.cmput301w18t05.taskzilla.currentUser;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.AddUserRequest;
+import com.cmput301w18t05.taskzilla.request.command.GetReviewsByUserIdRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetTasksByProviderUsernameRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetTasksByRequesterUsernameRequest;
 import com.google.gson.Gson;
@@ -52,6 +55,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -244,19 +248,24 @@ public class ProfileFragment extends Fragment {
         final View mView = getLayoutInflater().inflate(R.layout.dialog_review_list,null);
         final ListView ReviewsListView = mView.findViewById(R.id.ReviewsListView);
         final TextView ReviewBannerTextView = mView.findViewById(R.id.ReviewsBannerTextView);
-        ArrayList<String> ReviewsList = new ArrayList<>();
-        
-
-        ReviewsList.add("dwdwdw");
-        ReviewsList.add("dwdwdw");
-        ReviewsList.add("dwdwdw");
-        ReviewsList.add("dwdwdw");
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>
-                (this.getContext(), android.R.layout.simple_list_item_2, ReviewsList);
+        ArrayList<String> ReviewsListString = new ArrayList<>();
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this.getContext(),
+                android.R.layout.simple_list_item_1, ReviewsListString);
         ReviewsListView.setAdapter(adapter);
 
-        //adapter.notifyDataSetChanged();
+        GetReviewsByUserIdRequest request = new GetReviewsByUserIdRequest(user.getId());
+        request.execute();
+        ArrayList<Review> ReviewsList = request.getResult();
+
+//        for (Review review : ReviewsList) {
+//            ReviewsListString.add(review.getTitle());
+//        }
+
+
+
+
+
+        adapter.notifyDataSetChanged();
         mBuilder.setView(mView);
         mBuilder.show();
     }

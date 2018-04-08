@@ -40,7 +40,7 @@ public class GetReviewsByUserIdRequest extends Request {
     }
 
     public void execute() {
-        System.out.println("Getting reviews by user ID: " + userId);
+        //System.out.println("Getting reviews by user ID: " + userId);
         task = new ElasticSearchController.GetReviewsByUserId();
         task.execute(userId);
     }

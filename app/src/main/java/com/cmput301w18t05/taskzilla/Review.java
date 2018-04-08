@@ -152,4 +152,5 @@ public class Review {
         AddReviewRequest task = new AddReviewRequest(this);
         RequestManager.getInstance().invokeRequest(task);
     }
+
 }
