@@ -57,7 +57,7 @@ public class Task implements Comparable<Task> {
 
     public Task() {
         photos = new ArrayList<>();
-        name = "TEST TASK";
+        name = "TEST TASK2";
     }
 
     /**
