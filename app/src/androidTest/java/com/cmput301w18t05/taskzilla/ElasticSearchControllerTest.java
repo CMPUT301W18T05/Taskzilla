@@ -31,6 +31,7 @@ public class ElasticSearchControllerTest extends ActivityInstrumentationTestCase
     public ElasticSearchControllerTest(){
         super(MainActivity.class);
 
+        /*
         user = new User();
         user.setName("Tester");
         user.setUsername("myuniqueusername");
@@ -39,6 +40,7 @@ public class ElasticSearchControllerTest extends ActivityInstrumentationTestCase
         user.setProviderRating(1.8);
         user.setRequesterRating(8.0);
         user.setPhotos(new ArrayList<Photo>());
+        */
 
         Bid bid = new Bid(user.getId(), task.getId(), 10.0f);
 

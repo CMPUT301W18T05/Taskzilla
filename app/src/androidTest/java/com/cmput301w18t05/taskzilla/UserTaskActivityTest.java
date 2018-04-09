@@ -106,7 +106,7 @@ public class UserTaskActivityTest extends ActivityInstrumentationTestCase2 {
         solo.clickOnButton("Add Task");
         solo.waitForActivity(WelcomeActivity.class);
         solo.assertCurrentActivity("Wrong Activity", WelcomeActivity.class);
-        View fab2 = solo.getCurrentActivity().findViewById(R.id.fab2);
+        View fab2 = solo.getCurrentActivity().findViewById(R.id.fab);
         solo.clickOnView(fab2);
         assertTrue(solo.waitForText("Test Task Name"));
 
@@ -143,7 +143,7 @@ public class UserTaskActivityTest extends ActivityInstrumentationTestCase2 {
         solo.clickOnButton("Add Task");
         solo.waitForActivity(WelcomeActivity.class);
         solo.assertCurrentActivity("Wrong Activity", WelcomeActivity.class);
-        View fab2 = solo.getCurrentActivity().findViewById(R.id.fab2);
+        View fab2 = solo.getCurrentActivity().findViewById(R.id.fab);
         solo.clickOnView(fab2);
         assertTrue(solo.waitForText("Test Task Name"));
 
@@ -219,7 +219,7 @@ public class UserTaskActivityTest extends ActivityInstrumentationTestCase2 {
         solo.clickOnButton("Add Task");
         solo.waitForActivity(WelcomeActivity.class);
         solo.assertCurrentActivity("Wrong Activity", WelcomeActivity.class);
-        View fab2 = solo.getCurrentActivity().findViewById(R.id.fab2);
+        View fab2 = solo.getCurrentActivity().findViewById(R.id.fab);
         solo.clickOnView(fab2);
         assertTrue(solo.waitForText("Test Task To Be Deleted"));
 
