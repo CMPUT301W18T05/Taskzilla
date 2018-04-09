@@ -14,31 +14,19 @@ package com.cmput301w18t05.taskzilla.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.Spinner;
-import android.widget.Toast;
 
-import com.cmput301w18t05.taskzilla.Photo;
 import com.cmput301w18t05.taskzilla.R;
-import com.cmput301w18t05.taskzilla.SyncedScrollListener;
 import com.cmput301w18t05.taskzilla.TaskCustomAdapter;
-import com.cmput301w18t05.taskzilla.TaskCustomAdapter2;
-import com.cmput301w18t05.taskzilla.User;
 import com.cmput301w18t05.taskzilla.controller.SearchController;
 import com.cmput301w18t05.taskzilla.Task;
 import com.cmput301w18t05.taskzilla.activity.MapActivity;
@@ -62,9 +50,7 @@ public class SearchFragment extends Fragment {
     private ListView availableTasksText;
     private ListView availableTasksPhoto;
     private ArrayAdapter<Task> adapterText;
-    private ArrayAdapter<Photo> adapterPhoto;
     private ArrayList<Task> searchResults;
-    private ArrayList<Photo> photoArrayList;
     private SearchController searchController;
     private Task currentTask;
     private ImageButton mButton;
@@ -195,22 +181,9 @@ public class SearchFragment extends Fragment {
         //Set up listview and adapter
         searchResults = new ArrayList<>();
         searchController = new SearchController(this, getActivity());
-//        photoArrayList = new ArrayList<>();
 
         adapterText = new TaskCustomAdapter(getActivity(), R.layout.tasks_list_view2, searchResults);
         availableTasksText.setAdapter(adapterText);
-
-//        photoArrayList.clear();
-//        for (Task task : searchResults) {
-//            User tempUser = task.getTaskRequester();
-//            photoArrayList.add(tempUser.getPhoto());
-//        }
-//        adapterPhoto = new TaskCustomAdapter2(getActivity(), R.layout.tasks_list_view3, photoArrayList);
-//        availableTasksPhoto.setAdapter(adapterPhoto);
-
-        // enable both listviews to scroll at the same time
-//        availableTasksText.setOnScrollListener(new SyncedScrollListener(availableTasksPhoto));
-//        availableTasksPhoto.setOnScrollListener(new SyncedScrollListener(availableTasksText));
 
         /*
          *  Listens for user tapping on a task in the listview
@@ -226,13 +199,7 @@ public class SearchFragment extends Fragment {
                 viewTask(searchResults.get(i).getId());
             }
         });
-//        availableTasksPhoto.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                currentTask = searchResults.get(i);
-//                viewTask(searchResults.get(i).getId());
-//            }
-//        });
+
         // get all available tasks
         searchController.getAllRequest();
     }
@@ -260,13 +227,8 @@ public class SearchFragment extends Fragment {
     public void notifyChange() {
         searchResults.clear();
         searchResults.addAll(searchController.getResults());
-//        photoArrayList.clear();
-//        for (Task task : searchResults) {
-//            User tempUser = task.getTaskRequester();
-//            photoArrayList.add(tempUser.getPhoto());
-//        }
+
         adapterText.notifyDataSetChanged();
-//        adapterPhoto.notifyDataSetChanged();
     }
 
     public void onResume(){
