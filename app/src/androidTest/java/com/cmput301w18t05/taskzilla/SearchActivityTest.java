@@ -20,11 +20,14 @@ import android.widget.SearchView;
 import android.widget.TabHost;
 
 import com.cmput301w18t05.taskzilla.activity.MainActivity;
+import com.cmput301w18t05.taskzilla.activity.NewTaskActivity;
 import com.cmput301w18t05.taskzilla.activity.SignUpActivity;
 import com.cmput301w18t05.taskzilla.activity.WelcomeActivity;
 import com.cmput301w18t05.taskzilla.fragment.SearchFragment;
 import com.cmput301w18t05.taskzilla.fragment.TasksRequesterFragment;
 import com.robotium.solo.Solo;
+
+import java.security.cert.TrustAnchor;
 
 import io.searchbox.params.SearchType;
 
@@ -65,11 +68,23 @@ public class SearchActivityTest extends ActivityInstrumentationTestCase2 {
         solo.assertCurrentActivity("Wrong Activity", WelcomeActivity.class);
         assertTrue(solo.waitForActivity(WelcomeActivity.class));
 
-        ViewGroup tabs = (ViewGroup)solo.getView(R.id.tabItem);
-        View view = tabs.getChildAt(2);
+        View fab = solo.getView(R.id.fab);
+        solo.waitForView(fab);
+        solo.clickOnView(fab);
 
-        solo.sleep(10000);
+        solo.waitForActivity(NewTaskActivity.class);
+        View taskField = solo.getView(R.id.TaskName);
+        solo.waitForView(taskField);
+        solo.typeText((EditText)taskField, "taskname");
 
+        EditText descriptionField = (EditText) solo.getView(R.id.Description);
+        solo.typeText(descriptionField, "testing search");
+        View addButton = solo.getView(R.id.addTaskButton);
+        solo.clickOnView(addButton);
+        solo.assertCurrentActivity("Wrong Activity", WelcomeActivity.class);
+
+        solo.waitForText("Search");
+        solo.clickOnText("Search");
 
       }
 }
