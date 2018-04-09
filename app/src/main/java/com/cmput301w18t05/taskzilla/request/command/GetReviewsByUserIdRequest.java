@@ -58,6 +58,7 @@ public class GetReviewsByUserIdRequest extends Request {
         result = new ArrayList<>();
         try {
             result = task.get();
+            return result;
         }
         catch (Exception e) {
         }
