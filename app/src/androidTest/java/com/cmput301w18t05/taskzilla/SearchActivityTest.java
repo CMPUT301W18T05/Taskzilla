@@ -11,11 +11,13 @@
 
 package com.cmput301w18t05.taskzilla;
 
+import android.support.design.widget.TabLayout;
 import android.test.ActivityInstrumentationTestCase2;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.SearchView;
+import android.widget.TabHost;
 
 import com.cmput301w18t05.taskzilla.activity.MainActivity;
 import com.cmput301w18t05.taskzilla.activity.SignUpActivity;
@@ -64,17 +66,14 @@ public class SearchActivityTest extends ActivityInstrumentationTestCase2 {
         solo.assertCurrentActivity("Wrong Activity", WelcomeActivity.class);
         assertTrue(solo.waitForActivity(WelcomeActivity.class));
 
-        solo.sleep(9000);
-
-        ViewGroup tabs = (ViewGroup)solo.getView(R.id.tabs_bar);
-        View viewYouWantToDoStuffWith = tabs.getChildAt(2);
+        
 
         solo.clickOnView(viewYouWantToDoStuffWith);
 
         solo.sleep(9000);
 
-        solo.assertCurrentActivity("Wrong Activity", SearchFragment.class);
-        assertTrue(solo.waitForText("Search"));
+        solo.getCurrentActivity().getFragmentManager().findFragmentByTag("Search");
+        //assertTrue(solo.waitForText("Search"));
 
         //solo.enterText((EditText) solo.getView(R.id.searchView),"Task");
         //solo.text
