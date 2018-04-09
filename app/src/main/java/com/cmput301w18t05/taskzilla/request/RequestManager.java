@@ -38,7 +38,6 @@ import java.util.ArrayList;
  *
  * @author praharen wyatt
  */
-
 public class RequestManager extends BroadcastReceiver {
 
     private static final RequestManager instance = new RequestManager();
@@ -49,7 +48,7 @@ public class RequestManager extends BroadcastReceiver {
     private RequestManager() {
     }
 
-    /* singleton class */
+    // singleton class
     public static RequestManager getInstance() {
         return instance;
     }
@@ -69,7 +68,6 @@ public class RequestManager extends BroadcastReceiver {
             request.execute();
         }
         else {
-            // todo: implement execute offline here!!
             Log.i("IMPORTANT", "DEVICE IS OFFLINE!!!!");
 
             if (!request.requiresConnection()) {
@@ -80,6 +78,13 @@ public class RequestManager extends BroadcastReceiver {
             }
         }
     }
+
+    /**
+     * invoke the request with custom context.
+     * @param ctx
+     * @param request
+     */
+    @Deprecated
     public void invokeRequest(Context ctx, Request request) {
         this.invokeRequest(request);
     }
@@ -124,6 +129,10 @@ public class RequestManager extends BroadcastReceiver {
         }
     }
 
+    /**
+     * the device has come back online, run all requests queued when
+     * we were offline.
+     */
     public void executeLogTask() {
         System.out.println("Flushing job queue...");
         while (!requestQueue.isEmpty()) {
@@ -132,6 +141,10 @@ public class RequestManager extends BroadcastReceiver {
         }
     }
 
+    /**
+     * make the arraylist have queue behavior.
+     * @return
+     */
     private Request popJob() {
         Request req = requestQueue.get(0);
         requestQueue.remove(0);
@@ -141,5 +154,4 @@ public class RequestManager extends BroadcastReceiver {
     public void setContext(Context ctx) {
         this.ctx = ctx;
     }
-
 }

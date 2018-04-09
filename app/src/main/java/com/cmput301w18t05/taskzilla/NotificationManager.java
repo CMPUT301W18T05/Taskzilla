@@ -12,7 +12,6 @@
 package com.cmput301w18t05.taskzilla;
 
 import android.annotation.TargetApi;
-import android.app.PendingIntent;
 import android.content.ContextWrapper;
 import android.app.NotificationChannel;
 import android.content.Context;
@@ -22,7 +21,6 @@ import android.os.Build;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -43,6 +41,11 @@ import java.util.Random;
  * Singleton object that deals with notifications of the current user.
  *
  * @author Andy Li
+ *
+ * @see Notification
+ * @see com.cmput301w18t05.taskzilla.fragment.NotificationsFragment
+ * @see com.cmput301w18t05.taskzilla.controller.NotificationsController
+ *
  * @version 1.0
  */
 
@@ -84,6 +87,12 @@ public class NotificationManager extends ContextWrapper {
         return instance;
     }
 
+    /**
+     *  Sets up notification channels.
+     *
+     * @param context Context of the application
+     */
+
     @TargetApi(Build.VERSION_CODES.O)
     private void createChannels(Context context) {
         NotificationChannel androidChannel = new NotificationChannel(CHANNEL_ID, ANDROID_CHANNEL_NAME, importance);
@@ -98,9 +107,14 @@ public class NotificationManager extends ContextWrapper {
         mManager.createNotificationChannel(androidChannel);
     }
 
-    public void createNotification(Notification notification) {
-        //PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notification.getNotificationIntent(), 0);
+    /**
+     *  Method that handles sending a notification to the device, this includes heads up notification
+     *  and the overview notification
+     *
+     * @param notification  Notification to be displayed
+     */
 
+    public void createNotification(Notification notification) {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setLargeIcon(notification.getUser().getPhoto().StringToBitmap())
@@ -108,8 +122,8 @@ public class NotificationManager extends ContextWrapper {
                 .setContentText(notification.getContext())
                 .setLights(Color.BLUE, 300, 100)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
-                .setDefaults(android.app.Notification.DEFAULT_ALL);
-        //.setContentIntent(pendingIntent);
+                .setDefaults(android.app.Notification.DEFAULT_ALL)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(notification.getContext()));
 
         Random rand = new Random();
         int id = rand.nextInt(1000)+1;
@@ -122,10 +136,24 @@ public class NotificationManager extends ContextWrapper {
         }
     }
 
+    /**
+     *  This method invokes a request to the requestmanager which inserts the notification to the
+     *  elasticsearch server
+     *
+     * @param notification  Notification to be inserted
+     * @see   AddNotificationRequest
+     */
+
     public void sendNotification(Notification notification) {
         AddNotificationRequest task = new AddNotificationRequest(notification);
         RequestManager.getInstance().invokeRequest(task);
     }
+
+    /**
+     * If notification is new, sends it to the device
+     *
+     * @param newNotifs New notifications that havent been acknowledged
+     */
 
     public void notificationCallback(ArrayList<Notification> newNotifs) {
         System.out.println("Notification received.");
@@ -153,7 +181,10 @@ public class NotificationManager extends ContextWrapper {
     // Taken from https://stackoverflow.com/questions/31968162/android-tablayout-tabs-with-notification-badge-like-whatsapp/40493102#40493102
     // 2018-04-08
 
-    // updates badge icon
+    /**
+     *  Updates the badge on the notification fragment
+     */
+
     public void updateBadge() {
         if(tabs.getTabAt(3) != null && tabs.getTabAt(3).getCustomView() != null) {
             TextView badge = (TextView) tabs.getTabAt(3).getCustomView().findViewById(R.id.badge);
@@ -169,7 +200,10 @@ public class NotificationManager extends ContextWrapper {
         }
     }
 
-    // Called in the beginning of the app to get current amount of notifications to users
+    /**
+     * Called in the beginning of the app to get current amount of notifications to users
+     */
+
     public void countNotifications(){
         GetNotificationsByUserIdRequest task = new GetNotificationsByUserIdRequest(currentUser.getInstance().getId());
         RequestManager.getInstance().invokeRequest(task);
@@ -177,6 +211,10 @@ public class NotificationManager extends ContextWrapper {
         for(Notification n : task.getResult())
             count += 1;
     }
+
+    /**
+     * Checks the elasticsearch every 5 seconds to see if theres new notifications
+     */
 
     public static class pollNotifications extends AsyncTask<Void, Void, Void> {
         NotificationManager listener;
@@ -188,7 +226,7 @@ public class NotificationManager extends ContextWrapper {
         protected Void doInBackground(Void... voids) {
             while (true) {
                 try {
-                    Thread.sleep(6000);
+                    Thread.sleep(5000);
                 }
                 catch (InterruptedException e) {
                     continue;

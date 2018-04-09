@@ -31,6 +31,9 @@ public class AddReviewRequest extends InsertionRequest {
         queueReady = true;
     }
 
+    /**
+     * Add the review to elasticsearch
+     */
     @Override
     public void execute() {
         task = new ElasticSearchController.AddReview();

@@ -29,11 +29,18 @@ public class RemoveTaskRequest extends DeletionRequest {
         queueReady = true;
     }
 
+    /**
+     * remove the task matching the task id
+     */
     public void execute(){
         ElasticSearchController.RemoveTask deleteRequest = new ElasticSearchController.RemoveTask();
         deleteRequest.execute(this.taskId);
     }
 
+    /**
+     * if we are offline then remove it from the appcache,
+     * we will complete this request when we come online.
+     */
     @Override
     public void executeOffline(){
         AppCache.getInstance().removeTaskByTaskid(taskId);

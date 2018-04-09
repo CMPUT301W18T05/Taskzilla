@@ -18,9 +18,8 @@ import com.cmput301w18t05.taskzilla.request.InsertionRequest;
 
 /**
  * Request for adding bids to elastic search
- * @author Wyatt
+ * @author praharen
  * @see ElasticSearchController
- * @version 1.0
  */
 public class AddBidRequest extends InsertionRequest {
     ElasticSearchController.AddBid task;
@@ -31,6 +30,9 @@ public class AddBidRequest extends InsertionRequest {
         queueReady = true;
     }
 
+    /**
+     * Add bid to Elasticsearch
+     */
     @Override
     public void execute() {
         this.bid.setId(null);
@@ -40,16 +42,26 @@ public class AddBidRequest extends InsertionRequest {
         task.execute(bid);
     }
 
+    /**
+     * add the bid to the AppCache
+     */
     @Override
     public void executeOffline() {
         AppCache.getInstance().addInCache(bid);
     }
 
+    /**
+     * add bid does not require a connection
+     * @return
+     */
     @Override
     public boolean requiresConnection() {
         return false;
     }
 
+    /**
+     * get result, for consistencies sake.
+     */
     public void getResult() {
     }
 }

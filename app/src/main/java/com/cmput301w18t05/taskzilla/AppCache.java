@@ -54,6 +54,12 @@ public class AppCache {
     }
 
     // can override these to accept different classes
+
+    /**
+     * add task to app cache
+     *
+     * @param task
+     */
     public void addInCache(Task task) {
         System.out.println("Adding task to cache with requester = "+task.getTaskRequester().getUsername());
 
@@ -67,11 +73,19 @@ public class AppCache {
 
     }
 
+    /**
+     * add a collection of tasks to the app cache
+     * @param tasks
+     */
     public void addInCache(Collection<Task> tasks) {
         if (tasks != null)
             cachedTasks.addAll(tasks);
     }
 
+    /**
+     * add a bid into cache
+     * @param bid
+     */
     public void addInCache(Bid bid) {
         if (bid == null)
             return;
@@ -82,22 +96,39 @@ public class AppCache {
         bidIDCounter++;
     }
 
+    /**
+     * add a collection of bids into the cache and remove duplicates.
+     * @param bids
+     */
     public void addBidsToCache(Collection<Bid> bids) {
         if (bids != null)
             cachedBids.addAll(bids);
     }
 
+    /**
+     * add user to cache
+     * @param user
+     */
     public void addInCache(User user) {
         if (user != null)
             cachedUsers.add(user);
     }
 
+    /**
+     * remove all tasks from the cache that match the task id
+     * @param taskid
+     */
     public void removeTaskByTaskid(String taskid) {
         for (Task t : cachedTasks)
             if (t.getId().equals(taskid))
                 cachedTasks.remove(t);
     }
 
+    /**
+     * find a  user object in the cache that matches the userid
+     * @param userid
+     * @return user object that matches the userid, will only ever return at most one.
+     */
     public User findCachedUserByUserid(String userid) {
         System.out.println("Searching for users in cache with userid: "+userid);
         if (currentUser.getInstance().getId().equals(userid)) {
@@ -113,6 +144,11 @@ public class AppCache {
         return null;
     }
 
+    /**
+     * find all tasks in the cache that match the task id
+     * @param taskid
+     * @return all tasks with this task id.
+     */
     public Task findCachedTaskById(String taskid) {
         System.out.println("Searching cache for tasks with taskid: "+taskid);
 
@@ -129,6 +165,11 @@ public class AppCache {
         return null;
     }
 
+    /**
+     * find all caches bids that match the userid
+     * @param userid
+     * @return all bids that have this user id.
+     */
     public ArrayList<Bid> findCachedBidsByUserid(String userid) {
         System.out.println("Searching for bids in cache with userid: "+userid);
 
@@ -143,6 +184,11 @@ public class AppCache {
         return result;
     }
 
+    /**
+     * find all bids that match a task id
+     * @param Taskid
+     * @return all bids matching the task id.
+     */
     public ArrayList<Bid> findCachedBidsByTaskid(String Taskid) {
         System.out.println("Searching for bids in cache with taskid: "+Taskid);
 
@@ -156,6 +202,10 @@ public class AppCache {
         return result;
     }
 
+    /**
+     * remove bids in cache by bid id.
+     * @param id
+     */
     public void removeBidByBidid(String id) {
         System.out.println("Trying to remove bid: "+id);
         for (Bid b : cachedBids) {
@@ -168,6 +218,9 @@ public class AppCache {
         System.out.println("Could not find bid with id: "+id);
     }
 
+    /**
+     * clear the cache of all objects. This happens mostly when the device comes online.
+     */
     public void emptyCache() {
         System.out.println("Clearing local cache.");
         cachedTasks.clear();

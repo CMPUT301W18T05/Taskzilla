@@ -26,7 +26,6 @@ import com.cmput301w18t05.taskzilla.request.InsertionRequest;
  * @see ElasticSearchController
  * @version 1.0
  */
-
 public class AddNotificationRequest extends InsertionRequest {
     ElasticSearchController.AddNotification task;
     Notification notificationData;
@@ -36,6 +35,9 @@ public class AddNotificationRequest extends InsertionRequest {
         //queueReady = true;
     }
 
+    /**
+     * Add the notification into elasticsearch
+     */
     @Override
     public void execute() {
         System.out.println("Trying to add notification");

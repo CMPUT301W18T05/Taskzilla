@@ -29,6 +29,9 @@ public class AddUserRequest extends InsertionRequest {
         this.user = user;
     }
 
+    /**
+     * add user into elasticsearch
+     */
     @Override
     public void execute() {
         task = new ElasticSearchController.AddUser();
@@ -39,6 +42,10 @@ public class AddUserRequest extends InsertionRequest {
     public void executeOffline() {
     }
 
+    /**
+     * return true if successfully added
+     * @return
+     */
     public boolean getResult() {
         try {
             return task.get();
@@ -47,5 +54,4 @@ public class AddUserRequest extends InsertionRequest {
             return false;
         }
     }
-
 }

@@ -21,6 +21,7 @@ import com.cmput301w18t05.taskzilla.request.Request;
  * @see ElasticSearchController
  * @version 1.0
  */
+@Deprecated
 public class UpdateTaskRequest extends Request {
     ElasticSearchController.UpdateTask updateRequest;
     private Task taskData;
