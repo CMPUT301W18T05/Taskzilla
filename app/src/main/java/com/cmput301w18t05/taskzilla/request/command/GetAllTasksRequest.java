@@ -11,7 +11,6 @@
 
 package com.cmput301w18t05.taskzilla.request.command;
 
-import android.os.AsyncTask;
 import android.util.Log;
 
 import com.cmput301w18t05.taskzilla.AppCache;

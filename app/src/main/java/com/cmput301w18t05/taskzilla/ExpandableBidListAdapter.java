@@ -1,7 +1,6 @@
 package com.cmput301w18t05.taskzilla;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
@@ -15,7 +14,6 @@ import com.cmput301w18t05.taskzilla.request.command.GetUserRequest;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import javax.crypto.SecretKeyFactory;
 
 /**
  * Created by myapplestory on 3/18/2018.

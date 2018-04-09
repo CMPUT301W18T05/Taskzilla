@@ -125,6 +125,10 @@ public class MyBidsFragment extends Fragment {
         });
     }
 
+    /**
+     * r
+     * @param isVisibleToUser
+     */
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);

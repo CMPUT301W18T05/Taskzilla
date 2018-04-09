@@ -28,7 +28,6 @@ import com.cmput301w18t05.taskzilla.request.command.AddUserRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetUserByUsernameRequest;
 
 
-import org.apache.commons.lang3.ObjectUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -224,6 +223,11 @@ public class SignUpActivity extends AppCompatActivity {
         return addUserRequest.getResult();
     }
 
+    /**
+     * checks if the user exists using elastic search through the request manager
+     * @param username
+     * @return boolean of whether the user exists or not yet
+     */
     public boolean userExists(String username) {
         GetUserByUsernameRequest getUserByUsernameRequest = new GetUserByUsernameRequest(username);
         RequestManager.getInstance().invokeRequest(getUserByUsernameRequest);
@@ -234,6 +238,11 @@ public class SignUpActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * retrieve the user from elastic search through request manager
+     * @param username
+     * @return the user retrieved from elastic search
+     */
     public User getUser(String username) {
         GetUserByUsernameRequest getUserByUsernameRequest = new GetUserByUsernameRequest(username);
         RequestManager.getInstance().invokeRequest(getUserByUsernameRequest);

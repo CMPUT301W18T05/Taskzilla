@@ -135,7 +135,6 @@ public class EditTaskActivity extends AppCompatActivity{
     }
 
     /**
-     * TaskSaveButton
      * Upon pressing the save button in the activity_edit_task.xml
      * check that the information that is inputted is within
      * the constraints set and return
@@ -172,6 +171,11 @@ public class EditTaskActivity extends AppCompatActivity{
         }
     }
 
+    /**
+     * When camera button is clicked, move to photo activity
+     *
+     * @param view
+     */
     public void AddPhotoButton(View view){
         if(photos.size()==10){
             Toast.makeText(EditTaskActivity.this,"Photo limited reached",Toast.LENGTH_LONG).show();
@@ -183,6 +187,14 @@ public class EditTaskActivity extends AppCompatActivity{
     }
 
 
+    /**
+     * Upon returning from selecting photos, list of photos
+     * is set for the task
+     *
+     * @param reqCode
+     * @param resultCode
+     * @param data
+     */
 
     @Override
     protected void onActivityResult(int reqCode, int resultCode, Intent data) {
