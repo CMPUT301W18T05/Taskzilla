@@ -40,6 +40,10 @@ public class GetTasksByRequesterUsernameRequest extends Request {
         this.user = username;
     }
 
+    /**
+     * get the tasks with this username from elasticsearch.
+     * since we are online, add the tasks we find to the app cache
+     */
     public void execute() {
         System.out.println("Getting tasks by requester username: " + user + " from: " + from + " with size: " + size);
         task = new ElasticSearchController.GetTasksByRequesterUsername(from, size);
@@ -56,6 +60,9 @@ public class GetTasksByRequesterUsernameRequest extends Request {
         }
     }
 
+    /**
+     * search through the app cache for tasks with this username
+     */
     @Override
     public void executeOffline() {
         if (executedOfflineOnce) {

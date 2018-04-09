@@ -23,17 +23,20 @@ public class currentUser extends User {
     private static User current = null;
 
     private currentUser(){
-
     }
 
     /**
-     * Returns the instance of the Current user
-     * @return
+     * Returns the actual user object which is not static
+     * @return user object
      */
     public static User getInstance() {
         return current;
     }
 
+    /**
+     * get the currentUser instance
+     * @return this instance
+     */
     public static currentUser getRealInstance() {
         return instance;
     }

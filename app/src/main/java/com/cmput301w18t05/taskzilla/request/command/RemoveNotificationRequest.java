@@ -33,6 +33,9 @@ public class RemoveNotificationRequest extends DeletionRequest {
         queueReady = true;
     }
 
+    /**
+     * remove the notification matching the id from elasticsearch
+     */
     public void execute(){
         ElasticSearchController.RemoveNotification deleteRequest = new ElasticSearchController.RemoveNotification();
         deleteRequest.execute(this.nId);

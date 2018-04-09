@@ -25,10 +25,22 @@ public abstract class Request {
     protected boolean executedOffline = false;
     protected boolean queueReady = false;
 
+    /**
+     * this contains the logic of how to complete the request when
+     * the device is online.
+     */
     public abstract void execute();
 
+    /**
+     * this contains the logic of how to complete the request when
+     * the device is offline.
+     */
     public abstract void executeOffline();
 
+    /**
+     * this tells us if the request requires connectivity
+     * @return true if requires connection, false otherwise
+     */
     public boolean requiresConnection() {
         return true; // default requires connection, override this if this is not true
     }

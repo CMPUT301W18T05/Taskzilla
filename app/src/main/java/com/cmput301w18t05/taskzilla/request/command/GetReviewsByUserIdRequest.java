@@ -38,6 +38,9 @@ public class GetReviewsByUserIdRequest extends Request {
         this.userId = userId;
     }
 
+    /**
+     * get all reviews with this user id from elasticsearch
+     */
     public void execute() {
         //System.out.println("Getting reviews by user ID: " + userId);
         task = new ElasticSearchController.GetReviewsByUserId();
