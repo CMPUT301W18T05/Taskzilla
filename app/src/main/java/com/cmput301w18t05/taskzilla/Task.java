@@ -43,7 +43,9 @@ public class Task implements Comparable<Task> {
     private String Id;
 
     private String providerId;
+    private String providerUsername;
     private String requesterId;
+    private String requesterUsername;
     private String bestBidder;
 
     private String status;
@@ -67,6 +69,7 @@ public class Task implements Comparable<Task> {
         photos = new ArrayList<>();
         this.name = name;
         this.requesterId = TaskRequester.getId();
+        this.requesterUsername = TaskRequester.getUsername();
         this.status = "requested";
         this.description = description;
         this.bestBid = -1.0f;
@@ -84,6 +87,7 @@ public class Task implements Comparable<Task> {
         photos = new ArrayList<>();
         this.name = name;
         this.requesterId = TaskRequester.getId();
+        this.requesterUsername = TaskRequester.getUsername();
         this.status = "requested";
         this.description = description;
         this.location = location;
@@ -102,6 +106,7 @@ public class Task implements Comparable<Task> {
     public Task(String name, User TaskRequester, String description, LatLng location, ArrayList<Photo> photos) {
         this.name = name;
         this.requesterId = TaskRequester.getId();
+        this.requesterUsername = TaskRequester.getUsername();
         this.status = "requested";
         this.description = description;
         this.location = location;
@@ -223,6 +228,7 @@ public class Task implements Comparable<Task> {
 
     public void setTaskProvider(User taskProvider) {
         this.providerId = taskProvider.getId();
+        this.providerUsername = taskProvider.getUsername();
     }
 
     public String getStatus() {
@@ -361,6 +367,7 @@ public class Task implements Comparable<Task> {
 
     public void unassignProvider() {
         providerId = null;
+        providerUsername = null;
         this.status = "requested";
         updateThis();
     }

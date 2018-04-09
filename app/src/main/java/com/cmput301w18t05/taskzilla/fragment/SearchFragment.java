@@ -71,7 +71,7 @@ public class SearchFragment extends Fragment {
         //find views
         mButton = mConstraintLayout.findViewById(R.id.MapButton);
         availableTasksText = mConstraintLayout.findViewById(R.id.TextListView);
-        availableTasksPhoto = mConstraintLayout.findViewById(R.id.PhotoListView);
+        //availableTasksPhoto = mConstraintLayout.findViewById(R.id.PhotoListView);
 
         return mConstraintLayout;
     }
