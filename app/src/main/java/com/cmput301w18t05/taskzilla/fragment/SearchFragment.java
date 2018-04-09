@@ -29,8 +29,11 @@ import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.cmput301w18t05.taskzilla.Photo;
 import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.TaskCustomAdapter;
+import com.cmput301w18t05.taskzilla.TaskCustomAdapter2;
+import com.cmput301w18t05.taskzilla.User;
 import com.cmput301w18t05.taskzilla.controller.SearchController;
 import com.cmput301w18t05.taskzilla.Task;
 import com.cmput301w18t05.taskzilla.activity.MapActivity;
@@ -51,9 +54,12 @@ import static android.app.Activity.RESULT_OK;
 public class SearchFragment extends Fragment {//implements SearchView.OnQueryTextListener {
 
     private SearchView searchField;
-    private ListView availableTasks;
-    private ArrayAdapter<Task> adapter;
+    private ListView availableTasksText;
+    private ListView availableTasksPhoto;
+    private ArrayAdapter<Task> adapterText;
+    private ArrayAdapter<Photo> adapterPhoto;
     private ArrayList<Task> searchResults;
+    private ArrayList<Photo> photoArrayList;
     private SearchController searchController;
     private SwipeRefreshLayout mySwipeRefreshLayout;
     private Spinner spinner;
@@ -80,13 +86,37 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
 
         //Set up listview and adapter
         searchResults = new ArrayList<>();
-        availableTasks = mConstraintLayout.findViewById(R.id.ListView2);
+        availableTasksText = mConstraintLayout.findViewById(R.id.TextListView);
+        availableTasksPhoto = mConstraintLayout.findViewById(R.id.PhotoListView);
         searchController = new SearchController(this, getActivity());
+        photoArrayList = new ArrayList<>();
 
-        adapter = new TaskCustomAdapter(getActivity(), R.layout.tasks_list_view2, searchResults);
-        availableTasks.setAdapter(adapter);
+        adapterText = new TaskCustomAdapter(getActivity(), R.layout.tasks_list_view2, searchResults);
+        availableTasksText.setAdapter(adapterText);
 
-        availableTasks.setClickable(true);
+        photoArrayList.clear();
+        for (Task task : searchResults) {
+            User tempUser = task.getTaskRequester();
+            photoArrayList.add(tempUser.getPhoto());
+        }
+        adapterPhoto = new TaskCustomAdapter2(getActivity(), R.layout.tasks_list_view3, photoArrayList);
+        availableTasksPhoto.setAdapter(adapterPhoto);
+
+        availableTasksText.setClickable(true);
+
+
+        View clickSource;
+        View touchSource;
+
+        int offset = 0;
+
+        
+
+
+
+
+
+
 
         /*
          *  Listens for user tapping on a task in the listview
@@ -95,7 +125,7 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
          *  is used later on to determine which item to remove from the listview
          *  if the item was deleted.
          */
-        availableTasks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        availableTasksText.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 currentTask = searchResults.get(i);
@@ -263,12 +293,18 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
     public void notifyChange() {
         searchResults.clear();
         searchResults.addAll(searchController.getResults());
-        adapter.notifyDataSetChanged();
+        photoArrayList.clear();
+        for (Task task : searchResults) {
+            User tempUser = task.getTaskRequester();
+            photoArrayList.add(tempUser.getPhoto());
+        }
+        adapterText.notifyDataSetChanged();
+        adapterPhoto.notifyDataSetChanged();
     }
 
     public void onResume(){
         super.onResume();
-        adapter.notifyDataSetChanged();
-    }
+        adapterText.notifyDataSetChanged();
+        adapterPhoto.notifyDataSetChanged();    }
 
 }
