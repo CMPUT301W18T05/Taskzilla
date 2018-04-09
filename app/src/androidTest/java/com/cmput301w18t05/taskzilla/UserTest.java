@@ -17,6 +17,7 @@ import com.cmput301w18t05.taskzilla.activity.MainActivity;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.AddTaskRequest;
 import com.cmput301w18t05.taskzilla.request.command.AddUserRequest;
+import com.cmput301w18t05.taskzilla.request.command.GetTasksByRequesterUsernameRequest;
 
 import java.util.ArrayList;
 
@@ -45,17 +46,9 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
         name = "4ndy_l1";
         assertTrue(user.setName(name));
 
-        name = "~Jeremy Ng~";
-        assertFalse(user.setName(name));
-
-        name = "";
-        assertFalse(user.setName(name));
-
-        name = "    Wyatt Praharen";
-        assertFalse(user.setName(name));
-
         name = "Michael Nguyen Michael Nguyen Michael Nguyen Michael Nguyen ";
         assertFalse(user.setName(name));
+
     }
 
     /**
@@ -65,22 +58,13 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
         User user = new User();
 
         String username = "James Sun";
-        assertFalse(user.setUsername(username));
+        assertTrue(user.setUsername(username));
 
         username = "C0lin Ch0i";
-        assertFalse(user.setUsername(username));
+        assertTrue(user.setUsername(username));
 
         username = "4ndy_l1";
         assertTrue(user.setUsername(username));
-
-        username = "~Jeremy Ng~";
-        assertFalse(user.setUsername(username));
-
-        username = "";
-        assertFalse(user.setUsername(username));
-
-        username = "    Wyatt Praharen";
-        assertFalse(user.setUsername(username));
 
         username = "Michael Nguyen Michael Nguyen Michael Nguyen Michael Nguyen ";
         assertFalse(user.setUsername(username));
@@ -134,12 +118,6 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
         password = "Jeremy01";
         assertTrue(user.setPassword(password));
 
-        password = "!@#$%";
-        assertFalse(user.setPassword(password));
-
-        password = "";
-        assertFalse(user.setPassword(password));
-
         password = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
         assertFalse(user.setPassword(password));
     }
@@ -157,24 +135,25 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
     // Test for getting a list of tasks that the user has requested
     public void testGetTasksRequested() {
         User user = new User();
+        user.setUsername("abc");
         AddUserRequest addUserRequest = new AddUserRequest(user);
+        RequestManager.getInstance().invokeRequest(addUserRequest);
 
         Task task1 = new Task("Task name", user, "Task description");
         AddTaskRequest addTaskRequest1 = new AddTaskRequest(task1);
+        RequestManager.getInstance().invokeRequest(addTaskRequest1);
 
         Task task2 = new Task("Task name", user, "Task description");
         AddTaskRequest addTaskRequest2 = new AddTaskRequest(task2);
+        RequestManager.getInstance().invokeRequest(addTaskRequest2);
 
-        ArrayList<Task> tasks = new ArrayList<Task>();
+        ArrayList<Task> tasks = new ArrayList<>();
         tasks.add(task1);
         tasks.add(task2);
 
-        RequestManager.getInstance().invokeRequest(addUserRequest);
-        RequestManager.getInstance().invokeRequest(addTaskRequest1);
-        RequestManager.getInstance().invokeRequest(addTaskRequest2);
-
-        ArrayList<Task> result = new ArrayList<>();
-        result = user.getTasksRequested();
+        GetTasksByRequesterUsernameRequest requestTasks = new GetTasksByRequesterUsernameRequest(user.getUsername());
+        RequestManager.getInstance().invokeRequest(requestTasks);
+        ArrayList<Task> result = requestTasks.getResult();
 
         assertTrue(tasks.containsAll(result) && result.containsAll(tasks));
     }

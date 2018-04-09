@@ -17,7 +17,8 @@ import com.cmput301w18t05.taskzilla.activity.MainActivity;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.AddTaskRequest;
 import com.cmput301w18t05.taskzilla.request.command.AddUserRequest;
-import com.cmput301w18t05.taskzilla.request.command.GetTaskRequest;
+
+import org.junit.Test;
 
 import java.text.DecimalFormat;
 
@@ -27,13 +28,12 @@ import java.text.DecimalFormat;
  */
 
 public class BidTest extends ActivityInstrumentationTestCase2 {
-    public BidTest(){
-        super(MainActivity.class);
-    }
+
+    public BidTest() { super(MainActivity.class); }
 
     /**
      * Test for comparing a bid to another bid
-     *
+     * <p>
      * greater than returns 1
      * equality returns 0
      * less than returns -1
@@ -60,24 +60,5 @@ public class BidTest extends ActivityInstrumentationTestCase2 {
         float bidAmount4 = 20.00f;
         Bid bid4 = new Bid(user4.getId(), task.getId(), bidAmount4);
         assertEquals(bid1.compareTo(bid4), -1);
-    }
-
-    /**
-     *  Test the toString method
-     */
-    public void testToString() {
-        User user = new User();
-
-        Task task = new Task("Task name", user, "Task description");
-        AddTaskRequest addTaskRequest = new AddTaskRequest(task);
-        RequestManager.getInstance().invokeRequest(addTaskRequest);
-
-        float bidAmount = 1.00f;
-        Bid bid = new Bid(user.getId(), task.getId(), bidAmount);
-        DecimalFormat cents = new DecimalFormat("#0.00");
-
-        String result = "Task: Task name \nRequester: " + user.getName() + " \nStatus: " + task.getStatus() + "\nBid amount: $" + cents.format(bidAmount) + " Lowest bid: $" + cents.format(task.getBestBid());
-
-        assertEquals(bid.toString(), result);
     }
 }

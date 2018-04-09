@@ -100,7 +100,7 @@ public class User implements Comparable<User> {
     public boolean setName(String name) {
         // if name contains illegal characters, or is longer than 30 characters return false
         // otherwise set the user's name
-        if (name.matches("[a-zA-Z_0-9][a-zA-Z0-9 ]") || (name.length() <= 30)) {
+        if (name.matches("[a-zA-Z_0-9][a-zA-Z_0-9 ]") || (name.length() <= 30)) {
             this.name = name;
             return true;
         }
