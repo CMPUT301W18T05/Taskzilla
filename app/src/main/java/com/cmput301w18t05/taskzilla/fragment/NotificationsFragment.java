@@ -226,7 +226,6 @@ public class NotificationsFragment extends Fragment {
         super.onResume();
         adapter.notifyDataSetChanged();
     }
-
 /*
     public static class pollNotifications extends AsyncTask<Void, Void, Void> {
         NotificationsFragment listener;

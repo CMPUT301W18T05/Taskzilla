@@ -15,6 +15,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
@@ -110,6 +111,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
         appColors.setActionBarColor("#000000");
         appColors.setActionBarTextColor("#05e5ee");
+        getDrawable(android.R.drawable.ic_popup_reminder).setColorFilter( 0xff808080, PorterDuff.Mode.MULTIPLY );
         loadAppColors();
 
         actionBar = getSupportActionBar();
@@ -149,15 +151,24 @@ public class WelcomeActivity extends AppCompatActivity {
 
         NotificationManager.getInstance(this.getApplicationContext(), tabs);
 
+
         tabs.getTabAt(0).setIcon(android.R.drawable.ic_menu_my_calendar);
         tabs.getTabAt(1).setIcon(android.R.drawable.ic_menu_agenda);
         tabs.getTabAt(2).setIcon(android.R.drawable.ic_search_category_default);
         tabs.getTabAt(3).setIcon(android.R.drawable.ic_popup_reminder).setCustomView(R.layout.badged_tab);
         tabs.getTabAt(4).setIcon(android.R.drawable.ic_menu_myplaces);
 
+        tabs.getTabAt(0).getIcon().setColorFilter(Color.parseColor(appColors.getActionBarTextColor()), PorterDuff.Mode.MULTIPLY );
+        tabs.getTabAt(1).getIcon().setColorFilter(Color.parseColor(appColors.getActionBarTextColor()), PorterDuff.Mode.MULTIPLY );
+        tabs.getTabAt(2).getIcon().setColorFilter(Color.parseColor(appColors.getActionBarTextColor()), PorterDuff.Mode.MULTIPLY );
+        tabs.getTabAt(3).getIcon().setColorFilter(Color.parseColor(appColors.getActionBarTextColor()), PorterDuff.Mode.MULTIPLY );
+        tabs.getTabAt(4).getIcon().setColorFilter(Color.parseColor(appColors.getActionBarTextColor()), PorterDuff.Mode.MULTIPLY );
+
+
+
+
         tabs.setBackground(new ColorDrawable(Color.parseColor(appColors.getActionBarColor())));
         // Count notifications user currently has and updates badge accordingly
-
 
         NotificationManager.getInstance().countNotifications();
         NotificationManager.getInstance().updateBadge();
@@ -203,8 +214,15 @@ public class WelcomeActivity extends AppCompatActivity {
                     public void onColorChosen(int color) {
                         appColors.setActionBarTextColor(String.format("#%06X", (0xFFFFFF & color)));
                         actionBar.setTitle(Html.fromHtml("<font color='" + appColors.getActionBarTextColor() + "'>Taskzilla</font>"));
+                        Log.i("colors",Integer.toString(color));
+                        tabs.getTabAt(0).getIcon().setColorFilter(Color.parseColor(appColors.getActionBarTextColor()), PorterDuff.Mode.MULTIPLY );
+                        tabs.getTabAt(1).getIcon().setColorFilter(Color.parseColor(appColors.getActionBarTextColor()), PorterDuff.Mode.MULTIPLY );
+                        tabs.getTabAt(2).getIcon().setColorFilter(Color.parseColor(appColors.getActionBarTextColor()), PorterDuff.Mode.MULTIPLY );
+                        tabs.getTabAt(3).getIcon().setColorFilter(Color.parseColor(appColors.getActionBarTextColor()), PorterDuff.Mode.MULTIPLY );
+                        tabs.getTabAt(4).getIcon().setColorFilter(Color.parseColor(appColors.getActionBarTextColor()), PorterDuff.Mode.MULTIPLY );
                         saveAppColors();
                         cp.dismiss();
+
                     }
                 });
                 return true;
