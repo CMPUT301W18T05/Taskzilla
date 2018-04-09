@@ -106,8 +106,6 @@ public class NotificationsFragment extends Fragment {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             notificationsController.removeNotificationRequest(taskId, i);
-                            NotificationManager.getInstance().decrementCount();
-                            NotificationManager.getInstance().updateBadge();
                             dialogInterface.dismiss();
                         }
                     });
@@ -135,8 +133,6 @@ public class NotificationsFragment extends Fragment {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         // remove notification
                         notificationsController.removeNotificationRequest(notificationId, position);
-                        NotificationManager.getInstance().decrementCount();
-                        NotificationManager.getInstance().updateBadge();
                         dialogInterface.dismiss();
                     }
                 });
@@ -163,8 +159,6 @@ public class NotificationsFragment extends Fragment {
                        public void onClick(DialogInterface dialogInterface, int i) {
                            // remove notification
                            notificationsController.removeAllNotificationRequest();
-                           NotificationManager.getInstance().setCount(0);
-                           NotificationManager.getInstance().updateBadge();
                            dialogInterface.dismiss();
                        }
                    });
