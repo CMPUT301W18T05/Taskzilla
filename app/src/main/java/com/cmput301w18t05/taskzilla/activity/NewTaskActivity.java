@@ -62,6 +62,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 /**
@@ -216,19 +217,38 @@ public class NewTaskActivity extends AppCompatActivity implements OnMapReadyCall
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        getLocation();
+        mMap.getUiSettings().setScrollGesturesEnabled(false);
+        mMap.getUiSettings().setZoomGesturesEnabled(false);
 
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat,lon),15));
+        // Zoom in, animating the camera.
+        mMap.animateCamera(CameraUpdateFactory.zoomIn());
+        // Zoom out to zoom level 10, animating with a duration of 2 seconds.
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
+        moveToCurrentLocation(new LatLng(lat,lon));
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng point) {
                 Intent intent = new Intent(getApplicationContext(), MapActivity.class);
                 intent.putExtra("drag","true");
-                startActivity(intent);
+                startActivityForResult(intent, 2);
+
             }
         });
 
 
     }
 
+    private void moveToCurrentLocation(LatLng currentLocation) {
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation,15));
+        // Zoom in, animating the camera.
+        mMap.animateCamera(CameraUpdateFactory.zoomIn());
+        // Zoom out to zoom level 10, animating with a duration of 2 seconds.
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(13), 2000, null);
+
+    }
     public void AddPhotoButtonClicked(){
         if(photos.size()==10){
             Toast.makeText(NewTaskActivity.this,"Photo limited reached",Toast.LENGTH_LONG).show();
@@ -282,6 +302,17 @@ public class NewTaskActivity extends AppCompatActivity implements OnMapReadyCall
         // taken from https://stackoverflow.com/questions/38352148/get-image-from-the-gallery-and-show-in-imageview
         // 2018-04-03
         if (resultCode == RESULT_OK) {
+            if (reqCode==2) {
+
+                DecimalFormat df = new DecimalFormat("#.#####");
+
+                taskLocation = new LatLng(Double.parseDouble(data.getStringExtra("Lat")),Double.parseDouble(data.getStringExtra("Lon")));
+                autocompleteFragment.setHint(df.format(Double.parseDouble(data.getStringExtra("Lat")))+", "+df.format(Double.parseDouble(data.getStringExtra("Lon"))));
+                autocompleteFragment.setText(df.format(Double.parseDouble(data.getStringExtra("Lat")))+", "+df.format(Double.parseDouble(data.getStringExtra("Lon"))));
+
+                moveToCurrentLocation(taskLocation);
+
+            }else{
             try {
                 final Uri imageUri = data.getData();
                 final InputStream imageStream = getContentResolver().openInputStream(imageUri);
@@ -292,28 +323,28 @@ public class NewTaskActivity extends AppCompatActivity implements OnMapReadyCall
                 Integer height = 1200;
                 Bitmap resizedImage;
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                selectedImage.compress(Bitmap.CompressFormat.JPEG,50,stream);
-                Log.i("size",String.valueOf(stream.size()));
-                while(stream.size()>maxSize){
+                selectedImage.compress(Bitmap.CompressFormat.JPEG, 50, stream);
+                Log.i("size", String.valueOf(stream.size()));
+                while (stream.size() > maxSize) {
                     width = width - 200;
                     height = height - 200;
                     stream = new ByteArrayOutputStream();
                     resizedImage = Bitmap.createScaledBitmap(selectedImage, width, height, false);
-                    resizedImage.compress(Bitmap.CompressFormat.JPEG,50,stream);
-                    Log.i("size",String.valueOf(stream.size()));
+                    resizedImage.compress(Bitmap.CompressFormat.JPEG, 50, stream);
+                    Log.i("size", String.valueOf(stream.size()));
                 }
 
                 byte byteImage[];
                 byteImage = stream.toByteArray();
                 String image = Base64.encodeToString(byteImage, Base64.DEFAULT);
                 photos.add(new Photo(image));
-                Log.i("hi",String.valueOf(photos.size()));
+                Log.i("hi", String.valueOf(photos.size()));
                 recyclerPhotosViewAdapter.notifyDataSetChanged();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
                 Toast.makeText(NewTaskActivity.this, "Something went wrong", Toast.LENGTH_LONG).show();
             }
-
+        }
         }else {
             Toast.makeText(NewTaskActivity.this, "You haven't picked Image",Toast.LENGTH_LONG).show();
         }
