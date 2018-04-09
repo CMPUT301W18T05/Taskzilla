@@ -190,7 +190,7 @@ public class NotificationManager extends ContextWrapper {
         if(tabs.getTabAt(3) != null && tabs.getTabAt(3).getCustomView() != null) {
             TextView badge = (TextView) tabs.getTabAt(3).getCustomView().findViewById(R.id.badge);
             if(badge != null) {
-                badge.setText(count + "");
+//                badge.setText(count + "");
             }
             View v = tabs.getTabAt(3).getCustomView().findViewById(R.id.badgeContainer);
             if(v != null && count != 0) {
