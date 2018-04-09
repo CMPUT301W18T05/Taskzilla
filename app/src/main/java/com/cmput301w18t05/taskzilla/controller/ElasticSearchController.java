@@ -236,7 +236,7 @@ public class ElasticSearchController {
 
             Search search = new Search.Builder(query)
                     .addIndex("cmput301w18t05")
-                    .addType("task")
+                    .addType("task2")
                     .build();
 
             try {
@@ -282,7 +282,7 @@ public class ElasticSearchController {
 
                 Search search = new Search.Builder(query)
                         .addIndex("cmput301w18t05")
-                        .addType("task")
+                        .addType("task2")
                         .build();
 
                 try {
@@ -327,7 +327,7 @@ public class ElasticSearchController {
 
                 Search search = new Search.Builder(query)
                         .addIndex("cmput301w18t05")
-                        .addType("task")
+                        .addType("task2")
                         .build();
 
                 try {
@@ -388,7 +388,7 @@ public class ElasticSearchController {
 
                 Search search = new Search.Builder(query)
                         .addIndex("cmput301w18t05")
-                        .addType("task")
+                        .addType("task2")
                         .build();
                 try {
                     SearchResult result = client.execute(search);
