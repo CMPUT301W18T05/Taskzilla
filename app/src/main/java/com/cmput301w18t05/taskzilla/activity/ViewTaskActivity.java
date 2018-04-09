@@ -78,7 +78,9 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 /**
- * Activity for viewing a task
+ * Activity fro viewing a task
+ *
+ * @version 1.0
  */
 public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -101,6 +103,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
     private TextView RequesterName;
     private TextView TaskName;
     private TextView TaskStatus;
+    private TextView NoLocation;
 
     private ImageButton EditButton;
     private ImageButton DeleteButton;
@@ -145,12 +148,8 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.dragdropMap);
         mapFragment.getMapAsync(this);
-        //mapFragment.getView().setVisibility(View.INVISIBLE);
-        //mapFragment.getView().setActivated(false);
-        //mapFragment.getView().setEnabled(false);
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
         findViews();
 
         // starts the activity at the very top
@@ -166,6 +165,12 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         setProviderField();
 
         photos = task.getPhotos();
+        NoLocation = findViewById(R.id.NoLocationText);
+        NoLocation.setVisibility(View.INVISIBLE);
+        if(task.getLocation()==null) {
+            NoLocation.setVisibility(View.VISIBLE);
+            //mapFragment.s
+        }
         linearLayout = findViewById(R.id.Photos);
         recyclerPhotosView = findViewById(R.id.listOfPhotos);
         layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -237,6 +242,8 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         Intent intent = new Intent(view.getContext(), EditTaskActivity.class);
         intent.putExtra("task Name", taskName);
         intent.putExtra("Description", description);
+        intent.putExtra("Lat", Double.toString(task.getLocation().latitude));
+        intent.putExtra("Lon", Double.toString(task.getLocation().longitude));
         ArrayList<String> photosString = new ArrayList<String>();
         for(int i = 0;i < photos.size(); i++){
             photosString.add(photos.get(i).toString());
@@ -339,15 +346,6 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                     TaskStatus.setText("Bidded");
                 }
                 setProviderField();
-
-                //Notification notification = new Notification("bidded", "hi", getIntent(), currentUser.getInstance().getId(), task.getRequesterId(), currentUser.getInstance());
-                //AddNotificationRequest request = new AddNotificationRequest(notification);
-                //RequestManager.getInstance().invokeRequest(getApplicationContext(), request);
-                //NotificationManager.getInstance().createNotification(notification);
-                //NotificationManager.getInstance().sendNotification(notification);
-
-                //Notification notification = new Notification("Hi",currentUser.getInstance().getId(), task.getRequesterId(),taskID, currentUser.getInstance());
-                //NotificationManager.getInstance().sendNotification(notification);
 
                 Toast.makeText(ViewTaskActivity.this, "Bid placed", Toast.LENGTH_SHORT).show();
 
@@ -799,6 +797,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         TaskName.setText(taskName);
         TaskStatus.setText(task.getStatus());
         DescriptionView.setText(description);
+
     }
 
     /**
@@ -880,19 +879,29 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         BidslistView.setAdapter(expandableListAdapter);
     }
 
+    /**
+     * Add a marker with the location of the task on the map fragment
+     * If map is clicked, switch to MapActivity
+     *
+     * @param googleMap
+     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.getUiSettings().setScrollGesturesEnabled(false);
         mMap.getUiSettings().setZoomGesturesEnabled(false);
+
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng point) {
-                Intent intent = new Intent(getApplicationContext(), MapActivity.class);
-                intent.putExtra("lat",Double.toString(task.getLocation().latitude));
-                intent.putExtra("lon",Double.toString(task.getLocation().longitude));
-                intent.putExtra("TaskName",task.getName());
-                startActivity(intent);
+                if(task.getLocation()!=null) {
+                    Intent intent = new Intent(getApplicationContext(), MapActivity.class);
+                    intent.putExtra("lat",Double.toString(task.getLocation().latitude));
+                    intent.putExtra("lon",Double.toString(task.getLocation().longitude));
+                    intent.putExtra("TaskName",task.getName());
+                    startActivity(intent);
+                }
+
             }
         });
         if (task.getLocation()!=null) {
@@ -910,6 +919,11 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
 
     }
 
+    /**
+     * Move the camera to a Location
+     *
+     * @param currentLocation
+     */
     private void moveToCurrentLocation(LatLng currentLocation) {
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation,15));
         // Zoom in, animating the camera.
@@ -937,6 +951,8 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                 if (resultCode == RESULT_OK) {
                     taskName = data.getStringExtra("Task Name");
                     description = data.getStringExtra("Description");
+                    Double latt = Double.parseDouble(data.getStringExtra("Lat"));
+                    Double lonn = Double.parseDouble(data.getStringExtra("Lon"));
                     ArrayList<String> photosString = data.getStringArrayListExtra("photos");
                     photos.clear();
                     Bitmap image;
@@ -947,10 +963,15 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                     recyclerPhotosViewAdapter.notifyDataSetChanged();
                     task.setName(taskName);
                     task.setDescription(description);
+                    task.setLocation(new LatLng(latt,lonn));
                     viewTaskController.updateTaskRequest(task);
                     TextView DescriptionView = findViewById(R.id.Description);
                     TextView TaskNameView = findViewById(R.id.TaskName);
                     TaskNameView.setText(taskName);
+                    LatLng taskLocation = new LatLng(latt,lonn);
+                    mMap.clear();
+                    mMap.addMarker(new MarkerOptions().position(taskLocation).title("Your Location"));
+                    moveToCurrentLocation(taskLocation);
                     if (description.length() > 0) {
                         DescriptionView.setText(description);
                     } else {

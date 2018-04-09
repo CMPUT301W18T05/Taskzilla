@@ -137,23 +137,23 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
         User user = new User();
         user.setUsername("abc");
         AddUserRequest addUserRequest = new AddUserRequest(user);
-        RequestManager.getInstance().invokeRequest(addUserRequest);
+        RequestManager.getInstance().invokeRequest(getActivity(),addUserRequest);
 
         Task task1 = new Task("Task name", user, "Task description");
         AddTaskRequest addTaskRequest1 = new AddTaskRequest(task1);
-        RequestManager.getInstance().invokeRequest(addTaskRequest1);
+        RequestManager.getInstance().invokeRequest(getActivity(),addTaskRequest1);
 
         Task task2 = new Task("Task name", user, "Task description");
         AddTaskRequest addTaskRequest2 = new AddTaskRequest(task2);
-        RequestManager.getInstance().invokeRequest(addTaskRequest2);
+        RequestManager.getInstance().invokeRequest(getActivity(),addTaskRequest2);
+
 
         ArrayList<Task> tasks = new ArrayList<>();
         tasks.add(task1);
         tasks.add(task2);
 
-        GetTasksByRequesterUsernameRequest requestTasks = new GetTasksByRequesterUsernameRequest(user.getUsername());
-        RequestManager.getInstance().invokeRequest(requestTasks);
-        ArrayList<Task> result = requestTasks.getResult();
+        ArrayList<Task> result = new ArrayList<>();
+        result = user.getTasksRequested();
 
         assertTrue(tasks.containsAll(result) && result.containsAll(tasks));
     }

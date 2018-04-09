@@ -20,6 +20,7 @@ import android.widget.ImageButton;
 
 import com.cmput301w18t05.taskzilla.activity.EditProfileActivity;
 import com.cmput301w18t05.taskzilla.activity.MainActivity;
+import com.cmput301w18t05.taskzilla.activity.NewReviewActivity;
 import com.cmput301w18t05.taskzilla.activity.NewTaskActivity;
 import com.cmput301w18t05.taskzilla.activity.ProfileActivity;
 import com.cmput301w18t05.taskzilla.activity.SignUpActivity;
@@ -67,6 +68,10 @@ public class IntentAcceptBidTest extends ActivityInstrumentationTestCase2 {
         solo.waitForActivity(WelcomeActivity.class);
         solo.assertCurrentActivity("Wrong", WelcomeActivity.class);
 
+        TabLayout tabLayout =  (TabLayout)solo.getView(R.id.tabs_bar);
+        tabLayout.getTabAt(0);
+        solo.waitForText("Tasks");
+
         View fab = solo.getView(R.id.fab);
         solo.waitForView(fab);
         solo.clickOnView(fab);
@@ -83,27 +88,84 @@ public class IntentAcceptBidTest extends ActivityInstrumentationTestCase2 {
     }
 
     public void searchTask() {
+        solo.waitForText("Search");
         solo.clickOnText("Search");
         solo.waitForText("My task");
         solo.clickOnText("My task");
     }
 
     public void addBid() {
+        solo.waitForText("PLACE BID");
         solo.clickOnText("PLACE BID");
+        solo.hideSoftKeyboard();
+
+        View v = solo.getView(R.id.place_bid_edittext);
+        solo.typeText((EditText)v, "10");
+
+        View b = solo.getView(R.id.submit_bid_button);
+        solo.clickOnView(b);
         solo.goBack();
     }
 
+
     public void logout() {
+        solo.waitForText("Profile");
         solo.clickOnText("Profile");
         solo.clickOnText("Log out");
     }
 
-    public void testAcceptBid(){
+    public void acceptBid() {
+        solo.waitForText("bidded");
+        solo.clickOnText("bidded");
+        solo.waitForText("Accept a bid");
+        solo.clickOnText("Accept a bid");
+        solo.waitForView(R.id.AcceptBidList);
+
+        solo.waitForText("Bid Amount:");
+        solo.clickOnText("Bid Amount:");
+
+        View v = solo.getView(R.id.AcceptBidButton);
+        solo.waitForView(v);
+        solo.clickOnView(v);
+    }
+
+    public void completeBid() {
+        solo.waitForText("My task");
+        solo.clickOnText("My task");
+        solo.waitForText("Complete");
+        solo.clickOnText("Complete");
+        solo.waitForText("Yes");
+        solo.clickOnText("Yes");
+    }
+
+    public void addReview() {
+        solo.waitForText("REVIEW PROVIDER");
+        solo.clickOnText("REVIEW PROVIDER");
+        solo.waitForActivity(NewReviewActivity.class);
+
+        View t = solo.getView(R.id.reviewTitle);
+        View v = solo.getView(R.id.reviewDescription);
+        solo.waitForView(t);
+        solo.waitForView(v);
+        solo.typeText((EditText)t, "good");
+        solo.typeText((EditText)v, "good");
+        solo.waitForText("Save");
+        solo.clickOnText("Save");
+    }
+
+    public void testAll(){
         login(username1);
-        //addtask("My task");
-        //logout();
-        //login(username2);
+        addtask("My task");
+        logout();
+        login(username2);
         searchTask();
         addBid();
+
+        logout();
+        login(username1);
+        acceptBid();
+        completeBid();
+        addReview();
+        assertEquals(true,true);
     }
 }
