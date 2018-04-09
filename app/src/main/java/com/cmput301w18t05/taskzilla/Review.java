@@ -43,7 +43,8 @@ public class Review {
      * @param targetUserID
      * @param reviewerID
      */
-    public Review(String title, Float rating, String description, String targetUserID, String reviewerID, String type){
+    public Review(String title, Float rating, String description, String targetUserID,
+                  String reviewerID, String type){
         this.title = title;
         this.rating = rating;
         this.description = description;
