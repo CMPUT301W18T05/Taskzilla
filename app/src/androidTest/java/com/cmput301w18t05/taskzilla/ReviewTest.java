@@ -28,10 +28,10 @@ public class ReviewTest extends ActivityInstrumentationTestCase2 {
      */
     public void testGetTitle(){
         String title = "Best Review Ever";
-        int rating = 5;
+        Float rating = 5.0f;
         String description = "A++ Very Good";
-        int tID = 1234;
-        int rID = 4321;
+        String tID = "1234";
+        String rID = "4321";
         Review review = new Review(title, rating, description, tID, rID);
         assertTrue(review.getTitle().equals(title));
     }
@@ -41,10 +41,10 @@ public class ReviewTest extends ActivityInstrumentationTestCase2 {
      */
     public void testSetTitle(){
         String title = "Best Review Ever";
-        int rating = 5;
+        Float rating = 5.0f;
         String description = "A++ Very Good";
-        int tID = 1234;
-        int rID = 4321;
+        String tID = "1234";
+        String rID = "4321";
         Review review = new Review(title, rating, description, tID, rID);
         String title2 = "Worse Review Ever";
         review.setTitle(title2);
@@ -56,10 +56,10 @@ public class ReviewTest extends ActivityInstrumentationTestCase2 {
      */
     public void testGetRating(){
         String title = "Best Review Ever";
-        int rating = 5;
+        Float rating = 5.0f;
         String description = "A++ Very Good";
-        int tID = 1234;
-        int rID = 4321;
+        String tID = "1234";
+        String rID = "4321";
         Review review = new Review(title, rating, description, tID, rID);
         assertTrue(review.getRating()==rating);
     }
@@ -69,12 +69,12 @@ public class ReviewTest extends ActivityInstrumentationTestCase2 {
      */
     public void testSetRating(){
         String title = "Best Review Ever";
-        int rating = 5;
+        Float rating = 5.0f;
         String description = "A++ Very Good";
-        int tID = 1234;
-        int rID = 4321;
+        String tID = "1234";
+        String rID = "4321";
         Review review = new Review(title, rating, description, tID, rID);
-        int rating2 = 1;
+        Float rating2 = 1.0f;
         review.setRating(rating2);
         assertTrue(review.getRating()==rating2);
     }
@@ -84,10 +84,10 @@ public class ReviewTest extends ActivityInstrumentationTestCase2 {
      */
     public void testGetDescription(){
         String title = "Best Review Ever";
-        int rating = 5;
+        Float rating = 5.0f;
         String description = "A++ Very Good";
-        int tID = 1234;
-        int rID = 4321;
+        String tID = "1234";
+        String rID = "4321";
         Review review = new Review(title, rating, description, tID, rID);
         assertTrue(review.getDescription().equals(description));
     }
@@ -97,10 +97,10 @@ public class ReviewTest extends ActivityInstrumentationTestCase2 {
      */
     public void testSetDescription(){
         String title = "Best Review Ever";
-        int rating = 5;
+        Float rating = 5.0f;
         String description = "A++ Very Good";
-        int tID = 1234;
-        int rID = 4321;
+        String tID = "1234";
+        String rID = "4321";
         Review review = new Review(title, rating, description, tID, rID);
         String description2 = "Hate this guy :(";
         review.setDescription(description2);
@@ -112,10 +112,10 @@ public class ReviewTest extends ActivityInstrumentationTestCase2 {
      */
     public void testGetTID(){
         String title = "Best Review Ever";
-        int rating = 5;
+        Float rating = 5.0f;
         String description = "A++ Very Good";
-        int tID = 1234;
-        int rID = 4321;
+        String tID = "1234";
+        String rID = "4321";
         Review review = new Review(title, rating, description, tID, rID);
         assertTrue(review.getTargetUserID()==tID);
     }
@@ -125,12 +125,12 @@ public class ReviewTest extends ActivityInstrumentationTestCase2 {
      */
     public void testSetTID(){
         String title = "Best Review Ever";
-        int rating = 5;
+        Float rating = 5.0f;
         String description = "A++ Very Good";
-        int tID = 1234;
-        int rID = 4321;
+        String tID = "1234";
+        String rID = "4321";
         Review review = new Review(title, rating, description, tID, rID);
-        int tID2 = 1;
+        String tID2 = "1";
         review.setTargetUserID(tID2);
         assertTrue(review.getTargetUserID()==tID2);
     }
@@ -140,10 +140,10 @@ public class ReviewTest extends ActivityInstrumentationTestCase2 {
      */
     public void testGetRID(){
         String title = "Best Review Ever";
-        int rating = 5;
+        Float rating = 5.0f;
         String description = "A++ Very Good";
-        int tID = 1234;
-        int rID = 4321;
+        String tID = "1234";
+        String rID = "4321";
         Review review = new Review(title, rating, description, tID, rID);
         assertTrue(review.getReviewerID()==rID);
     }
@@ -153,12 +153,12 @@ public class ReviewTest extends ActivityInstrumentationTestCase2 {
      */
     public void testSetRID(){
         String title = "Best Review Ever";
-        int rating = 5;
+        Float rating = 5.0f;
         String description = "A++ Very Good";
-        int tID = 1234;
-        int rID = 4321;
+        String tID = "1234";
+        String rID = "4321";
         Review review = new Review(title, rating, description, tID, rID);
-        int rID2 = 1;
+        String rID2 = "1";
         review.setReviewerID(rID2);
         assertTrue(review.getReviewerID()==rID2);
     }
