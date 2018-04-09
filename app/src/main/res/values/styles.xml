@@ -33,8 +33,6 @@
         <item name="android:tint">@color/grey</item>
     </style>
 
-
-
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="android:textColorSecondary">@android:color/white</item>
@@ -59,6 +57,9 @@
     </style>
     <style name="AppTheme.OrangeButton" parent="Base.Widget.AppCompat.Button">
         <item name="colorButtonNormal">@color/buttonOrange</item>
+    </style>
+    <style name="AppTheme.BlueButton" parent="Base.Widget.AppCompat.Button">
+        <item name="colorButtonNormal">@color/buttonBlue</item>
     </style>
 
 </resources>
