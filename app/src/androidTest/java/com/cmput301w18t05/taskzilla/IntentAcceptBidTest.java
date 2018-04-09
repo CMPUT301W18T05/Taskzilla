@@ -64,7 +64,5 @@ public class IntentAcceptBidTest extends ActivityInstrumentationTestCase2 {
         TabLayout tabLayout =  (TabLayout)solo.getView(R.id.tabs_bar);
         tabLayout.getTabAt(0);
         solo.waitForText("Tasks");
-
-        solo.clickOnButton(R.id.);
     }
 }
