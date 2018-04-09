@@ -15,6 +15,7 @@ import android.location.Location;
 import android.test.ActivityInstrumentationTestCase2;
 
 import com.cmput301w18t05.taskzilla.activity.MainActivity;
+import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.AddTaskRequest;
 import com.cmput301w18t05.taskzilla.request.command.AddUserRequest;
 
@@ -81,13 +82,15 @@ public class TaskTest extends ActivityInstrumentationTestCase2 {
         assertEquals(testTask.getBestBidder(), "");
     }
 
-    // Test to get bids
+    // Test to get list of bids on a task
     public void testGetBids() {
 
         AddUserRequest addUserRequest = new AddUserRequest(user);
+        RequestManager.getInstance().invokeRequest(addUserRequest);
 
         Task testTask = new Task();
         AddTaskRequest addTaskRequest = new AddTaskRequest(testTask);
+        RequestManager.getInstance().invokeRequest(addTaskRequest);
 
         Bid newBid = new Bid(user.getId(), testTask.getId(), 10.00f);
         testTask.addBid(newBid);
@@ -102,8 +105,84 @@ public class TaskTest extends ActivityInstrumentationTestCase2 {
         bids.add(newBid2);
 
         ArrayList<Bid> result = new ArrayList<>();
+        result = testTask.getBids();
         assertTrue(bids.containsAll(result) && result.containsAll(bids));
     }
+
+    // Test to get the task requester user object by userid
+    public void testGetTaskRequester() {
+
+        AddUserRequest addUserRequest = new AddUserRequest(user);
+        RequestManager.getInstance().invokeRequest(addUserRequest);
+
+        Task testTask = new Task();
+        testTask.setRequesterId(user.getId());
+        AddTaskRequest addTaskRequest = new AddTaskRequest(testTask);
+        RequestManager.getInstance().invokeRequest(addTaskRequest);
+
+        User result = new User();
+        result = testTask.getTaskRequester();
+
+        assertEquals(user, result);
+    }
+
+    // Test to get the task provider user object by userid
+    public void testGetTaskProvider() {
+
+        AddUserRequest addUserRequest = new AddUserRequest(user);
+        RequestManager.getInstance().invokeRequest(addUserRequest);
+
+        Task testTask = new Task();
+        testTask.setProviderId(user.getId());
+        AddTaskRequest addTaskRequest = new AddTaskRequest(testTask);
+        RequestManager.getInstance().invokeRequest(addTaskRequest);
+
+        User result = new User();
+        result = testTask.getTaskProvider();
+
+        assertEquals(user, result);
+    }
+
+    // Test to set the status of a task
+    public void testSetStatus() {
+        Task testTask = new Task();
+        testTask.setStatus("requested");
+        assertEquals("requested", testTask.getStatus());
+
+        testTask.setStatus("bidded");
+        assertEquals("bidded", testTask.getStatus());
+    }
+
+    // Test to update the task
+    public void testUpdateThis() {
+        AddUserRequest addUserRequest = new AddUserRequest(user);
+        RequestManager.getInstance().invokeRequest(addUserRequest);
+
+        Task testTask = new Task();
+        testTask.setProviderId(user.getId());
+        AddTaskRequest addTaskRequest = new AddTaskRequest(testTask);
+        RequestManager.getInstance().invokeRequest(addTaskRequest);
+
+        User newProvider = new User();
+        AddUserRequest addUserRequest2 = new AddUserRequest(newProvider);
+        RequestManager.getInstance().invokeRequest(addUserRequest2);
+        testTask.setProviderId(newProvider.getId());
+        testTask.updateThis();
+
+        assertEquals(testTask.getTaskProvider(), newProvider);
+    }
+
+    // Test to unassign the provider
+    public void testUnassignProvider() {
+        Task testTask = new Task();
+        testTask.setTaskProvider(user);
+
+        testTask.unassignProvider();
+        assertEquals(testTask.getProviderId(), null);
+        assertEquals(testTask.getStatus(), "requested");
+    }
+
+
     /**
      * set/get location test
      *

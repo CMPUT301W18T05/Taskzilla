@@ -50,6 +50,11 @@
             android:text="Search" />
 
         <android.support.design.widget.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Notifications"/>
+
+        <android.support.design.widget.TabItem
             android:id="@+id/tabItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

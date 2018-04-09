@@ -11,7 +11,9 @@
 
 package com.cmput301w18t05.taskzilla.activity;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
@@ -34,11 +36,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.SpinnerAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cmput301w18t05.taskzilla.AppColors;
 import com.cmput301w18t05.taskzilla.NotificationManager;
 import com.cmput301w18t05.taskzilla.User;
+import com.cmput301w18t05.taskzilla.controller.NotificationsController;
 import com.cmput301w18t05.taskzilla.currentUser;
 import com.cmput301w18t05.taskzilla.fragment.MyBidsFragment;
 import com.cmput301w18t05.taskzilla.fragment.NotificationsFragment;
@@ -48,6 +52,7 @@ import com.cmput301w18t05.taskzilla.fragment.SearchFragment;
 import com.cmput301w18t05.taskzilla.fragment.TasksFragment;
 import com.cmput301w18t05.taskzilla.fragment.TasksProviderFragment;
 import com.cmput301w18t05.taskzilla.fragment.TasksRequesterFragment;
+import com.cmput301w18t05.taskzilla.request.command.RemoveNotificationRequest;
 import com.google.gson.Gson;
 import com.pes.androidmaterialcolorpickerdialog.ColorPicker;
 import com.pes.androidmaterialcolorpickerdialog.ColorPickerCallback;
@@ -94,19 +99,15 @@ public class WelcomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
-        NotificationManager.getInstance(this.getApplicationContext());
         appColors = AppColors.getInstance();
-        if(loadedAppColors == null) {
+        if (loadedAppColors == null) {
             appColors.setActionBarColor("#000000");
             appColors.setActionBarTextColor("#05e5ee");
             appColors.setBackgroundColor("#ffffff");
-        }
-        else {
+        } else {
             AppColors.getInstance().setInstance(loadedAppColors);
         }
         appColors = AppColors.getInstance();
-
-
 
         actionBar = getSupportActionBar();
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor(appColors.getActionBarColor())));
@@ -119,15 +120,22 @@ public class WelcomeActivity extends AppCompatActivity {
 
         tabs = findViewById(R.id.tabs_bar);
         tabs.setupWithViewPager(tabsContent);
+
+        NotificationManager.getInstance(this.getApplicationContext(), tabs);
+
         tabs.getTabAt(0).setIcon(android.R.drawable.ic_menu_my_calendar);
         tabs.getTabAt(1).setIcon(android.R.drawable.ic_menu_agenda);
         tabs.getTabAt(2).setIcon(android.R.drawable.ic_search_category_default);
-        tabs.getTabAt(3).setIcon(android.R.drawable.ic_popup_reminder);
+        tabs.getTabAt(3).setIcon(android.R.drawable.ic_popup_reminder).setCustomView(R.layout.badged_tab);
         tabs.getTabAt(4).setIcon(android.R.drawable.ic_menu_myplaces);
         getDrawable(android.R.drawable.ic_popup_reminder).setColorFilter( 0xff808080, PorterDuff.Mode.MULTIPLY );
 
 
 
+        // Count notifications user currently has and updates badge accordingly
+        NotificationManager.getInstance().countNotifications();
+        NotificationManager.getInstance().updateBadge();
+        
     }
 
     @Override
@@ -177,7 +185,6 @@ public class WelcomeActivity extends AppCompatActivity {
                     }
                 });
                 return true;
-                
             default:
                 return super.onOptionsItemSelected(item);
         }
