@@ -52,11 +52,9 @@ public class RequestManagerTest extends ActivityInstrumentationTestCase2 {
 
         bid = new Bid(user.getId(), user.getId(), 1000.0f);
 
-        task = new Task();
-        task.setId("sameid1");
-        task.setName("cmput301 number 2 project");
-        task.setTaskRequester(user);
-        task.setDescription("Testing task");
+        Task task = new Task("Task name", user, "Task description");
+        AddTaskRequest addTaskRequest = new AddTaskRequest(task);
+        RequestManager.getInstance().invokeRequest(addTaskRequest);
     }
 
     public void testAddUserRequest() {

@@ -13,6 +13,9 @@ package com.cmput301w18t05.taskzilla;
 import android.test.ActivityInstrumentationTestCase2;
 
 import com.cmput301w18t05.taskzilla.activity.MainActivity;
+import com.cmput301w18t05.taskzilla.request.RequestManager;
+import com.cmput301w18t05.taskzilla.request.command.AddTaskRequest;
+import com.cmput301w18t05.taskzilla.request.command.AddUserRequest;
 
 /**
  * Created by Colin on 2018-02-23.
@@ -171,5 +174,18 @@ public class ReviewTest extends ActivityInstrumentationTestCase2 {
         String rID2 = "1";
         review.setReviewerID(rID2);
         assertTrue(review.getReviewerID()==rID2);
+    }
+
+    // Test the toString method
+    public void testToString() {
+        String title = "Best Review Ever";
+        Float rating = 5.0f;
+        String description = "A++ Very Good";
+        String tID = "1234";
+        String rID = "4321";
+        String type = "some type";
+        Review review = new Review(title, rating, description, tID, rID, type);
+        String expected = "Best Review Ever A++ Very Good some type";
+        assertEquals(expected, review.toString());
     }
 }

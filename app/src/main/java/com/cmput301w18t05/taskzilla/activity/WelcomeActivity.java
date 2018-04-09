@@ -34,6 +34,7 @@ import android.widget.Toast;
 import com.cmput301w18t05.taskzilla.AppColors;
 import com.cmput301w18t05.taskzilla.NotificationManager;
 import com.cmput301w18t05.taskzilla.PersonalColors;
+import com.cmput301w18t05.taskzilla.currentUser;
 import com.cmput301w18t05.taskzilla.fragment.MyBidsFragment;
 import com.cmput301w18t05.taskzilla.fragment.NotificationsFragment;
 import com.cmput301w18t05.taskzilla.fragment.ProfileFragment;
@@ -127,18 +128,19 @@ public class WelcomeActivity extends AppCompatActivity {
         NotificationManager.getInstance(this.getApplicationContext(), tabs);
 
 
-        tabs.getTabAt(0).setIcon(android.R.drawable.ic_menu_my_calendar);
-        tabs.getTabAt(1).setIcon(android.R.drawable.ic_menu_agenda);
-        tabs.getTabAt(2).setIcon(android.R.drawable.ic_search_category_default);
-        tabs.getTabAt(3).setIcon(android.R.drawable.ic_popup_reminder).setCustomView(R.layout.badged_tab);
-        tabs.getTabAt(4).setIcon(android.R.drawable.ic_menu_myplaces);
+        if(!currentUser.getInstance().getUsername().equalsIgnoreCase("TestUser")) {
+            tabs.getTabAt(0).setIcon(android.R.drawable.ic_menu_my_calendar);
+            tabs.getTabAt(1).setIcon(android.R.drawable.ic_menu_agenda);
+            tabs.getTabAt(2).setIcon(android.R.drawable.ic_search_category_default);
+            tabs.getTabAt(3).setIcon(android.R.drawable.ic_popup_reminder).setCustomView(R.layout.badged_tab);
+            tabs.getTabAt(4).setIcon(android.R.drawable.ic_menu_myplaces);
 
-        tabs.getTabAt(0).getIcon().setColorFilter(Color.parseColor(appColors.getActionBarTextColor()), PorterDuff.Mode.MULTIPLY );
-        tabs.getTabAt(1).getIcon().setColorFilter(Color.parseColor(appColors.getActionBarTextColor()), PorterDuff.Mode.MULTIPLY );
-        tabs.getTabAt(2).getIcon().setColorFilter(Color.parseColor(appColors.getActionBarTextColor()), PorterDuff.Mode.MULTIPLY );
-        tabs.getTabAt(3).getIcon().setColorFilter(Color.parseColor(appColors.getActionBarTextColor()), PorterDuff.Mode.MULTIPLY );
-        tabs.getTabAt(4).getIcon().setColorFilter(Color.parseColor(appColors.getActionBarTextColor()), PorterDuff.Mode.MULTIPLY );
-
+            tabs.getTabAt(0).getIcon().setColorFilter(Color.parseColor(appColors.getActionBarTextColor()), PorterDuff.Mode.MULTIPLY);
+            tabs.getTabAt(1).getIcon().setColorFilter(Color.parseColor(appColors.getActionBarTextColor()), PorterDuff.Mode.MULTIPLY);
+            tabs.getTabAt(2).getIcon().setColorFilter(Color.parseColor(appColors.getActionBarTextColor()), PorterDuff.Mode.MULTIPLY);
+            tabs.getTabAt(3).getIcon().setColorFilter(Color.parseColor(appColors.getActionBarTextColor()), PorterDuff.Mode.MULTIPLY);
+            tabs.getTabAt(4).getIcon().setColorFilter(Color.parseColor(appColors.getActionBarTextColor()), PorterDuff.Mode.MULTIPLY);
+        }
 
 
 
@@ -298,15 +300,36 @@ public class WelcomeActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "";
+                    if(currentUser.getInstance().getUsername().equalsIgnoreCase("TestUser")){
+                        return "Tasks";
+                    }else{
+                        return "";
+                    }
+
                 case 1:
-                    return "";
+                    if(currentUser.getInstance().getUsername().equalsIgnoreCase("TestUser")){
+                        return "Bids";
+                    }else{
+                        return "";
+                    }
                 case 2:
-                    return "";
+                    if(currentUser.getInstance().getUsername().equalsIgnoreCase("TestUser")){
+                        return "Search";
+                    }else{
+                        return "";
+                    }
                 case 3:
-                    return "";
+                    if(currentUser.getInstance().getUsername().equalsIgnoreCase("TestUser")){
+                        return "Notification";
+                    }else{
+                        return "";
+                    }
                 case 4:
-                    return "";
+                    if(currentUser.getInstance().getUsername().equalsIgnoreCase("TestUser")){
+                        return "Profile";
+                    }else{
+                        return "";
+                    }
                 default:
                     return null;
             }

@@ -233,12 +233,6 @@ public class UserTaskActivityTest extends ActivityInstrumentationTestCase2 {
         solo.waitForActivity(WelcomeActivity.class);
         solo.assertCurrentActivity("Wrong Activity", WelcomeActivity.class);
 
-
-
-
-
     }
-
-
 
 }

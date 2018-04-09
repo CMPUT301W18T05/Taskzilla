@@ -59,6 +59,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -162,6 +163,7 @@ public class NewTaskActivity extends AppCompatActivity implements OnMapReadyCall
                         photos.remove(position);
                         dialogInterface.dismiss();
                         recyclerPhotosViewAdapter.notifyDataSetChanged();
+
                     }
                 });
 
@@ -310,7 +312,8 @@ public class NewTaskActivity extends AppCompatActivity implements OnMapReadyCall
                 taskLocation = new LatLng(Double.parseDouble(data.getStringExtra("Lat")),Double.parseDouble(data.getStringExtra("Lon")));
                 autocompleteFragment.setHint(df.format(Double.parseDouble(data.getStringExtra("Lat")))+", "+df.format(Double.parseDouble(data.getStringExtra("Lon"))));
                 autocompleteFragment.setText(df.format(Double.parseDouble(data.getStringExtra("Lat")))+", "+df.format(Double.parseDouble(data.getStringExtra("Lon"))));
-
+                mMap.clear();
+                mMap.addMarker(new MarkerOptions().position(taskLocation).title("Your Location"));
                 moveToCurrentLocation(taskLocation);
 
             }else{

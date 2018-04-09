@@ -195,7 +195,7 @@ public class TaskTest extends ActivityInstrumentationTestCase2 {
     /*
     public void testSetGetLocation() {
         Location testLocation = new Location("");
-        Task testTask = new Task();
+        Task task = new Task("Task name", user, "Task description");
 
         assertEquals(null, testTask.getLocation());
 
@@ -216,7 +216,7 @@ public class TaskTest extends ActivityInstrumentationTestCase2 {
      */
     /*
     public void testGetSetStatus() {
-        Task testTask = new Task();
+        Task task = new Task("Task name", user, "Task description");
         String testStatus = "Done";
 
         assertEquals(null,testTask.getStatus());
@@ -256,7 +256,7 @@ public class TaskTest extends ActivityInstrumentationTestCase2 {
      */
     /*
     public void testGetSetProvider() {
-        Task testTask = new Task();
+        Task task = new Task("Task name", user, "Task description");
         user = new User();
         assertEquals(null, testTask.getTaskProvider());
         testTask.setTaskProvider(user);
@@ -269,7 +269,7 @@ public class TaskTest extends ActivityInstrumentationTestCase2 {
      */
     /*
     public void testGetSetRequester() {
-        Task testTask = new Task();
+        Task task = new Task("Task name", user, "Task description");
         user = new User();
         assertEquals(null, testTask.getTaskProvider());
         testTask.setTaskRequester(user);
@@ -283,7 +283,7 @@ public class TaskTest extends ActivityInstrumentationTestCase2 {
      */
     /*
     public void testAddPhoto() {
-        Task testTask = new Task();
+        Task task = new Task("Task name", user, "Task description");
         byte test[] = {1};
         Photo testPhoto = new Photo(test);
         testTask.addPhoto(testPhoto);

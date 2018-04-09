@@ -116,13 +116,23 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
                     mMap.animateCamera(CameraUpdateFactory.newLatLng(arg0.getPosition()));
                     arg0.setTitle( "Lat: "+Double.toString(Double.valueOf(df.format(arg0.getPosition().latitude)))+" Lon: "+Double.toString(Double.valueOf(df.format(arg0.getPosition().longitude))));
+                    arg0.setSnippet("Click here to confirm location");
                     arg0.showInfoWindow();
 
-                    Intent intent = new Intent();
-                    intent.putExtra("Lat", Double.toString(Double.valueOf(arg0.getPosition().latitude)));
-                    intent.putExtra("Lon", Double.toString(Double.valueOf(arg0.getPosition().longitude)));
-                    setResult(RESULT_OK, intent);
-                    finish();
+
+                    mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+
+                        @Override
+                        public void onInfoWindowClick(Marker marker) {
+                            Intent intent = new Intent();
+                            intent.putExtra("Lat", Double.toString(Double.valueOf(marker.getPosition().latitude)));
+                            intent.putExtra("Lon", Double.toString(Double.valueOf(marker.getPosition().longitude)));
+                            setResult(RESULT_OK, intent);
+                            finish();
+
+                        }
+                    });
+
                 }
 
                 @Override

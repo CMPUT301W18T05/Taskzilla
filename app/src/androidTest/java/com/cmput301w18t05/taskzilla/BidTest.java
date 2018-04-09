@@ -34,7 +34,7 @@ public class BidTest extends ActivityInstrumentationTestCase2 {
     public void testSetBid() {
 
         User user = new User();
-        Task task = new Task();
+        Task task = new Task("Task name", user, "Task description");
 
         AddUserRequest userRequest = new AddUserRequest(user);
         RequestManager.getInstance().invokeRequest(userRequest);
@@ -60,7 +60,7 @@ public class BidTest extends ActivityInstrumentationTestCase2 {
     public void testCompareTo() {
 
         User user1 = new User();
-        Task task = new Task();
+        Task task = new Task("Task name", user1, "Task description");
         float bidAmount1 = 10.00f;
         Bid bid1 = new Bid(user1.getId(), task.getId(), bidAmount1);
 
