@@ -14,6 +14,7 @@ package com.cmput301w18t05.taskzilla.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -46,7 +47,7 @@ import static android.app.Activity.RESULT_OK;
 /**
  * Main screen the user interacts with when searching for tasks.
  *
- * @author Andy
+ * @author Andy, myapplestory
  * @see SearchController
  * @version 1
  */
@@ -81,7 +82,11 @@ public class SearchFragment extends Fragment {
         final ConstraintLayout mConstraintLayout = (ConstraintLayout) inflater.inflate(R.layout.fragment_search,
                 container, false);
 
+        //find views
         ImageButton mButton = mConstraintLayout.findViewById(R.id.MapButton);
+        availableTasksText = mConstraintLayout.findViewById(R.id.TextListView);
+        availableTasksPhoto = mConstraintLayout.findViewById(R.id.PhotoListView);
+
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,8 +96,6 @@ public class SearchFragment extends Fragment {
 
         //Set up listview and adapter
         searchResults = new ArrayList<>();
-        availableTasksText = mConstraintLayout.findViewById(R.id.TextListView);
-        availableTasksPhoto = mConstraintLayout.findViewById(R.id.PhotoListView);
         searchController = new SearchController(this, getActivity());
         photoArrayList = new ArrayList<>();
 
@@ -107,9 +110,6 @@ public class SearchFragment extends Fragment {
         adapterPhoto = new TaskCustomAdapter2(getActivity(), R.layout.tasks_list_view3, photoArrayList);
         availableTasksPhoto.setAdapter(adapterPhoto);
 
-        availableTasksText.setClickable(true);
-
-
         // both listviews scroll together code gotten from
         // https://stackoverflow.com/questions/12342419/android-scrolling-2-listviews-together
         availableTasksText.setOnTouchListener(new View.OnTouchListener() {
@@ -117,7 +117,6 @@ public class SearchFragment extends Fragment {
             public boolean onTouch(View v, MotionEvent event) {
                 if(touchSource == null)
                     touchSource = v;
-
                 if(v == touchSource) {
                     availableTasksPhoto.dispatchTouchEvent(event);
                     if(event.getAction() == MotionEvent.ACTION_UP) {
@@ -125,7 +124,6 @@ public class SearchFragment extends Fragment {
                         touchSource = null;
                     }
                 }
-
                 return false;
             }
         });
@@ -135,6 +133,33 @@ public class SearchFragment extends Fragment {
                                  int totalItemCount) {
                 if(view == clickSource)
                     availableTasksPhoto.setSelectionFromTop(firstVisibleItem,
+                            view.getChildAt(0).getTop() + offset);
+            }
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {}
+        });
+
+        availableTasksPhoto.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(touchSource == null)
+                    touchSource = v;
+                if(v == touchSource) {
+                    availableTasksText.dispatchTouchEvent(event);
+                    if(event.getAction() == MotionEvent.ACTION_UP) {
+                        clickSource = v;
+                        touchSource = null;
+                    }
+                }
+                return false;
+            }
+        });
+        availableTasksPhoto.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
+                                 int totalItemCount) {
+                if(view == clickSource)
+                    availableTasksText.setSelectionFromTop(firstVisibleItem,
                             view.getChildAt(0).getTop() + offset);
             }
             @Override
@@ -297,5 +322,4 @@ public class SearchFragment extends Fragment {
         super.onResume();
         adapterText.notifyDataSetChanged();
         adapterPhoto.notifyDataSetChanged();    }
-
 }
