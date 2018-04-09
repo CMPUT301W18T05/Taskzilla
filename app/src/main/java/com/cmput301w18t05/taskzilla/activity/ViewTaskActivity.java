@@ -145,7 +145,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.dragdropMap);
         mapFragment.getMapAsync(this);
-        //mapFragment.getView().setVisibility(View.INVISIBLE);
+        mapFragment.getView().setVisibility(View.INVISIBLE);
         //mapFragment.getView().setActivated(false);
         //mapFragment.getView().setEnabled(false);
 
@@ -237,6 +237,8 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         Intent intent = new Intent(view.getContext(), EditTaskActivity.class);
         intent.putExtra("task Name", taskName);
         intent.putExtra("Description", description);
+        intent.putExtra("Lat", Double.toString(task.getLocation().latitude));
+        intent.putExtra("Lon", Double.toString(task.getLocation().longitude));
         ArrayList<String> photosString = new ArrayList<String>();
         for(int i = 0;i < photos.size(); i++){
             photosString.add(photos.get(i).toString());
@@ -799,6 +801,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         TaskName.setText(taskName);
         TaskStatus.setText(task.getStatus());
         DescriptionView.setText(description);
+
     }
 
     /**
@@ -937,6 +940,8 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                 if (resultCode == RESULT_OK) {
                     taskName = data.getStringExtra("Task Name");
                     description = data.getStringExtra("Description");
+                    Double latt = Double.parseDouble(data.getStringExtra("Lat"));
+                    Double lonn = Double.parseDouble(data.getStringExtra("Lon"));
                     ArrayList<String> photosString = data.getStringArrayListExtra("photos");
                     photos.clear();
                     Bitmap image;
@@ -947,10 +952,15 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                     recyclerPhotosViewAdapter.notifyDataSetChanged();
                     task.setName(taskName);
                     task.setDescription(description);
+                    task.setLocation(new LatLng(latt,lonn));
                     viewTaskController.updateTaskRequest(task);
                     TextView DescriptionView = findViewById(R.id.Description);
                     TextView TaskNameView = findViewById(R.id.TaskName);
                     TaskNameView.setText(taskName);
+                    LatLng taskLocation = new LatLng(latt,lonn);
+                    mMap.clear();
+                    mMap.addMarker(new MarkerOptions().position(taskLocation).title("Your Location"));
+                    moveToCurrentLocation(taskLocation);
                     if (description.length() > 0) {
                         DescriptionView.setText(description);
                     } else {

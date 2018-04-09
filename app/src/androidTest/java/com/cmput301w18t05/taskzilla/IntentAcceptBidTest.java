@@ -103,6 +103,7 @@ public class IntentAcceptBidTest extends ActivityInstrumentationTestCase2 {
         solo.goBack();
     }
 
+
     public void logout() {
         solo.waitForText("Profile");
         solo.clickOnText("Profile");
