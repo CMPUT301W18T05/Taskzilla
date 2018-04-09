@@ -18,8 +18,10 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
@@ -27,8 +29,11 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Spinner;
 
+import com.cmput301w18t05.taskzilla.Photo;
 import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.TaskCustomAdapter;
+import com.cmput301w18t05.taskzilla.TaskCustomAdapter2;
+import com.cmput301w18t05.taskzilla.User;
 import com.cmput301w18t05.taskzilla.controller.SearchController;
 import com.cmput301w18t05.taskzilla.Task;
 import com.cmput301w18t05.taskzilla.activity.MapActivity;
@@ -49,13 +54,21 @@ import static android.app.Activity.RESULT_OK;
 public class SearchFragment extends Fragment {
 
     private SearchView searchField;
-    private ListView availableTasks;
-    private ArrayAdapter<Task> adapter;
+    private ListView availableTasksText;
+    private ListView availableTasksPhoto;
+    private ArrayAdapter<Task> adapterText;
+    private ArrayAdapter<Photo> adapterPhoto;
     private ArrayList<Task> searchResults;
+    private ArrayList<Photo> photoArrayList;
     private SearchController searchController;
     private SwipeRefreshLayout mySwipeRefreshLayout;
     private Spinner spinner;
     private Task currentTask;
+
+    private View clickSource;
+    private View touchSource;
+    private int offset = 0;
+
 
     public SearchFragment() {
         // Required empty public constructor
@@ -78,13 +91,55 @@ public class SearchFragment extends Fragment {
 
         //Set up listview and adapter
         searchResults = new ArrayList<>();
-        availableTasks = mConstraintLayout.findViewById(R.id.ListView2);
+        availableTasksText = mConstraintLayout.findViewById(R.id.TextListView);
+        availableTasksPhoto = mConstraintLayout.findViewById(R.id.PhotoListView);
         searchController = new SearchController(this, getActivity());
+        photoArrayList = new ArrayList<>();
 
-        adapter = new TaskCustomAdapter(getActivity(), R.layout.tasks_list_view2, searchResults);
-        availableTasks.setAdapter(adapter);
+        adapterText = new TaskCustomAdapter(getActivity(), R.layout.tasks_list_view2, searchResults);
+        availableTasksText.setAdapter(adapterText);
 
-        availableTasks.setClickable(true);
+        photoArrayList.clear();
+        for (Task task : searchResults) {
+            User tempUser = task.getTaskRequester();
+            photoArrayList.add(tempUser.getPhoto());
+        }
+        adapterPhoto = new TaskCustomAdapter2(getActivity(), R.layout.tasks_list_view3, photoArrayList);
+        availableTasksPhoto.setAdapter(adapterPhoto);
+
+        availableTasksText.setClickable(true);
+
+
+        // both listviews scroll together code gotten from
+        // https://stackoverflow.com/questions/12342419/android-scrolling-2-listviews-together
+        availableTasksText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(touchSource == null)
+                    touchSource = v;
+
+                if(v == touchSource) {
+                    availableTasksPhoto.dispatchTouchEvent(event);
+                    if(event.getAction() == MotionEvent.ACTION_UP) {
+                        clickSource = v;
+                        touchSource = null;
+                    }
+                }
+
+                return false;
+            }
+        });
+        availableTasksText.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
+                                 int totalItemCount) {
+                if(view == clickSource)
+                    availableTasksPhoto.setSelectionFromTop(firstVisibleItem,
+                            view.getChildAt(0).getTop() + offset);
+            }
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {}
+        });
 
         /*
          *  Listens for user tapping on a task in the listview
@@ -93,11 +148,13 @@ public class SearchFragment extends Fragment {
          *  is used later on to determine which item to remove from the listview
          *  if the item was deleted.
          */
-        availableTasks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        availableTasksText.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                currentTask = searchResults.get(i);
-                viewTask(searchResults.get(i).getId());
+                if (adapterView == clickSource) {
+                    currentTask = searchResults.get(i);
+                    viewTask(searchResults.get(i).getId());
+                }
             }
         });
         // get all available tasks
@@ -149,7 +206,8 @@ public class SearchFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         // expand search bar by default
         searchField = view.findViewById(R.id.searchView);
-        
+
+
         /*
          * Listens for changes in the searchview
          * OnQueryTextChange invokes whenever the user types, while on the other hand
@@ -200,29 +258,6 @@ public class SearchFragment extends Fragment {
                 return false;
             }
         });
-
-        /*
-        mySwipeRefreshLayout.setOnRefreshListener(
-                new SwipeRefreshLayout.OnRefreshListener() {
-                    @Override
-                    public void onRefresh() {
-                        //String spinnerItem = spinner.getSelectedItem().toString();
-
-                        //add stuff here for listrefresh
-
-                        final Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                if(mySwipeRefreshLayout.isRefreshing()) {
-                                    mySwipeRefreshLayout.setRefreshing(false);
-                                }
-                            }
-                        }, 1000);
-                    }
-                }
-        );
-        */
     }
 
     @Override
@@ -249,12 +284,18 @@ public class SearchFragment extends Fragment {
     public void notifyChange() {
         searchResults.clear();
         searchResults.addAll(searchController.getResults());
-        adapter.notifyDataSetChanged();
+        photoArrayList.clear();
+        for (Task task : searchResults) {
+            User tempUser = task.getTaskRequester();
+            photoArrayList.add(tempUser.getPhoto());
+        }
+        adapterText.notifyDataSetChanged();
+        adapterPhoto.notifyDataSetChanged();
     }
 
     public void onResume(){
         super.onResume();
-        adapter.notifyDataSetChanged();
-    }
+        adapterText.notifyDataSetChanged();
+        adapterPhoto.notifyDataSetChanged();    }
 
 }
