@@ -129,8 +129,8 @@ public class ProfileActivity extends AppCompatActivity {
         providerRatingField = findViewById(R.id.providerRatingField);
         requesterRatingField = findViewById(R.id.requesterRatingField);
         profilePicture = findViewById(R.id.profilePictureView);
-        requesterReviewButton = findViewById(R.id.ViewRequesterReviewsButton);
-        providerReviewButton = findViewById(R.id.ViewProviderReviewsButton);
+        requesterReviewButton = findViewById(R.id.viewRequesterReviewsButton);
+        providerReviewButton = findViewById(R.id.viewProviderReviewsButton);
     }
 
 
