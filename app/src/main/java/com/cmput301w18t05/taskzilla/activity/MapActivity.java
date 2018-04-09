@@ -12,7 +12,6 @@
 package com.cmput301w18t05.taskzilla.activity;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -23,15 +22,11 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.Task;
-import com.cmput301w18t05.taskzilla.controller.ElasticSearchController;
-import com.cmput301w18t05.taskzilla.controller.SearchController;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.GetAllTasksRequest;
-import com.cmput301w18t05.taskzilla.request.command.SearchTaskRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -67,7 +62,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         setContentView(R.layout.activity_map);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.TaskLocation);
+                .findFragmentById(R.id.dragdropMap);
         mapFragment.getMapAsync(this);
         locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 

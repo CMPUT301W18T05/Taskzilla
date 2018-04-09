@@ -11,7 +11,6 @@
 
 package com.cmput301w18t05.taskzilla.activity;
 
-import android.app.ExpandableListActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,7 +19,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.LocationManager;
 import android.os.Handler;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -43,7 +41,6 @@ import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -66,7 +63,6 @@ import com.cmput301w18t05.taskzilla.controller.ProfileController;
 import com.cmput301w18t05.taskzilla.controller.ViewTaskController;
 import com.cmput301w18t05.taskzilla.currentUser;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
-import com.cmput301w18t05.taskzilla.request.command.AddNotificationRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetBidsByTaskIdRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetUserRequest;
 import com.cmput301w18t05.taskzilla.request.command.RemoveBidRequest;
@@ -74,10 +70,10 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -147,7 +143,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         actionBar.setTitle(Html.fromHtml("<font color='"+ appColors.getActionBarTextColor() + "'>Taskzilla</font>"));
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.TaskLocation);
+                .findFragmentById(R.id.dragdropMap);
         mapFragment.getMapAsync(this);
         //mapFragment.getView().setVisibility(View.INVISIBLE);
         //mapFragment.getView().setActivated(false);
@@ -407,8 +403,9 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                 ProfileController controller = new ProfileController(mView, getBaseContext());
                 controller.setUserID(bid.getUserId());
                 controller.getUserRequest();
-                tempBidList.add("Best bidder: " + controller.getUser().getName() + "\nBid Amount: " +
-                        bid.getBidAmount());
+                DecimalFormat cents = new DecimalFormat("#0.00");
+                tempBidList.add("Best bidder: " + controller.getUser().getName() + "\nBid Amount: $" +
+                        cents.format(bid.getBidAmount()));
             }
             ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                     android.R.layout.simple_list_item_single_choice, tempBidList);
@@ -489,8 +486,9 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                 ProfileController controller = new ProfileController(mView, getBaseContext());
                 controller.setUserID(bid.getUserId());
                 controller.getUserRequest();
-                tempList.add("Best bidder: " + controller.getUser().getName() + "\nBid Amount: " +
-                        bid.getBidAmount());
+                DecimalFormat cents = new DecimalFormat("#0.00");
+                tempList.add("Best bidder: " + controller.getUser().getName() + "\nBid Amount: $" +
+                        cents.format(bid.getBidAmount()));
             }
             ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                     android.R.layout.simple_list_item_single_choice, tempList);

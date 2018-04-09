@@ -178,6 +178,7 @@ public class NotificationsFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+
         mySwipeRefreshLayout = view.findViewById(R.id.swiperefresh);
         mySwipeRefreshLayout.setOnRefreshListener(
                 new SwipeRefreshLayout.OnRefreshListener() {
@@ -217,6 +218,7 @@ public class NotificationsFragment extends Fragment {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             notificationsController.getNotificationsRequest();
+            //getActivity().getActionBar().setTitle("Notifications");
         }
     }
 

@@ -105,6 +105,7 @@ public class WelcomeActivity extends AppCompatActivity {
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
@@ -115,12 +116,35 @@ public class WelcomeActivity extends AppCompatActivity {
 
         actionBar = getSupportActionBar();
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor(appColors.getActionBarColor())));
-        actionBar.setTitle(Html.fromHtml("<font color='" + appColors.getActionBarTextColor() + "'>Taskzilla</font>"));
+        actionBar.setTitle(Html.fromHtml("<font color='" + appColors.getActionBarTextColor() + "'>Tasks</font>"));
 
         tabsAdapter = new TabsManager(this.getSupportFragmentManager());
         tabsContent = findViewById(R.id.welcome_tabs_content);
         tabsContent.setOffscreenPageLimit(5);
         tabsContent.setAdapter(tabsAdapter);
+
+        tabsContent.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                switch(position) {
+                    case 0: actionBar.setTitle(Html.fromHtml("<font color='" + appColors.getActionBarTextColor() + "'>Tasks</font>")); break;
+                    case 1: actionBar.setTitle(Html.fromHtml("<font color='" + appColors.getActionBarTextColor() + "'>Bids</font>")); break;
+                    case 2: actionBar.setTitle(Html.fromHtml("<font color='" + appColors.getActionBarTextColor() + "'>Search</font>")); break;
+                    case 3: actionBar.setTitle(Html.fromHtml("<font color='" + appColors.getActionBarTextColor() + "'>Notifications</font>")); break;
+                    case 4: actionBar.setTitle(Html.fromHtml("<font color='" + appColors.getActionBarTextColor() + "'>Profile</font>")); break;
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
         tabs = findViewById(R.id.tabs_bar);
         tabs.setupWithViewPager(tabsContent);
@@ -145,6 +169,8 @@ public class WelcomeActivity extends AppCompatActivity {
 
         tabs.setBackground(new ColorDrawable(Color.parseColor(appColors.getActionBarColor())));
         // Count notifications user currently has and updates badge accordingly
+
+
         NotificationManager.getInstance().countNotifications();
         NotificationManager.getInstance().updateBadge();
     }

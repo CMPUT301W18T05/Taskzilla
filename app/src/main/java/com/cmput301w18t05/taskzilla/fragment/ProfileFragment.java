@@ -153,6 +153,7 @@ public class ProfileFragment extends Fragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
+           // getActivity().getActionBar().setTitle("Profile");
             getView().setBackgroundColor(Color.parseColor(appColors.getActionBarColor()));
             taskList = new ArrayList<>();
             //gets all of current user's tasks
@@ -221,10 +222,20 @@ public class ProfileFragment extends Fragment {
         nameField.setText(user.getName());
         emailField.setText(user.getEmail().toString());
         phoneField.setText(user.getPhone().toString());
-        providerRatingField.setText(String.format(Locale.CANADA,
-                "%.1f", user.getProviderRating()));
-        requesterRatingField.setText(String.format(Locale.CANADA,
-                "%.1f", user.getRequesterRating()));
+        if (user.getProviderRating() == 0.0f) {
+            providerRatingField.setText("No rating");
+            providerRatingField.setTextSize(18);
+        } else {
+            providerRatingField.setText(String.format(Locale.CANADA,
+                    "%.1f", user.getProviderRating()));
+        }
+        if (user.getProviderRating() == 0.0f) {
+            requesterRatingField.setText("No rating");
+            requesterRatingField.setTextSize(18);
+        } else {
+            requesterRatingField.setText(String.format(Locale.CANADA,
+                    "%.1f", user.getRequesterRating()));
+        }
         try {
             profilePicture.setImageBitmap(user.getPhoto().StringToBitmap());
         }
