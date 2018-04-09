@@ -32,10 +32,10 @@ import java.util.ArrayList;
  */
 
 public class RequestManagerTest extends ActivityInstrumentationTestCase2 {
-    Context ctx;
-    User user;
-    Task task;
-    Bid bid;
+    private Context ctx;
+    private User user;
+    private Task task;
+    private Bid bid;
 
     public RequestManagerTest(){
         super(MainActivity.class);
@@ -45,31 +45,32 @@ public class RequestManagerTest extends ActivityInstrumentationTestCase2 {
         user = new User();
         user.setName("test name");
         user.setUsername("myuniqueUN2");
-        user.setRequesterRating(10.0);
-        user.setProviderRating(10.0);
         user.setEmail(new EmailAddress("myuniqueUN2@cmput301.com"));
-        user.setPhone(new PhoneNumber("1111"));
 
-        bid = new Bid(user.getId(), user.getId(), 1000.0f);
-
-        Task task = new Task("Task name", user, "Task description");
+        task = new Task("Task name", user, "Task description");
         AddTaskRequest addTaskRequest = new AddTaskRequest(task);
         RequestManager.getInstance().invokeRequest(addTaskRequest);
+
+        addUser();
+        task.setRequesterId(user.getId());
+        addTask();
     }
 
-    public void testAddUserRequest() {
+    public void addUser() {
         AddUserRequest addUserRequest = new AddUserRequest(user);
-        RequestManager.getInstance().invokeRequest(ctx, addUserRequest);
+        RequestManager.getInstance().invokeRequest(addUserRequest);
         assertTrue(addUserRequest.getResult());
     }
 
-    public void testAddTaskRequest() {
+    public void addTask() {
         AddTaskRequest addTaskRequest = new AddTaskRequest(task);
-        RequestManager.getInstance().invokeRequest(ctx, addTaskRequest);
+        RequestManager.getInstance().invokeRequest(addTaskRequest);
         assertTrue(addTaskRequest.getResult());
     }
 
     public void testSearchTaskRequest() {
+        addUser();
+        addTask();
 
         String keywords = task.getDescription();
 
@@ -91,6 +92,9 @@ public class RequestManagerTest extends ActivityInstrumentationTestCase2 {
     }
 
     public void testGetTaskRequest() {
+        addUser();
+        addTask();
+
         GetTaskRequest getTaskRequest = new GetTaskRequest(task.getId());
         RequestManager.getInstance().invokeRequest(ctx,getTaskRequest);
 
@@ -102,6 +106,9 @@ public class RequestManagerTest extends ActivityInstrumentationTestCase2 {
     }
 
     public void testRemoveTask() {
+        addUser();
+        addTask();
+
         RemoveTaskRequest request = new RemoveTaskRequest(task.getId());
         RequestManager.getInstance().invokeRequest(ctx,request);
 
