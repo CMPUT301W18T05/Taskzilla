@@ -70,10 +70,6 @@ public class SearchFragment extends Fragment {
     private Task currentTask;
     private ImageButton mButton;
 
-    // required for both listviews scrolling at the same time
-    private View clickSource;
-    private View touchSource;
-    private int offset = 0;
 
 
     public SearchFragment() {
@@ -179,7 +175,6 @@ public class SearchFragment extends Fragment {
                     if (!searchController.getKeywords().isEmpty()){     // Checks if keywords is empty, if yes return already loaded array of tasks
                         searchController.clearKeywords();
                         searchController.getAllRequest();
-
                     }
                 } else {                                                // Adds keyword to list and loads new set of tasks based on keywords
                     searchController.clearKeywords();
@@ -215,61 +210,6 @@ public class SearchFragment extends Fragment {
         availableTasksPhoto.setAdapter(adapterPhoto);
 
 
-        // both listViews scroll together code gotten from
-        // https://stackoverflow.com/questions/12342419/android-scrolling-2-listviews-together
-        availableTasksText.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if(touchSource == null)
-                    touchSource = v;
-                if(v == touchSource) {
-                    availableTasksPhoto.dispatchTouchEvent(event);
-                    if(event.getAction() == MotionEvent.ACTION_UP) {
-                        clickSource = v;
-                        touchSource = null;
-                    }
-                }
-                return false;
-            }
-        });
-        availableTasksText.setOnScrollListener(new AbsListView.OnScrollListener() {
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
-                                 int totalItemCount) {
-                if(view == clickSource)
-                    availableTasksPhoto.setSelectionFromTop(firstVisibleItem,
-                            view.getChildAt(0).getTop() + offset);
-            }
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {}
-        });
-        availableTasksPhoto.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if(touchSource == null)
-                    touchSource = v;
-                if(v == touchSource) {
-                    availableTasksText.dispatchTouchEvent(event);
-                    if(event.getAction() == MotionEvent.ACTION_UP) {
-                        clickSource = v;
-                        touchSource = null;
-                    }
-                }
-                return false;
-            }
-        });
-        availableTasksPhoto.setOnScrollListener(new AbsListView.OnScrollListener() {
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
-                                 int totalItemCount) {
-                if(view == clickSource)
-                    availableTasksText.setSelectionFromTop(firstVisibleItem,
-                            view.getChildAt(0).getTop() + offset);
-            }
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {}
-        });
-
         /*
          *  Listens for user tapping on a task in the listview
          *
@@ -280,19 +220,15 @@ public class SearchFragment extends Fragment {
         availableTasksText.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if (adapterView == clickSource) {
-                    currentTask = searchResults.get(i);
-                    viewTask(searchResults.get(i).getId());
-                }
+                currentTask = searchResults.get(i);
+                viewTask(searchResults.get(i).getId());
             }
         });
         availableTasksPhoto.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if (adapterView == clickSource) {
-                    currentTask = searchResults.get(i);
-                    viewTask(searchResults.get(i).getId());
-                }
+                currentTask = searchResults.get(i);
+                viewTask(searchResults.get(i).getId());
             }
         });
         // get all available tasks
