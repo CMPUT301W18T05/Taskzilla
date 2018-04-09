@@ -244,6 +244,7 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
+           // getActivity().getActionBar().setTitle("Search");
             searchController.clearKeywords();
             searchController.getAllRequest();
             notifyChange();

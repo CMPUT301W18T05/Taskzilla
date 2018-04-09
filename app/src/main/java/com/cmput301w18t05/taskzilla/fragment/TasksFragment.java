@@ -56,6 +56,7 @@ public class TasksFragment extends Fragment {
         return mLinearLayout;
     }
 
+
     public class TabsManager extends FragmentPagerAdapter {
         TabsManager(FragmentManager fm) {
             super(fm);

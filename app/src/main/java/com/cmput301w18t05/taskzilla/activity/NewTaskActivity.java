@@ -250,6 +250,8 @@ public class NewTaskActivity extends AppCompatActivity implements OnMapReadyCall
         getLocation();
         taskLocation = new LatLng(lat,lon);
         autocompleteFragment.setHint("Current Location");
+        autocompleteFragment.setText("Current Location");
+
 
     }
 
