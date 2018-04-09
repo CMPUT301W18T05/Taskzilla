@@ -24,29 +24,6 @@
         android:layout_alignParentTop="true"
         android:background="@color/colorPrimary">
 
-        <Button
-            android:id="@+id/ViewRequesterReviewsButton"
-            android:layout_width="wrap_content"
-            android:layout_height="39dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:background="@android:color/transparent"
-            android:text="Requester Reviews"
-            android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/ViewProviderReviewsButton"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginStart="8dp"
-            android:background="@android:color/transparent"
-            android:text="Provider Reviews"
-            android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ViewRequesterReviewsButton" />
-
         <TextView
             android:id="@+id/RatingDescriptionTextView"
             android:layout_width="wrap_content"
@@ -263,9 +240,35 @@
             android:background="@android:color/background_light"
             android:elevation="1dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            >
+            app:layout_constraintTop_toTopOf="parent">
+
+            <Button
+                android:id="@+id/viewRequesterReviewsButton2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:background="@android:color/transparent"
+                android:text="Requester Reviews"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/viewProviderReviewsButton2" />
+
+            <Button
+                android:id="@+id/viewProviderReviewsButton2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="8dp"
+                android:background="@android:color/transparent"
+                android:text="Provider Reviews"
+                android:textSize="12sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/profilePictureView"
