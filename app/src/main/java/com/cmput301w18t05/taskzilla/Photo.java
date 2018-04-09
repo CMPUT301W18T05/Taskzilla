@@ -46,7 +46,7 @@ public class Photo {
 
     /**
      * Returns the image of the photo
-     * @return
+     * @return the photo
      */
     public String getPhoto() {
         return photo;
@@ -55,7 +55,7 @@ public class Photo {
     /**
      * Deletes the current image of the photo
      */
-    public void deletePhoto(){
+    void deletePhoto(){
         photo = null;
     }
 
@@ -67,8 +67,7 @@ public class Photo {
         try {
             byte [] encodeByte=Base64.decode(photo,Base64.DEFAULT);
             Bitmap bitmap=BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            Bitmap resizedImage = Bitmap.createScaledBitmap(bitmap,350,350, false);
-            return resizedImage;
+            return Bitmap.createScaledBitmap(bitmap,350,350, false);
         } catch(Exception e) {
             e.getMessage();
             return null;

@@ -20,9 +20,6 @@ import android.widget.ImageView;
 
 import java.util.ArrayList;
 
-/**
- * Created by kio22 on 2018-04-06.
- */
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
 
@@ -43,18 +40,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.listener = listener;
         this.photoList = photoList;
         this.context = context;
-
     }
 
     /**
      * on item in recycler view clicked, get position in the adapter
      */
     public static class ViewHolder extends RecyclerView.ViewHolder{
-
-        public ImageView imageView;
-
-        public ViewHolder(View v, final CustomOnItemClick listener){
-
+        ImageView imageView;
+        ViewHolder(View v, final CustomOnItemClick listener){
             super(v);
 
             // taken from https://stackoverflow.com/questions/33264042/recyclerview-how-to-catch-the-onclick-on-an-imageview
@@ -67,9 +60,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 }
             });
 
-
-
-            imageView = (ImageView) v.findViewById(R.id.ImageView);
+            imageView = v.findViewById(R.id.ImageView);
         }
     }
 
@@ -82,7 +73,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
      */
     @Override
     public RecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
-
         view = LayoutInflater.from(context).inflate(R.layout.recyclerview_items,parent,false);
         viewHolder = new ViewHolder(view, listener);
         return viewHolder;
@@ -96,7 +86,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public int getItemCount(){
-
         return photoList.size();
     }
 }

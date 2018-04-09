@@ -28,9 +28,6 @@ import com.cmput301w18t05.taskzilla.request.command.GetNotificationsByUserIdRequ
 import java.util.ArrayList;
 import java.util.Random;
 
-/**
- * Created by Andy on 4/4/2018.
- */
 
 /**
  * NotificationManager
@@ -98,6 +95,7 @@ public class NotificationManager extends ContextWrapper {
         androidChannel.setLockscreenVisibility(android.app.Notification.VISIBILITY_PRIVATE);
 
         mManager = (android.app.NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        assert mManager != null;
         mManager.createNotificationChannel(androidChannel);
     }
 
@@ -126,7 +124,7 @@ public class NotificationManager extends ContextWrapper {
         try {
             nm.notify(id, mBuilder.build());
         }
-        catch (RuntimeException e) {
+        catch (RuntimeException ignored) {
         }
     }
 
@@ -163,7 +161,7 @@ public class NotificationManager extends ContextWrapper {
 
     public static class pollNotifications extends AsyncTask<Void, Void, Void> {
         NotificationManager listener;
-        public pollNotifications(NotificationManager listener) {
+        pollNotifications(NotificationManager listener) {
             this.listener = listener;
         }
 

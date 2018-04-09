@@ -66,8 +66,6 @@ public class SearchFragment extends Fragment {
     private ArrayList<Task> searchResults;
     private ArrayList<Photo> photoArrayList;
     private SearchController searchController;
-    private SwipeRefreshLayout mySwipeRefreshLayout;
-    private Spinner spinner;
     private Task currentTask;
     private ImageButton mButton;
 

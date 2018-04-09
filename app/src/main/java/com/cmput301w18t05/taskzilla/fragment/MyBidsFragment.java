@@ -132,9 +132,6 @@ public class MyBidsFragment extends Fragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-            //getActivity().getActionBar().setTitle("Bids");
-        }
     }
     /**
      * whenever the user switches to this fragment

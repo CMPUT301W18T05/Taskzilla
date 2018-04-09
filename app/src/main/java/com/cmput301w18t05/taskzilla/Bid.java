@@ -11,6 +11,8 @@
 
 package com.cmput301w18t05.taskzilla;
 
+import android.support.annotation.NonNull;
+
 import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.GetTaskRequest;
 
@@ -92,7 +94,7 @@ public class Bid implements Comparable<Bid> {
      * @param bid The bid being compared to
      * @return Returns: 1 if bid is larger than the bid being compared to. 0 = if the two bids are the same price. -1 if bid is lower than the bid being compared to
      */
-    public int compareTo(Bid bid) {
+    public int compareTo(@NonNull Bid bid) {
         if (this.bidAmount > bid.getBidAmount())
             return 1;
         else if (this.bidAmount.equals(bid.getBidAmount()))

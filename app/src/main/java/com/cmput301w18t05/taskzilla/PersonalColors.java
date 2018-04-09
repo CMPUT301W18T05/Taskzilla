@@ -11,9 +11,6 @@
 
 package com.cmput301w18t05.taskzilla;
 
-/**
- * Created by wyatt on 08/04/18.
- */
 
 public class PersonalColors {
     private String actionBarColor;
@@ -24,7 +21,7 @@ public class PersonalColors {
         return actionBarColor;
     }
 
-    public void setActionBarColor(String actionBarColor) {
+    void setActionBarColor(String actionBarColor) {
         this.actionBarColor = actionBarColor;
     }
 
@@ -32,15 +29,7 @@ public class PersonalColors {
         return actionBarTextColor;
     }
 
-    public void setActionBarTextColor(String actionBarTextColor) {
+    void setActionBarTextColor(String actionBarTextColor) {
         this.actionBarTextColor = actionBarTextColor;
-    }
-
-    public String getBackgroundColor() {
-        return backgroundColor;
-    }
-
-    public void setBackgroundColor(String backgroundColor) {
-        this.backgroundColor = backgroundColor;
     }
 }

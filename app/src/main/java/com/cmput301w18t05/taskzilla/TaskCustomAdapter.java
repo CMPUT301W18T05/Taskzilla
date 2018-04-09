@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Custom listView adapter for displaying tasks
@@ -61,15 +62,18 @@ public class TaskCustomAdapter extends ArrayAdapter<Task> {
         taskStatusView.setText(taskStatus);
 
         // Check if the best bid is null or <= 0
+        final String text = "Lowest Bid: None";
         try {
             Float bestBid = task.getBestBid();
             if (bestBid < 0) {
-                lowestBidView.setText("Lowest Bid: None");
+                lowestBidView.setText(text);
             } else {
-                lowestBidView.setText("Best Bid: " + "$" + String.format("%.2f",bestBid));
+                final String text1 = "Best Bid: " + "$" +
+                        String.format(Locale.CANADA, "%.2f", bestBid);
+                lowestBidView.setText(text1);
             }
         } catch (Exception e){
-            lowestBidView.setText("Lowest Bid: None");
+            lowestBidView.setText(text);
         }
         return convertView;
     }

@@ -27,12 +27,10 @@ import android.widget.ListView;
 
 import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.Task;
-import com.cmput301w18t05.taskzilla.User;
 import com.cmput301w18t05.taskzilla.activity.ViewTaskActivity;
 import com.cmput301w18t05.taskzilla.currentUser;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.GetTasksByProviderUsernameRequest;
-import com.cmput301w18t05.taskzilla.request.command.SearchTaskRequest;
 
 import java.util.ArrayList;
 
@@ -51,8 +49,6 @@ public class TasksProviderFragment extends Fragment {
     private ArrayAdapter<Task> adapter;
     private SwipeRefreshLayout mySwipeRefreshLayout;
     private GetTasksByProviderUsernameRequest requestTasks;
-    private SearchTaskRequest newRequest;
-    private User cUser = currentUser.getInstance();
 
     public TasksProviderFragment() {
         // Required empty public constructor

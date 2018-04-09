@@ -15,12 +15,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created by wyatt on 22/02/18.
- *
- * initial stub
- */
-
-/**
  * EmailAddress
  *
  * Represents a email object in the app
@@ -28,7 +22,6 @@ import java.util.regex.Pattern;
  * @author andy li
  * @version 1
  */
-
 public class EmailAddress {
 
     private String emailUsername;
@@ -57,7 +50,7 @@ public class EmailAddress {
      * @return  username of the email
      */
 
-    public String getEmailUsername() {                          // Returns email username
+    String getEmailUsername() {                          // Returns email username
          return this.emailUsername;
     }
 
@@ -65,7 +58,7 @@ public class EmailAddress {
      * @return  domain of the email
      */
 
-    public String getEmailDomain() {                            // Returns email domain
+    String getEmailDomain() {                            // Returns email domain
         return this.emailDomain;
     }
 
@@ -94,7 +87,7 @@ public class EmailAddress {
      * @return      True if valid, else False
      */
 
-    public Boolean isValid(String email) {
+    Boolean isValid(String email) {
         Pattern p = Pattern.compile("[a-zA-z0-9._%+-]{1,}+@[a-zA-Z0-9.-]+\\.[a-zA-Z0-9]{1,}");
         Matcher m = p.matcher(email);
 

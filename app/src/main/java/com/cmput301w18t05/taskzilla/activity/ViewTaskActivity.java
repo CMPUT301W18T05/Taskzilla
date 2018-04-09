@@ -17,7 +17,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.location.Location;
 import android.location.LocationManager;
 import android.os.Handler;
 import android.support.v7.app.ActionBar;
@@ -519,7 +518,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
 
                     String temp = "Your bid has been declined!";
 
-                    Notification notification = new Notification("Bid Declined", task.getRequesterId(), selectedBid.getUserId(), taskID, taskName, temp, currentUser.getInstance());
+                    Notification notification = new Notification("Bid Declined", taskID, taskName, temp, currentUser.getInstance());
                     NotificationManager.getInstance().sendNotification(notification);
 
                     BidList.remove(selectedBid);

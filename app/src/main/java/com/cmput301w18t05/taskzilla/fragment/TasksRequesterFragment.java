@@ -37,10 +37,7 @@ import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.GetTaskRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetTasksByRequesterUsernameRequest;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-
-import static android.app.Activity.RESULT_OK;
 
 
 /**
@@ -105,7 +102,7 @@ public class TasksRequesterFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        spinner = (Spinner) view.findViewById(R.id.spinner);
+        spinner = view.findViewById(R.id.spinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapterS = ArrayAdapter.createFromResource(getActivity(),
                 R.array.sort_options, android.R.layout.simple_spinner_item);
@@ -339,8 +336,6 @@ public class TasksRequesterFragment extends Fragment {
         try {
             GetTaskRequest request = new GetTaskRequest(id);
             RequestManager.getInstance().invokeRequest(getContext(), request);
-            Task testTask = request.getResult();
-            String testTaskId = testTask.getTaskRequester().getId();
             Intent intent = new Intent(getActivity(), ViewTaskActivity.class);
             intent.putExtra("TaskId", id);
             startActivityForResult(intent, 1);

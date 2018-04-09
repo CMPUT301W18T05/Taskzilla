@@ -12,6 +12,8 @@
 package com.cmput301w18t05.taskzilla;
 
 
+import android.support.annotation.NonNull;
+
 import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.AddBidRequest;
 import com.cmput301w18t05.taskzilla.request.command.AddTaskRequest;
@@ -120,7 +122,7 @@ public class Task implements Comparable<Task> {
 
         String temp = "Your task '" + this.getName() +"' has been bidded on by " + currentUser.getInstance().getUsername() + " for $" + newbid.getBidAmount();
 
-        Notification notification = new Notification("New Bid", newbid.getUserId(), this.requesterId, this.Id, this.name, temp, currentUser.getInstance());
+        Notification notification = new Notification("New Bid", this.Id, this.name, temp, currentUser.getInstance());
         NotificationManager.getInstance().sendNotification(notification);
     }
 
@@ -129,7 +131,7 @@ public class Task implements Comparable<Task> {
      * remove all bids under this task
      * @author myapplestory
      */
-    public void removeAllBids(){
+    private void removeAllBids(){
         GetBidsByTaskIdRequest getbidrequest = new GetBidsByTaskIdRequest(this.Id);
         RequestManager.getInstance().invokeRequest(getbidrequest);
         ArrayList<Bid> bidlist = getbidrequest.getResult();
@@ -139,24 +141,15 @@ public class Task implements Comparable<Task> {
 
             String temp = "Your bid has been declined!";
 
-            Notification notification = new Notification("Bid Declined", this.requesterId, bid.getId(), this.Id, this.getName(), temp, currentUser.getInstance());
+            Notification notification = new Notification("Bid Declined", this.Id,
+                    this.getName(), temp, currentUser.getInstance());
             NotificationManager.getInstance().sendNotification(notification);
         }
     }
 
-    public void removeHighestBid(){
+    private void removeHighestBid(){
         this.bestBid = -1.0f;
         this.bestBidder = "";
-    }
-
-    /**
-     * addPhoto
-     * Add photo to photo list
-     *
-     * @param photo photo that is being added onto task
-     */
-    public void addPhoto(Photo photo) {
-
     }
 
     /**
@@ -176,22 +169,6 @@ public class Task implements Comparable<Task> {
      */
     public ArrayList<Photo> getPhotos() {
         return photos;
-    }
-
-    /**
-     * Removes a photo at index i
-     * @param i position of photo in the list
-     */
-    public void removePhoto(int i) {
-        this.photos.remove(i);
-    }
-
-    /**
-     * Gets the number of photos
-     * @return size of photo
-     */
-    public int numPhotos() {
-        return this.photos.size();
     }
 
     /**
@@ -227,17 +204,12 @@ public class Task implements Comparable<Task> {
         return userRequest(this.requesterId);
     }
 
-
     public String getProviderId() {
         return providerId;
     }
 
     public String getRequesterId() {
         return requesterId;
-    }
-
-    public void setRequesterId(String requesterId) {
-        this.requesterId = requesterId;
     }
 
     /**
@@ -264,7 +236,8 @@ public class Task implements Comparable<Task> {
      */
     public void setStatus(String newStatus) {
         if ((this.status.equals("requested") && newStatus.equals("bidded")) ||
-            ((this.status.equals("bidded") && newStatus.equals("requested")) && this.getBids().size() == 1) ||
+            ((this.status.equals("bidded") && newStatus.equals("requested")) &&
+                    this.getBids().size() == 1) ||
                 (this.status.equals("bidded") && newStatus.equals("assigned"))) {
             this.status = newStatus;
             updateThis();
@@ -277,7 +250,8 @@ public class Task implements Comparable<Task> {
 
             String temp = "Your bid has been accepted!";
 
-            Notification notification = new Notification("Bid Accepted", this.requesterId, this.providerId, this.Id, this.name, temp, currentUser.getInstance());
+            Notification notification = new Notification("Bid Accepted", this.Id, this.name,
+                    temp, currentUser.getInstance());
             NotificationManager.getInstance().sendNotification(notification);
         }
     }
@@ -351,7 +325,7 @@ public class Task implements Comparable<Task> {
     }
 
     /**
-     * @param uid
+     * @param uid the user id
      * @return user object
      */
     private User userRequest(String uid) {
@@ -375,7 +349,7 @@ public class Task implements Comparable<Task> {
         return getBids.getResult();
     }
 
-    public int compareTo(Task task) {
+    public int compareTo(@NonNull Task task) {
         return this.getId().compareTo(task.getId());
     }
 
@@ -397,7 +371,7 @@ public class Task implements Comparable<Task> {
 
         String temp = this.getName() + " has been completed!";
 
-        Notification notification = new Notification("Task Completed", this.requesterId, this.providerId, this.Id, this.name, temp, currentUser.getInstance());
+        Notification notification = new Notification("Task Completed", this.Id, this.name, temp, currentUser.getInstance());
         NotificationManager.getInstance().sendNotification(notification);
     }
 

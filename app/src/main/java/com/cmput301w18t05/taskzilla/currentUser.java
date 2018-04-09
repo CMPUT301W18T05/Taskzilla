@@ -43,7 +43,7 @@ public class currentUser extends User {
 
     /**
      * Initializes the current user
-     * @param user
+     * @param user the user to set current user to
      */
     public void setUser(User user) {
         currentUser.current = user;

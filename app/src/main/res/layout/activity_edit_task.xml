@@ -58,18 +58,6 @@
             app:layout_constraintVertical_bias="1.0" />
     </android.support.constraint.ConstraintLayout>
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add Photo"
-        android:textAlignment="viewStart"
-        android:textColor="@android:color/darker_gray"
-        android:textSize="8sp"
-        app:layout_constraintEnd_toEndOf="@+id/AddPhotoButton"
-        app:layout_constraintStart_toStartOf="@+id/AddPhotoButton"
-        app:layout_constraintTop_toBottomOf="@+id/AddPhotoButton" />
-
     <ImageButton
         android:id="@+id/addPhotoButton"
         android:layout_width="30dp"

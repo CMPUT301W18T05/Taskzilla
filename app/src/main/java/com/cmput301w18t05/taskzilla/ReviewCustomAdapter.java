@@ -57,12 +57,12 @@ public class ReviewCustomAdapter extends ArrayAdapter<Review> {
         listReviewRating.setText(String.format(Locale.CANADA, "%.1f", review.getRating()));
         listReviewRating.setTextColor(0xFF323232);
         if (review.getDescription().equals("")){
-            listReviewDescription.setText("No Description");
+            final String text = "No Description";
+            listReviewDescription.setText(text);
         } else {
             listReviewDescription.setText(review.getDescription());
         }
         return convertView;
     }
-
 }
 

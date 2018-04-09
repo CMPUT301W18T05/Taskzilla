@@ -111,7 +111,7 @@
         <android.support.constraint.ConstraintLayout
             android:id="@+id/RatingsLayout"
             android:layout_width="0dp"
-            android:layout_height="75dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:background="@android:color/background_light"
             android:elevation="1dp"
@@ -175,7 +175,7 @@
         <android.support.constraint.ConstraintLayout
             android:id="@+id/InfoLayout"
             android:layout_width="0dp"
-            android:layout_height="76dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:background="@android:color/background_light"
             android:elevation="1dp"
@@ -236,7 +236,7 @@
         <android.support.constraint.ConstraintLayout
             android:id="@+id/ProfileLayout"
             android:layout_width="0dp"
-            android:layout_height="128dp"
+            android:layout_height="wrap_content"
             android:background="@android:color/background_light"
             android:elevation="1dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -251,11 +251,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
                 android:background="@android:color/transparent"
                 android:text="Requester Reviews"
                 android:textSize="12sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/viewProviderReviewsButton2" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <Button
                 android:id="@+id/ViewProviderReviewsButton"

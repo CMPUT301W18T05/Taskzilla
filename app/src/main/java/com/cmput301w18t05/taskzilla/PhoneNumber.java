@@ -28,29 +28,18 @@ public class PhoneNumber {
         this.phone = phone;
     }
 
-    public PhoneNumber(){
-    }
-
     /**
      * set phone number
-     * @param phone
+     * @param phone the phone number
      * @author Micheal-Nguyen
      */
-    public void setPhoneNumber(String phone){
+     void setPhoneNumber(String phone){
         this.phone = phone;
     }
 
-    /**
-     * get the phone number and return it
-     * @return
-     */
-    public String getPhoneNumber(){
-        return phone;
-    }
-
-    /**
+    /**z
      * convert phone number from long to string
-     * @return
+     * @return the phone number
      * @author Micheal-Nguyen
      */
     public String toString() {

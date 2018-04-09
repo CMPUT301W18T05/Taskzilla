@@ -16,9 +16,6 @@ import com.cmput301w18t05.taskzilla.request.command.AddNotificationRequest;
 
 import io.searchbox.annotations.JestId;
 
-/**
- * Created by Andy on 4/4/2018.
- */
 
 /**
  *  Notification object containing info to be sent to another user
@@ -36,8 +33,6 @@ public class Notification {
     private User user;
     private String taskName;
     private String context;
-    private String senderID;
-    private String receiverID;
     private String event;
     private String taskID;
     private boolean acknowledged = false;
@@ -45,30 +40,20 @@ public class Notification {
     @JestId
     private String id;
 
-    public Notification(String event, String senderID, String receiverID, String taskID, String taskName, String context, User user) {
+    public Notification(String event, String taskID, String taskName, String context, User user) {
         this.event = event;
-        this.senderID = senderID;
-        this.receiverID = receiverID;
         this.taskID = taskID;
         this.taskName = taskName;
         this.user = user;
         this.context = context;
     }
 
-    public String getEvent() {
+     String getEvent() {
         return this.event;
     }
 
     public String getContext() {
         return this.context;
-    }
-
-    public String getReceiverID() {
-        return this.receiverID;
-    }
-
-    public String getSenderID() {
-        return this.senderID;
     }
 
     public String toString() {
@@ -98,7 +83,7 @@ public class Notification {
      *  @see NotificationManager
      */
 
-    public void acknowledge() {
+    void acknowledge() {
         if (id == null)
             return;
 
@@ -107,12 +92,8 @@ public class Notification {
         RequestManager.getInstance().invokeRequest(task);
     }
 
-    public boolean isAcknowledged() {
+    boolean isAcknowledged() {
         return acknowledged;
-    }
-
-    public int compareTo(Notification notification) {
-        return this.getId().compareTo(notification.getId());
     }
 }
 

@@ -277,8 +277,6 @@ public class ProfileFragment extends Fragment {
             Gson gson = new Gson();
             gson.toJson(null, out);
             out.flush();
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException();
         } catch (IOException e) {
             throw new RuntimeException();
         }
