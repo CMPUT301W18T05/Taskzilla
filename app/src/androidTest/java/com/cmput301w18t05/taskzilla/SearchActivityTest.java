@@ -66,17 +66,11 @@ public class SearchActivityTest extends ActivityInstrumentationTestCase2 {
         solo.assertCurrentActivity("Wrong Activity", WelcomeActivity.class);
         assertTrue(solo.waitForActivity(WelcomeActivity.class));
 
-        
+        TabLayout tabLayout =  (TabLayout)solo.getView(R.id.tabs_bar);
+        tabLayout.getTabAt(2);
+        solo.waitForText("Search");
 
-        solo.clickOnView(viewYouWantToDoStuffWith);
 
-        solo.sleep(9000);
 
-        solo.getCurrentActivity().getFragmentManager().findFragmentByTag("Search");
-        //assertTrue(solo.waitForText("Search"));
-
-        //solo.enterText((EditText) solo.getView(R.id.searchView),"Task");
-        //solo.text
-
-    }
+      }
 }
