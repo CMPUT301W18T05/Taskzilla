@@ -14,6 +14,11 @@ package com.cmput301w18t05.taskzilla;
 import android.test.ActivityInstrumentationTestCase2;
 
 import com.cmput301w18t05.taskzilla.activity.MainActivity;
+import com.cmput301w18t05.taskzilla.request.RequestManager;
+import com.cmput301w18t05.taskzilla.request.command.AddTaskRequest;
+import com.cmput301w18t05.taskzilla.request.command.AddUserRequest;
+
+import java.util.ArrayList;
 
 /**
  * Created by James on 2/23/2018.
@@ -152,7 +157,26 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
     // Test for getting a list of tasks that the user has requested
     public void testGetTasksRequested() {
         User user = new User();
+        AddUserRequest addUserRequest = new AddUserRequest(user);
 
+        Task task1 = new Task();
+        AddTaskRequest addTaskRequest1 = new AddTaskRequest(task1);
+
+        Task task2 = new Task();
+        AddTaskRequest addTaskRequest2 = new AddTaskRequest(task2);
+
+        ArrayList<Task> tasks = new ArrayList<Task>();
+        tasks.add(task1);
+        tasks.add(task2);
+
+        RequestManager.getInstance().invokeRequest(addUserRequest);
+        RequestManager.getInstance().invokeRequest(addTaskRequest1);
+        RequestManager.getInstance().invokeRequest(addTaskRequest2);
+
+        ArrayList<Task> result = new ArrayList<>();
+        result = user.getTasksRequested();
+
+        assertTrue(tasks.containsAll(result) && result.containsAll(tasks));
     }
 
     /**

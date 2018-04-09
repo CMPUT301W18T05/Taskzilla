@@ -12,12 +12,13 @@
 package com.cmput301w18t05.taskzilla;
 
 import android.content.Context;
-import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ import java.util.ArrayList;
  * Custom adapter for displaying tasks
  * Shows the task title, requester, status, and lowest bid (if any)
  *
- * @author Jeremy
+ * @author Jeremy, myapplestory
  */
 public class TaskCustomAdapter extends ArrayAdapter<Task> {
 
@@ -34,34 +35,40 @@ public class TaskCustomAdapter extends ArrayAdapter<Task> {
         super(context, layoutResource, taskList);
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         Task task = getItem(position);
+        assert task != null;
+        User user = task.getTaskRequester();
+
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.tasks_list_view2, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.tasks_list_view2,
+                    parent, false);
         }
         TextView taskTitleView = convertView.findViewById(R.id.taskTitle);
         TextView requesterUsernameView = convertView.findViewById(R.id.requesterUsername);
         TextView taskStatusView = convertView.findViewById(R.id.taskStatus);
         TextView lowestBidView = convertView.findViewById(R.id.lowestBid);
-        ImageButton requesterImage = convertView.findViewById(R.id.SearchListRequesterPicture);
+        //ImageView requesterImage = convertView.findViewById(R.id.SearchListRequesterPicture);
 
         // Set the values for all the views
         taskTitleView.setText(task.getName());
         taskTitleView.setTextColor(0xff3f3f3f);
         taskTitleView.setTextSize(20);
-        String requesterName = "Requester: " + task.getTaskRequester().getName();
+        String requesterName = "Requester: " + user.getName();
         requesterUsernameView.setText(requesterName);
         requesterUsernameView.setTextColor(0xFF323232);
         String taskStatus = "Status: " + task.getStatus();
         taskStatusView.setText(taskStatus);
-        try {
-            requesterImage.setImageBitmap(task.getTaskRequester().getPhoto().StringToBitmap());
-        }
-        catch (Exception e){
-            Photo defaultPhoto = new Photo("");
-            requesterImage.setImageBitmap(defaultPhoto.StringToBitmap());
-        }
+
+//        try {
+//            requesterImage.setImageBitmap(user.getPhoto().StringToBitmap());
+//        }
+//        catch (Exception e){
+//            Photo defaultPhoto = new Photo("");
+//            requesterImage.setImageBitmap(defaultPhoto.StringToBitmap());
+//        }
 
         // Check if the best bid is null or <= 0
         try {

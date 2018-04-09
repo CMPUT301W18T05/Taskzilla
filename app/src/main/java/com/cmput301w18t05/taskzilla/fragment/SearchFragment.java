@@ -27,6 +27,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.TaskCustomAdapter;
@@ -70,7 +71,6 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
                 container, false);
 
         ImageButton mButton = mConstraintLayout.findViewById(R.id.MapButton);
-
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,7 +100,6 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 currentTask = searchResults.get(i);
                 viewTask(searchResults.get(i).getId());
-
             }
         });
         // get all available tasks
@@ -115,7 +114,6 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
      * @return          boolean value to determine if task was deleted; true = deleted, default is false
      * @see             ViewTaskActivity
      */
-
     public void viewTask(String taskId){
         Intent intent = new Intent(getActivity(), ViewTaskActivity.class);
         intent.putExtra("TaskId", taskId);
@@ -130,7 +128,6 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
      * @param data          data which was sent back from the activity
      * @see                 ViewTaskActivity
      */
-
     @Override
     public void onActivityResult(int reqCode, int resultCode, Intent data) {
         if(reqCode == 1) {
@@ -150,7 +147,6 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
      * @param view                  The current activity
      * @param savedInstanceState    The state of the screen before interrupts appear, such as leaving the app
      */
-
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         // expand search bar by default
