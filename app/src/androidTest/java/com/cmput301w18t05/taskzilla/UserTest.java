@@ -159,10 +159,10 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
         User user = new User();
         AddUserRequest addUserRequest = new AddUserRequest(user);
 
-        Task task1 = new Task();
+        Task task1 = new Task("Task name", user, "Task description");
         AddTaskRequest addTaskRequest1 = new AddTaskRequest(task1);
 
-        Task task2 = new Task();
+        Task task2 = new Task("Task name", user, "Task description");
         AddTaskRequest addTaskRequest2 = new AddTaskRequest(task2);
 
         ArrayList<Task> tasks = new ArrayList<Task>();

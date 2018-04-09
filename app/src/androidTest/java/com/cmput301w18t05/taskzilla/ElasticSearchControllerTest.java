@@ -16,6 +16,9 @@ import android.util.Log;
 
 import com.cmput301w18t05.taskzilla.activity.MainActivity;
 import com.cmput301w18t05.taskzilla.controller.ElasticSearchController;
+import com.cmput301w18t05.taskzilla.request.RequestManager;
+import com.cmput301w18t05.taskzilla.request.command.AddTaskRequest;
+import com.cmput301w18t05.taskzilla.request.command.AddUserRequest;
 
 import java.util.ArrayList;
 
@@ -31,25 +34,24 @@ public class ElasticSearchControllerTest extends ActivityInstrumentationTestCase
     public ElasticSearchControllerTest(){
         super(MainActivity.class);
 
-
         user = new User();
         user.setName("Tester");
         user.setUsername("myuniqueusername");
         user.setPhone(new PhoneNumber());
         user.setEmail(new EmailAddress("test@301.com"));
         user.setProviderRating(1.8);
-        user.setRequesterRating(8.0);
-        // user.setPhotos(new ArrayList<Photo>());
-        // user.setPhoto(new Photo());
+        user.setRequesterRating(3.0);
+        user.setPhoto(new Photo("/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkz ODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2Nj Y2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCADwAPADASIA AhEBAxEB/8QAGgABAAMBAQEAAAAAAAAAAAAAAAIDBAEFB//EACoQAQACAQEGBQUBAQAAAAAAAAAB AgMRBCExM1FxEiIyQaETQoGRsVJh/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAA AAAAAAAAAAD/2gAMAwEAAhEDEQA/APoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAja1axraYiFNtqrHpiZ+AaBkna7e1YI2u3vWAaxnrtVJ9UTX5 XVtFo1rMTAJAAAAAAAAAAAAAAAAAAAAAAM+baIp5ab7fx3aMvgjw19U/DGDtrTadbTrLgAAAO1tN Z1rOkuANmHPF/Lbdb+r3mNmz5fHXS3qj5BeAAAAAAAAAAAAAAAAAAja0VrMzwhJRtdtMcR1kGS1p tabTxlwAAAAAAAHaWml4tHs4A9KJi0RMcJdUbLbXFp0nReAAAAAAAAAAAAAAAAAybZPmrH/Gtk2y N9Z7gzgAAAAAAAAA07H98dmpl2OPXPZqAAAAAAAAAAAAAAAAAUbVXXFr0le5MRaJieEg80SvWaXm s+yIAAAAAAAJY6Te8Vj8g17NXw4onrvXORGkaQ6AAAAAAAAAAAAAAAAAACnPi+pXWPVHBimNJ0nd L01OXDGTfwt1BiEr47Y580flEAAAEqY7ZJ8sfn2ByImZ0jfMtuDF9Ou/1TxMWGuONeNuq0AAAAAA AAAAAAAAAAAAAAAAHJjWN6q2z47cI07LJtWONojvKM5scffAKp2SPa8/ojZI97z+ln18X+/g+vi/ 2Dldnx19te62N3BCM2OfvhKLVnhaJ7SCQAAAAAAAAAAAAAAAAAAIXvXHXW0gmqvnpTdrrPSGbLnt fdHlr0hUC+21Xn0xFflVbJe3G0z+UQAAAAAAEq5L14WlbXarx6oifhQA3Uz0vuidJ6SteYtxZ7U3 T5qg3CFL1vXWs6wmAAAAAAAAAAAACF7xSs2lhvecltbfros2m/iyeGOFf6pAAAAAAAAAAAAAABPH knHbWPzHVupaL1i0cJecv2XJ4b+CeE/0GwAAAAAAAAABG06VmekapK83Jv2Bg113gAAAAAAAAAAA AAAAETpMTHtvAHpROsRLqGLl17QmAAAAAAAAArzcm/ZYrzcm/YGAAAAAAAAAAAAAAAAAAHoYuVXt CaGLlV7QmAAAAAAAAArzcm/ZYrzcm/YGAAAAAAAAAAAAAAAAAAHoYuVXtCaGLlV7QmAAAAAAAAAr zcm/ZYrzcm/YGAAAAAAAAAAAAAAAAAAHoYuVXtCaGLlV7QmAAAAD/9k= "));
+        AddUserRequest addUserRequest = new AddUserRequest(user);
+        RequestManager.getInstance().invokeRequest(addUserRequest);
 
-
+        Task task = new Task("Task name", user, "Task description");
+        AddTaskRequest addTaskRequest = new AddTaskRequest(task);
+        RequestManager.getInstance().invokeRequest(addTaskRequest);
 
         Bid bid = new Bid(user.getId(), task.getId(), 10.0f);
 
-        task = new Task();
-        task.setName("My test task");
         task.addBid(bid);
-
     }
 
     public void testAddUser() {
@@ -142,7 +144,7 @@ public class ElasticSearchControllerTest extends ActivityInstrumentationTestCase
     }
 
     public void testRemoveTask() {
-        Task mockTask = new Task();
+        Task mockTask = new Task("Task name", user, "Task description");
 
         ElasticSearchController.AddTask addTask = new ElasticSearchController.AddTask();
         addTask.execute(mockTask);
@@ -176,7 +178,7 @@ public class ElasticSearchControllerTest extends ActivityInstrumentationTestCase
     }
 
     public void testGetTask() {
-        Task mockTask = new Task();
+        Task mockTask = new Task("Task name", user, "Task description");
 
         ElasticSearchController.AddTask addTask = new ElasticSearchController.AddTask();
         addTask.execute(mockTask);
@@ -207,7 +209,7 @@ public class ElasticSearchControllerTest extends ActivityInstrumentationTestCase
     }
 
     public void testUpdateTask() {
-        Task mockTask = new Task();
+        Task mockTask = new Task("Task name", user, "Task description");
         mockTask.setName("OriginalName");
 
         ElasticSearchController.AddTask addTask = new ElasticSearchController.AddTask();
