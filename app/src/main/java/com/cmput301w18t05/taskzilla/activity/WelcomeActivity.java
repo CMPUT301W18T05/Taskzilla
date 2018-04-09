@@ -125,14 +125,13 @@ public class WelcomeActivity extends AppCompatActivity {
         tabs = findViewById(R.id.tabs_bar);
         tabs.setupWithViewPager(tabsContent);
 
-        NotificationManager.getInstance(this.getApplicationContext(), tabs);
-
+        NotificationManager.getInstance(this.getApplicationContext());
 
         if(!currentUser.getInstance().getUsername().equalsIgnoreCase("TestUser")&&!currentUser.getInstance().getUsername().equalsIgnoreCase("TestUserOne")) {
             tabs.getTabAt(0).setIcon(android.R.drawable.ic_menu_my_calendar);
             tabs.getTabAt(1).setIcon(android.R.drawable.ic_menu_agenda);
             tabs.getTabAt(2).setIcon(android.R.drawable.ic_search_category_default);
-            tabs.getTabAt(3).setIcon(android.R.drawable.ic_popup_reminder).setCustomView(R.layout.badged_tab);
+            tabs.getTabAt(3).setIcon(android.R.drawable.ic_popup_reminder);
             tabs.getTabAt(4).setIcon(android.R.drawable.ic_menu_myplaces);
 
             tabs.getTabAt(0).getIcon().setColorFilter(Color.parseColor(appColors.getActionBarTextColor()), PorterDuff.Mode.MULTIPLY);
@@ -142,13 +141,7 @@ public class WelcomeActivity extends AppCompatActivity {
             tabs.getTabAt(4).getIcon().setColorFilter(Color.parseColor(appColors.getActionBarTextColor()), PorterDuff.Mode.MULTIPLY);
         }
 
-
-
         tabs.setBackground(new ColorDrawable(Color.parseColor(appColors.getActionBarColor())));
-        // Count notifications user currently has and updates badge accordingly
-
-        NotificationManager.getInstance().countNotifications();
-        NotificationManager.getInstance().updateBadge();
     }
 
     /**

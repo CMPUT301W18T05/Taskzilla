@@ -53,8 +53,6 @@ public class Task implements Comparable<Task> {
     private ArrayList<Bid> bids;
     private ArrayList<Photo> photos;
 
-    private Boolean toStringMethod = false;
-
     public Task() {
         photos = new ArrayList<>();
         name = "TEST TASK";
