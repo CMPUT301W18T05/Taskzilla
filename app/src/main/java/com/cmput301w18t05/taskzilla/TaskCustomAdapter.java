@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -43,14 +44,24 @@ public class TaskCustomAdapter extends ArrayAdapter<Task> {
         TextView requesterUsernameView = convertView.findViewById(R.id.requesterUsername);
         TextView taskStatusView = convertView.findViewById(R.id.taskStatus);
         TextView lowestBidView = convertView.findViewById(R.id.lowestBid);
+        ImageButton requesterImage = convertView.findViewById(R.id.SearchListRequesterPicture);
 
         // Set the values for all the views
         taskTitleView.setText(task.getName());
         taskTitleView.setTextColor(0xff3f3f3f);
         taskTitleView.setTextSize(20);
-        requesterUsernameView.setText("Requester: " + task.getTaskRequester().getName());
+        String requesterName = "Requester: " + task.getTaskRequester().getName();
+        requesterUsernameView.setText(requesterName);
         requesterUsernameView.setTextColor(0xFF323232);
-        taskStatusView.setText("Status: " + task.getStatus());
+        String taskStatus = "Status: " + task.getStatus();
+        taskStatusView.setText(taskStatus);
+        try {
+            requesterImage.setImageBitmap(task.getTaskRequester().getPhoto().StringToBitmap());
+        }
+        catch (Exception e){
+            Photo defaultPhoto = new Photo("");
+            requesterImage.setImageBitmap(defaultPhoto.StringToBitmap());
+        }
 
         // Check if the best bid is null or <= 0
         try {
@@ -58,7 +69,7 @@ public class TaskCustomAdapter extends ArrayAdapter<Task> {
             if (bestBid < 0) {
                 lowestBidView.setText("Lowest Bid: None");
             } else {
-                lowestBidView.setText("Lowest Bid: " + "$" + String.format("%.2f",bestBid));
+                lowestBidView.setText("Best Bid: " + "$" + String.format("%.2f",bestBid));
             }
         } catch (Exception e){
             lowestBidView.setText("Lowest Bid: None");
