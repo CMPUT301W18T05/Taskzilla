@@ -15,19 +15,28 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.cmput301w18t05.taskzilla.AppColors;
 import com.cmput301w18t05.taskzilla.Photo;
+import com.cmput301w18t05.taskzilla.Review;
+import com.cmput301w18t05.taskzilla.ReviewCustomAdapter;
 import com.cmput301w18t05.taskzilla.controller.ProfileController;
 import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.User;
+import com.cmput301w18t05.taskzilla.currentUser;
+import com.cmput301w18t05.taskzilla.request.RequestManager;
+import com.cmput301w18t05.taskzilla.request.command.GetReviewsByUserIdRequest;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 /**
@@ -69,8 +78,52 @@ public class ProfileActivity extends AppCompatActivity {
         appColors = AppColors.getInstance();
         ActionBar actionBar = getSupportActionBar();
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor(appColors.getActionBarColor())));
-        actionBar.setTitle(Html.fromHtml("<font color='"+ appColors.getActionBarTextColor() + "'>Taskzilla</font>"));
+        actionBar.setTitle(Html.fromHtml("<font color='"+ appColors.getActionBarTextColor() +
+                "'>Taskzilla</font>"));
 
+        findViews();
+        setValues();
+
+        profilePicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProfilePictureClicked();
+            }
+        });
+        providerRatingField.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                providerRatingOnClick();
+            }
+        });
+        requesterRatingField.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                requesterRatingOnClick();
+            }
+        });
+    }
+
+    public void ProfilePictureClicked(){
+        Intent intent = new Intent(this,ZoomImageActivity.class);
+        intent.putExtra("Photo", user.getPhoto().toString());
+        startActivity(intent);
+    }
+
+
+    public void findViews(){
+        nameField = findViewById(R.id.nameField2);
+        emailField = findViewById(R.id.emailField2);
+        phoneField = findViewById(R.id.phoneField2);
+        numRequestsField = findViewById(R.id.numRequestsField);
+        numTasksDoneField = findViewById(R.id.numTasksDoneField);
+        providerRatingField = findViewById(R.id.providerRatingField);
+        requesterRatingField = findViewById(R.id.requesterRatingField);
+        profilePicture = findViewById(R.id.profilePictureView);
+    }
+
+
+    public void setValues(){
         userID = getIntent().getStringExtra("user id");
         this.profileController = new ProfileController(this.findViewById(android.R.id.content),this);
         profileController.setUserID(userID);
@@ -86,17 +139,9 @@ public class ProfileActivity extends AppCompatActivity {
             email = "No Email";
             phone = "No Number";
         }
+
         numRequests = profileController.getNumberOfRequests(user.getUsername());
         numTasksDone = profileController.getNumberOfTasksDone(user.getUsername());
-
-        nameField = findViewById(R.id.nameField2);
-        emailField = findViewById(R.id.emailField2);
-        phoneField = findViewById(R.id.phoneField2);
-        numRequestsField = findViewById(R.id.numRequestsField);
-        numTasksDoneField = findViewById(R.id.numTasksDoneField);
-        providerRatingField = findViewById(R.id.providerRatingField);
-        requesterRatingField = findViewById(R.id.requesterRatingField);
-        profilePicture = findViewById(R.id.profilePictureView);
 
         nameField.setText(name);
         emailField.setText(email);
@@ -107,25 +152,84 @@ public class ProfileActivity extends AppCompatActivity {
                 "%.1f", user.getProviderRating()));
         requesterRatingField.setText(String.format(Locale.CANADA,
                 "%.1f", user.getRequesterRating()));
+
         try {
             profilePicture.setImageBitmap(user.getPhoto().StringToBitmap());
         }
         catch (Exception e){
             Photo defaultPhoto = new Photo("");
             profilePicture.setImageBitmap(defaultPhoto.StringToBitmap());
-
         }
-        profilePicture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ProfilePictureClicked();
-            }
-        });
     }
 
-    public void ProfilePictureClicked(){
-        Intent intent = new Intent(this,ZoomImageActivity.class);
-        intent.putExtra("Photo", user.getPhoto().toString());
-        startActivity(intent);
+
+    public void providerRatingOnClick() {
+        final AlertDialog mBuilder = new AlertDialog.Builder(this).create();
+        final View mView = getLayoutInflater().inflate(R.layout.dialog_review_list,null);
+        final ListView ReviewsListView = mView.findViewById(R.id.ReviewsListView);
+        final TextView ReviewBannerTextView = mView.findViewById(R.id.ReviewsBannerTextView);
+
+        GetReviewsByUserIdRequest request = new GetReviewsByUserIdRequest(user.getId());
+        RequestManager.getInstance().invokeRequest(request);
+        ArrayList<Review> ReviewsList = request.getResult();
+
+        for (Review review : ReviewsList) {
+            if (review.getReviewType().equals("r")) {
+                ReviewsList.remove(review);
+            }
+        }
+
+        if (ReviewsList.isEmpty()) {
+            ArrayList<String> tempList = new ArrayList<>();
+            tempList.add("No reviews yet :/");
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                    android.R.layout.simple_list_item_1, tempList);
+            ReviewsListView.setAdapter(adapter);
+        } else {
+            ArrayAdapter<Review> adapter = new ReviewCustomAdapter(this,
+                    R.layout.list_view_review, ReviewsList);
+            ReviewsListView.setAdapter(adapter);
+        }
+
+        String text = "Reviews for " + currentUser.getInstance().getName() + " as a provider";
+        ReviewBannerTextView.setText(text);
+
+        mBuilder.setView(mView);
+        mBuilder.show();
+    }
+
+    public void requesterRatingOnClick() {
+        final AlertDialog mBuilder = new AlertDialog.Builder(this).create();
+        final View mView = getLayoutInflater().inflate(R.layout.dialog_review_list,null);
+        final ListView ReviewsListView = mView.findViewById(R.id.ReviewsListView);
+        final TextView ReviewBannerTextView = mView.findViewById(R.id.ReviewsBannerTextView);
+
+        GetReviewsByUserIdRequest request = new GetReviewsByUserIdRequest(user.getId());
+        RequestManager.getInstance().invokeRequest(request);
+        ArrayList<Review> ReviewsList = request.getResult();
+
+        for (Review review : ReviewsList) {
+            if (review.getReviewType().equals("p")) {
+                ReviewsList.remove(review);
+            }
+        }
+
+        if (ReviewsList.isEmpty()) {
+            ArrayList<String> tempList = new ArrayList<>();
+            tempList.add("No reviews yet :/");
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                    android.R.layout.simple_list_item_1, tempList);
+            ReviewsListView.setAdapter(adapter);
+        } else {
+            ArrayAdapter<Review> adapter = new ReviewCustomAdapter(this,
+                    R.layout.list_view_review, ReviewsList);
+            ReviewsListView.setAdapter(adapter);
+        }
+
+        String text = "Reviews for " + currentUser.getInstance().getName() + " as a requester";
+        ReviewBannerTextView.setText(text);
+
+        mBuilder.setView(mView);
+        mBuilder.show();
     }
 }

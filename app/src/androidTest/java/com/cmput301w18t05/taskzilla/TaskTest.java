@@ -15,6 +15,10 @@ import android.location.Location;
 import android.test.ActivityInstrumentationTestCase2;
 
 import com.cmput301w18t05.taskzilla.activity.MainActivity;
+import com.cmput301w18t05.taskzilla.request.command.AddTaskRequest;
+import com.cmput301w18t05.taskzilla.request.command.AddUserRequest;
+
+import java.util.ArrayList;
 
 /**
  * TaskTest
@@ -53,6 +57,53 @@ public class TaskTest extends ActivityInstrumentationTestCase2 {
         assertTrue(testTask.getBid(0).compareTo(testTask.getBid(1)) < 0);
     }
 
+    // Test to remove all bids
+    public void testRemoveAllBids() {
+        Task testTask = new Task();
+        Bid newBid = new Bid(user.getId(), testTask.getId(), 10.00f);
+        testTask.addBid(newBid);
+        Bid newBid2 = new Bid(user.getId(), testTask.getId(), 10.00f);
+        testTask.addBid(newBid2);
+        assertEquals(2, testTask.numBids());
+
+        testTask.removeAllBids();
+        assertEquals(0, testTask.numBids());
+    }
+
+    // Test to remove best bid
+    public void testRemoveHighestBid() {
+        Task testTask = new Task();
+        Bid newBid = new Bid(user.getId(), testTask.getId(), 10.00f);
+        testTask.addBid(newBid);
+
+        testTask.removeHighestBid();
+        assertEquals(testTask.getBestBid(), -1.0f);
+        assertEquals(testTask.getBestBidder(), "");
+    }
+
+    // Test to get bids
+    public void testGetBids() {
+
+        AddUserRequest addUserRequest = new AddUserRequest(user);
+
+        Task testTask = new Task();
+        AddTaskRequest addTaskRequest = new AddTaskRequest(testTask);
+
+        Bid newBid = new Bid(user.getId(), testTask.getId(), 10.00f);
+        testTask.addBid(newBid);
+
+        Bid newBid2 = new Bid(user.getId(), testTask.getId(), 10.00f);
+        testTask.addBid(newBid2);
+
+        assertEquals(2, testTask.numBids());
+
+        ArrayList<Bid> bids = new ArrayList<>();
+        bids.add(newBid);
+        bids.add(newBid2);
+
+        ArrayList<Bid> result = new ArrayList<>();
+        assertTrue(bids.containsAll(result) && result.containsAll(bids));
+    }
     /**
      * set/get location test
      *
@@ -61,6 +112,8 @@ public class TaskTest extends ActivityInstrumentationTestCase2 {
      * Adding second location will overwrite the current location
      * @author praharen
      */
+
+    /*
     public void testSetGetLocation() {
         Location testLocation = new Location("");
         Task testTask = new Task();
@@ -75,6 +128,7 @@ public class TaskTest extends ActivityInstrumentationTestCase2 {
 
         assertEquals(testNewLocation,testTask.getLocation());
     }
+*/
 
     /**
      * get/set status test

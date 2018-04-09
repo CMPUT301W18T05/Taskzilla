@@ -99,17 +99,14 @@ public class WelcomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
         appColors = AppColors.getInstance();
-        if(loadedAppColors == null) {
+        if (loadedAppColors == null) {
             appColors.setActionBarColor("#000000");
             appColors.setActionBarTextColor("#05e5ee");
             appColors.setBackgroundColor("#ffffff");
-        }
-        else {
+        } else {
             AppColors.getInstance().setInstance(loadedAppColors);
         }
         appColors = AppColors.getInstance();
-
-
 
         actionBar = getSupportActionBar();
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor(appColors.getActionBarColor())));
@@ -134,7 +131,7 @@ public class WelcomeActivity extends AppCompatActivity {
         // Count notifications user currently has and updates badge accordingly
         NotificationManager.getInstance().countNotifications();
         NotificationManager.getInstance().updateBadge();
-
+        
     }
 
     @Override
@@ -182,7 +179,6 @@ public class WelcomeActivity extends AppCompatActivity {
                     }
                 });
                 return true;
-                
             default:
                 return super.onOptionsItemSelected(item);
         }
