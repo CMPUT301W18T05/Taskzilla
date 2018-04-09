@@ -43,7 +43,6 @@ public class SearchActivityTest extends ActivityInstrumentationTestCase2 {
         solo = new Solo(getInstrumentation(), getActivity());
     }
 
-
     public void testSearch(){
 
         //Set up for Test
@@ -66,11 +65,8 @@ public class SearchActivityTest extends ActivityInstrumentationTestCase2 {
         solo.assertCurrentActivity("Wrong Activity", WelcomeActivity.class);
         assertTrue(solo.waitForActivity(WelcomeActivity.class));
 
-        TabLayout tabLayout =  (TabLayout)solo.getView(R.id.tabs_bar);
-        tabLayout.getTabAt(2);
-        solo.waitForText("Search");
-
-        solo.assertCurrentActivity("Wrong Activity", SearchFragment.class);
+        solo.clickOnText("Search");
+        solo.assertCurrentActivity("Wrong Activity", WelcomeActivity.class);
 
         solo.pressSoftKeyboardSearchButton();
         solo.enterText(0, "hi");
