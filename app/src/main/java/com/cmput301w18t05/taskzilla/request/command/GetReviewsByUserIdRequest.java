@@ -61,7 +61,7 @@ public class GetReviewsByUserIdRequest extends Request {
             return result;
         }
         catch (Exception e) {
+            return new ArrayList<>();
         }
-        return result;
     }
 }
