@@ -277,7 +277,6 @@ public class ProfileFragment extends Fragment {
             }
         }
 
-        Toast.makeText(this.getContext(), ReviewsList.toString(), Toast.LENGTH_SHORT).show();
         if (ReviewsList.isEmpty()) {
             ArrayList<String> tempList = new ArrayList<>();
             tempList.add("No reviews yet :/");
