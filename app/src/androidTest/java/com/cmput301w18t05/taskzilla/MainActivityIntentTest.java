@@ -110,9 +110,8 @@ public class MainActivityIntentTest extends ActivityInstrumentationTestCase2{
     }
 
     public void testLogIn(){
-
         //Set up for Test
-        MainActivity activity = (MainActivity)solo.getCurrentActivity();
+        MainActivity activity = (MainActivity) solo.getCurrentActivity();
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
         solo.clickOnText("Sign Up");
         solo.assertCurrentActivity("Wrong Activity", SignUpActivity.class);
@@ -139,5 +138,8 @@ public class MainActivityIntentTest extends ActivityInstrumentationTestCase2{
         solo.clickOnButton("Log In");
         solo.assertCurrentActivity("Wrong Activity", WelcomeActivity.class);
         assertTrue(solo.waitForActivity(WelcomeActivity.class));
+
+
+
     }
 }
