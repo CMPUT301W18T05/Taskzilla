@@ -210,11 +210,9 @@ public class SearchFragment extends Fragment {
         adapterPhoto = new TaskCustomAdapter2(getActivity(), R.layout.tasks_list_view3, photoArrayList);
         availableTasksPhoto.setAdapter(adapterPhoto);
 
-
-
+        // enable both listviews to scroll at the same time
         availableTasksText.setOnScrollListener(new SyncedScrollListener(availableTasksPhoto));
         availableTasksPhoto.setOnScrollListener(new SyncedScrollListener(availableTasksText));
-
 
         /*
          *  Listens for user tapping on a task in the listview

@@ -15,7 +15,10 @@ import android.view.View;
 import android.widget.AbsListView;
 
 /**
- * Created by James on 4/9/2018.
+ *
+ * class for synced scroll on search fragment listview code gotten from
+ * https://stackoverflow.com/questions/8371743/scrolling-listviews-together?lq=1
+ *
  */
 
 public class SyncedScrollListener implements AbsListView.OnScrollListener {
