@@ -37,6 +37,13 @@ public class ZoomImageActivity extends AppCompatActivity{
     private Matrix matrix = new Matrix();
     private Float scale = 1f;
     private ScaleGestureDetector dector;
+
+    /**
+     * retrieve the photo from the previous activity and set
+     * the imageview
+     *
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -61,6 +68,9 @@ public class ZoomImageActivity extends AppCompatActivity{
         return true;
     }
 
+    /**
+     * Uses ScaleGestureListener to allow for pinch zoom on the activity
+     */
     private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
         @Override
         public boolean onScale(ScaleGestureDetector scaleGestureDetector){

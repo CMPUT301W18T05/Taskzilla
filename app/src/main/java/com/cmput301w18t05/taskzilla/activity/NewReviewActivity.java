@@ -14,7 +14,6 @@ package com.cmput301w18t05.taskzilla.activity;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -72,7 +71,9 @@ public class NewReviewActivity extends AppCompatActivity {
         setValues();
     }
 
-
+    /**
+     * retrieves all the views needed for the activity
+     */
     public void findViews() {
         SaveButton = findViewById(R.id.saveReviewButton);
         CancelButton = findViewById(R.id.cancelReviewButton);
@@ -95,6 +96,11 @@ public class NewReviewActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * when save button clicked, save the review and the rating to the
+     * elastic search
+     * @param view
+     */
     public void reviewSaveButton(android.view.View view) {
         String reviewTitle = TitleText.getText().toString();
         String reviewDescription = DescriptionText.getText().toString();

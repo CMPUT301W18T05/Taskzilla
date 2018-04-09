@@ -104,13 +104,19 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * when profile picture clicked, start ZoomImageActivity
+     *
+     */
     public void ProfilePictureClicked(){
         Intent intent = new Intent(this,ZoomImageActivity.class);
         intent.putExtra("Photo", user.getPhoto().toString());
         startActivity(intent);
     }
 
-
+    /**
+     * find all the necessary views that are used in ProfileActivity
+     */
     public void findViews(){
         nameField = findViewById(R.id.nameField2);
         emailField = findViewById(R.id.emailField2);
@@ -123,6 +129,10 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * retrieves id from previous activity and get the user from elastic search
+     * setting up the views on the profile activity
+     */
     public void setValues(){
         userID = getIntent().getStringExtra("user id");
         this.profileController = new ProfileController(this.findViewById(android.R.id.content),this);
@@ -162,7 +172,10 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
-
+    /**
+     * when the provider rating is clicked (number), open a dialog showing all the provider reviews
+     * and ratings on the user of the profile
+     */
     public void providerRatingOnClick() {
         final AlertDialog mBuilder = new AlertDialog.Builder(this).create();
         final View mView = getLayoutInflater().inflate(R.layout.dialog_review_list,null);
@@ -198,6 +211,11 @@ public class ProfileActivity extends AppCompatActivity {
         mBuilder.show();
     }
 
+    /**
+     * when the requester rating is clicked (number), open a dialog showing all the requester
+     * reviews and ratings on the user of the profile
+     *
+     */
     public void requesterRatingOnClick() {
         final AlertDialog mBuilder = new AlertDialog.Builder(this).create();
         final View mView = getLayoutInflater().inflate(R.layout.dialog_review_list,null);

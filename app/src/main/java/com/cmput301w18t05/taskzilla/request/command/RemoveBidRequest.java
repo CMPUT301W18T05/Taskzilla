@@ -11,7 +11,6 @@
 
 package com.cmput301w18t05.taskzilla.request.command;
 
-import android.support.v7.app.AppCompatActivity;
 
 import com.cmput301w18t05.taskzilla.AppCache;
 import com.cmput301w18t05.taskzilla.Bid;

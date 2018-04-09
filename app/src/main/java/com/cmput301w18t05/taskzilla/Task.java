@@ -11,13 +11,7 @@
 
 package com.cmput301w18t05.taskzilla;
 
-import android.content.Context;
-import android.location.Location;
-import android.util.Log;
-import android.widget.Toast;
 
-import com.cmput301w18t05.taskzilla.activity.ViewTaskActivity;
-import com.cmput301w18t05.taskzilla.controller.ElasticSearchController;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.AddBidRequest;
 import com.cmput301w18t05.taskzilla.request.command.AddTaskRequest;
@@ -26,7 +20,7 @@ import com.cmput301w18t05.taskzilla.request.command.GetUserRequest;
 import com.cmput301w18t05.taskzilla.request.command.RemoveBidRequest;
 import com.google.android.gms.maps.model.LatLng;
 
-import org.apache.commons.lang3.ObjectUtils;
+
 
 import java.util.ArrayList;
 

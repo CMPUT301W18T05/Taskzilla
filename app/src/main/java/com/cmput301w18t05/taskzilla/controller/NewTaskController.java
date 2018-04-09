@@ -13,12 +13,8 @@ package com.cmput301w18t05.taskzilla.controller;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.cmput301w18t05.taskzilla.Photo;
 import com.cmput301w18t05.taskzilla.R;
@@ -27,7 +23,7 @@ import com.cmput301w18t05.taskzilla.User;
 import com.cmput301w18t05.taskzilla.activity.NewTaskActivity;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.AddTaskRequest;
-import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;

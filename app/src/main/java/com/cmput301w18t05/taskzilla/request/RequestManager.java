@@ -17,18 +17,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
 
 
 import com.cmput301w18t05.taskzilla.AppCache;
-import com.cmput301w18t05.taskzilla.R;
 
 import java.util.ArrayList;
-
-import static java.lang.System.err;
 
 
 /**

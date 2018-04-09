@@ -15,14 +15,11 @@ import android.content.Context;
 
 import com.cmput301w18t05.taskzilla.Notification;
 import com.cmput301w18t05.taskzilla.User;
-import com.cmput301w18t05.taskzilla.activity.MainActivity;
 import com.cmput301w18t05.taskzilla.fragment.NotificationsFragment;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
-import com.cmput301w18t05.taskzilla.request.command.AddNotificationRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetNotificationsByUserIdRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetTaskRequest;
 import com.cmput301w18t05.taskzilla.request.command.RemoveNotificationRequest;
-import com.cmput301w18t05.taskzilla.request.command.SearchTaskRequest;
 
 import java.util.ArrayList;
 
