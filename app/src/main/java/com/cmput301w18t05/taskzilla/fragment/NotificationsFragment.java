@@ -12,44 +12,40 @@
 package com.cmput301w18t05.taskzilla.fragment;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 
 import com.cmput301w18t05.taskzilla.Notification;
 import com.cmput301w18t05.taskzilla.NotificationManager;
 import com.cmput301w18t05.taskzilla.R;
-import com.cmput301w18t05.taskzilla.Task;
 import com.cmput301w18t05.taskzilla.activity.ViewTaskActivity;
 import com.cmput301w18t05.taskzilla.controller.NotificationsController;
 import com.cmput301w18t05.taskzilla.currentUser;
-import com.cmput301w18t05.taskzilla.request.RequestManager;
-import com.cmput301w18t05.taskzilla.request.command.GetNotificationsByUserIdRequest;
-import com.cmput301w18t05.taskzilla.request.command.GetTasksByProviderUsernameRequest;
-import com.cmput301w18t05.taskzilla.request.command.GetTasksByRequesterUsernameRequest;
-
 import java.util.ArrayList;
-import java.util.zip.Inflater;
+
+/**
+ * Main screen that shows notifications
+ *
+ * @author Andy
+ *
+ * @see NotificationsController
+ * @see NotificationManager
+ * @see Notification
+ *
+ * @version 1
+ */
 
 public class NotificationsFragment extends Fragment {
 
@@ -67,6 +63,16 @@ public class NotificationsFragment extends Fragment {
         // Required empty public constructor
     }
 
+    /**
+     *  Initializes the fragment, and sets up listeners which checks if any notification
+     *  on the listview has been clicked on.
+     *
+     * @param inflater              The current view
+     * @param container
+     * @param savedInstanceState    The state the fragment was in before switching to a new activity/fragment
+     * @return                      Current view
+     */
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -75,7 +81,6 @@ public class NotificationsFragment extends Fragment {
         final ConstraintLayout constraintLayout = (ConstraintLayout) inflater.inflate(R.layout.fragment_notifications, container, false);
 
         notificationList = new ArrayList<>();
-        //new NotificationsFragment.pollNotifications(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         notificationListView = constraintLayout.findViewById(R.id.NotificationListView);
         notificationsController = new NotificationsController(this, getActivity(), currentUser.getInstance());
 
@@ -176,6 +181,14 @@ public class NotificationsFragment extends Fragment {
         return constraintLayout;
     }
 
+    /**
+     *  Sets up a listener for pull down refresh, which refreshes the page and checks if any new
+     *  notifications have been sent
+     *
+     * @param view                  The current view
+     * @param savedInstanceState    The state the fragment was in before being switched out of
+     */
+
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
 
@@ -201,11 +214,21 @@ public class NotificationsFragment extends Fragment {
         );
     }
 
+    /**
+     *  Opens up the task selected.
+     *
+     * @param taskId  Taskid of the task clicked on by the user
+     */
+
     public void viewTask(String taskId){
         Intent intent = new Intent(getActivity(), ViewTaskActivity.class);
         intent.putExtra("TaskId", taskId);
         startActivityForResult(intent, 1);
     }
+
+    /**
+     *  Refreshes the listview
+     */
 
     public void notifyChange() {
         notificationList.clear();
@@ -218,7 +241,6 @@ public class NotificationsFragment extends Fragment {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             notificationsController.getNotificationsRequest();
-            //getActivity().getActionBar().setTitle("Notifications");
         }
     }
 
@@ -226,26 +248,4 @@ public class NotificationsFragment extends Fragment {
         super.onResume();
         adapter.notifyDataSetChanged();
     }
-/*
-    public static class pollNotifications extends AsyncTask<Void, Void, Void> {
-        NotificationsFragment listener;
-        public pollNotifications(NotificationsFragment listener) {
-            this.listener = listener;
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            try {
-                while (true) {
-                    Thread.sleep(5000);
-                    listener.notificationsController.getNotificationsRequest();
-                }
-            }
-            catch (Exception e) {
-                System.out.println("Something went wrong with the poll notifications");
-            }
-            return null;
-        }
-    }
-    */
 }
