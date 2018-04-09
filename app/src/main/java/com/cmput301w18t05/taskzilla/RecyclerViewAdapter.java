@@ -33,6 +33,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private CustomOnItemClick listener;
 
 
+    /**
+     * constructor
+     * @param context
+     * @param photoList
+     * @param listener
+     */
     public RecyclerViewAdapter(Context context,ArrayList<Photo> photoList, CustomOnItemClick listener){
         this.listener = listener;
         this.photoList = photoList;
@@ -40,6 +46,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     }
 
+    /**
+     * on item in recycler view clicked, get position in the adapter
+     */
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
         public ImageView imageView;
@@ -64,6 +73,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
     }
 
+    /**
+     * inflate the recyclerview items
+     *
+     * @param parent
+     * @param viewType
+     * @return
+     */
     @Override
     public RecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
 
