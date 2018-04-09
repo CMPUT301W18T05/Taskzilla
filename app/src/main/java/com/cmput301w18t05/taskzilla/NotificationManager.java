@@ -12,6 +12,7 @@
 package com.cmput301w18t05.taskzilla;
 
 import android.annotation.TargetApi;
+import android.app.PendingIntent;
 import android.content.ContextWrapper;
 import android.app.NotificationChannel;
 import android.content.Context;
@@ -21,6 +22,7 @@ import android.os.Build;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -184,7 +186,6 @@ public class NotificationManager extends ContextWrapper {
     /**
      *  Updates the badge on the notification fragment
      */
-
     public void updateBadge() {
         if(tabs.getTabAt(3) != null && tabs.getTabAt(3).getCustomView() != null) {
             TextView badge = (TextView) tabs.getTabAt(3).getCustomView().findViewById(R.id.badge);
@@ -200,10 +201,7 @@ public class NotificationManager extends ContextWrapper {
         }
     }
 
-    /**
-     * Called in the beginning of the app to get current amount of notifications to users
-     */
-
+    // Called in the beginning of the app to get current amount of notifications to users
     public void countNotifications(){
         GetNotificationsByUserIdRequest task = new GetNotificationsByUserIdRequest(currentUser.getInstance().getId());
         RequestManager.getInstance().invokeRequest(task);
@@ -211,10 +209,6 @@ public class NotificationManager extends ContextWrapper {
         for(Notification n : task.getResult())
             count += 1;
     }
-
-    /**
-     * Checks the elasticsearch every 5 seconds to see if theres new notifications
-     */
 
     public static class pollNotifications extends AsyncTask<Void, Void, Void> {
         NotificationManager listener;

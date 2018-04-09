@@ -68,6 +68,10 @@ public class IntentAcceptBidTest extends ActivityInstrumentationTestCase2 {
         solo.waitForActivity(WelcomeActivity.class);
         solo.assertCurrentActivity("Wrong", WelcomeActivity.class);
 
+        TabLayout tabLayout =  (TabLayout)solo.getView(R.id.tabs_bar);
+        tabLayout.getTabAt(0);
+        solo.waitForText("Tasks");
+
         View fab = solo.getView(R.id.fab);
         solo.waitForView(fab);
         solo.clickOnView(fab);
@@ -156,6 +160,7 @@ public class IntentAcceptBidTest extends ActivityInstrumentationTestCase2 {
         login(username2);
         searchTask();
         addBid();
+
         logout();
         login(username1);
         acceptBid();
