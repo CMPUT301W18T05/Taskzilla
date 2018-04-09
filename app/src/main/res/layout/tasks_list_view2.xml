@@ -13,11 +13,11 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="6dp"
-    android:layout_marginRight="6dp">
+    android:layout_marginRight="6dp"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/taskTitle"
@@ -81,7 +81,6 @@
         android:layout_marginTop="8dp"
         android:background="@android:color/transparent"
         android:focusable="auto"
-        android:onClick="requesterPictureOnClick"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
