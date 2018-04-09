@@ -11,11 +11,18 @@
 
 package com.cmput301w18t05.taskzilla;
 
+import android.app.Activity;
+import android.app.Fragment;
+import android.graphics.Point;
+import android.graphics.PointF;
 import android.test.ActivityInstrumentationTestCase2;
+import android.view.Display;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import com.cmput301w18t05.taskzilla.activity.EditProfileActivity;
 import com.cmput301w18t05.taskzilla.activity.MainActivity;
 import com.cmput301w18t05.taskzilla.activity.NewTaskActivity;
 import com.cmput301w18t05.taskzilla.activity.ProfileActivity;
@@ -28,10 +35,10 @@ import com.robotium.solo.Solo;
  * Created by Jeremy on 2018-02-23.
  */
 
-public class UserProfileActivityTest extends ActivityInstrumentationTestCase2 {
+public class UserProfileIntentTest extends ActivityInstrumentationTestCase2 {
     private Solo solo;
 
-    public UserProfileActivityTest(){
+    public UserProfileIntentTest(){
         super(MainActivity.class);
     }
 
@@ -39,9 +46,8 @@ public class UserProfileActivityTest extends ActivityInstrumentationTestCase2 {
         solo = new Solo(getInstrumentation(), getActivity());
     }
 
-    public void testLogIn(){
 
-        //Set up for Test
+    public void testkTaskProfile() {
         MainActivity activity = (MainActivity)solo.getCurrentActivity();
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
         solo.clickOnText("Sign Up");
@@ -49,34 +55,20 @@ public class UserProfileActivityTest extends ActivityInstrumentationTestCase2 {
         solo.enterText((EditText) solo.getView(R.id.usernameField), "TestUser");
         solo.enterText((EditText) solo.getView(R.id.nameField), "TestName");
         solo.enterText((EditText) solo.getView(R.id.emailField), "Test@Email.com");
+        solo.enterText((EditText) solo.getView(R.id.passwordField), "a");
         solo.enterText((EditText) solo.getView(R.id.phoneField), "1234567890");
         solo.clickOnButton("Sign Up");
 
-        //No Log in Info
-        solo.clickOnButton("Log In");
-        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
 
-        //Incorrect Log in Info
-        solo.enterText((EditText) solo.getView(R.id.usernameText), "123456789101112131415161718192021222324252627282930");
-        solo.clickOnButton("Log In");
-        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-
-        //Correct Log in Info
-        solo.clearEditText((EditText) solo.getView(R.id.usernameText));
-        solo.enterText((EditText) solo.getView(R.id.usernameText), "TestUser");
-        solo.clickOnButton("Log In");
-        solo.assertCurrentActivity("Wrong Activity", WelcomeActivity.class);
-    }
-
-    public void testNewTaskProfile() {
         //valid login
         solo.enterText((EditText) solo.getView(R.id.usernameText), "TestUser");
+        solo.enterText((EditText) solo.getView(R.id.passwordText), "a");
         solo.clickOnButton("Log In");
         solo.assertCurrentActivity("Wrong Activity", WelcomeActivity.class);
 
         //create new task
         solo.waitForText("Tasks");
-        View fab = solo.getCurrentActivity().findViewById(R.id.fab);
+        View fab = solo.getView(R.id.fab);
         solo.clickOnView(fab);
         solo.assertCurrentActivity("Wrong Activity", NewTaskActivity.class);
 
@@ -107,32 +99,83 @@ public class UserProfileActivityTest extends ActivityInstrumentationTestCase2 {
     }
 
     public void testProfile() {
+
+        MainActivity activity = (MainActivity)solo.getCurrentActivity();
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+        solo.clickOnText("Sign Up");
+        solo.assertCurrentActivity("Wrong Activity", SignUpActivity.class);
+        solo.enterText((EditText) solo.getView(R.id.usernameField), "TestUser");
+        solo.enterText((EditText) solo.getView(R.id.nameField), "TestName");
+        solo.enterText((EditText) solo.getView(R.id.emailField), "Test@Email.com");
+        solo.enterText((EditText) solo.getView(R.id.passwordField), "a");
+        solo.enterText((EditText) solo.getView(R.id.phoneField), "1234567890");
+        solo.clickOnButton("Sign Up");
+
         //valid login
         solo.enterText((EditText) solo.getView(R.id.usernameText), "TestUser");
+        solo.enterText((EditText) solo.getView(R.id.passwordText), "a");
         solo.clickOnButton("Log In");
         solo.assertCurrentActivity("Wrong Activity", WelcomeActivity.class);
-
-        solo.sleep(500);
-
+        solo.waitForText("Profile");
         solo.clickOnText("Profile");
-        solo.assertCurrentActivity("Wrong Activity", WelcomeActivity.class);
+        solo.sleep(500);
+        solo.waitForText("Number");
+        View EditButton = solo.getView("editButton");
+        solo.clickOnView(EditButton);
+        solo.waitForActivity(EditProfileActivity.class);
+        solo.assertCurrentActivity("Wrong Activity",EditProfileActivity.class);
+        solo.clearEditText((EditText) solo.getView(R.id.Phone));
+        solo.clearEditText((EditText) solo.getView(R.id.NameField));
+        solo.clearEditText((EditText) solo.getView(R.id.EmailField));
 
-        //Not implemented yet
-        //ImageButton editButton = (ImageButton) solo.getView(R.id.EditButton);
-        //solo.clickOnView(editButton);
-        //solo.sleep(500);
-        //solo.assertCurrentActivity("Wrong Activity", EditProfileActivity.class);
+        //Name Empty
+        solo.enterText((EditText) solo.getView(R.id.Phone), "1234567890");
+        solo.enterText((EditText) solo.getView(R.id.EmailField), "Test@Email.com");
+        solo.clickOnText("Save");
+        solo.assertCurrentActivity("Wrong Activity",EditProfileActivity.class);
 
-        //checks if name of user matches name in profile
-        assertTrue(solo.waitForText(currentUser.getInstance().getName()));
+        //Name Too Long
+        solo.enterText((EditText) solo.getView(R.id.NameField), "TestNameTestNameTestNameTestNameTestNameTestNameTestNameTestNameTestNameTestNameTestNameTestNameTestNameTestNameTestNameTestNameTestNameTestNameTestNameTestNameTestNameTestName");
+        solo.clickOnText("Save");
+        solo.assertCurrentActivity("Wrong Activity",EditProfileActivity.class);
 
-        //checks if email of user matches email in profile
-        assertTrue(solo.waitForText(currentUser.getInstance().getEmail().toString()));
+        //Phone Empty
+        solo.clearEditText((EditText) solo.getView(R.id.NameField));
+        solo.clearEditText((EditText) solo.getView(R.id.Phone));
+        solo.enterText((EditText) solo.getView(R.id.NameField), "TestName");
+        solo.clickOnText("Save");
+        solo.assertCurrentActivity("Wrong Activity",EditProfileActivity.class);
 
-        //checks if phone of user matches phone in profile
-        assertTrue(solo.waitForText(currentUser.getInstance().getPhone().toString()));
+        //Phone Too Long
+        solo.enterText((EditText) solo.getView(R.id.Phone), "12345678901234567890");
+        solo.clickOnText("Save");
+        solo.assertCurrentActivity("Wrong Activity",EditProfileActivity.class);
 
-        String userName = currentUser.getInstance().getUsername();
+        //Invalid Email
+        solo.clearEditText((EditText) solo.getView(R.id.Phone));
+        solo.enterText((EditText) solo.getView(R.id.Phone), "1234567890");
+        solo.clearEditText((EditText) solo.getView(R.id.EmailField));
+        solo.enterText((EditText) solo.getView(R.id.EmailField), "Test");
+        solo.clickOnText("Save");
+        solo.assertCurrentActivity("Wrong Activity",EditProfileActivity.class);
+
+        //Valid Info
+        solo.enterText((EditText) solo.getView(R.id.EmailField), "Test@Email.com");
+        solo.clickOnText("Save");
+        solo.waitForText("Number");
+        solo.assertCurrentActivity("Wrong Activity",WelcomeActivity.class);
+
+
+
+
+
+
+
+
+
+
+
+
 
         /*
         //checks if logout button brings the user back to the home screen
@@ -143,4 +186,5 @@ public class UserProfileActivityTest extends ActivityInstrumentationTestCase2 {
         assertTrue(solo.waitForText(userName));
         */
     }
+
 }
