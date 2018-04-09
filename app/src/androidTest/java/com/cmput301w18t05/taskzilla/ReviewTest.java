@@ -32,7 +32,8 @@ public class ReviewTest extends ActivityInstrumentationTestCase2 {
         String description = "A++ Very Good";
         String tID = "1234";
         String rID = "4321";
-        Review review = new Review(title, rating, description, tID, rID);
+        String type = "some type";
+        Review review = new Review(title, rating, description, tID, rID, type);
         assertTrue(review.getTitle().equals(title));
     }
 
@@ -45,7 +46,8 @@ public class ReviewTest extends ActivityInstrumentationTestCase2 {
         String description = "A++ Very Good";
         String tID = "1234";
         String rID = "4321";
-        Review review = new Review(title, rating, description, tID, rID);
+        String type = "some type";
+        Review review = new Review(title, rating, description, tID, rID, type);
         String title2 = "Worse Review Ever";
         review.setTitle(title2);
         assertTrue(review.getTitle().equals(title2));
@@ -60,7 +62,8 @@ public class ReviewTest extends ActivityInstrumentationTestCase2 {
         String description = "A++ Very Good";
         String tID = "1234";
         String rID = "4321";
-        Review review = new Review(title, rating, description, tID, rID);
+        String type = "some type";
+        Review review = new Review(title, rating, description, tID, rID, type);
         assertTrue(review.getRating()==rating);
     }
 
@@ -73,7 +76,8 @@ public class ReviewTest extends ActivityInstrumentationTestCase2 {
         String description = "A++ Very Good";
         String tID = "1234";
         String rID = "4321";
-        Review review = new Review(title, rating, description, tID, rID);
+        String type = "some type";
+        Review review = new Review(title, rating, description, tID, rID, type);
         Float rating2 = 1.0f;
         review.setRating(rating2);
         assertTrue(review.getRating()==rating2);
@@ -88,7 +92,8 @@ public class ReviewTest extends ActivityInstrumentationTestCase2 {
         String description = "A++ Very Good";
         String tID = "1234";
         String rID = "4321";
-        Review review = new Review(title, rating, description, tID, rID);
+        String type = "some type";
+        Review review = new Review(title, rating, description, tID, rID, type);
         assertTrue(review.getDescription().equals(description));
     }
 
@@ -101,7 +106,8 @@ public class ReviewTest extends ActivityInstrumentationTestCase2 {
         String description = "A++ Very Good";
         String tID = "1234";
         String rID = "4321";
-        Review review = new Review(title, rating, description, tID, rID);
+        String type = "some type";
+        Review review = new Review(title, rating, description, tID, rID, type);
         String description2 = "Hate this guy :(";
         review.setDescription(description2);
         assertTrue(review.getDescription().equals(description2));
@@ -116,7 +122,8 @@ public class ReviewTest extends ActivityInstrumentationTestCase2 {
         String description = "A++ Very Good";
         String tID = "1234";
         String rID = "4321";
-        Review review = new Review(title, rating, description, tID, rID);
+        String type = "some type";
+        Review review = new Review(title, rating, description, tID, rID, type);
         assertTrue(review.getTargetUserID()==tID);
     }
 
@@ -129,7 +136,8 @@ public class ReviewTest extends ActivityInstrumentationTestCase2 {
         String description = "A++ Very Good";
         String tID = "1234";
         String rID = "4321";
-        Review review = new Review(title, rating, description, tID, rID);
+        String type = "some type";
+        Review review = new Review(title, rating, description, tID, rID, type);
         String tID2 = "1";
         review.setTargetUserID(tID2);
         assertTrue(review.getTargetUserID()==tID2);
@@ -144,7 +152,8 @@ public class ReviewTest extends ActivityInstrumentationTestCase2 {
         String description = "A++ Very Good";
         String tID = "1234";
         String rID = "4321";
-        Review review = new Review(title, rating, description, tID, rID);
+        String type = "some type";
+        Review review = new Review(title, rating, description, tID, rID, type);
         assertTrue(review.getReviewerID()==rID);
     }
 
@@ -157,7 +166,8 @@ public class ReviewTest extends ActivityInstrumentationTestCase2 {
         String description = "A++ Very Good";
         String tID = "1234";
         String rID = "4321";
-        Review review = new Review(title, rating, description, tID, rID);
+        String type = "some type";
+        Review review = new Review(title, rating, description, tID, rID, type);
         String rID2 = "1";
         review.setReviewerID(rID2);
         assertTrue(review.getReviewerID()==rID2);
