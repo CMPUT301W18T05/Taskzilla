@@ -15,19 +15,28 @@ import android.content.Context;
 
 import com.cmput301w18t05.taskzilla.Notification;
 import com.cmput301w18t05.taskzilla.User;
-import com.cmput301w18t05.taskzilla.activity.MainActivity;
 import com.cmput301w18t05.taskzilla.fragment.NotificationsFragment;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
-import com.cmput301w18t05.taskzilla.request.command.AddNotificationRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetNotificationsByUserIdRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetTaskRequest;
 import com.cmput301w18t05.taskzilla.request.command.RemoveNotificationRequest;
-import com.cmput301w18t05.taskzilla.request.command.SearchTaskRequest;
 
 import java.util.ArrayList;
 
 /**
  * Created by Andy on 4/5/2018.
+ */
+
+/**
+ *  Controller that handles interaction between the NotificationFragment and elasticsearch.
+ *
+ *  @author Andy
+ *
+ *  @see    Notification
+ *  @see    NotificationsFragment
+ *  @see    com.cmput301w18t05.taskzilla.NotificationManager
+ *
+ *  @version 1
  */
 
 public class NotificationsController {
@@ -43,14 +52,26 @@ public class NotificationsController {
         this.view = notificationsFragment;
     }
 
+    /**
+     * clear notification list
+     */
+
     public void clearNotifications() {
         notificationList.clear();
         view.notifyChange();
     }
 
+    /**
+     * @return  Notification list
+     */
+
     public ArrayList<Notification> getResults() {
         return this.notificationList;
     }
+
+    /**
+     * Sends a notification request to the manager which gets all notifications by userid
+     */
 
     public void getNotificationsRequest() {
         GetNotificationsByUserIdRequest request = new GetNotificationsByUserIdRequest(cUser.getId());
@@ -62,6 +83,13 @@ public class NotificationsController {
         view.notifyChange();
     }
 
+    /**
+     *  Returns boolean value which checks if task user put in exists in the elasticsearch server
+     *
+     * @param taskId    Task to be checked
+     * @return          Boolean value
+     */
+
     public boolean checkTaskExistRequest(String taskId) {
         GetTaskRequest getTaskRequest = new GetTaskRequest(taskId);
         RequestManager.getInstance().invokeRequest(ctx, getTaskRequest);
@@ -72,6 +100,13 @@ public class NotificationsController {
             return true;
     }
 
+    /**
+     *  Removes notification user clicked on.
+     *
+     * @param id    Notification to be removed from elasticsearch server
+     * @param pos   Position in arraylist containing the notification
+     */
+
     public void removeNotificationRequest(String id, Integer pos) {
         RemoveNotificationRequest request = new RemoveNotificationRequest(id);
         RequestManager.getInstance().invokeRequest(ctx, request);
@@ -80,6 +115,11 @@ public class NotificationsController {
 
         view.notifyChange();
     }
+
+    /**
+     *  Removes all notifications from the elasticsearch server and clears arraylist containing all
+     *  notifications
+     */
 
     public void removeAllNotificationRequest() {
         GetNotificationsByUserIdRequest request = new GetNotificationsByUserIdRequest(cUser.getId());

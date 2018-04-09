@@ -126,6 +126,17 @@ public class MyBidsFragment extends Fragment {
     }
 
     /**
+     * r
+     * @param isVisibleToUser
+     */
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            //getActivity().getActionBar().setTitle("Bids");
+        }
+    }
+    /**
      * whenever the user switches to this fragment
      * fetch all current user's bids and updates listview
      * @author myapplestory

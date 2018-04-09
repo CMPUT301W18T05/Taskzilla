@@ -11,7 +11,6 @@
 
 package com.cmput301w18t05.taskzilla;
 
-import android.view.View;
 
 /**
  * Created by kio22 on 2018-04-07.

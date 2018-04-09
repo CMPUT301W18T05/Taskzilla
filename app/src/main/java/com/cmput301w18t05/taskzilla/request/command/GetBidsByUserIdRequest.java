@@ -35,11 +35,17 @@ public class GetBidsByUserIdRequest extends Request {
         this.userId = userId;
     }
 
+    /**
+     * get the bids from elasticsearch
+     */
     public void execute() {
         task = new ElasticSearchController.GetBidsByUserID();
         task.execute(this.userId);
     }
 
+    /**
+     * search through bids in app cache
+     */
     @Override
     public void executeOffline() {
         executedOffline = true;
@@ -52,6 +58,10 @@ public class GetBidsByUserIdRequest extends Request {
         return false;
     }
 
+    /**
+     * get the bids from elasticsearch
+     * @return array list of bids matching the user id.
+     */
     public ArrayList<Bid> getResult() {
         try {
             if (!executedOffline) {

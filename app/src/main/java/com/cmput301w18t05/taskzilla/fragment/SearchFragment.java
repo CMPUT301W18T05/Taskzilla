@@ -14,7 +14,6 @@ package com.cmput301w18t05.taskzilla.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -27,7 +26,6 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.cmput301w18t05.taskzilla.Photo;
 import com.cmput301w18t05.taskzilla.R;
@@ -51,7 +49,7 @@ import static android.app.Activity.RESULT_OK;
  * @version 1
  */
 
-public class SearchFragment extends Fragment {//implements SearchView.OnQueryTextListener {
+public class SearchFragment extends Fragment {
 
     private SearchView searchField;
     private ListView availableTasksText;
@@ -181,20 +179,7 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
     public void onViewCreated(View view, Bundle savedInstanceState) {
         // expand search bar by default
         searchField = view.findViewById(R.id.searchView);
-
-        /*
-        spinner = view.findViewById(R.id.spinner);
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapterS = ArrayAdapter.createFromResource(getActivity(),
-        R.array.sort_options, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
-        adapterS.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        spinner.setAdapter(adapterS);
-
-        mySwipeRefreshLayout = view.findViewById(R.id.swiperefresh);
-*/
-
+        
         /*
          * Listens for changes in the searchview
          * OnQueryTextChange invokes whenever the user types, while on the other hand
@@ -274,6 +259,7 @@ public class SearchFragment extends Fragment {//implements SearchView.OnQueryTex
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
+           // getActivity().getActionBar().setTitle("Search");
             searchController.clearKeywords();
             searchController.getAllRequest();
             notifyChange();

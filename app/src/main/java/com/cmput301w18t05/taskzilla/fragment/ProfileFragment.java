@@ -153,6 +153,7 @@ public class ProfileFragment extends Fragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
+           // getActivity().getActionBar().setTitle("Profile");
             getView().setBackgroundColor(Color.parseColor(appColors.getActionBarColor()));
             taskList = new ArrayList<>();
             //gets all of current user's tasks

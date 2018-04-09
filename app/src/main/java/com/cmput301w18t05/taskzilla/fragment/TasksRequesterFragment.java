@@ -19,9 +19,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -30,17 +27,14 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.cmput301w18t05.taskzilla.AppColors;
 import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.Task;
 import com.cmput301w18t05.taskzilla.User;
 import com.cmput301w18t05.taskzilla.activity.NewTaskActivity;
 import com.cmput301w18t05.taskzilla.activity.ViewTaskActivity;
-import com.cmput301w18t05.taskzilla.controller.ViewTaskController;
 import com.cmput301w18t05.taskzilla.currentUser;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.GetTaskRequest;
-import com.cmput301w18t05.taskzilla.request.command.GetTasksByProviderUsernameRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetTasksByRequesterUsernameRequest;
 
 import java.lang.reflect.Array;
@@ -197,6 +191,14 @@ public class TasksRequesterFragment extends Fragment {
         });
     }
 
+    /**
+     * Upon returning from activity, update the requester fragment
+     * depending on what the filter is set on
+     *
+     * @param reqCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     public void onActivityResult(int reqCode, int resultCode, Intent data) {
         //Add a delay for elastic search to update
@@ -247,6 +249,10 @@ public class TasksRequesterFragment extends Fragment {
         }, 1500);
     }
 
+    /**
+     * if filter all, retrieve all requests owned by current user from
+     * elastic search
+     */
     public void updateRList(){
         ArrayList<Task> res;
         res = cUser.getTasksRequested();
@@ -256,6 +262,10 @@ public class TasksRequesterFragment extends Fragment {
         adapter.notifyDataSetChanged();
     }
 
+    /**
+     * if filter is requested, retrieve all requests owned by current user
+     * from elastic search that have status 'requested'
+     */
     public void updateRequested(){
         ArrayList<Task> res = cUser.getTasksRequested();
         taskList.clear();
@@ -268,6 +278,10 @@ public class TasksRequesterFragment extends Fragment {
         adapter.notifyDataSetChanged();
     }
 
+    /**
+     * if filter is requested, retrieve all requests owned by current user
+     * from elastic search that have status 'bidded'
+     */
     public void updateBidded(){
         ArrayList<Task> res = cUser.getTasksRequested();
         taskList.clear();
@@ -280,6 +294,10 @@ public class TasksRequesterFragment extends Fragment {
         adapter.notifyDataSetChanged();
     }
 
+    /**
+     * if filter is assigned, retrieve all requests owned by current user from
+     * elastic search that have status 'assigned'
+     */
     public void updateAssigned(){
         ArrayList<Task> res = cUser.getTasksRequested();
         taskList.clear();
@@ -291,6 +309,11 @@ public class TasksRequesterFragment extends Fragment {
         }
         adapter.notifyDataSetChanged();
     }
+
+    /**
+     * if filter is completed, retrieve all requests owned by current user from
+     * elastic search that have status 'completed'
+     */
     public void updateCompleted(){
         ArrayList<Task> res = cUser.getTasksRequested();
         taskList.clear();
