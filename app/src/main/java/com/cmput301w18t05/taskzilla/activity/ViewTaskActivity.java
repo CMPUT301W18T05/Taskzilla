@@ -17,6 +17,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Location;
 import android.location.LocationManager;
 import android.os.Handler;
 import android.support.v7.app.ActionBar;
@@ -246,7 +247,8 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
             intent.putExtra("Lat", Double.toString(task.getLocation().latitude));
             intent.putExtra("Lon", Double.toString(task.getLocation().longitude));
         } catch (Exception e) {
-            return;
+            intent.putExtra("Lat", "0.0");
+            intent.putExtra("Lon", "0.0");
         }
         ArrayList<String> photosString = new ArrayList<String>();
         for(int i = 0;i < photos.size(); i++){
