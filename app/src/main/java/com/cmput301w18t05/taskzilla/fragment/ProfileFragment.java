@@ -301,23 +301,24 @@ public class ProfileFragment extends Fragment {
 
         GetReviewsByUserIdRequest request = new GetReviewsByUserIdRequest(user.getId());
         RequestManager.getInstance().invokeRequest(request);
-        ArrayList<Review> ReviewsList = request.getResult();
+        ArrayList<Review> ReviewsList = new ArrayList<>();
 
         // taken from https://stackoverflow.com/questions/18448671/how-to-avoid-concurrentmodificationexception-while-removing-elements-from-arr
         // 2018-04-08
 
-        ArrayList<Review> ReviewListTemp = new ArrayList<>();
+        ArrayList<Review> ReviewListTemp = request.getResult();
         while(ReviewListTemp.size()>0){
-            RequestManager.getInstance().invokeRequest(request);
-            ArrayList<Review> ReviewsListTemp = request.getResult();
-            Iterator<Review> iter = ReviewsListTemp.iterator();
+            Iterator<Review> iter = ReviewListTemp.iterator();
             while (iter.hasNext()) {
                 Review review = iter.next();
-                if (review.getReviewType().equals("p")) {
+                System.out.println(review.getTitle());
+                if (review.getReviewType().equals("r")) {
                     iter.remove();
                 }
             }
             ReviewsList.addAll(ReviewListTemp);
+            RequestManager.getInstance().invokeRequest(request);
+            ReviewListTemp = request.getResult();
         }
 
 
@@ -365,7 +366,7 @@ public class ProfileFragment extends Fragment {
             Iterator<Review> iter = ReviewsListTemp.iterator();
             while (iter.hasNext()) {
                 Review review = iter.next();
-                if (review.getReviewType().equals("r")) {
+                if (review.getReviewType().equals("p")) {
                     iter.remove();
                 }
             }
