@@ -95,7 +95,7 @@ public class Bid implements Comparable<Bid> {
     public int compareTo(Bid bid) {
         if (this.bidAmount > bid.getBidAmount())
             return 1;
-        else if (this.bidAmount == bid.getBidAmount())
+        else if (this.bidAmount.equals(bid.getBidAmount()))
             return 0;
         else
             return -1;

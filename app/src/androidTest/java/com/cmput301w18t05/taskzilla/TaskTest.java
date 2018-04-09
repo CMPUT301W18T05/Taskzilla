@@ -47,7 +47,7 @@ public class TaskTest extends ActivityInstrumentationTestCase2 {
      */
 
     public void testAddBid() {
-        Task testTask = new Task();
+        Task testTask = new Task("Task name", user, "Task description");
         assertEquals(0, testTask.numBids());
         Bid newBid = new Bid(user.getId(), testTask.getId(), 10.00f);
         testTask.addBid(newBid);
@@ -60,7 +60,7 @@ public class TaskTest extends ActivityInstrumentationTestCase2 {
 
     // Test to remove all bids
     public void testRemoveAllBids() {
-        Task testTask = new Task();
+        Task testTask = new Task("Task name", user, "Task description");
         Bid newBid = new Bid(user.getId(), testTask.getId(), 10.00f);
         testTask.addBid(newBid);
         Bid newBid2 = new Bid(user.getId(), testTask.getId(), 10.00f);
@@ -73,7 +73,7 @@ public class TaskTest extends ActivityInstrumentationTestCase2 {
 
     // Test to remove best bid
     public void testRemoveHighestBid() {
-        Task testTask = new Task();
+        Task testTask = new Task("Task name", user, "Task description");
         Bid newBid = new Bid(user.getId(), testTask.getId(), 10.00f);
         testTask.addBid(newBid);
 
@@ -88,7 +88,7 @@ public class TaskTest extends ActivityInstrumentationTestCase2 {
         AddUserRequest addUserRequest = new AddUserRequest(user);
         RequestManager.getInstance().invokeRequest(addUserRequest);
 
-        Task testTask = new Task();
+        Task testTask = new Task("Task name", user, "Task description");
         AddTaskRequest addTaskRequest = new AddTaskRequest(testTask);
         RequestManager.getInstance().invokeRequest(addTaskRequest);
 
@@ -115,7 +115,7 @@ public class TaskTest extends ActivityInstrumentationTestCase2 {
         AddUserRequest addUserRequest = new AddUserRequest(user);
         RequestManager.getInstance().invokeRequest(addUserRequest);
 
-        Task testTask = new Task();
+        Task testTask = new Task("Task name", user, "Task description");
         testTask.setRequesterId(user.getId());
         AddTaskRequest addTaskRequest = new AddTaskRequest(testTask);
         RequestManager.getInstance().invokeRequest(addTaskRequest);
@@ -132,7 +132,7 @@ public class TaskTest extends ActivityInstrumentationTestCase2 {
         AddUserRequest addUserRequest = new AddUserRequest(user);
         RequestManager.getInstance().invokeRequest(addUserRequest);
 
-        Task testTask = new Task();
+        Task testTask = new Task("Task name", user, "Task description");
         testTask.setProviderId(user.getId());
         AddTaskRequest addTaskRequest = new AddTaskRequest(testTask);
         RequestManager.getInstance().invokeRequest(addTaskRequest);
@@ -145,7 +145,7 @@ public class TaskTest extends ActivityInstrumentationTestCase2 {
 
     // Test to set the status of a task
     public void testSetStatus() {
-        Task testTask = new Task();
+        Task testTask = new Task("Task name", user, "Task description");
         testTask.setStatus("requested");
         assertEquals("requested", testTask.getStatus());
 
@@ -158,7 +158,7 @@ public class TaskTest extends ActivityInstrumentationTestCase2 {
         AddUserRequest addUserRequest = new AddUserRequest(user);
         RequestManager.getInstance().invokeRequest(addUserRequest);
 
-        Task testTask = new Task();
+        Task testTask = new Task("Task name", user, "Task description");
         testTask.setProviderId(user.getId());
         AddTaskRequest addTaskRequest = new AddTaskRequest(testTask);
         RequestManager.getInstance().invokeRequest(addTaskRequest);
@@ -174,7 +174,7 @@ public class TaskTest extends ActivityInstrumentationTestCase2 {
 
     // Test to unassign the provider
     public void testUnassignProvider() {
-        Task testTask = new Task();
+        Task testTask = new Task("Task name", user, "Task description");
         testTask.setTaskProvider(user);
 
         testTask.unassignProvider();
@@ -232,7 +232,7 @@ public class TaskTest extends ActivityInstrumentationTestCase2 {
      * @author praharen
      */
     public void testAddName() {
-        Task testTask = new Task();
+        Task testTask = new Task("Task name", user, "Task description");
         String name = "test";
         testTask.setName(name);
         assertEquals(name, testTask.getName());
@@ -244,7 +244,7 @@ public class TaskTest extends ActivityInstrumentationTestCase2 {
      * @author praharen
      */
     public void testGetSetDescription() {
-        Task testTask = new Task();
+        Task testTask = new Task("Task name", user, "Task description");
         String desc = "test";
         testTask.setDescription(desc);
         assertEquals(desc, testTask.getDescription());
@@ -295,7 +295,7 @@ public class TaskTest extends ActivityInstrumentationTestCase2 {
      */
 
     public void testGetBestBid() {
-        Task testTask = new Task();
+        Task testTask = new Task("Task name", user, "Task description");
         Bid bid1 = new Bid(user.getId(), testTask.getId(), 10.00f);
         assertEquals(new Float(100), testTask.getBestBid());
 
