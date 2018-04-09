@@ -447,8 +447,6 @@ public class ElasticSearchController {
 
     /**
      * Asynchronous task for updating a user
-     *
-     * todo: current implementation does not work.
      */
     public static class UpdateUser extends AsyncTask<User, Void, Void> {
         /**
@@ -473,8 +471,6 @@ public class ElasticSearchController {
 
     /**
      * Asynchronous task for removing a user
-     *
-     * todo: fix this to take in a user id
      */
     public static class RemoveUser extends AsyncTask<User, Void, Void> {
         /**
@@ -616,10 +612,6 @@ public class ElasticSearchController {
         }
     }
 
-    /**
-     * Asynchronous task for retrieving all bids from a user id
-     * todo: take in size and from integer to allow pagination
-     */
     public static class GetBidsByUserID extends AsyncTask<String, Void, ArrayList<Bid>> {
         /**
          * Handles retrieving all bids from a user id
@@ -659,9 +651,6 @@ public class ElasticSearchController {
         }
     }
 
-    /**
-     * Asynchronous task that retrieves all bids from a task id
-     */
     public static class GetBidsByTaskID extends AsyncTask<String, Void, ArrayList<Bid>> {
         /**
          * Handles retrieving all bids from a task id
