@@ -14,18 +14,28 @@ package com.cmput301w18t05.taskzilla.activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.ContactsContract;
+import android.support.annotation.ColorInt;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cmput301w18t05.taskzilla.AppColors;
 import com.cmput301w18t05.taskzilla.EmailAddress;
 import com.cmput301w18t05.taskzilla.PhoneNumber;
 import com.cmput301w18t05.taskzilla.Photo;
@@ -37,6 +47,7 @@ import com.cmput301w18t05.taskzilla.request.command.AddUserRequest;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -54,10 +65,18 @@ public class EditProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setTitle("Edit Profile");
         setContentView(R.layout.activity_edit_profile);
+
+        AppColors appColors = AppColors.getInstance();
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor(appColors.getActionBarColor())));
+        actionBar.setTitle(Html.fromHtml("<font color='"+ appColors.getActionBarTextColor() +
+                "'>Taskzilla</font>"));
+
         NameText = findViewById(R.id.NameField);
         EmailText = findViewById(R.id.EmailField);
         PhoneText = findViewById(R.id.Phone);
         profilePicture = findViewById(R.id.ProfilePictureView);
+
 
         String userName = getIntent().getStringExtra("Name");
         String userEmail = getIntent().getStringExtra("Email");
@@ -223,4 +242,5 @@ public class EditProfileActivity extends AppCompatActivity {
             Toast.makeText(this, "You haven't picked a photo", Toast.LENGTH_LONG).show();
         }
     }
+
 }
