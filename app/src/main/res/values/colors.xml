@@ -23,5 +23,7 @@
     <color name="buttonRed">#d81e1e</color>
     <color name="buttonOrange">#fd6614</color>
     <color name="grey">#BEBEBE</color>
+    <color name="buttonBlue">#00e5ee</color>
+
 
 </resources>

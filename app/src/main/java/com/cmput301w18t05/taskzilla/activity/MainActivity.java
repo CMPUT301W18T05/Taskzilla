@@ -19,6 +19,7 @@ import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -103,37 +104,29 @@ public class MainActivity extends AppCompatActivity {
 
         cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
 
+        // when enter is pressed when typing in password field, go automatically to log in button
+        // code gotten from https://stackoverflow.com/questions/4451374/use-enter-key-on-softkeyboard-instead-of-clicking-button
+        passwordView.setOnKeyListener(new View.OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                    switch (keyCode) {
+                        case KeyEvent.KEYCODE_DPAD_CENTER:
+                        case KeyEvent.KEYCODE_ENTER:
+                            logInButtonOnclick();
+                            return true;
+                        default:
+                            break;
+                    }
+                }
+                return false;
+            }
+        });
+
         /* login action */
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ni = cm.getActiveNetworkInfo();
-                if(ni != null && ni.isConnected()){
-                    // hide keyboard upon pressing button
-                    InputMethodManager imm = (InputMethodManager)getSystemService(
-                            Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(loginButton.getWindowToken(), 0);
-
-                  /* check if user exists */
-                    foundUser = getUser(usernameView.getText().toString());
-                    if (foundUser != null) {
-                        /* check if password is correct */
-                        if (foundUser.getPassword().equals(passwordView.getText().toString())) {
-                            currentUser.getRealInstance().setUser(foundUser);
-                            saveLogin();
-                            mainActivityController.logIn();
-                            finish();
-                        } else {
-                            showError("Invalid password.");
-                        }
-                    }
-                    else {
-                        showError("Username does not exist. Please sign up.");
-                    }
-                }else{
-                    showError("No internet connection. Try again later");
-
-                }
+            logInButtonOnclick();
             }
         });
 
@@ -160,13 +153,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     /**
      * Get the user from the user name
      * @param username The username of the user
      * @return User
      */
-
     boolean doubleBackToExitPressedOnce = false;
     // Taken from https://stackoverflow.com/questions/8430805/clicking-the-back-button-twice-to-exit-an-activity
     // 2018-04-03
@@ -230,10 +221,37 @@ public class MainActivity extends AppCompatActivity {
             Gson gson = new Gson();
             gson.toJson(currentUser.getInstance(), out);
             out.flush();
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException();
         } catch (IOException e) {
             throw new RuntimeException();
+        }
+    }
+
+    public void logInButtonOnclick() {
+        ni = cm.getActiveNetworkInfo();
+        if(ni != null && ni.isConnected()){
+            // hide keyboard upon pressing button
+            InputMethodManager imm = (InputMethodManager)getSystemService(
+                    Context.INPUT_METHOD_SERVICE);
+            assert imm != null;
+            imm.hideSoftInputFromWindow(loginButton.getWindowToken(), 0);
+
+                  /* check if user exists */
+            foundUser = getUser(usernameView.getText().toString());
+            if (foundUser != null) {
+                        /* check if password is correct */
+                if (foundUser.getPassword().equals(passwordView.getText().toString())) {
+                    currentUser.getRealInstance().setUser(foundUser);
+                    saveLogin();
+                    mainActivityController.logIn();
+                    finish();
+                } else {
+                    showError("Invalid password.");
+                }
+            } else {
+                showError("Username does not exist. Please sign up.");
+            }
+        } else {
+            showError("No internet connection. Try again later");
         }
     }
 }

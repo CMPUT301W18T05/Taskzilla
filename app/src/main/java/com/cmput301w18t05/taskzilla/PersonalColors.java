@@ -12,43 +12,35 @@
 package com.cmput301w18t05.taskzilla;
 
 /**
- * Created by kio22 on 2018-04-07.
+ * Created by wyatt on 08/04/18.
  */
 
-public class AppColors {
+public class PersonalColors {
+    private String actionBarColor;
+    private String actionBarTextColor;
+    private String backgroundColor;
 
-    private PersonalColors colors;
-    private static AppColors instance = new AppColors();
-
-    private AppColors() {
-        colors = new PersonalColors();
+    public String getActionBarColor() {
+        return actionBarColor;
     }
 
     public void setActionBarColor(String actionBarColor) {
-        colors.setActionBarColor(actionBarColor);
-    }
-
-    public String getActionBarColor() {
-        return colors.getActionBarColor();
-    }
-
-    public void setActionBarTextColor(String actionBarTextColor) {
-        colors.setActionBarTextColor(actionBarTextColor);
+        this.actionBarColor = actionBarColor;
     }
 
     public String getActionBarTextColor() {
-        return colors.getActionBarTextColor();
+        return actionBarTextColor;
     }
 
-    public void setColors(PersonalColors c) {
-        colors = c;
+    public void setActionBarTextColor(String actionBarTextColor) {
+        this.actionBarTextColor = actionBarTextColor;
     }
 
-    public PersonalColors getColors() {
-        return colors;
+    public String getBackgroundColor() {
+        return backgroundColor;
     }
 
-    public static AppColors getInstance() {
-        return instance;
+    public void setBackgroundColor(String backgroundColor) {
+        this.backgroundColor = backgroundColor;
     }
 }

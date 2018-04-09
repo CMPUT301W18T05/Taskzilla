@@ -40,6 +40,7 @@ import android.widget.Toast;
 
 import com.cmput301w18t05.taskzilla.AppColors;
 import com.cmput301w18t05.taskzilla.NotificationManager;
+import com.cmput301w18t05.taskzilla.PersonalColors;
 import com.cmput301w18t05.taskzilla.User;
 import com.cmput301w18t05.taskzilla.controller.NotificationsController;
 import com.cmput301w18t05.taskzilla.currentUser;
@@ -51,8 +52,11 @@ import com.cmput301w18t05.taskzilla.fragment.SearchFragment;
 import com.cmput301w18t05.taskzilla.fragment.TasksFragment;
 import com.cmput301w18t05.taskzilla.fragment.TasksProviderFragment;
 import com.cmput301w18t05.taskzilla.fragment.TasksRequesterFragment;
+import com.google.common.reflect.TypeToken;
 import com.cmput301w18t05.taskzilla.request.command.RemoveNotificationRequest;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
 import com.pes.androidmaterialcolorpickerdialog.ColorPicker;
 import com.pes.androidmaterialcolorpickerdialog.ColorPickerCallback;
 
@@ -61,9 +65,14 @@ import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.Reader;
+import java.io.Writer;
+import java.lang.reflect.Type;
 
 import static android.provider.Telephony.Mms.Part.FILENAME;
 
@@ -81,8 +90,7 @@ public class WelcomeActivity extends AppCompatActivity {
     ActionBar actionBar;
     private ListView test;
 
-    private AppColors appColors;
-    private AppColors loadedAppColors = null;
+    private AppColors appColors = AppColors.getInstance();
 
     Integer defaultColorR;
     Integer defaultColorG;
@@ -98,15 +106,10 @@ public class WelcomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
-        appColors = AppColors.getInstance();
-        if (loadedAppColors == null) {
-            appColors.setActionBarColor("#000000");
-            appColors.setActionBarTextColor("#05e5ee");
-            appColors.setBackgroundColor("#ffffff");
-        } else {
-            AppColors.getInstance().setInstance(loadedAppColors);
-        }
-        appColors = AppColors.getInstance();
+
+        appColors.setActionBarColor("#000000");
+        appColors.setActionBarTextColor("#05e5ee");
+        loadAppColors();
 
         actionBar = getSupportActionBar();
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor(appColors.getActionBarColor())));
@@ -128,10 +131,10 @@ public class WelcomeActivity extends AppCompatActivity {
         tabs.getTabAt(3).setIcon(android.R.drawable.ic_popup_reminder).setCustomView(R.layout.badged_tab);
         tabs.getTabAt(4).setIcon(android.R.drawable.ic_menu_myplaces);
 
+        tabs.setBackground(new ColorDrawable(Color.parseColor(appColors.getActionBarColor())));
         // Count notifications user currently has and updates badge accordingly
         NotificationManager.getInstance().countNotifications();
         NotificationManager.getInstance().updateBadge();
-        
     }
 
     @Override
@@ -276,31 +279,27 @@ public class WelcomeActivity extends AppCompatActivity {
     }
     private void loadAppColors() {
         try {
-            FileInputStream fis = openFileInput(FILENAME);
-            BufferedReader in = new BufferedReader(new InputStreamReader(fis));
-            Gson gson = new Gson();
+            FileInputStream fis = openFileInput("COLORS.TXT");
+            BufferedReader br = new BufferedReader(new InputStreamReader(fis));
 
-            loadedAppColors = gson.fromJson(in, AppColors.class);
-        } catch (FileNotFoundException e) {
-            loadedAppColors = null;
-        } catch (IOException e) {
-            throw new RuntimeException();
+            PersonalColors c = new Gson().fromJson(br, PersonalColors.class);
+            AppColors.getInstance().setColors(c);
+        }
+        catch (FileNotFoundException e) {
+            System.out.println("File not found!");
         }
     }
 
     private void saveAppColors() {
         try {
-            Log.i("saveColors",appColors.getActionBarColor());
-            FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
-            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(fos));
             Gson gson = new Gson();
-            gson.toJson(AppColors.getInstance(), out);
-            out.flush();
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException();
-        } catch (IOException e) {
-            throw new RuntimeException();
+            FileOutputStream fos = openFileOutput("COLORS.TXT", Context.MODE_PRIVATE);
+            String json = gson.toJson(this.appColors.getColors());
+            fos.write(json.getBytes());
+            fos.close();
+        }
+        catch (IOException e) {
+            System.out.println("Something went wrong when saving colors!");
         }
     }
-
 }

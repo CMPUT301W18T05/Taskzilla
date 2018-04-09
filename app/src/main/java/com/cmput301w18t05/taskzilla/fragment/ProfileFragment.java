@@ -85,7 +85,7 @@ public class ProfileFragment extends Fragment {
     private User user  = currentUser.getInstance();
     private ImageButton editProfile;
     private ImageView profilePicture;
-    private AppColors appColors;
+    private AppColors appColors = AppColors.getInstance();
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -109,6 +109,7 @@ public class ProfileFragment extends Fragment {
      */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+
         appColors = AppColors.getInstance();
 
         findViews(view);

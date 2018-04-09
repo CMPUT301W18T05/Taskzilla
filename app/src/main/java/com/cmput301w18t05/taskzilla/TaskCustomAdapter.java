@@ -24,7 +24,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 /**
- * Custom adapter for displaying tasks
+ * Custom listView adapter for displaying tasks
  * Shows the task title, requester, status, and lowest bid (if any)
  *
  * @author Jeremy, myapplestory

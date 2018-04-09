@@ -18,10 +18,19 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_map">Map</string>
-    <string name="Edit" />
     <string name="Edit_Button">Edit</string>
     <string name="title_activity_testing">TEST</string>
     <string name="title_activity_maps33333">Map</string>
+    <string name="place_bid">PLACE BID</string>
+    <string name="accept_a_bid">Accept a bid</string>
+    <string name="decline_a_bid">Decline a bid</string>
+    <string name="complete">Complete</string>
+    <string name="unassign">Unassign</string>
+    <string name="requested">requested</string>
+    <string name="no_description">No Description</string>
+    <string name="provider_name">Provider Name</string>
+    <string name="requester">Requester</string>
+    <string name="my_task_1">My Task 1</string>
 
     <string-array name="sort_options">
         <item>All</item>
