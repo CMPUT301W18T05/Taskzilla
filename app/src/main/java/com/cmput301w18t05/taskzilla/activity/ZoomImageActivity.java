@@ -11,13 +11,18 @@
 
 package com.cmput301w18t05.taskzilla.activity;
 
+import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.widget.ImageView;
 
+import com.cmput301w18t05.taskzilla.AppColors;
 import com.cmput301w18t05.taskzilla.Photo;
 import com.cmput301w18t05.taskzilla.R;
 
@@ -37,6 +42,13 @@ public class ZoomImageActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_zoom_image);
         String stringOfImage = getIntent().getStringExtra("Photo");
+
+        AppColors appColors = AppColors.getInstance();
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor(appColors.getActionBarColor())));
+        actionBar.setTitle(Html.fromHtml("<font color='"+ appColors.getActionBarTextColor() +
+                "'>Taskzilla</font>"));
+
         photo = new Photo(stringOfImage);
         ZoomedImageView = findViewById(R.id.ZoomedImage);
         ZoomedImageView.setImageBitmap(photo.StringToBitmap());
