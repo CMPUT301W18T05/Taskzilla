@@ -12,37 +12,40 @@
 package com.cmput301w18t05.taskzilla.request.command;
 
 import com.cmput301w18t05.taskzilla.AppCache;
-import com.cmput301w18t05.taskzilla.Bid;
+import com.cmput301w18t05.taskzilla.Review;
+import com.cmput301w18t05.taskzilla.Task;
 import com.cmput301w18t05.taskzilla.controller.ElasticSearchController;
-import com.cmput301w18t05.taskzilla.request.InsertionRequest;
+import com.cmput301w18t05.taskzilla.request.Request;
+
+import java.util.ArrayList;
 
 /**
- * Request for adding bids to elastic search
+ * Request for getting a task object from Elastic Search using the username of the requester
  * @author Wyatt
  * @see ElasticSearchController
  * @version 1.0
  */
-public class AddBidRequest extends InsertionRequest {
-    ElasticSearchController.AddBid task;
-    Bid bid;
+public class GetReviewsByUserIdRequest extends Request {
+    private ElasticSearchController.GetReviewsByUserId task;
+    private ArrayList<Review> result;
+    private String userId;
+    private boolean executedOffline = false;
+    private boolean executedOfflineOnce = false;
+    private int from = 0;
+    private int size = 10;
 
-    public AddBidRequest(Bid bid) {
-        this.bid = bid;
-        queueReady = true;
+    public GetReviewsByUserIdRequest(String userId) {
+        this.userId = userId;
     }
 
-    @Override
     public void execute() {
-        this.bid.setId(null);
-        System.out.println("Adding bid: " + bid.getId());
-        System.out.println("Bid id: " + bid.getId() + " Task id: " + bid.getTaskId() + " User id: " + bid.getUserId());
-        task = new ElasticSearchController.AddBid();
-        task.execute(bid);
+        //System.out.println("Getting reviews by user ID: " + userId);
+        task = new ElasticSearchController.GetReviewsByUserId();
+        task.execute(userId);
     }
 
     @Override
     public void executeOffline() {
-        AppCache.getInstance().addInCache(bid);
     }
 
     @Override
@@ -50,6 +53,13 @@ public class AddBidRequest extends InsertionRequest {
         return false;
     }
 
-    public void getResult() {
+    public ArrayList<Review> getResult() {
+        result = new ArrayList<>();
+        try {
+            result = task.get();
+        }
+        catch (Exception e) {
+        }
+        return result;
     }
 }

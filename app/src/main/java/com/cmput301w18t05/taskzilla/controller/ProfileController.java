@@ -100,8 +100,15 @@ public class ProfileController {
     public String getNumberOfRequests(String username) {
         requestTasksRequester = new GetTasksByRequesterUsernameRequest(username);
         RequestManager.getInstance().invokeRequest(ctx, requestTasksRequester);
+        Integer tempNumRequests = requestTasksRequester.getResult().size();
+        Integer numRequestsInteger = tempNumRequests;
+        while(tempNumRequests>0){
+            RequestManager.getInstance().invokeRequest(ctx, requestTasksRequester);
+            tempNumRequests = requestTasksRequester.getResult().size();
+            numRequestsInteger+=tempNumRequests;
+        }
+        return Integer.toString(numRequestsInteger);
 
-        return Integer.toString(requestTasksRequester.getResult().size());
 
     }
 
@@ -116,13 +123,22 @@ public class ProfileController {
     public String getNumberOfTasksDone(String username) {
         requestTasksProvider = new GetTasksByProviderUsernameRequest(username);
         RequestManager.getInstance().invokeRequest(ctx, requestTasksProvider);
-        taskList = new ArrayList<>();
+        taskList = new ArrayList<Task>();
         this.taskList.addAll(requestTasksProvider.getResult());
         tasksDone = 0;
         for(Task task: taskList) {
-            Log.i("test",task.getStatus());
             if(task.getStatus().equals("Completed")){
                 tasksDone++;
+            }
+        }
+        while(taskList.size()>0 && taskList != null){
+            taskList.clear();
+            RequestManager.getInstance().invokeRequest(ctx, requestTasksProvider);
+            this.taskList.addAll(requestTasksProvider.getResult());
+            for(Task task: taskList) {
+                if(task.getStatus().equals("Completed")){
+                    tasksDone++;
+                }
             }
         }
         return Integer.toString(tasksDone);

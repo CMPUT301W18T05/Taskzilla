@@ -31,7 +31,6 @@ public class BidActivityTest extends ActivityInstrumentationTestCase2 {
     private Solo solo;
     private TasksRequesterFragment fragment;
 
-
     public BidActivityTest(){
         super(MainActivity.class);
     }
@@ -39,7 +38,6 @@ public class BidActivityTest extends ActivityInstrumentationTestCase2 {
     public void setUp() throws Exception{
         solo = new Solo(getInstrumentation(), getActivity());
     }
-
 
     public void testBid(){
 
@@ -74,7 +72,7 @@ public class BidActivityTest extends ActivityInstrumentationTestCase2 {
         solo.clickOnButton("Add Task");
         solo.waitForActivity(WelcomeActivity.class);
         solo.assertCurrentActivity("Wrong Activity", WelcomeActivity.class);
-        View fab2 = solo.getCurrentActivity().findViewById(R.id.fab2);
+        View fab2 = solo.getCurrentActivity().findViewById(R.id.fab);
         solo.clickOnView(fab2);
         assertTrue(solo.waitForText("Test Task Name"));
 
@@ -82,7 +80,7 @@ public class BidActivityTest extends ActivityInstrumentationTestCase2 {
         solo.waitForText("Profile");
         solo.clickOnText("Profile");
 
-        solo.clickOnView(solo.getView(R.id.LogOutButton));
+        solo.clickOnView(solo.getView(R.id.logOutButton));
         solo.waitForActivity(MainActivity.class);
         solo.assertCurrentActivity("Wrong Activity",MainActivity.class);
 
@@ -130,13 +128,5 @@ public class BidActivityTest extends ActivityInstrumentationTestCase2 {
         solo.sleep(1000);
         solo.clickOnButton("Yes");
         assertFalse(solo.waitForText("25.22",1,1000));
-
-
-
-
-
-
-
     }
-
 }

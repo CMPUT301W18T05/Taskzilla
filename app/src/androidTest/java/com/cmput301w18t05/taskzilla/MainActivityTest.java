@@ -131,7 +131,4 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2{
         solo.assertCurrentActivity("Wrong Activity", WelcomeActivity.class);
         assertTrue(solo.waitForText("Tasks"));
     }
-
-
-
 }

@@ -33,6 +33,7 @@ public class Review {
     private String description;
     private String targetUserID;
     private String reviewerID;
+    private String reviewType;
 
     /**
      * Constructs a review instance using the given parameters
@@ -42,12 +43,14 @@ public class Review {
      * @param targetUserID
      * @param reviewerID
      */
-    public Review(String title, Float rating, String description, String targetUserID, String reviewerID){
+    public Review(String title, Float rating, String description, String targetUserID,
+                  String reviewerID, String type){
         this.title = title;
         this.rating = rating;
         this.description = description;
         this.targetUserID = targetUserID;
         this.reviewerID = reviewerID;
+        this.reviewType = type;
     }
 
     /**
@@ -130,6 +133,14 @@ public class Review {
         this.reviewerID = reviewerID;
     }
 
+    /**
+     * returns the review type
+     * @return the review type
+     */
+    public String getReviewType() {
+        return reviewType;
+    }
+
     public String getId() {
         return id;
     }
@@ -143,4 +154,7 @@ public class Review {
         RequestManager.getInstance().invokeRequest(task);
     }
 
+    public String toString(){
+        return this.getTitle() + " " + this.getDescription() + " " + this.getReviewType();
+    }
 }

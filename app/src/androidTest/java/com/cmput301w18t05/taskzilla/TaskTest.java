@@ -40,7 +40,7 @@ public class TaskTest extends ActivityInstrumentationTestCase2 {
      * test sorted order of bids list in task
      * @author praharen
      */
-    /*
+
     public void testAddBid() {
         Task testTask = new Task();
         assertEquals(0, testTask.numBids());
@@ -51,7 +51,7 @@ public class TaskTest extends ActivityInstrumentationTestCase2 {
         testTask.addBid(newBid2);
         assertEquals(2, testTask.numBids());
         assertTrue(testTask.getBid(0).compareTo(testTask.getBid(1)) < 0);
-    }*/
+    }
 
     /**
      * set/get location test
