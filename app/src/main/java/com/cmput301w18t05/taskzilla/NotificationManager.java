@@ -209,7 +209,7 @@ public class NotificationManager extends ContextWrapper {
         for(Notification n : task.getResult())
             count += 1;
     }
-    
+
     public static class pollNotifications extends AsyncTask<Void, Void, Void> {
         NotificationManager listener;
         public pollNotifications(NotificationManager listener) {
