@@ -195,22 +195,22 @@ public class SearchFragment extends Fragment {
         //Set up listview and adapter
         searchResults = new ArrayList<>();
         searchController = new SearchController(this, getActivity());
-        photoArrayList = new ArrayList<>();
+//        photoArrayList = new ArrayList<>();
 
         adapterText = new TaskCustomAdapter(getActivity(), R.layout.tasks_list_view2, searchResults);
         availableTasksText.setAdapter(adapterText);
 
-        photoArrayList.clear();
-        for (Task task : searchResults) {
-            User tempUser = task.getTaskRequester();
-            photoArrayList.add(tempUser.getPhoto());
-        }
-        adapterPhoto = new TaskCustomAdapter2(getActivity(), R.layout.tasks_list_view3, photoArrayList);
-        availableTasksPhoto.setAdapter(adapterPhoto);
+//        photoArrayList.clear();
+//        for (Task task : searchResults) {
+//            User tempUser = task.getTaskRequester();
+//            photoArrayList.add(tempUser.getPhoto());
+//        }
+//        adapterPhoto = new TaskCustomAdapter2(getActivity(), R.layout.tasks_list_view3, photoArrayList);
+//        availableTasksPhoto.setAdapter(adapterPhoto);
 
         // enable both listviews to scroll at the same time
-        availableTasksText.setOnScrollListener(new SyncedScrollListener(availableTasksPhoto));
-        availableTasksPhoto.setOnScrollListener(new SyncedScrollListener(availableTasksText));
+//        availableTasksText.setOnScrollListener(new SyncedScrollListener(availableTasksPhoto));
+//        availableTasksPhoto.setOnScrollListener(new SyncedScrollListener(availableTasksText));
 
         /*
          *  Listens for user tapping on a task in the listview
@@ -226,13 +226,13 @@ public class SearchFragment extends Fragment {
                 viewTask(searchResults.get(i).getId());
             }
         });
-        availableTasksPhoto.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                currentTask = searchResults.get(i);
-                viewTask(searchResults.get(i).getId());
-            }
-        });
+//        availableTasksPhoto.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                currentTask = searchResults.get(i);
+//                viewTask(searchResults.get(i).getId());
+//            }
+//        });
         // get all available tasks
         searchController.getAllRequest();
     }
@@ -260,13 +260,13 @@ public class SearchFragment extends Fragment {
     public void notifyChange() {
         searchResults.clear();
         searchResults.addAll(searchController.getResults());
-        photoArrayList.clear();
-        for (Task task : searchResults) {
-            User tempUser = task.getTaskRequester();
-            photoArrayList.add(tempUser.getPhoto());
-        }
+//        photoArrayList.clear();
+//        for (Task task : searchResults) {
+//            User tempUser = task.getTaskRequester();
+//            photoArrayList.add(tempUser.getPhoto());
+//        }
         adapterText.notifyDataSetChanged();
-        adapterPhoto.notifyDataSetChanged();
+//        adapterPhoto.notifyDataSetChanged();
     }
 
     public void onResume(){
