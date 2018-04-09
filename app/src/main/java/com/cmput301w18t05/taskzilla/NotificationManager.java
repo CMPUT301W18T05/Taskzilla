@@ -99,8 +99,6 @@ public class NotificationManager extends ContextWrapper {
     }
 
     public void createNotification(Notification notification) {
-        //PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notification.getNotificationIntent(), 0);
-
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setLargeIcon(notification.getUser().getPhoto().StringToBitmap())
@@ -108,8 +106,8 @@ public class NotificationManager extends ContextWrapper {
                 .setContentText(notification.getContext())
                 .setLights(Color.BLUE, 300, 100)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
-                .setDefaults(android.app.Notification.DEFAULT_ALL);
-        //.setContentIntent(pendingIntent);
+                .setDefaults(android.app.Notification.DEFAULT_ALL)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(notification.getContext()));
 
         Random rand = new Random();
         int id = rand.nextInt(1000)+1;
@@ -188,7 +186,7 @@ public class NotificationManager extends ContextWrapper {
         protected Void doInBackground(Void... voids) {
             while (true) {
                 try {
-                    Thread.sleep(6000);
+                    Thread.sleep(5000);
                 }
                 catch (InterruptedException e) {
                     continue;

@@ -99,6 +99,8 @@ public class Notification {
         this.acknowledged = true;
         AddNotificationRequest task = new AddNotificationRequest(this);
         RequestManager.getInstance().invokeRequest(task);
+
+        NotificationManager.getInstance().updateBadge();
     }
 
     public boolean isAcknowledged() {

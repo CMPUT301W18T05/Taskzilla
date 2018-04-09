@@ -158,7 +158,6 @@ public class WelcomeActivity extends AppCompatActivity {
         tabs.setBackground(new ColorDrawable(Color.parseColor(appColors.getActionBarColor())));
         // Count notifications user currently has and updates badge accordingly
 
-
         NotificationManager.getInstance().countNotifications();
         NotificationManager.getInstance().updateBadge();
     }
