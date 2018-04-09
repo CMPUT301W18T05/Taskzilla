@@ -54,6 +54,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Locale;
 
 import static android.app.Activity.RESULT_OK;
@@ -302,11 +303,15 @@ public class ProfileFragment extends Fragment {
         RequestManager.getInstance().invokeRequest(request);
         ArrayList<Review> ReviewsList = request.getResult();
 
-        for (Review review : ReviewsList) {
+        Iterator<Review> iter = ReviewsList.iterator();
+        while (iter.hasNext()) {
+            Review review = iter.next();
+
             if (review.getReviewType().equals("r")) {
-                ReviewsList.remove(review);
+                iter.remove();
             }
         }
+
 
         if (ReviewsList.isEmpty()) {
             ArrayList<String> tempList = new ArrayList<>();
@@ -343,9 +348,12 @@ public class ProfileFragment extends Fragment {
         RequestManager.getInstance().invokeRequest(request);
         ArrayList<Review> ReviewsList = request.getResult();
 
-        for (Review review : ReviewsList) {
+        Iterator<Review> iter = ReviewsList.iterator();
+        while (iter.hasNext()) {
+            Review review = iter.next();
+
             if (review.getReviewType().equals("p")) {
-                ReviewsList.remove(review);
+                iter.remove();
             }
         }
 
