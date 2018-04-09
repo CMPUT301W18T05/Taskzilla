@@ -116,10 +116,14 @@ public class EditTaskActivity extends AppCompatActivity  implements OnMapReadyCa
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
 
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            /**
+             * When the user searchs a location
+             * set the hint and the taskLocation
+             * @param place
+             */
             @Override
             public void onPlaceSelected(Place place) {
                 // TODO: Get info about the selected place.
-                Log.i("yolo", "Place: " + place.getName());
                 autocompleteFragment.setHint(place.getName());
                 taskLocation=place.getLatLng();
             }
@@ -158,7 +162,6 @@ public class EditTaskActivity extends AppCompatActivity  implements OnMapReadyCa
         task.setDescription(taskDescription); //Dummy
         TaskNameText.setText(task.getName());
         DescriptionText.setText(task.getDescription());
-
 
         photos = new ArrayList<Photo>();
         ArrayList<String> photosString = getIntent().getStringArrayListExtra("photos");
@@ -263,9 +266,12 @@ public class EditTaskActivity extends AppCompatActivity  implements OnMapReadyCa
         startActivityForResult(photoPickerIntent, PICK_IMAGE);
     }
 
-
-
-
+    /**
+     * When the map is ready
+     * Move the camera to their current location
+     * and is the map is clicked switch to map Activity so user can chhose location
+     * @param googleMap
+     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -292,6 +298,10 @@ public class EditTaskActivity extends AppCompatActivity  implements OnMapReadyCa
 
     }
 
+    /**
+     * Move camera on map to specifed LatLon
+     * @param currentLocation
+     */
     private void moveToCurrentLocation(LatLng currentLocation) {
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation,15));
         // Zoom in, animating the camera.
@@ -301,6 +311,9 @@ public class EditTaskActivity extends AppCompatActivity  implements OnMapReadyCa
 
     }
 
+    /**
+     * Get the user's current location
+     */
     void getLocation() {
         if( ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -315,6 +328,9 @@ public class EditTaskActivity extends AppCompatActivity  implements OnMapReadyCa
         }
     }
 
+    /**
+     * Set the users current location
+     */
     public void setCurrentLocation(){
         getLocation();
         taskLocation = new LatLng(lat,lon);
@@ -325,7 +341,12 @@ public class EditTaskActivity extends AppCompatActivity  implements OnMapReadyCa
     }
 
 
-
+    /**
+     * Asks user for permission to user the current location
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -339,6 +360,9 @@ public class EditTaskActivity extends AppCompatActivity  implements OnMapReadyCa
     /**
      * Upon returning from selecting photos, list of photos
      * is set for the task
+     *
+     * if reqcode is 2
+     * get the lat and lon passed back and add a marker to the map
      *
      * @param reqCode
      * @param resultCode

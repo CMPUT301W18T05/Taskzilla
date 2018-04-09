@@ -43,7 +43,10 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * Activity for viewing maps
+ * Activity for interating with a map
+ *
+ * @author Colin
+ * @version 1.0
  */
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -54,6 +57,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     private Location myLocation;
     private double lon;
     private double lat;
+
     /**
      * Activity uses the activity_map.xml layout
      * Initializes a map fragment
@@ -102,12 +106,21 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
             final Marker locationMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(lat,lon)).title("Hold and drag to pick your task location").draggable(true));
             locationMarker.showInfoWindow();
             mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
+                /**
+                 * Hide marker window when dragging
+                 * @param arg0
+                 */
                 @Override
                 public void onMarkerDragStart(Marker arg0) {
                     // TODO Auto-generated method stub
                     arg0.hideInfoWindow();
                 }
 
+                /**
+                 * Show LatLon of final location of their marker and prompt user to click
+                 * Switch back to previous activity returning the latitude and longitude
+                 * @param arg0
+                 */
                 @SuppressWarnings("unchecked")
                 @Override
                 public void onMarkerDragEnd(Marker arg0) {
@@ -119,7 +132,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                     arg0.setSnippet("Click here to confirm location");
                     arg0.showInfoWindow();
 
-
                     mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
 
                         @Override
@@ -129,18 +141,20 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                             intent.putExtra("Lon", Double.toString(Double.valueOf(marker.getPosition().longitude)));
                             setResult(RESULT_OK, intent);
                             finish();
-
                         }
                     });
 
                 }
 
+                /**
+                 * Hide window when dragging marker on map
+                 * @param arg0
+                 */
                 @Override
                 public void onMarkerDrag(Marker arg0) {
                     // TODO Auto-generated method stub
 
                     arg0.hideInfoWindow();
-
                 }
             });
 
@@ -211,6 +225,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         }
     }
 
+    /**
+     * Get the current location of the user
+     */
     void getLocation() {
         if( ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -228,7 +245,13 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     }
 
 
-
+    /**
+     * Get permission from user to access location
+     *
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,@NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -240,6 +263,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         }
     }
 
+    /**
+     * Move camera on map to a specified LatLon location
+     * @param currentLocation
+     */
     private void moveToCurrentLocation(LatLng currentLocation)
     {
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation,15));
