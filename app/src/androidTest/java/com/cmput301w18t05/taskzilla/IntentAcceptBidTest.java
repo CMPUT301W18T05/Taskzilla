@@ -14,9 +14,11 @@ package com.cmput301w18t05.taskzilla;
 import android.support.design.widget.TabLayout;
 import android.test.ActivityInstrumentationTestCase2;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import com.cmput301w18t05.taskzilla.activity.EditProfileActivity;
 import com.cmput301w18t05.taskzilla.activity.MainActivity;
 import com.cmput301w18t05.taskzilla.activity.NewTaskActivity;
 import com.cmput301w18t05.taskzilla.activity.ProfileActivity;
@@ -28,6 +30,8 @@ import com.robotium.solo.Solo;
 
 public class IntentAcceptBidTest extends ActivityInstrumentationTestCase2 {
     private Solo solo;
+    private String username1;
+    private String username2;
 
     public IntentAcceptBidTest(){
         super(MainActivity.class);
@@ -35,15 +39,15 @@ public class IntentAcceptBidTest extends ActivityInstrumentationTestCase2 {
 
     public void setUp() throws Exception{
         solo = new Solo(getInstrumentation(), getActivity());
+        username1 = "TestUser";
+        username2 = "TestUserOne";
     }
 
-    public void testAcceptBid(){
+    public void login(String usern) {
         //Set up for Test
-        MainActivity activity = (MainActivity)solo.getCurrentActivity();
-        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
         solo.clickOnText("Sign Up");
         solo.assertCurrentActivity("Wrong Activity", SignUpActivity.class);
-        solo.enterText((EditText) solo.getView(R.id.usernameField), "TestUser");
+        solo.enterText((EditText) solo.getView(R.id.usernameField), usern);
         solo.enterText((EditText) solo.getView(R.id.nameField), "TestName");
         solo.enterText((EditText) solo.getView(R.id.emailField), "Test@Email.com");
         solo.enterText((EditText) solo.getView(R.id.phoneField), "1234567890");
@@ -52,19 +56,54 @@ public class IntentAcceptBidTest extends ActivityInstrumentationTestCase2 {
 
         //Correct Log in Info
         solo.clearEditText((EditText) solo.getView(R.id.usernameText));
-        solo.enterText((EditText) solo.getView(R.id.usernameText), "TestUser");
+        solo.enterText((EditText) solo.getView(R.id.usernameText), usern);
         solo.enterText((EditText) solo.getView(R.id.passwordText), "a");
         solo.clickOnButton("Log In");
         solo.assertCurrentActivity("Wrong Activity", WelcomeActivity.class);
         assertTrue(solo.waitForActivity(WelcomeActivity.class));
+    }
 
+    public void addtask(String taskname) {
         solo.waitForActivity(WelcomeActivity.class);
         solo.assertCurrentActivity("Wrong", WelcomeActivity.class);
 
-        TabLayout tabLayout =  (TabLayout)solo.getView(R.id.tabs_bar);
-        tabLayout.getTabAt(0);
-        solo.waitForText("Tasks");
+        View fab = solo.getView(R.id.fab);
+        solo.waitForView(fab);
+        solo.clickOnView(fab);
 
-        solo.clickOnButton(R.id.);
+        solo.waitForActivity(NewTaskActivity.class);
+        View taskField = solo.getView(R.id.TaskName);
+        solo.waitForView(taskField);
+        solo.typeText((EditText)taskField, taskname);
+
+        EditText descriptionField = (EditText) solo.getView(R.id.Description);
+        solo.typeText(descriptionField, "tag1 tag2 tag3 tag4");
+        View addButton = solo.getView(R.id.addTaskButton);
+        solo.clickOnView(addButton);
+    }
+
+    public void searchTask() {
+        solo.clickOnText("Search");
+        solo.waitForText("My task");
+        solo.clickOnText("My task");
+    }
+
+    public void addBid() {
+        solo.clickOnText("PLACE BID");
+        solo.goBack();
+    }
+
+    public void logout() {
+        solo.clickOnText("Profile");
+        solo.clickOnText("Log out");
+    }
+
+    public void testAcceptBid(){
+        login(username1);
+        //addtask("My task");
+        //logout();
+        //login(username2);
+        searchTask();
+        addBid();
     }
 }

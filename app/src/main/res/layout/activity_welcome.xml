@@ -35,24 +35,29 @@
         android:elevation="40dp">
 
         <android.support.design.widget.TabItem
+            android:id="@+id/tasks_tab_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:tag="taskstabbutton"
             android:text="Tasks" />
 
         <android.support.design.widget.TabItem
+            android:id="@+id/bids_tab_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Bids" />
 
         <android.support.design.widget.TabItem
+            android:id="@+id/search_tabs_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Search" />
 
         <android.support.design.widget.TabItem
+            android:id="@+id/notifications_tab_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Notifications"/>
+            android:text="Notifications" />
 
         <android.support.design.widget.TabItem
             android:id="@+id/tabItem"
