@@ -26,7 +26,7 @@ import java.util.ArrayList;
  * Custom listView adapter for displaying tasks
  * Shows the task title, requester, status, and lowest bid (if any)
  *
- * @author Jeremy, myapplestory
+ * @author myapplestory
  */
 public class TaskCustomAdapter2 extends ArrayAdapter<Photo> {
 
@@ -46,6 +46,7 @@ public class TaskCustomAdapter2 extends ArrayAdapter<Photo> {
         ImageView requesterImage = convertView.findViewById(R.id.SearchListRequesterPicture);
 
         try {
+            assert photo != null;
             requesterImage.setImageBitmap(photo.StringToBitmap());
         }
         catch (Exception e){
