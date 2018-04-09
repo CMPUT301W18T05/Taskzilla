@@ -106,23 +106,10 @@ public class WelcomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
-<<<<<<< HEAD
-        NotificationManager.getInstance(this.getApplicationContext());
 
         appColors.setActionBarColor("#000000");
         appColors.setActionBarTextColor("#05e5ee");
         loadAppColors();
-=======
-        appColors = AppColors.getInstance();
-        if (loadedAppColors == null) {
-            appColors.setActionBarColor("#000000");
-            appColors.setActionBarTextColor("#05e5ee");
-            appColors.setBackgroundColor("#ffffff");
-        } else {
-            AppColors.getInstance().setInstance(loadedAppColors);
-        }
-        appColors = AppColors.getInstance();
->>>>>>> d8a2e8a0dec480fb6924aafef4720535872bf399
 
         actionBar = getSupportActionBar();
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor(appColors.getActionBarColor())));
@@ -144,14 +131,10 @@ public class WelcomeActivity extends AppCompatActivity {
         tabs.getTabAt(3).setIcon(android.R.drawable.ic_popup_reminder).setCustomView(R.layout.badged_tab);
         tabs.getTabAt(4).setIcon(android.R.drawable.ic_menu_myplaces);
 
-<<<<<<< HEAD
         tabs.setBackground(new ColorDrawable(Color.parseColor(appColors.getActionBarColor())));
-=======
         // Count notifications user currently has and updates badge accordingly
         NotificationManager.getInstance().countNotifications();
         NotificationManager.getInstance().updateBadge();
-        
->>>>>>> d8a2e8a0dec480fb6924aafef4720535872bf399
     }
 
     @Override
