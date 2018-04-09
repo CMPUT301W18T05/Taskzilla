@@ -242,8 +242,12 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         Intent intent = new Intent(view.getContext(), EditTaskActivity.class);
         intent.putExtra("task Name", taskName);
         intent.putExtra("Description", description);
-        intent.putExtra("Lat", Double.toString(task.getLocation().latitude));
-        intent.putExtra("Lon", Double.toString(task.getLocation().longitude));
+        try {
+            intent.putExtra("Lat", Double.toString(task.getLocation().latitude));
+            intent.putExtra("Lon", Double.toString(task.getLocation().longitude));
+        } catch (Exception e) {
+            return;
+        }
         ArrayList<String> photosString = new ArrayList<String>();
         for(int i = 0;i < photos.size(); i++){
             photosString.add(photos.get(i).toString());

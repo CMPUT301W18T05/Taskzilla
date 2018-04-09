@@ -91,7 +91,6 @@ public class NewTaskActivity extends AppCompatActivity implements OnMapReadyCall
     private RecyclerView recyclerPhotosView;
     private RecyclerView.Adapter recyclerPhotosViewAdapter;
     private RecyclerView.LayoutManager layoutManager;
-    private LinearLayout linearLayout;
     private Integer PICK_IMAGE = 5;
     private int maxSize;
 
@@ -124,8 +123,8 @@ public class NewTaskActivity extends AppCompatActivity implements OnMapReadyCall
         final EditText taskName = findViewById(R.id.TaskName);
         final EditText taskDescription = findViewById(R.id.Description);
         addPhotoButton = findViewById(R.id.AddPhotoButton);
-        autocompleteFragment = (PlaceAutocompleteFragment)
-                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+        autocompleteFragment = (PlaceAutocompleteFragment) getFragmentManager()
+                .findFragmentById(R.id.place_autocomplete_fragment);
 
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             /**
@@ -137,7 +136,7 @@ public class NewTaskActivity extends AppCompatActivity implements OnMapReadyCall
             public void onPlaceSelected(Place place) {
                 // TODO: Get info about the selected place.
                 autocompleteFragment.setHint(place.getName());
-                taskLocation=place.getLatLng();
+                taskLocation = place.getLatLng();
             }
             @Override
             public void onError(Status status) {
@@ -147,9 +146,8 @@ public class NewTaskActivity extends AppCompatActivity implements OnMapReadyCall
             }
         });
 
-        photos = new ArrayList<Photo>();
-        linearLayout = (LinearLayout) findViewById(R.id.Photos);
-        recyclerPhotosView = (RecyclerView) findViewById(R.id.listOfPhotos);
+        photos = new ArrayList<>();
+        recyclerPhotosView = findViewById(R.id.listOfPhotos);
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         recyclerPhotosView.setLayoutManager(layoutManager);
         recyclerPhotosViewAdapter = new RecyclerViewAdapter(this, photos, new CustomOnItemClick() {
@@ -168,7 +166,6 @@ public class NewTaskActivity extends AppCompatActivity implements OnMapReadyCall
                         photos.remove(position);
                         dialogInterface.dismiss();
                         recyclerPhotosViewAdapter.notifyDataSetChanged();
-
                     }
                 });
 
@@ -180,11 +177,9 @@ public class NewTaskActivity extends AppCompatActivity implements OnMapReadyCall
                     }
                 });
                 alert.show();
-
             }
         });
         recyclerPhotosView.setAdapter(recyclerPhotosViewAdapter);
-
 
         autocompleteFragment.setHint("Task Location");
         getLocation();
@@ -222,8 +217,6 @@ public class NewTaskActivity extends AppCompatActivity implements OnMapReadyCall
                 AddPhotoButtonClicked();
             }
         });
-
-
     }
 
     /**
@@ -239,7 +232,6 @@ public class NewTaskActivity extends AppCompatActivity implements OnMapReadyCall
         mMap.getUiSettings().setScrollGesturesEnabled(false);
         mMap.getUiSettings().setZoomGesturesEnabled(false);
 
-
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat,lon),15));
         // Zoom in, animating the camera.
         mMap.animateCamera(CameraUpdateFactory.zoomIn());
@@ -252,11 +244,8 @@ public class NewTaskActivity extends AppCompatActivity implements OnMapReadyCall
                 Intent intent = new Intent(getApplicationContext(), MapActivity.class);
                 intent.putExtra("drag","true");
                 startActivityForResult(intent, 2);
-
             }
         });
-
-
     }
 
     /**
@@ -269,7 +258,6 @@ public class NewTaskActivity extends AppCompatActivity implements OnMapReadyCall
         mMap.animateCamera(CameraUpdateFactory.zoomIn());
         // Zoom out to zoom level 10, animating with a duration of 2 seconds.
         mMap.animateCamera(CameraUpdateFactory.zoomTo(13), 2000, null);
-
     }
 
     /**
@@ -297,10 +285,7 @@ public class NewTaskActivity extends AppCompatActivity implements OnMapReadyCall
         taskLocation = new LatLng(lat,lon);
         autocompleteFragment.setHint("Current Location");
         autocompleteFragment.setText("Current Location");
-
-
     }
-
 
     /**
      * Asks user for permission to user the current location
@@ -327,8 +312,7 @@ public class NewTaskActivity extends AppCompatActivity implements OnMapReadyCall
     public void AddPhotoButtonClicked(){
         if(photos.size()==10){
             Toast.makeText(NewTaskActivity.this,"Photo limited reached",Toast.LENGTH_LONG).show();
-        }
-        else {
+        } else {
             Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
             photoPickerIntent.setType("image/*");
             startActivityForResult(photoPickerIntent, PICK_IMAGE);
@@ -351,7 +335,6 @@ public class NewTaskActivity extends AppCompatActivity implements OnMapReadyCall
         // 2018-04-03
         if (resultCode == RESULT_OK) {
             if (reqCode==2) {
-
                 DecimalFormat df = new DecimalFormat("#.#####");
 
                 taskLocation = new LatLng(Double.parseDouble(data.getStringExtra("Lat")),Double.parseDouble(data.getStringExtra("Lon")));
@@ -394,11 +377,9 @@ public class NewTaskActivity extends AppCompatActivity implements OnMapReadyCall
                 Toast.makeText(NewTaskActivity.this, "Something went wrong", Toast.LENGTH_LONG).show();
             }
         }
-        }else {
+        } else {
             Toast.makeText(NewTaskActivity.this, "You haven't picked Image",Toast.LENGTH_LONG).show();
         }
-
     }
-
 }
 

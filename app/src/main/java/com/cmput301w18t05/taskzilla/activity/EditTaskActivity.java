@@ -65,8 +65,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 
-
-
 /**
  * Activity for editing a task
  */
@@ -77,7 +75,6 @@ public class EditTaskActivity extends AppCompatActivity  implements OnMapReadyCa
     private RecyclerView recyclerPhotosView;
     private RecyclerView.Adapter recyclerPhotosViewAdapter;
     private RecyclerView.LayoutManager layoutManager;
-    private LinearLayout linearLayout;
     private Integer maxSize;
     private ArrayList<Photo> photos;
     private PlaceAutocompleteFragment autocompleteFragment;
@@ -154,8 +151,8 @@ public class EditTaskActivity extends AppCompatActivity  implements OnMapReadyCa
         actionBar.setTitle(Html.fromHtml("<font color='"+ appColors.getActionBarTextColor() +
                 "'>Taskzilla</font>"));
 
-        EditText TaskNameText = (EditText) findViewById(R.id.TaskName);
-        EditText DescriptionText = (EditText) findViewById(R.id.Description);
+        EditText TaskNameText = findViewById(R.id.TaskName);
+        EditText DescriptionText = findViewById(R.id.Description);
         String taskName = getIntent().getStringExtra("task Name");
         String taskDescription = getIntent().getStringExtra("Description");
         task.setName(taskName); //Dummy
@@ -163,14 +160,13 @@ public class EditTaskActivity extends AppCompatActivity  implements OnMapReadyCa
         TaskNameText.setText(task.getName());
         DescriptionText.setText(task.getDescription());
 
-        photos = new ArrayList<Photo>();
+        photos = new ArrayList<>();
         ArrayList<String> photosString = getIntent().getStringArrayListExtra("photos");
         for(int i=0; i<photosString.size(); i++){
             Log.i("test",photosString.get(i));
             photos.add(new Photo(photosString.get(i)));
         }
-        linearLayout = (LinearLayout) findViewById(R.id.Photos);
-        recyclerPhotosView = (RecyclerView) findViewById(R.id.listOfPhotos);
+        recyclerPhotosView = findViewById(R.id.listOfPhotos);
         layoutManager = new LinearLayoutManager(ctx, LinearLayoutManager.HORIZONTAL, false);
         recyclerPhotosView.setLayoutManager(layoutManager);
         recyclerPhotosViewAdapter = new RecyclerViewAdapter(ctx, photos, new CustomOnItemClick() {
@@ -200,12 +196,10 @@ public class EditTaskActivity extends AppCompatActivity  implements OnMapReadyCa
                     }
                 });
                 alert.show();
-
             }
 
         });
         recyclerPhotosView.setAdapter(recyclerPhotosViewAdapter);
-
     }
 
     public void TaskCancelButton(View view) {
@@ -221,8 +215,8 @@ public class EditTaskActivity extends AppCompatActivity  implements OnMapReadyCa
      * @author Micheal-Nguyen
      */
     public void TaskSaveButton(View view) {
-        EditText TaskNameText = (EditText) findViewById(R.id.TaskName);
-        EditText DescriptionText = (EditText) findViewById(R.id.Description);
+        EditText TaskNameText = findViewById(R.id.TaskName);
+        EditText DescriptionText = findViewById(R.id.Description);
         String TaskName = TaskNameText.getText().toString();
         String Description = DescriptionText.getText().toString();
 
@@ -291,11 +285,8 @@ public class EditTaskActivity extends AppCompatActivity  implements OnMapReadyCa
                 Intent intent = new Intent(getApplicationContext(), MapActivity.class);
                 intent.putExtra("drag","true");
                 startActivityForResult(intent, 2);
-
             }
         });
-
-
     }
 
     /**
@@ -308,7 +299,6 @@ public class EditTaskActivity extends AppCompatActivity  implements OnMapReadyCa
         mMap.animateCamera(CameraUpdateFactory.zoomIn());
         // Zoom out to zoom level 10, animating with a duration of 2 seconds.
         mMap.animateCamera(CameraUpdateFactory.zoomTo(13), 2000, null);
-
     }
 
     /**
@@ -336,8 +326,6 @@ public class EditTaskActivity extends AppCompatActivity  implements OnMapReadyCa
         taskLocation = new LatLng(lat,lon);
         autocompleteFragment.setHint("Current Location");
         autocompleteFragment.setText("Current Location");
-
-
     }
 
 
@@ -387,7 +375,7 @@ public class EditTaskActivity extends AppCompatActivity  implements OnMapReadyCa
                 mMap.addMarker(new MarkerOptions().position(taskLocation).title("Your Location"));
                 moveToCurrentLocation(taskLocation);
 
-            }else {
+            } else {
                 try {
                     final Uri imageUri = data.getData();
                     final InputStream imageStream = getContentResolver().openInputStream(imageUri);
@@ -420,11 +408,8 @@ public class EditTaskActivity extends AppCompatActivity  implements OnMapReadyCa
                     Toast.makeText(EditTaskActivity.this, "Something went wrong", Toast.LENGTH_LONG).show();
                 }
             }
-
         }else {
             Toast.makeText(EditTaskActivity.this, "You haven't picked Image",Toast.LENGTH_LONG).show();
         }
-
     }
-
 }
