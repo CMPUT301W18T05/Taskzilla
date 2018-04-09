@@ -22,6 +22,30 @@
         android:layout_height="match_parent"
         android:background="@color/colorPrimary">
 
+        <Button
+            android:id="@+id/ViewRequesterReviewsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="39dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:text="Requester Reviews"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <Button
+            android:id="@+id/ViewProviderReviewsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="16dp"
+            android:text="Provider Reviews"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
         <TextView
             android:id="@+id/RatingDescriptionTextView"
             android:layout_width="wrap_content"
@@ -148,13 +172,11 @@
 
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
-                android:layout_marginStart="8dp"
                 android:text="9.8"
                 android:textAlignment="textEnd"
                 android:textSize="24sp"
                 app:layout_constraintBaseline_toBaselineOf="@+id/requesterRating"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent" />
 
             <TextView
                 android:id="@+id/providerRatingField"
@@ -162,13 +184,12 @@
                 android:layout_height="wrap_content"
 
                 android:layout_marginEnd="16dp"
-                android:layout_marginStart="8dp"
                 android:text="0.7"
                 android:textAlignment="textEnd"
                 android:textSize="24sp"
                 app:layout_constraintBaseline_toBaselineOf="@+id/providerRating"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent" />
+
         </android.support.constraint.ConstraintLayout>
 
         <android.support.constraint.ConstraintLayout

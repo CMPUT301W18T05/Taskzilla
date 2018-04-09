@@ -31,6 +31,9 @@ public class GetUserByUsernameRequest extends Request {
         this.username = username;
     }
 
+    /**
+     * get the user object from elasticsearch
+     */
     public void execute() {
         task = new ElasticSearchController.GetUserByUsername();
         task.execute(this.username);
@@ -40,6 +43,10 @@ public class GetUserByUsernameRequest extends Request {
     public void executeOffline() {
     }
 
+    /**
+     * return the user object and add it to the app cache
+     * @return
+     */
     public User getResult() {
         if (result != null) {
             return result;

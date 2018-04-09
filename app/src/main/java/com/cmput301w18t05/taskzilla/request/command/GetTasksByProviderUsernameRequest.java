@@ -11,7 +11,6 @@
 
 package com.cmput301w18t05.taskzilla.request.command;
 
-import android.util.Log;
 
 import com.cmput301w18t05.taskzilla.AppCache;
 import com.cmput301w18t05.taskzilla.controller.ElasticSearchController;
@@ -38,6 +37,9 @@ public class GetTasksByProviderUsernameRequest extends Request {
         this.user = username;
     }
 
+    /**
+     * get the tasks with this provider from elasticsearch
+     */
     public void execute() {
         task = new ElasticSearchController.GetTasksByProviderUsername(from, size);
         task.execute(user);
@@ -52,6 +54,10 @@ public class GetTasksByProviderUsernameRequest extends Request {
         }
     }
 
+    /**
+     * search through tasks in the app cache
+     * Also add the found tasks to the app cache
+     */
     @Override
     public void executeOffline() {
         if (executedOffline) {

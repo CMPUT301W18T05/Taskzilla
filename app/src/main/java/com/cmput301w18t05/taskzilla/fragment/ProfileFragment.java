@@ -78,6 +78,8 @@ public class ProfileFragment extends Fragment {
     private TextView numTasksDoneField;
     private TextView providerRatingField;
     private TextView requesterRatingField;
+    private Button providerReviewButton;
+    private Button requesterReviewButton;
 
     private String numRequests;
     private String numTasksDone;
@@ -85,7 +87,7 @@ public class ProfileFragment extends Fragment {
     private User user  = currentUser.getInstance();
     private ImageButton editProfile;
     private ImageView profilePicture;
-    private AppColors appColors;
+    private AppColors appColors = AppColors.getInstance();
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -109,18 +111,19 @@ public class ProfileFragment extends Fragment {
      */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+
         appColors = AppColors.getInstance();
 
         findViews(view);
         setValues();
 
-        providerRatingField.setOnClickListener(new View.OnClickListener() {
+        providerReviewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 providerRatingOnClick();
             }
         });
-        requesterRatingField.setOnClickListener(new View.OnClickListener() {
+        requesterReviewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 requesterRatingOnClick();
@@ -152,6 +155,7 @@ public class ProfileFragment extends Fragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
+           // getActivity().getActionBar().setTitle("Profile");
             getView().setBackgroundColor(Color.parseColor(appColors.getActionBarColor()));
             taskList = new ArrayList<>();
             //gets all of current user's tasks
@@ -208,6 +212,8 @@ public class ProfileFragment extends Fragment {
         numTasksDoneField = view.findViewById(R.id.numTasksDoneField);
         logOut = view.findViewById(R.id.logOutButton);
         editProfile = view.findViewById(R.id.editButton);
+        requesterReviewButton = view.findViewById(R.id.ViewRequesterReviewsButton);
+        providerReviewButton = view.findViewById(R.id.ViewProviderReviewsButton);
     }
 
     /**
@@ -220,10 +226,20 @@ public class ProfileFragment extends Fragment {
         nameField.setText(user.getName());
         emailField.setText(user.getEmail().toString());
         phoneField.setText(user.getPhone().toString());
-        providerRatingField.setText(String.format(Locale.CANADA,
-                "%.1f", user.getProviderRating()));
-        requesterRatingField.setText(String.format(Locale.CANADA,
-                "%.1f", user.getRequesterRating()));
+        if (user.getProviderRating() == 0.0f) {
+            providerRatingField.setText("n/a");
+            providerRatingField.setTextSize(18);
+        } else {
+            providerRatingField.setText(String.format(Locale.CANADA,
+                    "%.1f", user.getProviderRating()));
+        }
+        if (user.getProviderRating() == 0.0f) {
+            requesterRatingField.setText("n/a");
+            requesterRatingField.setTextSize(18);
+        } else {
+            requesterRatingField.setText(String.format(Locale.CANADA,
+                    "%.1f", user.getRequesterRating()));
+        }
         try {
             profilePicture.setImageBitmap(user.getPhoto().StringToBitmap());
         }

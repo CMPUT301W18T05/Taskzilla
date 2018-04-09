@@ -14,10 +14,13 @@ package com.cmput301w18t05.taskzilla.activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.provider.ContactsContract;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
@@ -26,13 +29,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.cmput301w18t05.taskzilla.AppColors;
 import com.cmput301w18t05.taskzilla.EmailAddress;
 import com.cmput301w18t05.taskzilla.PhoneNumber;
 import com.cmput301w18t05.taskzilla.Photo;
 import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.User;
-import com.cmput301w18t05.taskzilla.request.RequestManager;
-import com.cmput301w18t05.taskzilla.request.command.AddUserRequest;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -49,15 +51,30 @@ public class EditProfileActivity extends AppCompatActivity {
     private Integer maxSize;
 
     private User user = new User(); //dummy
+
+    /**
+     *
+     * this runs when activity created, setting the default fields for the user
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle("Edit Profile");
         setContentView(R.layout.activity_edit_profile);
+
+        AppColors appColors = AppColors.getInstance();
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor(appColors.getActionBarColor())));
+        actionBar.setTitle(Html.fromHtml("<font color='"+ appColors.getActionBarTextColor() +
+                "'>Taskzilla</font>"));
+
         NameText = findViewById(R.id.NameField);
         EmailText = findViewById(R.id.EmailField);
         PhoneText = findViewById(R.id.Phone);
         profilePicture = findViewById(R.id.ProfilePictureView);
+
 
         String userName = getIntent().getStringExtra("Name");
         String userEmail = getIntent().getStringExtra("Email");
@@ -86,12 +103,24 @@ public class EditProfileActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     *
+     * when listener detects that profile picture clicked,
+     * switch activity to ProfileActivity
+     *
+     */
     public void profilePictureClicked() {
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
         photoPickerIntent.setType("image/*");
         startActivityForResult(photoPickerIntent, 5);
     }
 
+    /**
+     *
+     * Cancel out of editing profile
+     *
+     * @param view
+     */
     public void ProfileCancelButton(View view){
         finish();
     }
@@ -111,6 +140,12 @@ public class EditProfileActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * checks if the information that was inputted for contact information and such are
+     * allowed, if not return false showing that the user needs to change info
+     *
+     * @return a boolean specifying whether the information is correct or not
+     */
     public boolean validateInformation() {
         // Taken from https://stackoverflow.com/questions/18463848/how-to-tell-if-a-random-string-is-an-email-address-or-something-else
         // 2018/03/18
@@ -180,6 +215,15 @@ public class EditProfileActivity extends AppCompatActivity {
         return true; // todo
     }
 
+    /**
+     *
+     * When a photo is selected, return to the activity setting the photo
+     * for the current user
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
@@ -223,4 +267,5 @@ public class EditProfileActivity extends AppCompatActivity {
             Toast.makeText(this, "You haven't picked a photo", Toast.LENGTH_LONG).show();
         }
     }
+
 }

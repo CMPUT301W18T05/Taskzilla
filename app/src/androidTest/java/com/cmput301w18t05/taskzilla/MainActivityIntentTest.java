@@ -24,12 +24,12 @@ import com.robotium.solo.Solo;
  * Created by Micheal-Nguyen on 2018-03-18.
  */
 
-public class MainActivityTest extends ActivityInstrumentationTestCase2{
+public class MainActivityIntentTest extends ActivityInstrumentationTestCase2{
     private Solo solo;
     private TasksRequesterFragment fragment;
 
 
-    public MainActivityTest(){
+    public MainActivityIntentTest(){
         super(MainActivity.class);
     }
 
@@ -48,6 +48,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2{
         solo.enterText((EditText) solo.getView(R.id.nameField), "TestName");
         solo.enterText((EditText) solo.getView(R.id.emailField), "Test@Email.com");
         solo.enterText((EditText) solo.getView(R.id.phoneField), "1234567890");
+        solo.enterText((EditText) solo.getView(R.id.passwordField), "a");
         solo.clickOnButton("Sign Up");
         solo.assertCurrentActivity("Wrong Activity", SignUpActivity.class);
 
@@ -94,9 +95,15 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2{
         solo.clickOnButton("Sign Up");
         solo.assertCurrentActivity("Wrong Activity", SignUpActivity.class);
 
-        //Valid Information
+        //Wrong Info - Incorrect Password
         solo.clearEditText((EditText) solo.getView(R.id.phoneField));
+        solo.clearEditText((EditText) solo.getView(R.id.passwordField));
         solo.enterText((EditText) solo.getView(R.id.phoneField), "1234567890");
+        solo.enterText((EditText) solo.getView(R.id.passwordField), "123550");
+
+        //Valid Information
+        solo.clearEditText((EditText) solo.getView(R.id.passwordField));
+        solo.enterText((EditText) solo.getView(R.id.passwordField), "a");
         solo.sleep(1000);
         solo.clickOnButton("Sign Up");
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
@@ -113,6 +120,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2{
         solo.enterText((EditText) solo.getView(R.id.nameField), "TestName");
         solo.enterText((EditText) solo.getView(R.id.emailField), "Test@Email.com");
         solo.enterText((EditText) solo.getView(R.id.phoneField), "1234567890");
+        solo.enterText((EditText) solo.getView(R.id.passwordField), "a");
         solo.clickOnButton("Sign Up");
 
         //No Log in Info
@@ -127,8 +135,9 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2{
         //Correct Log in Info
         solo.clearEditText((EditText) solo.getView(R.id.usernameText));
         solo.enterText((EditText) solo.getView(R.id.usernameText), "TestUser");
+        solo.enterText((EditText) solo.getView(R.id.passwordText), "a");
         solo.clickOnButton("Log In");
         solo.assertCurrentActivity("Wrong Activity", WelcomeActivity.class);
-        assertTrue(solo.waitForText("Tasks"));
+        assertTrue(solo.waitForActivity(WelcomeActivity.class));
     }
 }

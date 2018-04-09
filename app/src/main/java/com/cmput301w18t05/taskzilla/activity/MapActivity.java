@@ -12,7 +12,6 @@
 package com.cmput301w18t05.taskzilla.activity;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -27,11 +26,8 @@ import android.util.Log;
 
 import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.Task;
-import com.cmput301w18t05.taskzilla.controller.ElasticSearchController;
-import com.cmput301w18t05.taskzilla.controller.SearchController;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.GetAllTasksRequest;
-import com.cmput301w18t05.taskzilla.request.command.SearchTaskRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -42,6 +38,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -67,7 +64,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         setContentView(R.layout.activity_map);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.TaskLocation);
+                .findFragmentById(R.id.dragdropMap);
         mapFragment.getMapAsync(this);
         locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 
@@ -98,7 +95,47 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         getLocation();
         mMap = googleMap;
 
-        if(getIntent().getStringExtra("lat")!= null){
+        if(getIntent().getStringExtra("drag")!= null){
+            LatLng yourLocation = new LatLng(lat, lon);
+            moveToCurrentLocation(yourLocation);
+
+            final Marker locationMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(lat,lon)).title("Hold and drag to pick your task location").draggable(true));
+            locationMarker.showInfoWindow();
+            mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
+                @Override
+                public void onMarkerDragStart(Marker arg0) {
+                    // TODO Auto-generated method stub
+                    arg0.hideInfoWindow();
+                }
+
+                @SuppressWarnings("unchecked")
+                @Override
+                public void onMarkerDragEnd(Marker arg0) {
+                    // TODO Auto-generated method stub
+                    DecimalFormat df = new DecimalFormat("#.#####");
+
+                    mMap.animateCamera(CameraUpdateFactory.newLatLng(arg0.getPosition()));
+                    arg0.setTitle( "Lat: "+Double.toString(Double.valueOf(df.format(arg0.getPosition().latitude)))+" Lon: "+Double.toString(Double.valueOf(df.format(arg0.getPosition().longitude))));
+                    arg0.showInfoWindow();
+
+                    Intent intent = new Intent();
+                    intent.putExtra("Lat", Double.toString(Double.valueOf(arg0.getPosition().latitude)));
+                    intent.putExtra("Lon", Double.toString(Double.valueOf(arg0.getPosition().longitude)));
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
+
+                @Override
+                public void onMarkerDrag(Marker arg0) {
+                    // TODO Auto-generated method stub
+
+                    arg0.hideInfoWindow();
+
+                }
+            });
+
+
+        } else if(getIntent().getStringExtra("lat")!= null){
             LatLng tLocation = new LatLng(Double.parseDouble(getIntent().getStringExtra("lat")),Double.parseDouble(getIntent().getStringExtra("lon")));
             mMap.addMarker(new MarkerOptions().position(tLocation).title(getIntent().getStringExtra("TaskName"))
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))).showInfoWindow();

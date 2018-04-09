@@ -28,9 +28,7 @@ import android.widget.ListView;
 import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.Task;
 import com.cmput301w18t05.taskzilla.User;
-import com.cmput301w18t05.taskzilla.activity.MainActivity;
 import com.cmput301w18t05.taskzilla.activity.ViewTaskActivity;
-import com.cmput301w18t05.taskzilla.activity.WelcomeActivity;
 import com.cmput301w18t05.taskzilla.currentUser;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.GetTasksByProviderUsernameRequest;
@@ -111,6 +109,11 @@ public class TasksProviderFragment extends Fragment {
     }
     // Taken from https://stackoverflow.com/questions/41655797/refresh-fragment-when-change-between-tabs?noredirect=1&lq=1
     // 2018-04-01
+
+    /**
+     * update the tasksprovider fragment when visible
+     * @param isVisibleToUser
+     */
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
@@ -119,6 +122,10 @@ public class TasksProviderFragment extends Fragment {
         }
     }
 
+    /**
+     * retrieve the provider list from the elastic search using request manager
+     * updating the task list
+     */
     public void updatePList(){
         requestTasks = new GetTasksByProviderUsernameRequest(currentUser.getInstance().getUsername());
         RequestManager.getInstance().invokeRequest(getContext(), requestTasks);

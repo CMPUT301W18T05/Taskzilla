@@ -12,7 +12,9 @@
 package com.cmput301w18t05.taskzilla.activity;
 
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +25,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cmput301w18t05.taskzilla.AppColors;
 import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.Review;
 import com.cmput301w18t05.taskzilla.User;
@@ -55,16 +58,22 @@ public class NewReviewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_review);
+        AppColors appColors = AppColors.getInstance();
         ActionBar actionBar = getSupportActionBar();
-
-        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#000000")));
-        actionBar.setTitle(Html.fromHtml("<font color='#00e5ee'>Taskzilla</font>"));
+        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor(appColors.getActionBarColor())));
+        actionBar.setTitle(Html.fromHtml("<font color='"+ appColors.getActionBarTextColor() +
+                "'>Taskzilla</font>"));
 
         findViews();
+        RatingBar ratingBar = (RatingBar) findViewById(R.id.ratingBar);
+        LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
+        stars.getDrawable(2).setColorFilter(Color.parseColor(appColors.getActionBarTextColor()), PorterDuff.Mode.SRC_ATOP);
         setValues();
     }
 
-
+    /**
+     * retrieves all the views needed for the activity
+     */
     public void findViews() {
         SaveButton = findViewById(R.id.saveReviewButton);
         CancelButton = findViewById(R.id.cancelReviewButton);
@@ -87,6 +96,11 @@ public class NewReviewActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * when save button clicked, save the review and the rating to the
+     * elastic search
+     * @param view
+     */
     public void reviewSaveButton(android.view.View view) {
         String reviewTitle = TitleText.getText().toString();
         String reviewDescription = DescriptionText.getText().toString();

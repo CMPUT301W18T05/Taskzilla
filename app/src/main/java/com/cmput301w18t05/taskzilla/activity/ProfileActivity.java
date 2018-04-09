@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -55,6 +56,8 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView providerRatingField;
     private TextView requesterRatingField;
     private ImageView profilePicture;
+    private Button providerReviewButton;
+    private Button requesterReviewButton;
 
     private String name;
     private String email;
@@ -90,13 +93,13 @@ public class ProfileActivity extends AppCompatActivity {
                 ProfilePictureClicked();
             }
         });
-        providerRatingField.setOnClickListener(new View.OnClickListener() {
+        providerReviewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 providerRatingOnClick();
             }
         });
-        requesterRatingField.setOnClickListener(new View.OnClickListener() {
+        requesterReviewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 requesterRatingOnClick();
@@ -104,13 +107,19 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * when profile picture clicked, start ZoomImageActivity
+     *
+     */
     public void ProfilePictureClicked(){
         Intent intent = new Intent(this,ZoomImageActivity.class);
         intent.putExtra("Photo", user.getPhoto().toString());
         startActivity(intent);
     }
 
-
+    /**
+     * find all the necessary views that are used in ProfileActivity
+     */
     public void findViews(){
         nameField = findViewById(R.id.nameField2);
         emailField = findViewById(R.id.emailField2);
@@ -120,9 +129,15 @@ public class ProfileActivity extends AppCompatActivity {
         providerRatingField = findViewById(R.id.providerRatingField);
         requesterRatingField = findViewById(R.id.requesterRatingField);
         profilePicture = findViewById(R.id.profilePictureView);
+        requesterReviewButton = findViewById(R.id.viewRequesterReviewsButton);
+        providerReviewButton = findViewById(R.id.viewProviderReviewsButton);
     }
 
 
+    /**
+     * retrieves id from previous activity and get the user from elastic search
+     * setting up the views on the profile activity
+     */
     public void setValues(){
         userID = getIntent().getStringExtra("user id");
         this.profileController = new ProfileController(this.findViewById(android.R.id.content),this);
@@ -162,7 +177,10 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
-
+    /**
+     * when the provider rating is clicked (number), open a dialog showing all the provider reviews
+     * and ratings on the user of the profile
+     */
     public void providerRatingOnClick() {
         final AlertDialog mBuilder = new AlertDialog.Builder(this).create();
         final View mView = getLayoutInflater().inflate(R.layout.dialog_review_list,null);
@@ -198,6 +216,11 @@ public class ProfileActivity extends AppCompatActivity {
         mBuilder.show();
     }
 
+    /**
+     * when the requester rating is clicked (number), open a dialog showing all the requester
+     * reviews and ratings on the user of the profile
+     *
+     */
     public void requesterRatingOnClick() {
         final AlertDialog mBuilder = new AlertDialog.Builder(this).create();
         final View mView = getLayoutInflater().inflate(R.layout.dialog_review_list,null);

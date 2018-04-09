@@ -18,16 +18,20 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -35,9 +39,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cmput301w18t05.taskzilla.AppColors;
 import com.cmput301w18t05.taskzilla.CustomOnItemClick;
 import com.cmput301w18t05.taskzilla.Photo;
 import com.cmput301w18t05.taskzilla.RecyclerViewAdapter;
@@ -49,26 +53,36 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 /**
  * Activity for creating a new task
  */
-public class NewTaskActivity extends AppCompatActivity {
+public class NewTaskActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private NewTaskController newTaskController;
     private User cUser = currentUser.getInstance();
     private LatLng taskLocation;
     private LocationManager locationManager;
+
+
+    private ImageButton currentLocationButton;
+    private PlaceAutocompleteFragment autocompleteFragment;
     private double lon;
     private double lat;
 
+    private GoogleMap mMap;
     private ImageButton addPhotoButton;
     private ArrayList<Photo> photos;
     private RecyclerView recyclerPhotosView;
@@ -77,6 +91,8 @@ public class NewTaskActivity extends AppCompatActivity {
     private LinearLayout linearLayout;
     private Integer PICK_IMAGE = 5;
     private int maxSize;
+
+
     /**
      * Activity uses the activity_new_task.xml layout
      * New tasks are created through NewTaskController
@@ -87,15 +103,26 @@ public class NewTaskActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_task);
 
+        AppColors appColors = AppColors.getInstance();
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor(appColors.getActionBarColor())));
+        actionBar.setTitle(Html.fromHtml("<font color='"+ appColors.getActionBarTextColor() +
+                "'>Taskzilla</font>"));
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.dragdropMap);
+        mapFragment.getMapAsync(this);
         locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 
+
         newTaskController =  new NewTaskController(this, getApplicationContext());
+        currentLocationButton = findViewById(R.id.currentLocationButton);
         Button cancel =  findViewById(R.id.CancelButton);
         Button addTask = findViewById(R.id.addTaskButton);
         final EditText taskName = findViewById(R.id.TaskName);
         final EditText taskDescription = findViewById(R.id.Description);
         addPhotoButton = findViewById(R.id.AddPhotoButton);
-        final PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+        autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
 
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
@@ -155,8 +182,8 @@ public class NewTaskActivity extends AppCompatActivity {
         autocompleteFragment.setHint("Task Location");
         getLocation();
         autocompleteFragment.setBoundsBias(new LatLngBounds(
-                new LatLng(lat-0.5, lon-0.5),
-                new LatLng(lat+0.5, lon+0.5)));
+                new LatLng(lat-0.25, lon-0.25),
+                new LatLng(lat+0.25, lon+0.25)));
         /* cancel button */
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,6 +192,12 @@ public class NewTaskActivity extends AppCompatActivity {
             }
         });
 
+        currentLocationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setCurrentLocation();
+            }
+        });
         /* add task button */
         addTask.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -182,6 +215,41 @@ public class NewTaskActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+        getLocation();
+        mMap.getUiSettings().setScrollGesturesEnabled(false);
+        mMap.getUiSettings().setZoomGesturesEnabled(false);
+
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat,lon),15));
+        // Zoom in, animating the camera.
+        mMap.animateCamera(CameraUpdateFactory.zoomIn());
+        // Zoom out to zoom level 10, animating with a duration of 2 seconds.
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
+        moveToCurrentLocation(new LatLng(lat,lon));
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng point) {
+                Intent intent = new Intent(getApplicationContext(), MapActivity.class);
+                intent.putExtra("drag","true");
+                startActivityForResult(intent, 2);
+
+            }
+        });
+
+
+    }
+
+    private void moveToCurrentLocation(LatLng currentLocation) {
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation,15));
+        // Zoom in, animating the camera.
+        mMap.animateCamera(CameraUpdateFactory.zoomIn());
+        // Zoom out to zoom level 10, animating with a duration of 2 seconds.
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(13), 2000, null);
+
+    }
     public void AddPhotoButtonClicked(){
         if(photos.size()==10){
             Toast.makeText(NewTaskActivity.this,"Photo limited reached",Toast.LENGTH_LONG).show();
@@ -206,7 +274,14 @@ public class NewTaskActivity extends AppCompatActivity {
         }
     }
 
+    public void setCurrentLocation(){
+        getLocation();
+        taskLocation = new LatLng(lat,lon);
+        autocompleteFragment.setHint("Current Location");
+        autocompleteFragment.setText("Current Location");
 
+
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -228,6 +303,17 @@ public class NewTaskActivity extends AppCompatActivity {
         // taken from https://stackoverflow.com/questions/38352148/get-image-from-the-gallery-and-show-in-imageview
         // 2018-04-03
         if (resultCode == RESULT_OK) {
+            if (reqCode==2) {
+
+                DecimalFormat df = new DecimalFormat("#.#####");
+
+                taskLocation = new LatLng(Double.parseDouble(data.getStringExtra("Lat")),Double.parseDouble(data.getStringExtra("Lon")));
+                autocompleteFragment.setHint(df.format(Double.parseDouble(data.getStringExtra("Lat")))+", "+df.format(Double.parseDouble(data.getStringExtra("Lon"))));
+                autocompleteFragment.setText(df.format(Double.parseDouble(data.getStringExtra("Lat")))+", "+df.format(Double.parseDouble(data.getStringExtra("Lon"))));
+
+                moveToCurrentLocation(taskLocation);
+
+            }else{
             try {
                 final Uri imageUri = data.getData();
                 final InputStream imageStream = getContentResolver().openInputStream(imageUri);
@@ -238,28 +324,28 @@ public class NewTaskActivity extends AppCompatActivity {
                 Integer height = 1200;
                 Bitmap resizedImage;
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                selectedImage.compress(Bitmap.CompressFormat.JPEG,50,stream);
-                Log.i("size",String.valueOf(stream.size()));
-                while(stream.size()>maxSize){
+                selectedImage.compress(Bitmap.CompressFormat.JPEG, 50, stream);
+                Log.i("size", String.valueOf(stream.size()));
+                while (stream.size() > maxSize) {
                     width = width - 200;
                     height = height - 200;
                     stream = new ByteArrayOutputStream();
                     resizedImage = Bitmap.createScaledBitmap(selectedImage, width, height, false);
-                    resizedImage.compress(Bitmap.CompressFormat.JPEG,50,stream);
-                    Log.i("size",String.valueOf(stream.size()));
+                    resizedImage.compress(Bitmap.CompressFormat.JPEG, 50, stream);
+                    Log.i("size", String.valueOf(stream.size()));
                 }
 
                 byte byteImage[];
                 byteImage = stream.toByteArray();
                 String image = Base64.encodeToString(byteImage, Base64.DEFAULT);
                 photos.add(new Photo(image));
-                Log.i("hi",String.valueOf(photos.size()));
+                Log.i("hi", String.valueOf(photos.size()));
                 recyclerPhotosViewAdapter.notifyDataSetChanged();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
                 Toast.makeText(NewTaskActivity.this, "Something went wrong", Toast.LENGTH_LONG).show();
             }
-
+        }
         }else {
             Toast.makeText(NewTaskActivity.this, "You haven't picked Image",Toast.LENGTH_LONG).show();
         }

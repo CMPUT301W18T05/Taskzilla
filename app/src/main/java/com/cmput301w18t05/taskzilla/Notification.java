@@ -11,19 +11,25 @@
 
 package com.cmput301w18t05.taskzilla;
 
-import android.content.Intent;
-
-import com.cmput301w18t05.taskzilla.controller.ElasticSearchController;
-import com.cmput301w18t05.taskzilla.request.Request;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.AddNotificationRequest;
-import com.cmput301w18t05.taskzilla.request.command.GetTaskRequest;
-import com.cmput301w18t05.taskzilla.request.command.GetUserRequest;
 
 import io.searchbox.annotations.JestId;
 
 /**
  * Created by Andy on 4/4/2018.
+ */
+
+/**
+ *  Notification object containing info to be sent to another user
+ *
+ *  @author Andy
+ *
+ *  @see NotificationManager
+ *  @see com.cmput301w18t05.taskzilla.controller.NotificationsController
+ *  @see com.cmput301w18t05.taskzilla.fragment.NotificationsFragment
+ *
+ *  @version 1
  */
 
 public class Notification {
@@ -57,11 +63,6 @@ public class Notification {
         return this.context;
     }
 
-    /*
-    public Intent getNotificationIntent() {
-        return this.intent;
-    }
-*/
     public String getReceiverID() {
         return this.receiverID;
     }
@@ -71,9 +72,7 @@ public class Notification {
     }
 
     public String toString() {
-        //return "ID: " + id + " " + event + " " + senderID + " " + receiverID;
-
-        return "Event: " + event + "\nTask: " + taskName + "\nUser: " + user.getUsername();
+          return "Event: " + event + "\nTask: " + taskName + "\nUser: " + user.getUsername();
     }
 
     public String getId() {
@@ -92,6 +91,13 @@ public class Notification {
         return this.user;
     }
 
+    /**
+     *  If the notification is new, it is set to acknowledge to next time there wont be a
+     *  heads up notification shown.
+     *
+     *  @see NotificationManager
+     */
+
     public void acknowledge() {
         if (id == null)
             return;
@@ -99,6 +105,8 @@ public class Notification {
         this.acknowledged = true;
         AddNotificationRequest task = new AddNotificationRequest(this);
         RequestManager.getInstance().invokeRequest(task);
+
+        NotificationManager.getInstance().updateBadge();
     }
 
     public boolean isAcknowledged() {

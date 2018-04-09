@@ -11,19 +11,15 @@
 
 package com.cmput301w18t05.taskzilla.activity;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Handler;
-import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -32,40 +28,29 @@ import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ListView;
-import android.widget.SpinnerAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cmput301w18t05.taskzilla.AppColors;
 import com.cmput301w18t05.taskzilla.NotificationManager;
-import com.cmput301w18t05.taskzilla.User;
-import com.cmput301w18t05.taskzilla.controller.NotificationsController;
-import com.cmput301w18t05.taskzilla.currentUser;
+import com.cmput301w18t05.taskzilla.PersonalColors;
 import com.cmput301w18t05.taskzilla.fragment.MyBidsFragment;
 import com.cmput301w18t05.taskzilla.fragment.NotificationsFragment;
 import com.cmput301w18t05.taskzilla.fragment.ProfileFragment;
 import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.fragment.SearchFragment;
 import com.cmput301w18t05.taskzilla.fragment.TasksFragment;
-import com.cmput301w18t05.taskzilla.fragment.TasksProviderFragment;
-import com.cmput301w18t05.taskzilla.fragment.TasksRequesterFragment;
-import com.cmput301w18t05.taskzilla.request.command.RemoveNotificationRequest;
 import com.google.gson.Gson;
 import com.pes.androidmaterialcolorpickerdialog.ColorPicker;
 import com.pes.androidmaterialcolorpickerdialog.ColorPickerCallback;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 
-import static android.provider.Telephony.Mms.Part.FILENAME;
 
 /**
  * Welcome activity of the app
@@ -81,8 +66,7 @@ public class WelcomeActivity extends AppCompatActivity {
     ActionBar actionBar;
     private ListView test;
 
-    private AppColors appColors;
-    private AppColors loadedAppColors = null;
+    private AppColors appColors = AppColors.getInstance();
 
     Integer defaultColorR;
     Integer defaultColorG;
@@ -96,31 +80,52 @@ public class WelcomeActivity extends AppCompatActivity {
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
-        appColors = AppColors.getInstance();
-        if (loadedAppColors == null) {
-            appColors.setActionBarColor("#000000");
-            appColors.setActionBarTextColor("#05e5ee");
-            appColors.setBackgroundColor("#ffffff");
-        } else {
-            AppColors.getInstance().setInstance(loadedAppColors);
-        }
-        appColors = AppColors.getInstance();
+
+        appColors.setActionBarColor("#000000");
+        appColors.setActionBarTextColor("#05e5ee");
+        getDrawable(android.R.drawable.ic_popup_reminder).setColorFilter( 0xff808080, PorterDuff.Mode.MULTIPLY );
+        loadAppColors();
 
         actionBar = getSupportActionBar();
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor(appColors.getActionBarColor())));
-        actionBar.setTitle(Html.fromHtml("<font color='" + appColors.getActionBarTextColor() + "'>Taskzilla</font>"));
+        actionBar.setTitle(Html.fromHtml("<font color='" + appColors.getActionBarTextColor() + "'>Tasks</font>"));
 
         tabsAdapter = new TabsManager(this.getSupportFragmentManager());
         tabsContent = findViewById(R.id.welcome_tabs_content);
         tabsContent.setOffscreenPageLimit(5);
         tabsContent.setAdapter(tabsAdapter);
 
+        tabsContent.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                switch(position) {
+                    case 0: actionBar.setTitle(Html.fromHtml("<font color='" + appColors.getActionBarTextColor() + "'>Tasks</font>")); break;
+                    case 1: actionBar.setTitle(Html.fromHtml("<font color='" + appColors.getActionBarTextColor() + "'>Bids</font>")); break;
+                    case 2: actionBar.setTitle(Html.fromHtml("<font color='" + appColors.getActionBarTextColor() + "'>Search</font>")); break;
+                    case 3: actionBar.setTitle(Html.fromHtml("<font color='" + appColors.getActionBarTextColor() + "'>Notifications</font>")); break;
+                    case 4: actionBar.setTitle(Html.fromHtml("<font color='" + appColors.getActionBarTextColor() + "'>Profile</font>")); break;
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
         tabs = findViewById(R.id.tabs_bar);
         tabs.setupWithViewPager(tabsContent);
 
         NotificationManager.getInstance(this.getApplicationContext(), tabs);
+
 
         tabs.getTabAt(0).setIcon(android.R.drawable.ic_menu_my_calendar);
         tabs.getTabAt(1).setIcon(android.R.drawable.ic_menu_agenda);
@@ -128,18 +133,39 @@ public class WelcomeActivity extends AppCompatActivity {
         tabs.getTabAt(3).setIcon(android.R.drawable.ic_popup_reminder).setCustomView(R.layout.badged_tab);
         tabs.getTabAt(4).setIcon(android.R.drawable.ic_menu_myplaces);
 
+        tabs.getTabAt(0).getIcon().setColorFilter(Color.parseColor(appColors.getActionBarTextColor()), PorterDuff.Mode.MULTIPLY );
+        tabs.getTabAt(1).getIcon().setColorFilter(Color.parseColor(appColors.getActionBarTextColor()), PorterDuff.Mode.MULTIPLY );
+        tabs.getTabAt(2).getIcon().setColorFilter(Color.parseColor(appColors.getActionBarTextColor()), PorterDuff.Mode.MULTIPLY );
+        tabs.getTabAt(3).getIcon().setColorFilter(Color.parseColor(appColors.getActionBarTextColor()), PorterDuff.Mode.MULTIPLY );
+        tabs.getTabAt(4).getIcon().setColorFilter(Color.parseColor(appColors.getActionBarTextColor()), PorterDuff.Mode.MULTIPLY );
+
+
+
+
+        tabs.setBackground(new ColorDrawable(Color.parseColor(appColors.getActionBarColor())));
         // Count notifications user currently has and updates badge accordingly
+
         NotificationManager.getInstance().countNotifications();
         NotificationManager.getInstance().updateBadge();
-        
     }
 
+    /**
+     *  create the menu
+     * @param menu
+     * @return true showing the options menu created
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.menu,menu);
         return true;
     }
 
+    /**
+     * When an option is clicked, open the color picker allowing the user
+     * to select a theme or text color
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         switch(item.getItemId()) {
@@ -174,8 +200,15 @@ public class WelcomeActivity extends AppCompatActivity {
                     public void onColorChosen(int color) {
                         appColors.setActionBarTextColor(String.format("#%06X", (0xFFFFFF & color)));
                         actionBar.setTitle(Html.fromHtml("<font color='" + appColors.getActionBarTextColor() + "'>Taskzilla</font>"));
+                        Log.i("colors",Integer.toString(color));
+                        tabs.getTabAt(0).getIcon().setColorFilter(Color.parseColor(appColors.getActionBarTextColor()), PorterDuff.Mode.MULTIPLY );
+                        tabs.getTabAt(1).getIcon().setColorFilter(Color.parseColor(appColors.getActionBarTextColor()), PorterDuff.Mode.MULTIPLY );
+                        tabs.getTabAt(2).getIcon().setColorFilter(Color.parseColor(appColors.getActionBarTextColor()), PorterDuff.Mode.MULTIPLY );
+                        tabs.getTabAt(3).getIcon().setColorFilter(Color.parseColor(appColors.getActionBarTextColor()), PorterDuff.Mode.MULTIPLY );
+                        tabs.getTabAt(4).getIcon().setColorFilter(Color.parseColor(appColors.getActionBarTextColor()), PorterDuff.Mode.MULTIPLY );
                         saveAppColors();
                         cp.dismiss();
+
                     }
                 });
                 return true;
@@ -189,6 +222,11 @@ public class WelcomeActivity extends AppCompatActivity {
     // 2018-04-03
     // Adds a delay so the app doesn't immediately close when the back button is clicked.
     // Prevents accidentally closing the app
+
+    /**
+     * if back button clicked twice, exit app
+     *
+     */
     @Override
     public void onBackPressed() {
         if (doubleBackToExitPressedOnce) {
@@ -274,33 +312,36 @@ public class WelcomeActivity extends AppCompatActivity {
             }
         }
     }
+
+    /**
+     * load the AppColors singleton from storage
+     */
     private void loadAppColors() {
         try {
-            FileInputStream fis = openFileInput(FILENAME);
-            BufferedReader in = new BufferedReader(new InputStreamReader(fis));
-            Gson gson = new Gson();
+            FileInputStream fis = openFileInput("COLORS.TXT");
+            BufferedReader br = new BufferedReader(new InputStreamReader(fis));
 
-            loadedAppColors = gson.fromJson(in, AppColors.class);
-        } catch (FileNotFoundException e) {
-            loadedAppColors = null;
-        } catch (IOException e) {
-            throw new RuntimeException();
+            PersonalColors c = new Gson().fromJson(br, PersonalColors.class);
+            AppColors.getInstance().setColors(c);
+        }
+        catch (FileNotFoundException e) {
+            System.out.println("File not found!");
         }
     }
 
+    /**
+     * save the AppColors singleton to storage
+     */
     private void saveAppColors() {
         try {
-            Log.i("saveColors",appColors.getActionBarColor());
-            FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
-            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(fos));
             Gson gson = new Gson();
-            gson.toJson(AppColors.getInstance(), out);
-            out.flush();
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException();
-        } catch (IOException e) {
-            throw new RuntimeException();
+            FileOutputStream fos = openFileOutput("COLORS.TXT", Context.MODE_PRIVATE);
+            String json = gson.toJson(this.appColors.getColors());
+            fos.write(json.getBytes());
+            fos.close();
+        }
+        catch (IOException e) {
+            System.out.println("Something went wrong when saving colors!");
         }
     }
-
 }

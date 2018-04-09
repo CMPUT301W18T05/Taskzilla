@@ -37,6 +37,9 @@ public class SearchTaskRequest extends SearchRequest {
         this.searchKeywords = keywords;
     }
 
+    /**
+     * get all tasks that have common terms
+     */
     @Override
     public void execute() {
         search = new ElasticSearchController.SearchForTasks(from,size);
@@ -51,6 +54,9 @@ public class SearchTaskRequest extends SearchRequest {
         }
     }
 
+    /**
+     * dont bother with it when we are offline
+     */
     @Override
     public void executeOffline() {
         results = null;

@@ -30,7 +30,7 @@
         app:layout_constraintTop_toBottomOf="@+id/LocationDescriptionTextView">
 
         <ImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/currentLocationButton"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginBottom="8dp"
@@ -49,7 +49,7 @@
             android:layout_width="0dp"
             android:layout_height="47dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/imageButton"
+            app:layout_constraintEnd_toStartOf="@+id/currentLocationButton"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </android.support.constraint.ConstraintLayout>
@@ -193,11 +193,23 @@
             app:layout_constraintTop_toTopOf="parent" />
     </android.support.constraint.ConstraintLayout>
 
+    <fragment
+        android:id="@+id/dragdropMap"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/ButtonLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/LocationSearchLayout"
+        tools:context=".MapsActivity" />
+
     <TextView
         android:id="@+id/LocationDescriptionTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:text="Location"
@@ -205,5 +217,19 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Photos" />
+
+    <TextView
+        android:id="@+id/LocationHintText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="(Search for location or click on map)"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toTopOf="@+id/LocationSearchLayout"
+        app:layout_constraintStart_toEndOf="@+id/LocationDescriptionTextView"
+        app:layout_constraintTop_toTopOf="@+id/LocationDescriptionTextView" />
 
 </android.support.constraint.ConstraintLayout>

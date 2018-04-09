@@ -11,7 +11,6 @@
 
 package com.cmput301w18t05.taskzilla.request.command;
 
-import android.os.AsyncTask;
 import android.util.Log;
 
 import com.cmput301w18t05.taskzilla.AppCache;
@@ -38,6 +37,9 @@ public class GetAllTasksRequest extends Request {
     public GetAllTasksRequest() {
     }
 
+    /**
+     * get all tasks from elasticsearch
+     */
     @Override
     public void execute() {
         task = new ElasticSearchController.GetAllTasks(from,size);
@@ -53,6 +55,9 @@ public class GetAllTasksRequest extends Request {
         }
     }
 
+    /**
+     * get all the tasks from the app cache
+     */
     @Override
     public void executeOffline() {
         // return what is in app cache
@@ -65,6 +70,10 @@ public class GetAllTasksRequest extends Request {
         executedOfflineOnce = true;
     }
 
+    /**
+     * needs connection to run
+     * @return we can get the tasks in app cache
+     */
     @Override
     public boolean requiresConnection() {
         return false;

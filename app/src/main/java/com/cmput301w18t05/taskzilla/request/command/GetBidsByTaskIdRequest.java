@@ -34,11 +34,17 @@ public class GetBidsByTaskIdRequest extends Request {
         this.taskId = taskId;
     }
 
+    /**
+     * add the bid to elasticsearch
+     */
     public void execute() {
         task = new ElasticSearchController.GetBidsByTaskID();
         task.execute(this.taskId);
     }
 
+    /**
+     * search through bids in app cache
+     */
     @Override
     public void executeOffline() {
         executedOffline = false;
