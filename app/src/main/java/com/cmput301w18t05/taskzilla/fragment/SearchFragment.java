@@ -149,7 +149,7 @@ public class SearchFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         // expand search bar by default
         searchField = view.findViewById(R.id.searchView);
-        
+
         /*
          * Listens for changes in the searchview
          * OnQueryTextChange invokes whenever the user types, while on the other hand
