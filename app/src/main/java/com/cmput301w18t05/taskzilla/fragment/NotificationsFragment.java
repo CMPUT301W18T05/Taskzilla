@@ -21,13 +21,18 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
@@ -56,6 +61,7 @@ public class NotificationsFragment extends Fragment {
     private SwipeRefreshLayout mySwipeRefreshLayout;
     private String taskId;
     private String notificationId;
+    private FloatingActionButton clear;
 
     public NotificationsFragment() {
         // Required empty public constructor
@@ -66,11 +72,11 @@ public class NotificationsFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        final RelativeLayout relativeLayout = (RelativeLayout) inflater.inflate(R.layout.fragment_notifications, container, false);
+        final ConstraintLayout constraintLayout = (ConstraintLayout) inflater.inflate(R.layout.fragment_notifications, container, false);
 
         notificationList = new ArrayList<>();
         //new NotificationsFragment.pollNotifications(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        notificationListView = relativeLayout.findViewById(R.id.NotificationListView);
+        notificationListView = constraintLayout.findViewById(R.id.NotificationListView);
         notificationsController = new NotificationsController(this, getActivity(), currentUser.getInstance());
 
         adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, notificationList);
@@ -140,7 +146,34 @@ public class NotificationsFragment extends Fragment {
             }
         });
 
-        return relativeLayout;
+       clear = constraintLayout.findViewById(R.id.clearButton);
+       clear.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+                   AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+                   alert.setTitle("Remove Notification?");
+                   alert.setMessage("Are you sure you want to delete all notifications?");
+                   alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                       @Override
+                       public void onClick(DialogInterface dialogInterface, int i) {
+                           // remove notification
+                           notificationsController.removeAllNotificationRequest();
+                           NotificationManager.getInstance().setCount(0);
+                           NotificationManager.getInstance().updateBadge();
+                           dialogInterface.dismiss();
+                       }
+                   });
+                   alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                       @Override
+                       public void onClick(DialogInterface dialogInterface, int i) {
+                           dialogInterface.dismiss();
+                       }
+                   });
+                   alert.show();
+           }
+       });
+
+        return constraintLayout;
     }
 
     @Override
@@ -191,6 +224,7 @@ public class NotificationsFragment extends Fragment {
         super.onResume();
         adapter.notifyDataSetChanged();
     }
+
 /*
     public static class pollNotifications extends AsyncTask<Void, Void, Void> {
         NotificationsFragment listener;

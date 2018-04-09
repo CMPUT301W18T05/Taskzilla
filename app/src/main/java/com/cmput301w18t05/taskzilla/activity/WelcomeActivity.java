@@ -11,7 +11,9 @@
 
 package com.cmput301w18t05.taskzilla.activity;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -39,6 +41,7 @@ import android.widget.Toast;
 import com.cmput301w18t05.taskzilla.AppColors;
 import com.cmput301w18t05.taskzilla.NotificationManager;
 import com.cmput301w18t05.taskzilla.User;
+import com.cmput301w18t05.taskzilla.controller.NotificationsController;
 import com.cmput301w18t05.taskzilla.currentUser;
 import com.cmput301w18t05.taskzilla.fragment.MyBidsFragment;
 import com.cmput301w18t05.taskzilla.fragment.NotificationsFragment;
@@ -48,6 +51,7 @@ import com.cmput301w18t05.taskzilla.fragment.SearchFragment;
 import com.cmput301w18t05.taskzilla.fragment.TasksFragment;
 import com.cmput301w18t05.taskzilla.fragment.TasksProviderFragment;
 import com.cmput301w18t05.taskzilla.fragment.TasksRequesterFragment;
+import com.cmput301w18t05.taskzilla.request.command.RemoveNotificationRequest;
 import com.google.gson.Gson;
 import com.pes.androidmaterialcolorpickerdialog.ColorPicker;
 import com.pes.androidmaterialcolorpickerdialog.ColorPickerCallback;
@@ -130,7 +134,9 @@ public class WelcomeActivity extends AppCompatActivity {
         // Count notifications user currently has and updates badge accordingly
         NotificationManager.getInstance().countNotifications();
         NotificationManager.getInstance().updateBadge();
+
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.menu,menu);

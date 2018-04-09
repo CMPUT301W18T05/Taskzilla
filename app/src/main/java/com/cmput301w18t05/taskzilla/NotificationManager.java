@@ -138,6 +138,10 @@ public class NotificationManager extends ContextWrapper {
         this.count -= 1;
     }
 
+    public void setCount(int count) {
+        this.count = count;
+    }
+
     // Taken from https://stackoverflow.com/questions/31968162/android-tablayout-tabs-with-notification-badge-like-whatsapp/40493102#40493102
     // 2018-04-08
 
@@ -176,7 +180,7 @@ public class NotificationManager extends ContextWrapper {
         protected Void doInBackground(Void... voids) {
             try {
                 while (true) {
-                    Thread.sleep(5000);
+                    Thread.sleep(6000);
                     GetNotificationsByUserIdRequest task = new GetNotificationsByUserIdRequest(currentUser.getInstance().getId());
                     RequestManager.getInstance().invokeRequest(task);
                     System.out.println("Trying to get notification for user");
