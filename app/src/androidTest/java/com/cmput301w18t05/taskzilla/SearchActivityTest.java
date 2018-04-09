@@ -12,12 +12,15 @@
 package com.cmput301w18t05.taskzilla;
 
 import android.test.ActivityInstrumentationTestCase2;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.SearchView;
 
 import com.cmput301w18t05.taskzilla.activity.MainActivity;
 import com.cmput301w18t05.taskzilla.activity.SignUpActivity;
 import com.cmput301w18t05.taskzilla.activity.WelcomeActivity;
+import com.cmput301w18t05.taskzilla.fragment.SearchFragment;
 import com.cmput301w18t05.taskzilla.fragment.TasksRequesterFragment;
 import com.robotium.solo.Solo;
 
@@ -29,7 +32,6 @@ import io.searchbox.params.SearchType;
 public class SearchActivityTest extends ActivityInstrumentationTestCase2 {
     private Solo solo;
     private TasksRequesterFragment fragment;
-
 
     public SearchActivityTest(){
         super(MainActivity.class);
@@ -51,20 +53,29 @@ public class SearchActivityTest extends ActivityInstrumentationTestCase2 {
         solo.enterText((EditText) solo.getView(R.id.nameField), "TestName");
         solo.enterText((EditText) solo.getView(R.id.emailField), "Test@Email.com");
         solo.enterText((EditText) solo.getView(R.id.phoneField), "1234567890");
+        solo.enterText((EditText) solo.getView(R.id.passwordField), "a");
         solo.clickOnButton("Sign Up");
 
         //Correct Log in Info
         solo.clearEditText((EditText) solo.getView(R.id.usernameText));
         solo.enterText((EditText) solo.getView(R.id.usernameText), "TestUser");
+        solo.enterText((EditText) solo.getView(R.id.passwordText), "a");
         solo.clickOnButton("Log In");
         solo.assertCurrentActivity("Wrong Activity", WelcomeActivity.class);
+        assertTrue(solo.waitForActivity(WelcomeActivity.class));
 
-        solo.waitForText("Search");
-        solo.clickOnText("Search");
-
-
-        solo.clickOnView((SearchView) solo.getView(R.id.searchView));
         solo.sleep(9000);
+
+        ViewGroup tabs = (ViewGroup)solo.getView(R.id.tabs_bar);
+        View viewYouWantToDoStuffWith = tabs.getChildAt(2);
+
+        solo.clickOnView(viewYouWantToDoStuffWith);
+
+        solo.sleep(9000);
+
+        solo.assertCurrentActivity("Wrong Activity", SearchFragment.class);
+        assertTrue(solo.waitForText("Search"));
+
         //solo.enterText((EditText) solo.getView(R.id.searchView),"Task");
         //solo.text
 
