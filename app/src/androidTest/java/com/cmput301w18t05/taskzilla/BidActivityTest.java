@@ -39,6 +39,7 @@ public class BidActivityTest extends ActivityInstrumentationTestCase2 {
         solo = new Solo(getInstrumentation(), getActivity());
     }
 
+    /*
     public void testBid(){
 
         //Set up for Test
@@ -129,4 +130,5 @@ public class BidActivityTest extends ActivityInstrumentationTestCase2 {
         solo.clickOnButton("Yes");
         assertFalse(solo.waitForText("25.22",1,1000));
     }
+    */
 }
