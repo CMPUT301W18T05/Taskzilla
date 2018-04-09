@@ -153,4 +153,7 @@ public class Review {
         RequestManager.getInstance().invokeRequest(task);
     }
 
+    public String toString(){
+        return this.getTitle() + " " + this.getDescription() + " " + this.getReviewType();
+    }
 }

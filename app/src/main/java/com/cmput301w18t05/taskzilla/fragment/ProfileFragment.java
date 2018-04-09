@@ -271,15 +271,28 @@ public class ProfileFragment extends Fragment {
         request.execute();
         ArrayList<Review> ReviewsList = request.getResult();
 
-        ArrayAdapter<Review> adapter = new ReviewCustomAdapter(this.getContext(),
-                R.layout.list_view_review, ReviewsList);
-        ReviewsListView.setAdapter(adapter);
+        for (Review review : ReviewsList) {
+            if (review.getReviewType().equals("r")) {
+                ReviewsList.remove(review);
+            }
+        }
 
+        Toast.makeText(this.getContext(), ReviewsList.toString(), Toast.LENGTH_SHORT).show();
+        if (ReviewsList.isEmpty()) {
+            ArrayList<String> tempList = new ArrayList<>();
+            tempList.add("No reviews yet :/");
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this.getContext(),
+                    android.R.layout.simple_list_item_1, tempList);
+            ReviewsListView.setAdapter(adapter);
+        } else {
+            ArrayAdapter<Review> adapter = new ReviewCustomAdapter(this.getContext(),
+                    R.layout.list_view_review, ReviewsList);
+            ReviewsListView.setAdapter(adapter);
+        }
 
+        String text = "Reviews for " + currentUser.getInstance().getName() + " as a provider";
+        ReviewBannerTextView.setText(text);
 
-
-
-        adapter.notifyDataSetChanged();
         mBuilder.setView(mView);
         mBuilder.show();
     }
