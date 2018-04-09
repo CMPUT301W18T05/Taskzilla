@@ -12,11 +12,38 @@
 
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="6dp"
     android:layout_marginRight="6dp"
     android:orientation="vertical">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="85dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+    </android.support.constraint.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/SearchListRequesterPicture"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/transparent"
+        android:focusable="auto"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@mipmap/ic_launcher_round" />
 
     <TextView
         android:id="@+id/taskTitle"
@@ -24,13 +51,13 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:paddingBottom="6dp"
-        android:paddingLeft="12dp"
-        android:paddingRight="6dp"
+        android:paddingEnd="6dp"
+        android:paddingStart="12dp"
         android:paddingTop="6dp"
         android:textAlignment="textStart"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/constraintLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
         <!--app:layout_constraintEnd_toStartOf="@+id/SearchListRequesterPicture"-->
@@ -44,7 +71,7 @@
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:textAlignment="textStart"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/constraintLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/taskTitle" />
 
@@ -58,7 +85,7 @@
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:textAlignment="textStart"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/constraintLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/requesterUsername" />
         <!--app:layout_constraintEnd_toStartOf="@+id/SearchListRequesterPicture"-->
@@ -73,25 +100,10 @@
         android:paddingRight="20dp"
         android:textAlignment="textStart"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/constraintLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/taskStatus" />
         <!--app:layout_constraintEnd_toStartOf="@+id/SearchListRequesterPicture"-->
 
-
-    <!--<ImageButton
-        android:id="@+id/SearchListRequesterPicture"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="8dp"
-        android:background="@android:color/transparent"
-        android:focusable="auto"
-        android:scaleType="fitXY"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/ic_launcher_round" />-->
 
 </android.support.constraint.ConstraintLayout>
