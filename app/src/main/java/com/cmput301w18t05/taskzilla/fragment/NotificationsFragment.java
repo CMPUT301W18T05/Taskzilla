@@ -69,7 +69,7 @@ public class NotificationsFragment extends Fragment {
         final RelativeLayout relativeLayout = (RelativeLayout) inflater.inflate(R.layout.fragment_notifications, container, false);
 
         notificationList = new ArrayList<>();
-        new NotificationsFragment.pollNotifications(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        //new NotificationsFragment.pollNotifications(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         notificationListView = relativeLayout.findViewById(R.id.NotificationListView);
         notificationsController = new NotificationsController(this, getActivity(), currentUser.getInstance());
 
@@ -95,6 +95,8 @@ public class NotificationsFragment extends Fragment {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             notificationsController.removeNotificationRequest(taskId, i);
+                            NotificationManager.getInstance().decrementCount();
+                            NotificationManager.getInstance().updateBadge();
                             dialogInterface.dismiss();
                         }
                     });
@@ -122,6 +124,8 @@ public class NotificationsFragment extends Fragment {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         // remove notification
                         notificationsController.removeNotificationRequest(notificationId, position);
+                        NotificationManager.getInstance().decrementCount();
+                        NotificationManager.getInstance().updateBadge();
                         dialogInterface.dismiss();
                     }
                 });
@@ -187,7 +191,7 @@ public class NotificationsFragment extends Fragment {
         super.onResume();
         adapter.notifyDataSetChanged();
     }
-
+/*
     public static class pollNotifications extends AsyncTask<Void, Void, Void> {
         NotificationsFragment listener;
         public pollNotifications(NotificationsFragment listener) {
@@ -208,4 +212,5 @@ public class NotificationsFragment extends Fragment {
             return null;
         }
     }
+    */
 }

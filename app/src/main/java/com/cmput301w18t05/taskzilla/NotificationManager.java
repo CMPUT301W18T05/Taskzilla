@@ -19,8 +19,11 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.AddNotificationRequest;
@@ -53,9 +56,12 @@ public class NotificationManager extends ContextWrapper {
     private int importance = android.app.NotificationManager.IMPORTANCE_HIGH;
     private android.app.NotificationManager mManager;
     private static NotificationManager instance = null;
+    private TabLayout tabs;
+    private int count = 0;
 
-    protected NotificationManager(Context context) {
+    protected NotificationManager(Context context, TabLayout tabs) {
         super(context);
+        this.tabs = tabs;
 
         System.out.println("Setting up notification poller");
         new pollNotifications(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -64,9 +70,9 @@ public class NotificationManager extends ContextWrapper {
         }
     }
 
-    public static NotificationManager getInstance(Context context) {
+    public static NotificationManager getInstance(Context context, TabLayout tabs) {
         if(instance == null) {
-            instance = new NotificationManager(context);
+            instance = new NotificationManager(context, tabs);
         }
         return instance;
     }
@@ -118,11 +124,46 @@ public class NotificationManager extends ContextWrapper {
 
         for (Notification n : newNotifs) {
             if(!n.isAcknowledged()) {
+                count += 1;
                 n.acknowledge();
                 createNotification(n);
+                updateBadge();
                 System.out.println("Received: "+n);
             }
         }
+    }
+
+    // decreases count
+    public void decrementCount() {
+        this.count -= 1;
+    }
+
+    // Taken from https://stackoverflow.com/questions/31968162/android-tablayout-tabs-with-notification-badge-like-whatsapp/40493102#40493102
+    // 2018-04-08
+
+    // updates badge icon
+    public void updateBadge() {
+        if(tabs.getTabAt(3) != null && tabs.getTabAt(3).getCustomView() != null) {
+            TextView badge = (TextView) tabs.getTabAt(3).getCustomView().findViewById(R.id.badge);
+            if(badge != null) {
+                badge.setText(count + "");
+            }
+            View v = tabs.getTabAt(3).getCustomView().findViewById(R.id.badgeContainer);
+            if(v != null && count != 0) {
+                v.setVisibility(View.VISIBLE);
+            } else {
+                v.setVisibility(View.INVISIBLE);
+            }
+        }
+    }
+
+    // Called in the beginning of the app to get current amount of notifications to users
+    public void countNotifications(){
+        GetNotificationsByUserIdRequest task = new GetNotificationsByUserIdRequest(currentUser.getInstance().getId());
+        RequestManager.getInstance().invokeRequest(task);
+
+        for(Notification n : task.getResult())
+            count += 1;
     }
 
     public static class pollNotifications extends AsyncTask<Void, Void, Void> {

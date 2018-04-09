@@ -159,6 +159,11 @@ public class Task implements Comparable<Task> {
         for (Bid bid : bidlist) {
             RemoveBidRequest removerequest = new RemoveBidRequest(bid);
             RequestManager.getInstance().invokeRequest(removerequest);
+
+            String temp = "Your bid has been declined!";
+
+            Notification notification = new Notification("Bid Declined", this.requesterId, bid.getId(), this.Id, this.getName(), temp, currentUser.getInstance());
+            NotificationManager.getInstance().sendNotification(notification);
         }
     }
 

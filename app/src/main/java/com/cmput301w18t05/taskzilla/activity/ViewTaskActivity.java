@@ -607,6 +607,12 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                 public void onClick(View view) {
                     RemoveBidRequest removeRequest = new RemoveBidRequest(selectedBid);
                     RequestManager.getInstance().invokeRequest(removeRequest);
+
+                    String temp = "Your bid has been declined!";
+
+                    Notification notification = new Notification("Bid Declined", task.getRequesterId(), selectedBid.getUserId(), taskID, taskName, temp, currentUser.getInstance());
+                    NotificationManager.getInstance().sendNotification(notification);
+
                     BidList.remove(selectedBid);
                     updateBidsList();
 

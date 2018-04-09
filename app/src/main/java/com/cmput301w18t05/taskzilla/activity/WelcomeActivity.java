@@ -33,6 +33,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.SpinnerAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cmput301w18t05.taskzilla.AppColors;
@@ -91,7 +92,6 @@ public class WelcomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
-        NotificationManager.getInstance(this.getApplicationContext());
         appColors = AppColors.getInstance();
         appColors.setActionBarColor("#000000");
         appColors.setActionBarTextColor("#05e5ee");
@@ -107,14 +107,19 @@ public class WelcomeActivity extends AppCompatActivity {
 
         tabs = findViewById(R.id.tabs_bar);
         tabs.setupWithViewPager(tabsContent);
+
+        NotificationManager.getInstance(this.getApplicationContext(), tabs);
+
         tabs.getTabAt(0).setIcon(android.R.drawable.ic_menu_my_calendar);
         tabs.getTabAt(1).setIcon(android.R.drawable.ic_menu_agenda);
         tabs.getTabAt(2).setIcon(android.R.drawable.ic_search_category_default);
-        tabs.getTabAt(3).setIcon(android.R.drawable.ic_popup_reminder);
+        tabs.getTabAt(3).setIcon(android.R.drawable.ic_popup_reminder).setCustomView(R.layout.badged_tab);
         tabs.getTabAt(4).setIcon(android.R.drawable.ic_menu_myplaces);
 
+        // Count notifications user currently has and updates badge accordingly
+        NotificationManager.getInstance().countNotifications();
+        NotificationManager.getInstance().updateBadge();
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.menu,menu);
