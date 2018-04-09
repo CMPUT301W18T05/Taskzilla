@@ -109,7 +109,7 @@ public class SearchFragment extends Fragment {
         }
         adapterPhoto = new TaskCustomAdapter2(getActivity(), R.layout.tasks_list_view3, photoArrayList);
         availableTasksPhoto.setAdapter(adapterPhoto);
-        
+
         // both listviews scroll together code gotten from
         // https://stackoverflow.com/questions/12342419/android-scrolling-2-listviews-together
         availableTasksText.setOnTouchListener(new View.OnTouchListener() {
