@@ -12,9 +12,7 @@
 package com.cmput301w18t05.taskzilla.activity;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -118,32 +116,23 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
                     mMap.animateCamera(CameraUpdateFactory.newLatLng(arg0.getPosition()));
                     arg0.setTitle( "Lat: "+Double.toString(Double.valueOf(df.format(arg0.getPosition().latitude)))+" Lon: "+Double.toString(Double.valueOf(df.format(arg0.getPosition().longitude))));
+                    arg0.setSnippet("Click here to confirm location");
                     arg0.showInfoWindow();
 
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getBaseContext());
-                    builder.setCancelable(true);
-                    builder.setTitle("Title");
-                    builder.setMessage("Message");
-                    builder.setPositiveButton("Confirm",
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                }
-                            });
-                    builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+
+                    mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                        public void onInfoWindowClick(Marker marker) {
+                            Intent intent = new Intent();
+                            intent.putExtra("Lat", Double.toString(Double.valueOf(marker.getPosition().latitude)));
+                            intent.putExtra("Lon", Double.toString(Double.valueOf(marker.getPosition().longitude)));
+                            setResult(RESULT_OK, intent);
+                            finish();
+
                         }
                     });
 
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
-
-                    Intent intent = new Intent();
-                    intent.putExtra("Lat", Double.toString(Double.valueOf(arg0.getPosition().latitude)));
-                    intent.putExtra("Lon", Double.toString(Double.valueOf(arg0.getPosition().longitude)));
-                    setResult(RESULT_OK, intent);
-                    finish();
                 }
 
                 @Override
