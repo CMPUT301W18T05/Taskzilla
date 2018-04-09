@@ -223,14 +223,14 @@ public class ProfileFragment extends Fragment {
         phoneField.setText(user.getPhone().toString());
         if (user.getProviderRating() == 0.0f) {
             providerRatingField.setText("No rating");
-            providerRatingField.setTextSize(14);
+            providerRatingField.setTextSize(16);
         } else {
             providerRatingField.setText(String.format(Locale.CANADA,
                     "%.1f", user.getProviderRating()));
         }
         if (user.getProviderRating() == 0.0f) {
             requesterRatingField.setText("No rating");
-            requesterRatingField.setTextSize(14);
+            requesterRatingField.setTextSize(16);
         } else {
             requesterRatingField.setText(String.format(Locale.CANADA,
                     "%.1f", user.getRequesterRating()));
