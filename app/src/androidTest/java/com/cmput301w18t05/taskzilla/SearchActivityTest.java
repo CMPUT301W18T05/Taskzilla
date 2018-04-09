@@ -65,12 +65,10 @@ public class SearchActivityTest extends ActivityInstrumentationTestCase2 {
         solo.assertCurrentActivity("Wrong Activity", WelcomeActivity.class);
         assertTrue(solo.waitForActivity(WelcomeActivity.class));
 
-        solo.clickOnText("Search");
-        solo.assertCurrentActivity("Wrong Activity", WelcomeActivity.class);
+        ViewGroup tabs = (ViewGroup)solo.getView(R.id.tabItem);
+        View view = tabs.getChildAt(2);
 
-        solo.pressSoftKeyboardSearchButton();
-        solo.enterText(0, "hi");
-        solo.sleep(1000);
+        solo.sleep(10000);
 
 
       }
