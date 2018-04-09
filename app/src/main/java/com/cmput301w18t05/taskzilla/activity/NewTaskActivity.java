@@ -77,13 +77,13 @@ public class NewTaskActivity extends AppCompatActivity implements OnMapReadyCall
     private LatLng taskLocation;
     private LocationManager locationManager;
 
-
-    private ImageButton currentLocationButton;
-    private PlaceAutocompleteFragment autocompleteFragment;
     private double lon;
     private double lat;
 
     private GoogleMap mMap;
+    private ImageButton currentLocationButton;
+    private PlaceAutocompleteFragment autocompleteFragment;
+
     private ImageButton addPhotoButton;
     private ArrayList<Photo> photos;
     private RecyclerView recyclerPhotosView;
@@ -252,16 +252,7 @@ public class NewTaskActivity extends AppCompatActivity implements OnMapReadyCall
         mMap.animateCamera(CameraUpdateFactory.zoomTo(13), 2000, null);
 
     }
-    public void AddPhotoButtonClicked(){
-        if(photos.size()==10){
-            Toast.makeText(NewTaskActivity.this,"Photo limited reached",Toast.LENGTH_LONG).show();
-        }
-        else {
-            Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-            photoPickerIntent.setType("image/*");
-            startActivityForResult(photoPickerIntent, PICK_IMAGE);
-        }
-    }
+
     void getLocation() {
         if( ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -285,6 +276,8 @@ public class NewTaskActivity extends AppCompatActivity implements OnMapReadyCall
 
     }
 
+
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -297,7 +290,16 @@ public class NewTaskActivity extends AppCompatActivity implements OnMapReadyCall
     }
 
 
-
+    public void AddPhotoButtonClicked(){
+        if(photos.size()==10){
+            Toast.makeText(NewTaskActivity.this,"Photo limited reached",Toast.LENGTH_LONG).show();
+        }
+        else {
+            Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+            photoPickerIntent.setType("image/*");
+            startActivityForResult(photoPickerIntent, PICK_IMAGE);
+        }
+    }
     @Override
     protected void onActivityResult(int reqCode, int resultCode, Intent data) {
         super.onActivityResult(reqCode, resultCode, data);
