@@ -195,11 +195,11 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/TaskLocation" />
+            app:layout_constraintTop_toBottomOf="@+id/dragdropMap" />
 
 
         <fragment
-            android:id="@+id/TaskLocation"
+            android:id="@+id/dragdropMap"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="340dp"
             android:layout_height="100dp"

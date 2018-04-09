@@ -49,8 +49,13 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -60,15 +65,20 @@ import java.util.ArrayList;
 /**
  * Activity for creating a new task
  */
-public class NewTaskActivity extends AppCompatActivity {
+public class NewTaskActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private NewTaskController newTaskController;
     private User cUser = currentUser.getInstance();
     private LatLng taskLocation;
     private LocationManager locationManager;
+
+
+    private ImageButton currentLocationButton;
+    private PlaceAutocompleteFragment autocompleteFragment;
     private double lon;
     private double lat;
 
+    private GoogleMap mMap;
     private ImageButton addPhotoButton;
     private ArrayList<Photo> photos;
     private RecyclerView recyclerPhotosView;
@@ -77,6 +87,8 @@ public class NewTaskActivity extends AppCompatActivity {
     private LinearLayout linearLayout;
     private Integer PICK_IMAGE = 5;
     private int maxSize;
+
+
     /**
      * Activity uses the activity_new_task.xml layout
      * New tasks are created through NewTaskController
@@ -87,15 +99,21 @@ public class NewTaskActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_task);
 
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.dragdropMap);
+        mapFragment.getMapAsync(this);
         locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 
+
         newTaskController =  new NewTaskController(this, getApplicationContext());
+        currentLocationButton = findViewById(R.id.currentLocationButton);
         Button cancel =  findViewById(R.id.CancelButton);
         Button addTask = findViewById(R.id.addTaskButton);
         final EditText taskName = findViewById(R.id.TaskName);
         final EditText taskDescription = findViewById(R.id.Description);
         addPhotoButton = findViewById(R.id.AddPhotoButton);
-        final PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+        autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
 
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
@@ -155,8 +173,8 @@ public class NewTaskActivity extends AppCompatActivity {
         autocompleteFragment.setHint("Task Location");
         getLocation();
         autocompleteFragment.setBoundsBias(new LatLngBounds(
-                new LatLng(lat-0.5, lon-0.5),
-                new LatLng(lat+0.5, lon+0.5)));
+                new LatLng(lat-0.25, lon-0.25),
+                new LatLng(lat+0.25, lon+0.25)));
         /* cancel button */
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,6 +183,12 @@ public class NewTaskActivity extends AppCompatActivity {
             }
         });
 
+        currentLocationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setCurrentLocation();
+            }
+        });
         /* add task button */
         addTask.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -176,6 +200,22 @@ public class NewTaskActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 AddPhotoButtonClicked();
+            }
+        });
+
+
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng point) {
+                Intent intent = new Intent(getApplicationContext(), MapActivity.class);
+                intent.putExtra("drag","true");
+                startActivity(intent);
             }
         });
 
@@ -206,7 +246,12 @@ public class NewTaskActivity extends AppCompatActivity {
         }
     }
 
+    public void setCurrentLocation(){
+        getLocation();
+        taskLocation = new LatLng(lat,lon);
+        autocompleteFragment.setHint("Current Location");
 
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
