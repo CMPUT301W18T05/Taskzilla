@@ -30,12 +30,12 @@ import com.robotium.solo.Solo;
  * Created by Micheal-Nguyen on 2018-03-18.
  */
 
-public class UserTaskActivityTest extends ActivityInstrumentationTestCase2 {
+public class UserTaskActivityIntentTest extends ActivityInstrumentationTestCase2 {
     private Solo solo;
     private TasksRequesterFragment fragment;
 
 
-    public UserTaskActivityTest(){
+    public UserTaskActivityIntentTest(){
         super(MainActivity.class);
     }
 

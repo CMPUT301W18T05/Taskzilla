@@ -27,11 +27,11 @@ import com.robotium.solo.Solo;
 /**
  * Created by Colin on 2018-03-19.
  */
-public class BidActivityTest extends ActivityInstrumentationTestCase2 {
+public class BidActivityIntentTest extends ActivityInstrumentationTestCase2 {
     private Solo solo;
     private TasksRequesterFragment fragment;
 
-    public BidActivityTest(){
+    public BidActivityIntentTest(){
         super(MainActivity.class);
     }
 
@@ -49,6 +49,7 @@ public class BidActivityTest extends ActivityInstrumentationTestCase2 {
         solo.assertCurrentActivity("Wrong Activity", SignUpActivity.class);
         solo.enterText((EditText) solo.getView(R.id.usernameField), "TestUser");
         solo.enterText((EditText) solo.getView(R.id.nameField), "TestName");
+        solo.enterText((EditText) solo.getView(R.id.passwordField), "a");
         solo.enterText((EditText) solo.getView(R.id.emailField), "Test@Email.com");
         solo.enterText((EditText) solo.getView(R.id.phoneField), "1234567890");
         solo.clickOnButton("Sign Up");
@@ -56,10 +57,12 @@ public class BidActivityTest extends ActivityInstrumentationTestCase2 {
         //Correct Log in Info
         solo.clearEditText((EditText) solo.getView(R.id.usernameText));
         solo.enterText((EditText) solo.getView(R.id.usernameText), "TestUser");
+        solo.enterText((EditText) solo.getView(R.id.passwordText), "a");
         solo.clickOnButton("Log In");
-        solo.assertCurrentActivity("Wrong Activity", WelcomeActivity.class);
-
         solo.waitForText("Tasks");
+        solo.assertCurrentActivity("Wrong Activity", WelcomeActivity.class);
+        solo.sleep(5000);
+
         View fab = solo.getCurrentActivity().findViewById(R.id.fab);
         solo.clickOnView(fab);
         solo.waitForActivity(NewTaskActivity.class);
@@ -73,15 +76,12 @@ public class BidActivityTest extends ActivityInstrumentationTestCase2 {
         solo.clickOnButton("Add Task");
         solo.waitForActivity(WelcomeActivity.class);
         solo.assertCurrentActivity("Wrong Activity", WelcomeActivity.class);
-        View fab2 = solo.getCurrentActivity().findViewById(R.id.fab);
-        solo.clickOnView(fab2);
-        assertTrue(solo.waitForText("Test Task Name"));
+
 
 
         solo.waitForText("Profile");
         solo.clickOnText("Profile");
-
-        solo.clickOnView(solo.getView(R.id.logOutButton));
+        solo.clickOnText("Log out");
         solo.waitForActivity(MainActivity.class);
         solo.assertCurrentActivity("Wrong Activity",MainActivity.class);
 
@@ -90,6 +90,7 @@ public class BidActivityTest extends ActivityInstrumentationTestCase2 {
         solo.assertCurrentActivity("Wrong Activity", SignUpActivity.class);
         solo.enterText((EditText) solo.getView(R.id.usernameField), "TestUserOne");
         solo.enterText((EditText) solo.getView(R.id.nameField), "TestNameOne");
+        solo.enterText((EditText) solo.getView(R.id.passwordField), "a");
         solo.enterText((EditText) solo.getView(R.id.emailField), "Test1@Email.com");
         solo.enterText((EditText) solo.getView(R.id.phoneField), "1234567890");
         solo.clickOnButton("Sign Up");
@@ -97,28 +98,35 @@ public class BidActivityTest extends ActivityInstrumentationTestCase2 {
         //Correct Log in Info
         solo.clearEditText((EditText) solo.getView(R.id.usernameText));
         solo.enterText((EditText) solo.getView(R.id.usernameText), "TestUserOne");
+        solo.enterText((EditText) solo.getView(R.id.passwordText), "a");
         solo.clickOnButton("Log In");
         solo.assertCurrentActivity("Wrong Activity", WelcomeActivity.class);
 
         //Test Bid on task
+        solo.sleep(3000);
         solo.waitForText("Search");
         solo.clickOnText("Search");
+        solo.sleep(3000);
+        solo.waitForText("Status: ");
         solo.clickOnText("Status: ");
         solo.assertCurrentActivity("Wrong Activity", ViewTaskActivity.class);
         solo.clickOnButton("PLACE BID");
         solo.enterText((EditText) solo.getView(R.id.place_bid_edittext),"25.22");
         solo.clickOnButton("Place Bid");
+        solo.sleep(1000);
         solo.goBack();
 
         //Test Bid in bid list
-        solo.waitForText("My Bids");
+        solo.waitForText("Bids");
         solo.assertCurrentActivity("Wrong Activity", WelcomeActivity.class);
-        solo.clickOnText("My Bids");
+        solo.clickOnText("Bids");
         solo.waitForText("Bid amount: ");
         solo.clickOnText("25.22");
         solo.assertCurrentActivity("Wrong Activity", ViewTaskActivity.class);
 
         //Test update bid
+        solo.sleep(500);
+        solo.waitForText("PLACE BID");
         solo.clickOnButton("PLACE BID");
         solo.enterText((EditText) solo.getView(R.id.place_bid_edittext),"29.22");
         solo.clickOnButton("Place Bid");
@@ -126,9 +134,9 @@ public class BidActivityTest extends ActivityInstrumentationTestCase2 {
         solo.clickLongOnText("29.22");
 
         //Test Delete bid
-        solo.sleep(1000);
-        solo.clickOnButton("Yes");
-        assertFalse(solo.waitForText("25.22",1,1000));
+        solo.sleep(2000);
+        assertTrue(solo.waitForText("29.22"));
+
     }
 
 }

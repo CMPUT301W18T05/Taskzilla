@@ -34,11 +34,13 @@ import io.searchbox.params.SearchType;
 /**
  * Created by Colin on 2018-03-19.
  */
-public class SearchActivityTest extends ActivityInstrumentationTestCase2 {
+public class SearchActivityIntentTest extends ActivityInstrumentationTestCase2 {
     private Solo solo;
     private TasksRequesterFragment fragment;
 
-    public SearchActivityTest(){
+
+
+    public SearchActivityIntentTest(){
         super(MainActivity.class);
     }
 
