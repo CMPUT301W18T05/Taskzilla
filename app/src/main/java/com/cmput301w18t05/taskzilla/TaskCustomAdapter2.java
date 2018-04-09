@@ -52,7 +52,11 @@ public class TaskCustomAdapter2 extends ArrayAdapter<Photo> {
             Photo defaultPhoto = new Photo("");
             requesterImage.setImageBitmap(defaultPhoto.StringToBitmap());
         }
-
         return convertView;
+    }
+
+    @Override
+    public void setNotifyOnChange(boolean notifyOnChange) {
+        super.setNotifyOnChange(notifyOnChange);
     }
 }

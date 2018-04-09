@@ -102,7 +102,7 @@ public class Task implements Comparable<Task> {
      * @param TaskRequester Name of the user requesting the task
      * @param description Description of the task
      * @param location Location of the task
-     * @param photos List of photos realated to the task
+     * @param photos List of photos related to the task
      */
     public Task(String name, User TaskRequester, String description, LatLng location, ArrayList<Photo> photos) {
         this.name = name;
@@ -203,23 +203,6 @@ public class Task implements Comparable<Task> {
     }
 
     /**
-     * Gets the number of bids currently on the task
-     * @return number of bids
-     */
-    public int numBids() {
-        return bids.size();
-    }
-
-    /**
-     * Gets the bid at index i
-     * @param i index of the bid in bids list
-     * @return Bid
-     */
-    public Bid getBid(int i) {
-        return bids.get(i);
-    }
-
-    /**
      * Returns a list of all the bids
      * @return Bid
      */
@@ -252,21 +235,9 @@ public class Task implements Comparable<Task> {
         return userRequest(this.requesterId);
     }
 
-    /**
-     * set the id and username of the taskrequester for the task
-     * @param taskRequester
-     */
-    public void setTaskRequester(User taskRequester) {
-        this.requesterId = taskRequester.getId();
-        this.requesterUsername = taskRequester.getUsername();
-    }
 
     public String getProviderId() {
         return providerId;
-    }
-
-    public void setProviderId(String providerId) {
-        this.providerId = providerId;
     }
 
     public String getRequesterId() {
@@ -275,10 +246,6 @@ public class Task implements Comparable<Task> {
 
     public void setRequesterId(String requesterId) {
         this.requesterId = requesterId;
-    }
-
-    public String getRequesterUsername() {
-        return requesterUsername;
     }
 
     /**

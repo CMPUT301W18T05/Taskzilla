@@ -73,4 +73,9 @@ public class TaskCustomAdapter extends ArrayAdapter<Task> {
         }
         return convertView;
     }
+
+    @Override
+    public void setNotifyOnChange(boolean notifyOnChange) {
+        super.setNotifyOnChange(notifyOnChange);
+    }
 }
