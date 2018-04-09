@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
 
         /*Auto Login*/
         loadLogin();
-        if(foundUser!=null && !foundUser.getUsername().equalsIgnoreCase("TestUser")){
+        if(foundUser!=null && !foundUser.getUsername().equalsIgnoreCase("TestUser")&& !foundUser.getUsername().equalsIgnoreCase("TestUserOne")){
             ni = cm.getActiveNetworkInfo();
             if (ni != null && ni.isConnected()) {
                 currentUser.getRealInstance().setUser(getUser(foundUser.getUsername()));
