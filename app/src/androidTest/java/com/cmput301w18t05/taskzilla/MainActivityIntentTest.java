@@ -24,12 +24,12 @@ import com.robotium.solo.Solo;
  * Created by Micheal-Nguyen on 2018-03-18.
  */
 
-public class MainActivityTest extends ActivityInstrumentationTestCase2{
+public class MainActivityIntentTest extends ActivityInstrumentationTestCase2{
     private Solo solo;
     private TasksRequesterFragment fragment;
 
 
-    public MainActivityTest(){
+    public MainActivityIntentTest(){
         super(MainActivity.class);
     }
 
@@ -48,6 +48,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2{
         solo.enterText((EditText) solo.getView(R.id.nameField), "TestName");
         solo.enterText((EditText) solo.getView(R.id.emailField), "Test@Email.com");
         solo.enterText((EditText) solo.getView(R.id.phoneField), "1234567890");
+        solo.enterText((EditText) solo.getView(R.id.passwordField), "1");
         solo.clickOnButton("Sign Up");
         solo.assertCurrentActivity("Wrong Activity", SignUpActivity.class);
 
@@ -113,6 +114,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2{
         solo.enterText((EditText) solo.getView(R.id.nameField), "TestName");
         solo.enterText((EditText) solo.getView(R.id.emailField), "Test@Email.com");
         solo.enterText((EditText) solo.getView(R.id.phoneField), "1234567890");
+        solo.enterText((EditText) solo.getView(R.id.passwordField), "1");
         solo.clickOnButton("Sign Up");
 
         //No Log in Info
