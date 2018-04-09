@@ -22,6 +22,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.Task;
@@ -37,6 +38,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -93,7 +95,47 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         getLocation();
         mMap = googleMap;
 
-        if(getIntent().getStringExtra("lat")!= null){
+        if(getIntent().getStringExtra("drag")!= null){
+            LatLng yourLocation = new LatLng(lat, lon);
+            moveToCurrentLocation(yourLocation);
+
+            final Marker locationMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(lat,lon)).title("Hold and drag to pick your task location").draggable(true));
+            locationMarker.showInfoWindow();
+            mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
+                @Override
+                public void onMarkerDragStart(Marker arg0) {
+                    // TODO Auto-generated method stub
+                    arg0.hideInfoWindow();
+                }
+
+                @SuppressWarnings("unchecked")
+                @Override
+                public void onMarkerDragEnd(Marker arg0) {
+                    // TODO Auto-generated method stub
+                    DecimalFormat df = new DecimalFormat("#.#####");
+
+                    mMap.animateCamera(CameraUpdateFactory.newLatLng(arg0.getPosition()));
+                    arg0.setTitle( "Lat: "+Double.toString(Double.valueOf(df.format(arg0.getPosition().latitude)))+" Lon: "+Double.toString(Double.valueOf(df.format(arg0.getPosition().longitude))));
+                    arg0.showInfoWindow();
+
+                    Intent intent = new Intent();
+                    intent.putExtra("Lat", Double.toString(Double.valueOf(arg0.getPosition().latitude)));
+                    intent.putExtra("Lon", Double.toString(Double.valueOf(arg0.getPosition().longitude)));
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
+
+                @Override
+                public void onMarkerDrag(Marker arg0) {
+                    // TODO Auto-generated method stub
+
+                    arg0.hideInfoWindow();
+
+                }
+            });
+
+
+        } else if(getIntent().getStringExtra("lat")!= null){
             LatLng tLocation = new LatLng(Double.parseDouble(getIntent().getStringExtra("lat")),Double.parseDouble(getIntent().getStringExtra("lon")));
             mMap.addMarker(new MarkerOptions().position(tLocation).title(getIntent().getStringExtra("TaskName"))
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))).showInfoWindow();

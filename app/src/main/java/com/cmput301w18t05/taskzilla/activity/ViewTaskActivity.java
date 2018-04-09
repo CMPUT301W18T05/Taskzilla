@@ -883,6 +883,8 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.getUiSettings().setScrollGesturesEnabled(false);
+        mMap.getUiSettings().setZoomGesturesEnabled(false);
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng point) {
@@ -894,8 +896,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
             }
         });
         if (task.getLocation()!=null) {
-            mMap.getUiSettings().setScrollGesturesEnabled(false);
-            mMap.getUiSettings().setZoomGesturesEnabled(false);
+
             //mMap.getUiSettings()
             // Add a marker to a location and move the camera
             LatLng taskLocation = task.getLocation();
