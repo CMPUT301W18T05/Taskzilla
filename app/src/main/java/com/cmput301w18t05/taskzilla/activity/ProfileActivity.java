@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -55,6 +56,8 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView providerRatingField;
     private TextView requesterRatingField;
     private ImageView profilePicture;
+    private Button providerReviewButton;
+    private Button requesterReviewButton;
 
     private String name;
     private String email;
@@ -90,13 +93,13 @@ public class ProfileActivity extends AppCompatActivity {
                 ProfilePictureClicked();
             }
         });
-        providerRatingField.setOnClickListener(new View.OnClickListener() {
+        providerReviewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 providerRatingOnClick();
             }
         });
-        requesterRatingField.setOnClickListener(new View.OnClickListener() {
+        requesterReviewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 requesterRatingOnClick();
@@ -126,6 +129,8 @@ public class ProfileActivity extends AppCompatActivity {
         providerRatingField = findViewById(R.id.providerRatingField);
         requesterRatingField = findViewById(R.id.requesterRatingField);
         profilePicture = findViewById(R.id.profilePictureView);
+        requesterReviewButton = findViewById(R.id.ViewRequesterReviewsButton);
+        providerReviewButton = findViewById(R.id.ViewProviderReviewsButton);
     }
 
 
