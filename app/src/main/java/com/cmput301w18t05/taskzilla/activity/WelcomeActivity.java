@@ -105,8 +105,6 @@ public class WelcomeActivity extends AppCompatActivity {
         }
         appColors = AppColors.getInstance();
 
-
-
         actionBar = getSupportActionBar();
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor(appColors.getActionBarColor())));
         actionBar.setTitle(Html.fromHtml("<font color='" + appColors.getActionBarTextColor() + "'>Taskzilla</font>"));
@@ -123,7 +121,6 @@ public class WelcomeActivity extends AppCompatActivity {
         tabs.getTabAt(2).setIcon(android.R.drawable.ic_search_category_default);
         tabs.getTabAt(3).setIcon(android.R.drawable.ic_popup_reminder);
         tabs.getTabAt(4).setIcon(android.R.drawable.ic_menu_myplaces);
-
     }
 
     @Override
@@ -171,7 +168,6 @@ public class WelcomeActivity extends AppCompatActivity {
                     }
                 });
                 return true;
-                
             default:
                 return super.onOptionsItemSelected(item);
         }
