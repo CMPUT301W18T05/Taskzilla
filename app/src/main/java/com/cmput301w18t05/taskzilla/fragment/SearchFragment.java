@@ -150,6 +150,7 @@ public class SearchFragment extends Fragment {
         // expand search bar by default
         searchField = view.findViewById(R.id.searchView);
 
+
         /*
          * Listens for changes in the searchview
          * OnQueryTextChange invokes whenever the user types, while on the other hand
@@ -200,29 +201,6 @@ public class SearchFragment extends Fragment {
                 return false;
             }
         });
-
-        /*
-        mySwipeRefreshLayout.setOnRefreshListener(
-                new SwipeRefreshLayout.OnRefreshListener() {
-                    @Override
-                    public void onRefresh() {
-                        //String spinnerItem = spinner.getSelectedItem().toString();
-
-                        //add stuff here for listrefresh
-
-                        final Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                if(mySwipeRefreshLayout.isRefreshing()) {
-                                    mySwipeRefreshLayout.setRefreshing(false);
-                                }
-                            }
-                        }, 1000);
-                    }
-                }
-        );
-        */
     }
 
     @Override
