@@ -35,6 +35,10 @@ public class AddTaskRequest extends InsertionRequest {
         originalId = taskData.getId();
     }
 
+    /**
+     * add task to elasticsearch. if this is an update then keep the id, otherwise
+     * remove the id for elasticsearch to assign one.
+     */
     @Override
     public void execute() {
         if (!isUpdate)
@@ -45,6 +49,9 @@ public class AddTaskRequest extends InsertionRequest {
         task.execute(taskData); // for now, subject to change.
     }
 
+    /**
+     * add the task into the appcache for offline viewing.
+     */
     @Override
     public void executeOffline() {
         AppCache appCache = AppCache.getInstance();
@@ -52,11 +59,19 @@ public class AddTaskRequest extends InsertionRequest {
         executedOffline = true;
     }
 
+    /**
+     * adding a task dooes not require a connection
+     * @return
+     */
     @Override
     public boolean requiresConnection() {
         return false;
     }
 
+    /**
+     * return true if it was successfully added (at least we think so)
+     * @return
+     */
     public boolean getResult() {
         try {
             return executedOffline || task.get();
@@ -66,6 +81,10 @@ public class AddTaskRequest extends InsertionRequest {
         }
     }
 
+    /**
+     * set the update flag.
+     * @param bool
+     */
     public void setUpdate(boolean bool) {
         isUpdate = bool;
     }

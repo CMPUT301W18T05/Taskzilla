@@ -20,7 +20,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -33,7 +32,6 @@ import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.currentUser;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.GetUserByUsernameRequest;
-import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
@@ -44,7 +42,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.lang.reflect.Type;
 
 /**
  * main activity includes the login screen
@@ -226,6 +223,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+    /**
+     * when the user clicks the log in button, check if the user exists.
+     * if so, log into the application successful
+     *
+     */
     public void logInButtonOnclick() {
         ni = cm.getActiveNetworkInfo();
         if(ni != null && ni.isConnected()){

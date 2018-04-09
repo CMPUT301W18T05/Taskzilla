@@ -16,12 +16,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -29,6 +33,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.cmput301w18t05.taskzilla.AppColors;
 import com.cmput301w18t05.taskzilla.CustomOnItemClick;
 import com.cmput301w18t05.taskzilla.Photo;
 import com.cmput301w18t05.taskzilla.R;
@@ -65,6 +70,13 @@ public class EditTaskActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setTitle("Edit Task");
         setContentView(R.layout.activity_edit_task);
+
+        AppColors appColors = AppColors.getInstance();
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor(appColors.getActionBarColor())));
+        actionBar.setTitle(Html.fromHtml("<font color='"+ appColors.getActionBarTextColor() +
+                "'>Taskzilla</font>"));
+
         EditText TaskNameText = (EditText) findViewById(R.id.TaskName);
         EditText DescriptionText = (EditText) findViewById(R.id.Description);
         String taskName = getIntent().getStringExtra("task Name");
@@ -123,7 +135,6 @@ public class EditTaskActivity extends AppCompatActivity{
     }
 
     /**
-     * TaskSaveButton
      * Upon pressing the save button in the activity_edit_task.xml
      * check that the information that is inputted is within
      * the constraints set and return
@@ -160,6 +171,11 @@ public class EditTaskActivity extends AppCompatActivity{
         }
     }
 
+    /**
+     * When camera button is clicked, move to photo activity
+     *
+     * @param view
+     */
     public void AddPhotoButton(View view){
         if(photos.size()==10){
             Toast.makeText(EditTaskActivity.this,"Photo limited reached",Toast.LENGTH_LONG).show();
@@ -171,6 +187,14 @@ public class EditTaskActivity extends AppCompatActivity{
     }
 
 
+    /**
+     * Upon returning from selecting photos, list of photos
+     * is set for the task
+     *
+     * @param reqCode
+     * @param resultCode
+     * @param data
+     */
 
     @Override
     protected void onActivityResult(int reqCode, int resultCode, Intent data) {

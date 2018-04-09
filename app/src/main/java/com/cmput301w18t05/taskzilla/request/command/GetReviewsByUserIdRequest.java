@@ -11,9 +11,7 @@
 
 package com.cmput301w18t05.taskzilla.request.command;
 
-import com.cmput301w18t05.taskzilla.AppCache;
 import com.cmput301w18t05.taskzilla.Review;
-import com.cmput301w18t05.taskzilla.Task;
 import com.cmput301w18t05.taskzilla.controller.ElasticSearchController;
 import com.cmput301w18t05.taskzilla.request.Request;
 
@@ -38,6 +36,9 @@ public class GetReviewsByUserIdRequest extends Request {
         this.userId = userId;
     }
 
+    /**
+     * get all reviews with this user id from elasticsearch
+     */
     public void execute() {
         //System.out.println("Getting reviews by user ID: " + userId);
         task = new ElasticSearchController.GetReviewsByUserId();

@@ -11,7 +11,6 @@
 
 package com.cmput301w18t05.taskzilla.request.command;
 
-import android.support.v7.app.AppCompatActivity;
 
 import com.cmput301w18t05.taskzilla.AppCache;
 import com.cmput301w18t05.taskzilla.Bid;
@@ -24,6 +23,7 @@ import com.cmput301w18t05.taskzilla.request.DeletionRequest;
   * @see ElasticSearchController
   * @version 1.0
 */
+ @Deprecated
 public class RemoveBidRequest extends DeletionRequest{
     private Bid bid;
 
@@ -32,11 +32,18 @@ public class RemoveBidRequest extends DeletionRequest{
         queueReady = true;
     }
 
-    public void execute(){
+     /**
+      * remove the bid with this id from the elasticsearch
+      */
+     public void execute(){
         ElasticSearchController.RemoveBid deleteRequest = new ElasticSearchController.RemoveBid();
         deleteRequest.execute(this.bid);
     }
 
+     /**
+      * remove it in the app cache if we are offline. note that this request
+      * will complete when we come online.
+      */
     @Override
     public void executeOffline() {
         AppCache.getInstance().removeBidByBidid(bid.getId());

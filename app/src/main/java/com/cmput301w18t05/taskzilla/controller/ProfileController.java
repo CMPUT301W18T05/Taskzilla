@@ -12,7 +12,6 @@
 package com.cmput301w18t05.taskzilla.controller;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 
 import com.cmput301w18t05.taskzilla.Task;

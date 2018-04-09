@@ -13,8 +13,9 @@ package com.cmput301w18t05.taskzilla;
 
 /**
  * Created by kio22 on 2018-04-07.
+ *
+ * Store the theme colors
  */
-
 public class AppColors {
 
     private PersonalColors colors;

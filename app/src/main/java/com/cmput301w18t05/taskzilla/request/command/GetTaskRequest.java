@@ -31,11 +31,17 @@ public class GetTaskRequest extends Request {
         this.taskId = taskId;
     }
 
+    /**
+     * get this task from elasticsearch
+     */
     public void execute() {
         task = new ElasticSearchController.GetTask();
         task.execute(this.taskId);
     }
 
+    /**
+     * get the tasks with this id in the app cache
+     */
     @Override
     public void executeOffline() {
         executedOffline = false;
@@ -48,6 +54,10 @@ public class GetTaskRequest extends Request {
         return false;
     }
 
+    /**
+     * get the result once, task is done
+     * @return null if no task exists, task object if found
+     */
     public Task getResult() {
         try {
             if (!executedOffline)

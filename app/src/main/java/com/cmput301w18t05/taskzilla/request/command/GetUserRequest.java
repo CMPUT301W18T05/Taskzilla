@@ -32,11 +32,17 @@ public class GetUserRequest extends Request {
         this.userId = userId;
     }
 
+    /**
+     * get users with this id
+     */
     public void execute() {
         task = new ElasticSearchController.GetUser();
         task.execute(this.userId);
     }
 
+    /**
+     * search for users with this id in the app cache.
+     */
     @Override
     public void executeOffline() {
         executedOffline = true;
@@ -49,6 +55,10 @@ public class GetUserRequest extends Request {
         return false;
     }
 
+    /**
+     * return the user object and add the user to the app cache
+     * @return the user object matching the id
+     */
     public User getResult() {
         try {
             if (!executedOffline) {
