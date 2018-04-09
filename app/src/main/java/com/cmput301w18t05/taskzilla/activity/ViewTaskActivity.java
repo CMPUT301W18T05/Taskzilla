@@ -101,6 +101,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
     private TextView RequesterName;
     private TextView TaskName;
     private TextView TaskStatus;
+    private TextView NoLocation;
 
     private ImageButton EditButton;
     private ImageButton DeleteButton;
@@ -145,12 +146,8 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.dragdropMap);
         mapFragment.getMapAsync(this);
-        mapFragment.getView().setVisibility(View.INVISIBLE);
-        //mapFragment.getView().setActivated(false);
-        //mapFragment.getView().setEnabled(false);
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
         findViews();
 
         // starts the activity at the very top
@@ -166,6 +163,12 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         setProviderField();
 
         photos = task.getPhotos();
+        NoLocation = findViewById(R.id.NoLocationText);
+        NoLocation.setVisibility(View.INVISIBLE);
+        if(task.getLocation()==null) {
+            NoLocation.setVisibility(View.VISIBLE);
+            //mapFragment.s
+        }
         linearLayout = findViewById(R.id.Photos);
         recyclerPhotosView = findViewById(R.id.listOfPhotos);
         layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -888,14 +891,18 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         mMap = googleMap;
         mMap.getUiSettings().setScrollGesturesEnabled(false);
         mMap.getUiSettings().setZoomGesturesEnabled(false);
+
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng point) {
-                Intent intent = new Intent(getApplicationContext(), MapActivity.class);
-                intent.putExtra("lat",Double.toString(task.getLocation().latitude));
-                intent.putExtra("lon",Double.toString(task.getLocation().longitude));
-                intent.putExtra("TaskName",task.getName());
-                startActivity(intent);
+                if(task.getLocation()!=null) {
+                    Intent intent = new Intent(getApplicationContext(), MapActivity.class);
+                    intent.putExtra("lat",Double.toString(task.getLocation().latitude));
+                    intent.putExtra("lon",Double.toString(task.getLocation().longitude));
+                    intent.putExtra("TaskName",task.getName());
+                    startActivity(intent);
+                }
+
             }
         });
         if (task.getLocation()!=null) {
