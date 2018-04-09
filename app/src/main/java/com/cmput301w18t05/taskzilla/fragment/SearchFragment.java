@@ -35,6 +35,7 @@ import android.widget.Toast;
 
 import com.cmput301w18t05.taskzilla.Photo;
 import com.cmput301w18t05.taskzilla.R;
+import com.cmput301w18t05.taskzilla.SyncedScrollListener;
 import com.cmput301w18t05.taskzilla.TaskCustomAdapter;
 import com.cmput301w18t05.taskzilla.TaskCustomAdapter2;
 import com.cmput301w18t05.taskzilla.User;
@@ -208,6 +209,11 @@ public class SearchFragment extends Fragment {
         }
         adapterPhoto = new TaskCustomAdapter2(getActivity(), R.layout.tasks_list_view3, photoArrayList);
         availableTasksPhoto.setAdapter(adapterPhoto);
+
+
+
+        availableTasksText.setOnScrollListener(new SyncedScrollListener(availableTasksPhoto));
+        availableTasksPhoto.setOnScrollListener(new SyncedScrollListener(availableTasksText));
 
 
         /*
