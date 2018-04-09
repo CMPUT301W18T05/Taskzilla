@@ -11,7 +11,6 @@
 
 package com.cmput301w18t05.taskzilla.fragment;
 
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -28,7 +27,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.cmput301w18t05.taskzilla.AppColors;
 import com.cmput301w18t05.taskzilla.EmailAddress;
@@ -42,7 +40,6 @@ import com.cmput301w18t05.taskzilla.activity.ZoomImageActivity;
 import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.User;
 import com.cmput301w18t05.taskzilla.activity.EditProfileActivity;
-import com.cmput301w18t05.taskzilla.controller.ElasticSearchController;
 import com.cmput301w18t05.taskzilla.currentUser;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.AddUserRequest;
@@ -56,7 +53,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -65,7 +61,7 @@ import static android.app.Activity.RESULT_OK;
 
 /**
  * the fragment that represents the current user's profile
- * @author Colin
+ * @author Colin, myapplestory
  */
 public class ProfileFragment extends Fragment {
     private static final String FILENAME = "currentUser.sav";
@@ -115,42 +111,18 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         appColors = AppColors.getInstance();
 
-        profilePicture = view.findViewById(R.id.profilePictureView);
-        nameField = view.findViewById(R.id.nameField2);
-        emailField = view.findViewById(R.id.emailField2);
-        phoneField = view.findViewById(R.id.phoneField2);
-        providerRatingField = view.findViewById(R.id.providerRatingField);
-        requesterRatingField = view.findViewById(R.id.requesterRatingField);
-        numRequestsField = view.findViewById(R.id.numRequestsField);
-        numTasksDoneField = view.findViewById(R.id.numTasksDoneField);
-        logOut = view.findViewById(R.id.logOutButton);
-        editProfile = view.findViewById(R.id.editButton);
-
-        nameField.setText(user.getName());
-        emailField.setText(user.getEmail().toString());
-        phoneField.setText(user.getPhone().toString());
-        providerRatingField.setText(String.format(Locale.CANADA,
-                "%.1f", user.getProviderRating()));
-        requesterRatingField.setText(String.format(Locale.CANADA,
-                "%.1f", user.getRequesterRating()));
-        try {
-            profilePicture.setImageBitmap(user.getPhoto().StringToBitmap());
-        }
-        catch (Exception e){
-            Photo defaultPhoto = new Photo("");
-            profilePicture.setImageBitmap(defaultPhoto.StringToBitmap());
-
-        }
+        findViews(view);
+        setValues();
 
         providerRatingField.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 providerRatingOnClick();
             }
         });
         requesterRatingField.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 requesterRatingOnClick();
             }
         });
@@ -220,6 +192,48 @@ public class ProfileFragment extends Fragment {
     }
 
     /**
+     * findViews
+     * sets each view variable as the respective ones on this fragment
+     * @param view the current view
+     * @author Micheal-Nguyen
+     */
+    public void findViews(View view){
+        profilePicture = view.findViewById(R.id.profilePictureView);
+        nameField = view.findViewById(R.id.nameField2);
+        emailField = view.findViewById(R.id.emailField2);
+        phoneField = view.findViewById(R.id.phoneField2);
+        providerRatingField = view.findViewById(R.id.providerRatingField);
+        requesterRatingField = view.findViewById(R.id.requesterRatingField);
+        numRequestsField = view.findViewById(R.id.numRequestsField);
+        numTasksDoneField = view.findViewById(R.id.numTasksDoneField);
+        logOut = view.findViewById(R.id.logOutButton);
+        editProfile = view.findViewById(R.id.editButton);
+    }
+
+    /**
+     * setValues
+     * sets the text and values of each field and variable in this class
+     *
+     * @author Micheal_Nguyen
+     */
+    public void setValues(){
+        nameField.setText(user.getName());
+        emailField.setText(user.getEmail().toString());
+        phoneField.setText(user.getPhone().toString());
+        providerRatingField.setText(String.format(Locale.CANADA,
+                "%.1f", user.getProviderRating()));
+        requesterRatingField.setText(String.format(Locale.CANADA,
+                "%.1f", user.getRequesterRating()));
+        try {
+            profilePicture.setImageBitmap(user.getPhoto().StringToBitmap());
+        }
+        catch (Exception e){
+            Photo defaultPhoto = new Photo("");
+            profilePicture.setImageBitmap(defaultPhoto.StringToBitmap());
+        }
+    }
+
+    /**
      * Switch to EditProfile Activity
      * Send users information to the activity
      */
@@ -258,7 +272,8 @@ public class ProfileFragment extends Fragment {
 
     /**
      * providerRatingOnClick
-     *
+     * upon clicking the provider rating field
+     * shows dialog with a list of the user's reviews as the provider
      * @author myapplestory
      */
     public void providerRatingOnClick() {
@@ -298,14 +313,44 @@ public class ProfileFragment extends Fragment {
 
     /**
      * requesterRatingOnClick
-     *
+     * upon clicking the provider rating field
+     * shows dialog with a list of the user's reviews as the  requester
      * @author myapplestory
      */
     public void requesterRatingOnClick() {
-        Toast.makeText(this.getContext(), "dddddddddddddddddd", Toast.LENGTH_SHORT).show();
+        final AlertDialog mBuilder = new AlertDialog.Builder(this.getContext()).create();
+        final View mView = getLayoutInflater().inflate(R.layout.dialog_review_list,null);
+        final ListView ReviewsListView = mView.findViewById(R.id.ReviewsListView);
+        final TextView ReviewBannerTextView = mView.findViewById(R.id.ReviewsBannerTextView);
 
+        GetReviewsByUserIdRequest request = new GetReviewsByUserIdRequest(user.getId());
+        RequestManager.getInstance().invokeRequest(request);
+        ArrayList<Review> ReviewsList = request.getResult();
+
+        for (Review review : ReviewsList) {
+            if (review.getReviewType().equals("p")) {
+                ReviewsList.remove(review);
+            }
+        }
+
+        if (ReviewsList.isEmpty()) {
+            ArrayList<String> tempList = new ArrayList<>();
+            tempList.add("No reviews yet :/");
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this.getContext(),
+                    android.R.layout.simple_list_item_1, tempList);
+            ReviewsListView.setAdapter(adapter);
+        } else {
+            ArrayAdapter<Review> adapter = new ReviewCustomAdapter(this.getContext(),
+                    R.layout.list_view_review, ReviewsList);
+            ReviewsListView.setAdapter(adapter);
+        }
+
+        String text = "Reviews for " + currentUser.getInstance().getName() + " as a requester";
+        ReviewBannerTextView.setText(text);
+
+        mBuilder.setView(mView);
+        mBuilder.show();
     }
-
 
     /**
      * set the user to be the profile fragment, should be the user that is currently logged in
