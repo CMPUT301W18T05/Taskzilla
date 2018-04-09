@@ -78,6 +78,8 @@ public class ProfileFragment extends Fragment {
     private TextView numTasksDoneField;
     private TextView providerRatingField;
     private TextView requesterRatingField;
+    private Button providerReviewButton;
+    private Button requesterReviewButton;
 
     private String numRequests;
     private String numTasksDone;
@@ -115,13 +117,13 @@ public class ProfileFragment extends Fragment {
         findViews(view);
         setValues();
 
-        providerRatingField.setOnClickListener(new View.OnClickListener() {
+        providerReviewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 providerRatingOnClick();
             }
         });
-        requesterRatingField.setOnClickListener(new View.OnClickListener() {
+        requesterReviewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 requesterRatingOnClick();
@@ -210,6 +212,8 @@ public class ProfileFragment extends Fragment {
         numTasksDoneField = view.findViewById(R.id.numTasksDoneField);
         logOut = view.findViewById(R.id.logOutButton);
         editProfile = view.findViewById(R.id.editButton);
+        requesterReviewButton = view.findViewById(R.id.ViewRequesterReviewsButton);
+        providerReviewButton = view.findViewById(R.id.ViewProviderReviewsButton);
     }
 
     /**
@@ -223,14 +227,14 @@ public class ProfileFragment extends Fragment {
         emailField.setText(user.getEmail().toString());
         phoneField.setText(user.getPhone().toString());
         if (user.getProviderRating() == 0.0f) {
-            providerRatingField.setText("No rating");
+            providerRatingField.setText("n/a");
             providerRatingField.setTextSize(18);
         } else {
             providerRatingField.setText(String.format(Locale.CANADA,
                     "%.1f", user.getProviderRating()));
         }
         if (user.getProviderRating() == 0.0f) {
-            requesterRatingField.setText("No rating");
+            requesterRatingField.setText("n/a");
             requesterRatingField.setTextSize(18);
         } else {
             requesterRatingField.setText(String.format(Locale.CANADA,
