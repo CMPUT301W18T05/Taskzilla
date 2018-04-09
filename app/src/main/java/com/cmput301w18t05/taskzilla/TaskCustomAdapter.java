@@ -46,7 +46,7 @@ public class TaskCustomAdapter extends ArrayAdapter<Task> {
         TextView requesterUsernameView = convertView.findViewById(R.id.requesterUsername);
         TextView taskStatusView = convertView.findViewById(R.id.taskStatus);
         TextView lowestBidView = convertView.findViewById(R.id.lowestBid);
-        ImageButton requesterImage = convertView.findViewById(R.id.SearchListRequesterPicture);
+        //ImageButton requesterImage = convertView.findViewById(R.id.SearchListRequesterPicture);
 
         // Set the values for all the views
         assert task != null;
@@ -59,13 +59,13 @@ public class TaskCustomAdapter extends ArrayAdapter<Task> {
         String taskStatus = "Status: " + task.getStatus();
         taskStatusView.setText(taskStatus);
 
-        try {
-            requesterImage.setImageBitmap(task.getTaskRequester().getPhoto().StringToBitmap());
-        }
-        catch (Exception e){
-            Photo defaultPhoto = new Photo("");
-            requesterImage.setImageBitmap(defaultPhoto.StringToBitmap());
-        }
+//        try {
+//            requesterImage.setImageBitmap(task.getTaskRequester().getPhoto().StringToBitmap());
+//        }
+//        catch (Exception e){
+//            Photo defaultPhoto = new Photo("");
+//            requesterImage.setImageBitmap(defaultPhoto.StringToBitmap());
+//        }
 
         // Check if the best bid is null or <= 0
         try {
