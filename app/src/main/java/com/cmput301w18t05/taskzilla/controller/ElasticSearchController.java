@@ -80,7 +80,7 @@ public class ElasticSearchController {
         protected Boolean doInBackground(Task... tasks) {
             verifySettings();
             for (Task task : tasks) {
-                Index index = new Index.Builder(task).index("cmput301w18t05").type("task2").build();
+                Index index = new Index.Builder(task).index("cmput301w18t05").type("task").build();
                 try {
                     Log.i("Event", "Trying to add the task: "+task.toString());
                     DocumentResult result = client.execute(index);
@@ -112,7 +112,7 @@ public class ElasticSearchController {
             verifySettings();
             DocumentResult result = null;
             for (Task task : tasks) {
-                Update update = new Update.Builder(task).index("cmput301w18t05").type("task2").build();
+                Update update = new Update.Builder(task).index("cmput301w18t05").type("task").build();
                 try {
                     result = client.execute(update);
                 } catch (Exception e) {
@@ -163,7 +163,7 @@ public class ElasticSearchController {
                 }
 
                 try {
-                    result = client.execute(new Delete.Builder(id).index("cmput301w18t05").type("task2").build());
+                    result = client.execute(new Delete.Builder(id).index("cmput301w18t05").type("task").build());
                     Log.i("Success", "Task deleted");
                 } catch (Exception e) {
                     Log.i("Error", "Task not deleted");
@@ -189,7 +189,7 @@ public class ElasticSearchController {
             Task task = null;
             for (String id : taskId) {
                 try {
-                    Get get = new Get.Builder("cmput301w18t05", id).type("task2").build();
+                    Get get = new Get.Builder("cmput301w18t05", id).type("task").build();
                     JestResult result = client.execute(get);
                     task = result.getSourceAsObject(Task.class);
                 } catch (Exception e) {
