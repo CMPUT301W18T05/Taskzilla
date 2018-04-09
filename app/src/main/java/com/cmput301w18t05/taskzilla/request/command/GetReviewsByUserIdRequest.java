@@ -41,27 +41,32 @@ public class GetReviewsByUserIdRequest extends Request {
      */
     public void execute() {
         //System.out.println("Getting reviews by user ID: " + userId);
-        task = new ElasticSearchController.GetReviewsByUserId();
+        task = new ElasticSearchController.GetReviewsByUserId(from,size);
         task.execute(userId);
+
+        try {
+            result = task.get();
+            from += size;
+        }
+        catch (Exception e) {
+            result = new ArrayList<>();
+        }
     }
 
     @Override
     public void executeOffline() {
+        result = new ArrayList<>();
     }
 
     @Override
     public boolean requiresConnection() {
-        return false;
+        return true;
     }
 
     public ArrayList<Review> getResult() {
-        result = new ArrayList<>();
-        try {
-            result = task.get();
-            return result;
-        }
-        catch (Exception e) {
+        if (result == null)
             return new ArrayList<>();
-        }
+
+        return result;
     }
 }

@@ -691,6 +691,14 @@ public class ElasticSearchController {
     }
 
     public static class GetReviewsByUserId extends AsyncTask<String, Void, ArrayList<Review>> {
+        private int from;
+        private int size;
+
+        public GetReviewsByUserId(int from, int size) {
+            this.from = from;
+            this.size = size;
+        }
+
         /**
          * Handles retrieving all bids from a user id
          * @return ArrayList<Bid>
@@ -701,7 +709,7 @@ public class ElasticSearchController {
             ArrayList<Review> foundReviews = new ArrayList<>();
 
             for (String  userId : userIds) {
-                String query = "{ \"query\" : { \"match\" : { \"targetUserID\" : \""+ userId + "\" } } }";
+                String query = "{ \"from\" : " + from + ", \"size\" : " + size + ", \"query\" : { \"match\" : { \"targetUserID\" : \""+ userId + "\" } } }";
                 Log.i("Query: ", query);
 
                 SearchResult result;
