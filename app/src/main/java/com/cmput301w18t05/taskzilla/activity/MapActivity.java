@@ -12,7 +12,9 @@
 package com.cmput301w18t05.taskzilla.activity;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -117,6 +119,25 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                     mMap.animateCamera(CameraUpdateFactory.newLatLng(arg0.getPosition()));
                     arg0.setTitle( "Lat: "+Double.toString(Double.valueOf(df.format(arg0.getPosition().latitude)))+" Lon: "+Double.toString(Double.valueOf(df.format(arg0.getPosition().longitude))));
                     arg0.showInfoWindow();
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getBaseContext());
+                    builder.setCancelable(true);
+                    builder.setTitle("Title");
+                    builder.setMessage("Message");
+                    builder.setPositiveButton("Confirm",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            });
+                    builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    });
+
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
 
                     Intent intent = new Intent();
                     intent.putExtra("Lat", Double.toString(Double.valueOf(arg0.getPosition().latitude)));

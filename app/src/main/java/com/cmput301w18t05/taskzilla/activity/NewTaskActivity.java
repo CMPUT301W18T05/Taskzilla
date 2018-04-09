@@ -162,6 +162,7 @@ public class NewTaskActivity extends AppCompatActivity implements OnMapReadyCall
                         photos.remove(position);
                         dialogInterface.dismiss();
                         recyclerPhotosViewAdapter.notifyDataSetChanged();
+
                     }
                 });
 
