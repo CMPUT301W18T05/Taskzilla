@@ -23,7 +23,11 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 /**
- * Created by James on 4/8/2018.
+ *
+ * Custom list view adapter for displaying reviews
+ * shows review title, rating, and description
+ *
+ * @author myapplestory
  *
  */
 
@@ -52,8 +56,11 @@ public class ReviewCustomAdapter extends ArrayAdapter<Review> {
         listReviewTitle.setTextSize(20);
         listReviewRating.setText(String.format(Locale.CANADA, "%.1f", review.getRating()));
         listReviewRating.setTextColor(0xFF323232);
-        listReviewDescription.setText(review.getDescription());
-
+        if (review.getDescription().equals("")){
+            listReviewDescription.setText("No Description");
+        } else {
+            listReviewDescription.setText(review.getDescription());
+        }
         return convertView;
     }
 
