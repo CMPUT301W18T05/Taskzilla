@@ -227,14 +227,14 @@ public class ProfileFragment extends Fragment {
         emailField.setText(user.getEmail().toString());
         phoneField.setText(user.getPhone().toString());
         if (user.getProviderRating() == 0.0f) {
-            providerRatingField.setText("No rating");
+            providerRatingField.setText("n/a");
             providerRatingField.setTextSize(18);
         } else {
             providerRatingField.setText(String.format(Locale.CANADA,
                     "%.1f", user.getProviderRating()));
         }
         if (user.getProviderRating() == 0.0f) {
-            requesterRatingField.setText("No rating");
+            requesterRatingField.setText("n/a");
             requesterRatingField.setTextSize(18);
         } else {
             requesterRatingField.setText(String.format(Locale.CANADA,
