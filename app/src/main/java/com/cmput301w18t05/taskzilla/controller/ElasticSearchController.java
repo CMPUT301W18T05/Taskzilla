@@ -712,7 +712,7 @@ public class ElasticSearchController {
             ArrayList<Review> foundReviews = new ArrayList<>();
 
             for (String  userId : userIds) {
-                String query = "{ \"query\" : { \"match\" : { \"userId\" : \""+ userId + "\" } } }";
+                String query = "{ \"query\" : { \"match\" : { \"targetUserID\" : \""+ userId + "\" } } }";
                 Log.i("Query: ", query);
 
                 SearchResult result;

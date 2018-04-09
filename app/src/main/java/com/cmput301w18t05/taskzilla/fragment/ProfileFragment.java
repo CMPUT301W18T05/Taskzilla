@@ -268,7 +268,7 @@ public class ProfileFragment extends Fragment {
         final TextView ReviewBannerTextView = mView.findViewById(R.id.ReviewsBannerTextView);
 
         GetReviewsByUserIdRequest request = new GetReviewsByUserIdRequest(user.getId());
-        request.execute();
+        RequestManager.getInstance().invokeRequest(request);
         ArrayList<Review> ReviewsList = request.getResult();
 
         for (Review review : ReviewsList) {
