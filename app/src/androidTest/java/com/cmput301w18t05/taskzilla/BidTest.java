@@ -56,7 +56,7 @@ public class BidTest extends ActivityInstrumentationTestCase2 {
      * equality returns 0
      * less than returns -1
      */
-    /*
+
     public void testCompareTo() {
 
         User user1 = new User();
@@ -79,5 +79,4 @@ public class BidTest extends ActivityInstrumentationTestCase2 {
         Bid bid4 = new Bid(user4.getId(), task.getId(), bidAmount4);
         assertEquals(bid1.compareTo(bid4), -1);
     }
-    */
 }
