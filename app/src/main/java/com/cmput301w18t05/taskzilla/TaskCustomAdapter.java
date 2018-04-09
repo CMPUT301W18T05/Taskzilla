@@ -39,6 +39,9 @@ public class TaskCustomAdapter extends ArrayAdapter<Task> {
     @Override
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         Task task = getItem(position);
+        assert task != null;
+        User user = task.getTaskRequester();
+
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.tasks_list_view2,
                     parent, false);
@@ -50,18 +53,17 @@ public class TaskCustomAdapter extends ArrayAdapter<Task> {
         ImageView requesterImage = convertView.findViewById(R.id.SearchListRequesterPicture);
 
         // Set the values for all the views
-        assert task != null;
         taskTitleView.setText(task.getName());
         taskTitleView.setTextColor(0xff3f3f3f);
         taskTitleView.setTextSize(20);
-        String requesterName = "Requester: " + task.getTaskRequester().getName();
+        String requesterName = "Requester: " + user.getName();
         requesterUsernameView.setText(requesterName);
         requesterUsernameView.setTextColor(0xFF323232);
         String taskStatus = "Status: " + task.getStatus();
         taskStatusView.setText(taskStatus);
 
         try {
-            requesterImage.setImageBitmap(task.getTaskRequester().getPhoto().StringToBitmap());
+            requesterImage.setImageBitmap(user.getPhoto().StringToBitmap());
         }
         catch (Exception e){
             Photo defaultPhoto = new Photo("");
