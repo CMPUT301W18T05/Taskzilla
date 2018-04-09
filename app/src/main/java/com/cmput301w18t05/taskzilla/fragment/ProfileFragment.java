@@ -17,13 +17,16 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,15 +34,19 @@ import com.cmput301w18t05.taskzilla.AppColors;
 import com.cmput301w18t05.taskzilla.EmailAddress;
 import com.cmput301w18t05.taskzilla.PhoneNumber;
 import com.cmput301w18t05.taskzilla.Photo;
+import com.cmput301w18t05.taskzilla.Review;
+import com.cmput301w18t05.taskzilla.ReviewCustomAdapter;
 import com.cmput301w18t05.taskzilla.Task;
 import com.cmput301w18t05.taskzilla.activity.MainActivity;
 import com.cmput301w18t05.taskzilla.activity.ZoomImageActivity;
 import com.cmput301w18t05.taskzilla.R;
 import com.cmput301w18t05.taskzilla.User;
 import com.cmput301w18t05.taskzilla.activity.EditProfileActivity;
+import com.cmput301w18t05.taskzilla.controller.ElasticSearchController;
 import com.cmput301w18t05.taskzilla.currentUser;
 import com.cmput301w18t05.taskzilla.request.RequestManager;
 import com.cmput301w18t05.taskzilla.request.command.AddUserRequest;
+import com.cmput301w18t05.taskzilla.request.command.GetReviewsByUserIdRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetTasksByProviderUsernameRequest;
 import com.cmput301w18t05.taskzilla.request.command.GetTasksByRequesterUsernameRequest;
 import com.google.gson.Gson;
@@ -49,6 +56,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -177,7 +185,14 @@ public class ProfileFragment extends Fragment {
             //gets all of current user's tasks
             requestTasksRequester = new GetTasksByRequesterUsernameRequest(user.getUsername());
             RequestManager.getInstance().invokeRequest(getContext(), requestTasksRequester);
-            numRequests = Integer.toString(requestTasksRequester.getResult().size());
+            Integer tempNumRequests = requestTasksRequester.getResult().size();
+            Integer numRequestsInteger = tempNumRequests;
+            while(tempNumRequests>0){
+                RequestManager.getInstance().invokeRequest(getContext(), requestTasksRequester);
+                tempNumRequests = requestTasksRequester.getResult().size();
+                numRequestsInteger+=tempNumRequests;
+            }
+            numRequests = Integer.toString(numRequestsInteger);
 
             requestTasksProvider = new GetTasksByProviderUsernameRequest(user.getUsername());
             RequestManager.getInstance().invokeRequest(getContext(), requestTasksProvider);
@@ -186,6 +201,16 @@ public class ProfileFragment extends Fragment {
             for(Task task: taskList) {
                 if(task.getStatus().equals("Completed")){
                     tasksDone++;
+                }
+            }
+            while(taskList.size()>0 && taskList != null){
+                taskList.clear();
+                RequestManager.getInstance().invokeRequest(getContext(), requestTasksProvider);
+                this.taskList.addAll(requestTasksProvider.getResult());
+                for(Task task: taskList) {
+                    if(task.getStatus().equals("Completed")){
+                        tasksDone++;
+                    }
                 }
             }
             numTasksDone = Integer.toString(tasksDone);
@@ -237,7 +262,38 @@ public class ProfileFragment extends Fragment {
      * @author myapplestory
      */
     public void providerRatingOnClick() {
-        Toast.makeText(this.getContext(), "dwdwdwdwd", Toast.LENGTH_SHORT).show();
+        final AlertDialog mBuilder = new AlertDialog.Builder(this.getContext()).create();
+        final View mView = getLayoutInflater().inflate(R.layout.dialog_review_list,null);
+        final ListView ReviewsListView = mView.findViewById(R.id.ReviewsListView);
+        final TextView ReviewBannerTextView = mView.findViewById(R.id.ReviewsBannerTextView);
+
+        GetReviewsByUserIdRequest request = new GetReviewsByUserIdRequest(user.getId());
+        RequestManager.getInstance().invokeRequest(request);
+        ArrayList<Review> ReviewsList = request.getResult();
+
+        for (Review review : ReviewsList) {
+            if (review.getReviewType().equals("r")) {
+                ReviewsList.remove(review);
+            }
+        }
+
+        if (ReviewsList.isEmpty()) {
+            ArrayList<String> tempList = new ArrayList<>();
+            tempList.add("No reviews yet :/");
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this.getContext(),
+                    android.R.layout.simple_list_item_1, tempList);
+            ReviewsListView.setAdapter(adapter);
+        } else {
+            ArrayAdapter<Review> adapter = new ReviewCustomAdapter(this.getContext(),
+                    R.layout.list_view_review, ReviewsList);
+            ReviewsListView.setAdapter(adapter);
+        }
+
+        String text = "Reviews for " + currentUser.getInstance().getName() + " as a provider";
+        ReviewBannerTextView.setText(text);
+
+        mBuilder.setView(mView);
+        mBuilder.show();
     }
 
     /**

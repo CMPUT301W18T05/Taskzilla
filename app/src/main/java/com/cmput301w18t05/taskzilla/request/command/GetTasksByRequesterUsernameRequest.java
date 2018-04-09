@@ -48,6 +48,7 @@ public class GetTasksByRequesterUsernameRequest extends Request {
         try {
             result = task.get();
             from += size;
+            AppCache.getInstance().addInCache(result);
             // dont have to add into app cache here
         } catch (Exception e) {
             result = new ArrayList<>();
@@ -57,8 +58,11 @@ public class GetTasksByRequesterUsernameRequest extends Request {
 
     @Override
     public void executeOffline() {
-        if (executedOfflineOnce)
+        if (executedOfflineOnce) {
             result = new ArrayList<>();
+            return;
+        }
+        executedOfflineOnce = true;
 
         System.out.println("Searching for tasks by requester username with username: "+user);
         executedOffline = true;
@@ -74,7 +78,6 @@ public class GetTasksByRequesterUsernameRequest extends Request {
                 result.add(t);
             }
         }
-        executedOfflineOnce = true;
     }
 
     @Override

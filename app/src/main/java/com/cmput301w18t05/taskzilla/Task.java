@@ -13,6 +13,7 @@ package com.cmput301w18t05.taskzilla;
 
 import android.content.Context;
 import android.location.Location;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.cmput301w18t05.taskzilla.activity.ViewTaskActivity;
@@ -128,7 +129,6 @@ public class Task implements Comparable<Task> {
      */
     public void addBid(Bid newbid) {
         System.out.println("Adding bid: "+newbid);
-
         AddBidRequest addBidRequest = new AddBidRequest(newbid);
         RequestManager.getInstance().invokeRequest(addBidRequest);
 

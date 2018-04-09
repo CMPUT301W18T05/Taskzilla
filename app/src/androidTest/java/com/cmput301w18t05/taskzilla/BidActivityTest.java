@@ -81,7 +81,7 @@ public class BidActivityTest extends ActivityInstrumentationTestCase2 {
         solo.waitForText("Profile");
         solo.clickOnText("Profile");
 
-        solo.clickOnView(solo.getView(R.id.LogOutButton));
+        solo.clickOnView(solo.getView(R.id.logOutButton));
         solo.waitForActivity(MainActivity.class);
         solo.assertCurrentActivity("Wrong Activity",MainActivity.class);
 
