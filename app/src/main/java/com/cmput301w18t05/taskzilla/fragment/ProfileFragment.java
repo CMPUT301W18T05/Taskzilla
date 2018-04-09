@@ -78,6 +78,8 @@ public class ProfileFragment extends Fragment {
     private TextView numTasksDoneField;
     private TextView providerRatingField;
     private TextView requesterRatingField;
+    private Button providerReviewButton;
+    private Button requesterReviewButton;
 
     private String numRequests;
     private String numTasksDone;
@@ -115,13 +117,13 @@ public class ProfileFragment extends Fragment {
         findViews(view);
         setValues();
 
-        providerRatingField.setOnClickListener(new View.OnClickListener() {
+        providerReviewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 providerRatingOnClick();
             }
         });
-        requesterRatingField.setOnClickListener(new View.OnClickListener() {
+        requesterReviewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 requesterRatingOnClick();
@@ -210,6 +212,8 @@ public class ProfileFragment extends Fragment {
         numTasksDoneField = view.findViewById(R.id.numTasksDoneField);
         logOut = view.findViewById(R.id.logOutButton);
         editProfile = view.findViewById(R.id.editButton);
+        requesterReviewButton = view.findViewById(R.id.ViewRequesterReviewsButton);
+        providerReviewButton = view.findViewById(R.id.ViewProviderReviewsButton);
     }
 
     /**

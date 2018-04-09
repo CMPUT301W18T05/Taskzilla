@@ -182,6 +182,15 @@ public class SearchFragment extends Fragment {
                 }
             }
         });
+        availableTasksPhoto.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if (adapterView == clickSource) {
+                    currentTask = searchResults.get(i);
+                    viewTask(searchResults.get(i).getId());
+                }
+            }
+        });
         // get all available tasks
         searchController.getAllRequest();
         return mConstraintLayout;
