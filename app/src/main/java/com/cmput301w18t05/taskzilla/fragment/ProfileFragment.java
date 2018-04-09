@@ -303,13 +303,21 @@ public class ProfileFragment extends Fragment {
         RequestManager.getInstance().invokeRequest(request);
         ArrayList<Review> ReviewsList = request.getResult();
 
-        Iterator<Review> iter = ReviewsList.iterator();
-        while (iter.hasNext()) {
-            Review review = iter.next();
+        // taken from https://stackoverflow.com/questions/18448671/how-to-avoid-concurrentmodificationexception-while-removing-elements-from-arr
+        // 2018-04-08
 
-            if (review.getReviewType().equals("r")) {
-                iter.remove();
+        ArrayList<Review> ReviewListTemp = new ArrayList<>();
+        while(ReviewListTemp.size()>0){
+            RequestManager.getInstance().invokeRequest(request);
+            ArrayList<Review> ReviewsListTemp = request.getResult();
+            Iterator<Review> iter = ReviewsListTemp.iterator();
+            while (iter.hasNext()) {
+                Review review = iter.next();
+                if (review.getReviewType().equals("p")) {
+                    iter.remove();
+                }
             }
+            ReviewsList.addAll(ReviewListTemp);
         }
 
 
@@ -346,15 +354,22 @@ public class ProfileFragment extends Fragment {
 
         GetReviewsByUserIdRequest request = new GetReviewsByUserIdRequest(user.getId());
         RequestManager.getInstance().invokeRequest(request);
-        ArrayList<Review> ReviewsList = request.getResult();
+        ArrayList<Review> ReviewsListTemp = request.getResult();
 
-        Iterator<Review> iter = ReviewsList.iterator();
-        while (iter.hasNext()) {
-            Review review = iter.next();
-
-            if (review.getReviewType().equals("p")) {
-                iter.remove();
+        ArrayList<Review> ReviewsList = new ArrayList<>();
+        ArrayList<Review> ReviewListTemp = new ArrayList<>();
+        while(ReviewListTemp.size()>0){
+            ReviewsList.addAll(ReviewListTemp);
+            RequestManager.getInstance().invokeRequest(request);
+            ReviewsListTemp = request.getResult();
+            Iterator<Review> iter = ReviewsListTemp.iterator();
+            while (iter.hasNext()) {
+                Review review = iter.next();
+                if (review.getReviewType().equals("r")) {
+                    iter.remove();
+                }
             }
+
         }
 
         if (ReviewsList.isEmpty()) {
