@@ -82,7 +82,7 @@ public class ElasticSearchController {
             for (Task task : tasks) {
                 Index index = new Index.Builder(task).index("cmput301w18t05").type("task").build();
                 try {
-                    Log.i("Event", "Trying to add user "+task.toString());
+                    Log.i("Event", "Trying to add the task: "+task.toString());
                     DocumentResult result = client.execute(index);
                     Log.i("Event", "Jest returned with: "+result);
                     if (result.isSucceeded()) {

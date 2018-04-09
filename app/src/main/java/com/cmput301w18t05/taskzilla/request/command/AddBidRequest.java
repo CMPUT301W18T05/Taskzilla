@@ -34,7 +34,7 @@ public class AddBidRequest extends InsertionRequest {
     @Override
     public void execute() {
         this.bid.setId(null);
-        System.out.println("Adding bid: " + bid);
+        System.out.println("Adding bid: " + bid.getId());
         System.out.println("Bid id: " + bid.getId() + " Task id: " + bid.getTaskId() + " User id: " + bid.getUserId());
         task = new ElasticSearchController.AddBid();
         task.execute(bid);
