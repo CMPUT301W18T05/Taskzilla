@@ -69,6 +69,8 @@ import java.util.ArrayList;
 
 /**
  * Activity for creating a new task
+ *
+ * @version 1.0
  */
 public class NewTaskActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -92,7 +94,6 @@ public class NewTaskActivity extends AppCompatActivity implements OnMapReadyCall
     private LinearLayout linearLayout;
     private Integer PICK_IMAGE = 5;
     private int maxSize;
-
 
     /**
      * Activity uses the activity_new_task.xml layout
@@ -127,10 +128,14 @@ public class NewTaskActivity extends AppCompatActivity implements OnMapReadyCall
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
 
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            /**
+             * When user select a location
+             * Set hint and set place
+             * @param place
+             */
             @Override
             public void onPlaceSelected(Place place) {
                 // TODO: Get info about the selected place.
-                Log.i("yolo", "Place: " + place.getName());
                 autocompleteFragment.setHint(place.getName());
                 taskLocation=place.getLatLng();
             }
@@ -195,6 +200,10 @@ public class NewTaskActivity extends AppCompatActivity implements OnMapReadyCall
         });
 
         currentLocationButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Set loaction to the users current location
+             * @param view
+             */
             @Override
             public void onClick(View view) {
                 setCurrentLocation();
@@ -217,6 +226,12 @@ public class NewTaskActivity extends AppCompatActivity implements OnMapReadyCall
 
     }
 
+    /**
+     * When the map is ready
+     * Move the camera to their current location
+     * and is the map is clicked switch to map Activity so user can chhose location
+     * @param googleMap
+     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -244,6 +259,10 @@ public class NewTaskActivity extends AppCompatActivity implements OnMapReadyCall
 
     }
 
+    /**
+     * Move camera on map to specifed LatLon
+     * @param currentLocation
+     */
     private void moveToCurrentLocation(LatLng currentLocation) {
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation,15));
         // Zoom in, animating the camera.
@@ -253,6 +272,9 @@ public class NewTaskActivity extends AppCompatActivity implements OnMapReadyCall
 
     }
 
+    /**
+     * Get the user's current location
+     */
     void getLocation() {
         if( ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -267,6 +289,9 @@ public class NewTaskActivity extends AppCompatActivity implements OnMapReadyCall
         }
     }
 
+    /**
+     * Set the users current location
+     */
     public void setCurrentLocation(){
         getLocation();
         taskLocation = new LatLng(lat,lon);
@@ -277,7 +302,12 @@ public class NewTaskActivity extends AppCompatActivity implements OnMapReadyCall
     }
 
 
-
+    /**
+     * Asks user for permission to user the current location
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -289,7 +319,11 @@ public class NewTaskActivity extends AppCompatActivity implements OnMapReadyCall
         }
     }
 
-
+    /**
+     * When photo button is clicked
+     * Allow users to pick photos
+     * Give error when limit of 10 photos is reached
+     */
     public void AddPhotoButtonClicked(){
         if(photos.size()==10){
             Toast.makeText(NewTaskActivity.this,"Photo limited reached",Toast.LENGTH_LONG).show();
@@ -300,6 +334,15 @@ public class NewTaskActivity extends AppCompatActivity implements OnMapReadyCall
             startActivityForResult(photoPickerIntent, PICK_IMAGE);
         }
     }
+
+    /**
+     * reqcode 2: Get lat lon and set a marker on the map
+     * reqcode 5: Set the image
+     *
+     * @param reqCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int reqCode, int resultCode, Intent data) {
         super.onActivityResult(reqCode, resultCode, data);

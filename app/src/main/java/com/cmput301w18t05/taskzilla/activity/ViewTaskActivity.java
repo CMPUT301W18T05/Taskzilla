@@ -78,7 +78,9 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 /**
- * Activity for viewing a task
+ * Activity fro viewing a task
+ *
+ * @version 1.0
  */
 public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -344,15 +346,6 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
                     TaskStatus.setText("Bidded");
                 }
                 setProviderField();
-
-                //Notification notification = new Notification("bidded", "hi", getIntent(), currentUser.getInstance().getId(), task.getRequesterId(), currentUser.getInstance());
-                //AddNotificationRequest request = new AddNotificationRequest(notification);
-                //RequestManager.getInstance().invokeRequest(getApplicationContext(), request);
-                //NotificationManager.getInstance().createNotification(notification);
-                //NotificationManager.getInstance().sendNotification(notification);
-
-                //Notification notification = new Notification("Hi",currentUser.getInstance().getId(), task.getRequesterId(),taskID, currentUser.getInstance());
-                //NotificationManager.getInstance().sendNotification(notification);
 
                 Toast.makeText(ViewTaskActivity.this, "Bid placed", Toast.LENGTH_SHORT).show();
 
@@ -886,6 +879,12 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
         BidslistView.setAdapter(expandableListAdapter);
     }
 
+    /**
+     * Add a marker with the location of the task on the map fragment
+     * If map is clicked, switch to MapActivity
+     *
+     * @param googleMap
+     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -920,6 +919,11 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
 
     }
 
+    /**
+     * Move the camera to a Location
+     *
+     * @param currentLocation
+     */
     private void moveToCurrentLocation(LatLng currentLocation) {
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation,15));
         // Zoom in, animating the camera.
