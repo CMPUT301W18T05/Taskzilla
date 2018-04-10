@@ -127,7 +127,7 @@ public class Task implements Comparable<Task> {
 
         String temp = "Your task '" + this.getName() +"' has been bidded on by " + currentUser.getInstance().getUsername() + " for $" + newbid.getBidAmount();
 
-        Notification notification = new Notification("New Bid", this.Id, this.name, temp, currentUser.getInstance());
+        Notification notification = new Notification("New Bid", newbid.getUserId(), this.getRequesterId(), this.Id, this.name, temp, currentUser.getInstance());
         NotificationManager.getInstance().sendNotification(notification);
     }
 
@@ -146,7 +146,7 @@ public class Task implements Comparable<Task> {
 
             String temp = "Your bid has been declined!";
 
-            Notification notification = new Notification("Bid Declined", this.Id,
+            Notification notification = new Notification("Bid Declined", this.requesterId, this.providerId, this.Id,
                     this.getName(), temp, currentUser.getInstance());
             NotificationManager.getInstance().sendNotification(notification);
         }
@@ -256,7 +256,7 @@ public class Task implements Comparable<Task> {
 
             String temp = "Your bid has been accepted!";
 
-            Notification notification = new Notification("Bid Accepted", this.Id, this.name,
+            Notification notification = new Notification("Bid Accepted", this.requesterId, this.providerId, this.Id, this.name,
                     temp, currentUser.getInstance());
             NotificationManager.getInstance().sendNotification(notification);
         }
@@ -378,7 +378,7 @@ public class Task implements Comparable<Task> {
 
         String temp = this.getName() + " has been completed!";
 
-        Notification notification = new Notification("Task Completed", this.Id, this.name, temp, currentUser.getInstance());
+        Notification notification = new Notification("Task Completed", this.requesterId, this.providerId, this.Id, this.name, temp, currentUser.getInstance());
         NotificationManager.getInstance().sendNotification(notification);
     }
 

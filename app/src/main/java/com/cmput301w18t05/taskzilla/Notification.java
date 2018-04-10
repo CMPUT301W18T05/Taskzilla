@@ -36,19 +36,23 @@ public class Notification {
     private String event;
     private String taskID;
     private boolean acknowledged = false;
+    private String receiverID;
+    private String senderID;
 
     @JestId
     private String id;
 
-    public Notification(String event, String taskID, String taskName, String context, User user) {
+    public Notification(String event, String senderID, String receiverID, String taskID, String taskName, String context, User user) {
         this.event = event;
         this.taskID = taskID;
         this.taskName = taskName;
         this.user = user;
         this.context = context;
+        this.senderID = senderID;
+        this.receiverID = receiverID;
     }
 
-     String getEvent() {
+    public String getEvent() {
         return this.event;
     }
 
@@ -68,6 +72,14 @@ public class Notification {
         this.id = nid;
     }
 
+    public String getReceiverID() {
+        return this.receiverID;
+    }
+
+    public String getSenderID() {
+        return this.senderID;
+    }
+
     public String getTaskID() {
         return this.taskID;
     }
@@ -83,7 +95,7 @@ public class Notification {
      *  @see NotificationManager
      */
 
-    void acknowledge() {
+    public void acknowledge() {
         if (id == null)
             return;
 
@@ -92,7 +104,7 @@ public class Notification {
         RequestManager.getInstance().invokeRequest(task);
     }
 
-    boolean isAcknowledged() {
+    public boolean isAcknowledged() {
         return acknowledged;
     }
 }

@@ -518,7 +518,7 @@ public class ViewTaskActivity extends AppCompatActivity implements OnMapReadyCal
 
                     String temp = "Your bid has been declined!";
 
-                    Notification notification = new Notification("Bid Declined", taskID, taskName, temp, currentUser.getInstance());
+                    Notification notification = new Notification("Bid Declined", task.getRequesterId(), selectedBid.getUserId(), taskID, taskName, temp, currentUser.getInstance());
                     NotificationManager.getInstance().sendNotification(notification);
 
                     BidList.remove(selectedBid);
